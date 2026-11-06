@@ -72,10 +72,24 @@ def initial_bearing(line: list[list[float]], within_m: float = 600.0) -> float |
     return (math.degrees(math.atan2(y, x)) + 360) % 360
 
 
-def _score(route: dict, hints: dict, cameras: list[dict], seen_ids: set, t_start: float | None, gap_s: float | None) -> tuple[float, list[str]]:
+def _typical(route: dict, traffic, t_start: float | None) -> dict:
+    route.setdefault("freeflow_s", route["duration_s"])
+    if traffic is None:
+        return {"calibrated": False, "p10": route["freeflow_s"], "p50": route["freeflow_s"], "p90": route["freeflow_s"]}
+    pred = traffic.predict(route["freeflow_s"], route["distance_m"], t_start)
+    if pred["calibrated"]:
+        route["typical_s"] = [round(pred["p10"]), round(pred["p50"]), round(pred["p90"])]
+        route["traffic_basis"] = pred["basis"]
+    return pred
+
+
+def _score(route: dict, hints: dict, cameras: list[dict], seen_ids: set, t_start: float | None, gap_s: float | None,
+           traffic=None) -> tuple[float, list[str]]:
     cfg = section("routes")
     score, reasons = 1.0, []
     line = route["geometry"]
+    pred = _typical(route, traffic, t_start)
+    typical = pred["p50"]
     for p in hints.get("places", []):
         if p.get("lat") is None:
             continue
@@ -92,7 +106,16 @@ def _score(route: dict, hints: dict, cameras: list[dict], seen_ids: set, t_start
             cos = math.cos(math.radians(b - hints["direction"]["bearing"]))
             score *= 0.5 + 0.5 * max(0.0, cos)
             reasons.append(f"initial heading {b:.0f}° vs hinted {hints['direction']['word']}")
-    if gap_s is not None:
+    if gap_s is not None and pred["calibrated"]:
+        fits = traffic.prob_within(route["freeflow_s"], route["distance_m"], t_start, gap_s + 60)
+        score *= max(fits, cfg["infeasible_penalty"])
+        if fits < 0.1:
+            reasons.append(f"usually takes {pred['p10'] / 60:.0f} to {pred['p90'] / 60:.0f} min at this hour, but only {gap_s / 60:.1f} min elapsed")
+        slack = gap_s - typical
+        score *= math.exp(-max(0.0, slack) / cfg["slack_decay_s"])
+        if slack > 300:
+            reasons.append(f"{slack / 60:.0f} min more than the typical {typical / 60:.0f} min (possible stop)")
+    elif gap_s is not None:
         slack = gap_s - route["duration_s"]
         if slack < -cfg["infeasible_tolerance"] * route["duration_s"] - 60:
             score *= cfg["infeasible_penalty"]
@@ -108,7 +131,7 @@ def _score(route: dict, hints: dict, cameras: list[dict], seen_ids: set, t_start
             if dist_to_line_m((cam["lat"], cam["lon"]), line) > cfg["camera_on_route_m"]:
                 continue
             frac = haversine_m((line[0][1], line[0][0]), (cam["lat"], cam["lon"])) / max(route["distance_m"], 1.0)
-            eta = t_start + frac * route["duration_s"]
+            eta = t_start + frac * typical
             end = cam["start_epoch"] + (cam.get("duration_s") or 0)
             margin = cfg["camera_time_margin_s"]
             if cam["start_epoch"] - margin <= eta <= end + margin:
@@ -146,7 +169,7 @@ def _normalise(routes: list[dict]) -> list[dict]:
     return sorted(routes, key=lambda r: -r["probability"])
 
 
-def infer(sightings: list[dict], hints: dict, cameras: list[dict]) -> dict:
+def infer(sightings: list[dict], hints: dict, cameras: list[dict], traffic=None) -> dict:
     pts = sorted([s for s in sightings if s.get("lat") is not None], key=lambda s: (s.get("t_abs") is None, s.get("t_abs") or 0))
     seen = {s["camera_id"] for s in pts}
     segments = []
@@ -154,7 +177,7 @@ def infer(sightings: list[dict], hints: dict, cameras: list[dict]) -> dict:
         gap = (b["t_abs"] - a["t_abs"]) if a.get("t_abs") is not None and b.get("t_abs") is not None else None
         routes = osrm_routes([(a["lat"], a["lon"]), (b["lat"], b["lon"])])
         for r in routes:
-            r["score"], r["reasons"] = _score(r, hints, cameras, seen, a.get("t_abs"), gap)
+            r["score"], r["reasons"] = _score(r, hints, cameras, seen, a.get("t_abs"), gap, traffic)
         _prefer_fast(routes)
         segments.append({"from": a["camera_name"], "to": b["camera_name"], "gap_s": gap, "routes": _normalise(routes)})
     onward = []
@@ -172,20 +195,27 @@ def infer(sightings: list[dict], hints: dict, cameras: list[dict]) -> dict:
             for via in vias[:1]:
                 cands += osrm_routes([origin, (via["lat"], via["lon"]), (tgt["lat"], tgt["lon"])], alternatives=False)
             for r in cands:
-                r["score"], r["reasons"] = _score(r, hints, cameras, seen, last.get("t_abs"), None)
+                r["score"], r["reasons"] = _score(r, hints, cameras, seen, last.get("t_abs"), None, traffic)
                 r["destination"] = tgt["label"]
                 r["destination_role"] = tgt["role"]
                 if tgt["role"] == "stop":
                     r["score"] *= section("routes")["activity_stop_weight"]
                     r["reasons"].append("possible stop inferred from an activity in the note")
                 if last.get("t_abs") is not None:
-                    r["eta_epoch"] = last["t_abs"] + r["duration_s"]
+                    span = r.get("typical_s") or [r["duration_s"]] * 3
+                    r["eta_epoch"] = last["t_abs"] + span[1]
+                    r["eta_range"] = [last["t_abs"] + span[0], last["t_abs"] + span[2]]
             onward.extend(cands)
         _prefer_fast(onward)
         onward = _normalise(onward)[:section("routes")["max_hypotheses"]]
         reach = isochrone(*origin)
     else:
         reach = None
+    if traffic is not None and traffic.available:
+        n = traffic.local["n"]
+        timing = ("Drive times are calibrated to Bengaluru traffic by hour of day from Uber Movement 2019 weekday travel times"
+                  + (f", corrected by {n} journey{'s' if n != 1 else ''} observed by this system." if n else ". No local journeys have been observed yet."))
+    else:
+        timing = "Drive times are free-flow estimates from OpenStreetMap; real Bengaluru traffic is slower."
     return {"segments": segments, "onward": onward, "reachable": reach, "hints": hints,
-            "assumptions": ["Drive times are free-flow estimates from OpenStreetMap; real Bengaluru traffic is slower.",
-                            "Routes are hypotheses ranked by consistency with the evidence, not confirmed paths."]}
+            "assumptions": [timing, "Routes are hypotheses ranked by consistency with the evidence, not confirmed paths."]}

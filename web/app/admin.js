@@ -110,7 +110,7 @@ function hbars(box, rows, { label, value, sub, cls = "mag", fmtVal = fmt, max = 
     const name = label(r);
     const t = s("text", { class: "lbl", x: 0, y: y + 12 }, name.length > 30 ? name.slice(0, 29) + "…" : name);
     svg.append(t);
-    if (sub) svg.append(s("text", { x: 0, y: y + 24, style: "font-size:10.5px" }, sub(r)));
+    if (sub) svg.append(s("text", { class: "sub", x: 0, y: y + 24 }, sub(r)));
     if (w > 0) svg.append(s("path", { class: `mark ${cls}`, d: barPath(lw, y + 2, w, 14) }));
     svg.append(s("text", { class: "val", x: lw + w + 8, y: y + 13 }, fmtVal(v)));
     const hit = s("rect", { class: "hit", x: 0, y: y - 4, width: W, height: rowH, tabindex: 0 });
@@ -459,12 +459,117 @@ async function audit(more = false) {
   } catch (e) { body.replaceChildren(C.problem(e.message)); }
 }
 
-const TABS = [["overview", "Overview"], ["events", "Records"], ["cases", "Cases"], ["accounts", "Stations and accounts"], ["audit", "Audit log"]];
+function hourlyChart(box, prior, journeys) {
+  const hours = Array.from({ length: 24 }, (_, h) => prior[String(h)] || null);
+  const pts = journeys.map((j) => ({ hour: new Date(j.depart_ts * 1000).getHours(), ratio: j.observed_s / j.freeflow_s, j }))
+    .filter((x) => x.ratio > 0 && x.ratio < 8);
+  if (!hours.some(Boolean) && !pts.length) return box.append(empty("No travel-time data yet."));
+  const W = Math.max(320, box.clientWidth || 640), H = 250, ml = 40, mr = 10, mt = 12, mb = 28;
+  const top = ticks(Math.max(1, ...hours.filter(Boolean).map((x) => x.p90_ratio), ...pts.map((x) => x.ratio)));
+  const ymax = top[top.length - 1];
+  const iw = W - ml - mr, ih = H - mt - mb, x = (h) => ml + (h + 0.5) * (iw / 24), y = (v) => mt + ih - (v / ymax) * ih;
+  const svg = s("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Travel time as a multiple of free-flow time, by hour of day" });
+  top.forEach((v) => svg.append(s("line", { class: "gridline", x1: ml, x2: W - mr, y1: y(v), y2: y(v) }), s("text", { x: ml - 8, y: y(v) + 4, "text-anchor": "end" }, `${v}×`)));
+  svg.append(s("line", { class: "baseline", x1: ml, x2: W - mr, y1: y(1), y2: y(1) }));
+  const valid = hours.map((v, h) => [v, h]).filter(([v]) => v);
+  if (valid.length) {
+    const band = valid.map(([v, h]) => `${x(h)},${y(v.p90_ratio)}`).concat([...valid].reverse().map(([v, h]) => `${x(h)},${y(v.p10_ratio)}`));
+    svg.append(s("polygon", { class: "band", points: band.join(" ") }));
+    svg.append(s("polyline", { points: valid.map(([v, h]) => `${x(h)},${y(v.median_ratio)}`).join(" "), class: "median" }));
+    const peak = valid.reduce((a, b) => (b[0].median_ratio > a[0].median_ratio ? b : a));
+    svg.append(s("text", { class: "val", x: x(peak[1]), y: y(peak[0].median_ratio) - 8, "text-anchor": "middle" }, `${peak[0].median_ratio.toFixed(2)}× at ${String(peak[1]).padStart(2, "0")}:00`));
+  }
+  pts.forEach((p) => svg.append(s("circle", { cx: x(p.hour) + ((p.j.id % 7) - 3) * 1.5, cy: y(p.ratio), r: 4, class: "jdot" })));
+  [0, 3, 6, 9, 12, 15, 18, 21].forEach((h) => svg.append(s("text", { x: x(h), y: H - 8, "text-anchor": "middle" }, `${String(h).padStart(2, "0")}:00`)));
+  const tip = tipper(box);
+  for (let h = 0; h < 24; h++) {
+    const v = hours[h], local = pts.filter((p) => p.hour === h);
+    const hit = s("rect", { class: "hit", x: ml + h * (iw / 24), y: mt, width: iw / 24, height: ih, tabindex: 0 });
+    const show = () => tip.show(x(h), y(v ? v.p90_ratio : 1) - 4, `${String(h).padStart(2, "0")}:00 to ${String(h + 1).padStart(2, "0")}:00`, [
+      ...(v ? [["Typical (median)", `${v.median_ratio.toFixed(2)}×`, "var(--mag)"], ["10–90% of trips", `${v.p10_ratio.toFixed(1)}–${v.p90_ratio.toFixed(1)}×`]] : []),
+      ["Journeys observed here", fmt(local.length), "var(--s1)"]]);
+    hit.addEventListener("pointermove", show); hit.addEventListener("focus", show);
+    hit.addEventListener("pointerleave", tip.hide); hit.addEventListener("blur", tip.hide);
+    svg.append(hit);
+  }
+  box.prepend(svg);
+}
+
+async function traffic() {
+  const body = st.body;
+  body.replaceChildren(C.busy("Loading travel-time data"));
+  let d;
+  try { d = await C.api("/api/admin/traffic?limit=200"); } catch (e) { body.replaceChildren(C.problem(e.message)); return; }
+  const prior = d.prior, local = d.local, ho = prior && prior.holdout;
+  const pctv = (v) => `${(100 * v).toFixed(0)}%`;
+  const mins = (s2) => `${(s2 / 60).toFixed(1)} min`;
+  const kpi = (label, value, hint) => C.h("div", { class: "kpi" }, C.h("div", { class: "label", text: label }), C.h("div", { class: "value", text: value }), hint ? C.h("div", { class: "hint", text: hint }) : null);
+  const sources = Object.entries(local.by_source || {}).map(([k, n]) => `${n} ${k}`).join(", ");
+  const kpis = C.h("div", { class: "kpis" },
+    kpi("Free-flow error", ho ? pctv(ho.free_flow.median_abs_pct_error) : "n/a", ho ? `median, ${mins(ho.free_flow.mae_s)} mean` : ""),
+    kpi("Calibrated error", ho ? pctv(ho.calibrated.median_abs_pct_error) : "n/a", ho ? `median, ${mins(ho.calibrated.mae_s)} mean` : ""),
+    kpi("80% range holds", ho ? pctv(ho.interval_80_coverage) : "n/a", ho ? `of ${fmt(ho.test_rows)} held-out trips` : ""),
+    kpi("Journeys observed here", fmt(local.n), sources || "none yet"),
+    kpi("Local correction", local.n ? `${local.factor.toFixed(2)}×` : "none yet", local.n ? "applied on top of 2019" : "starts with the first journey"),
+    kpi("Local check", local.holdout ? `${pctv(local.holdout.corrected_mdape)}` : "waiting", local.holdout ? `vs ${pctv(local.holdout.prior_mdape)} with 2019 only` : `after ${d.min_holdout} journeys`));
+  const chart = card("Bengaluru slowdown by hour of day", "Travel time as a multiple of the free-flow estimate", {
+    wide: true, legend: legend([{ label: "Uber Movement 2019 weekdays (median, 10–90% band)", colour: "var(--mag)" }, { label: "Journeys observed here", colour: "var(--s1)" }]),
+    draw: (b) => hourlyChart(b, (prior && prior.hourly) || {}, d.journeys),
+    table: () => simpleTable(["Hour", "Median", "10%", "90%", "Trips"], Object.entries((prior && prior.hourly) || {}).map(([h2, v]) => [`${h2.padStart(2, "0")}:00`, `${v.median_ratio.toFixed(2)}×`, `${v.p10_ratio.toFixed(2)}×`, `${v.p90_ratio.toFixed(2)}×`, fmt(v.n)])) });
+  const file = C.h("input", { type: "file", accept: ".csv,text/csv" });
+  const status = C.h("span", { class: "muted", style: { fontSize: "12.5px" } });
+  const importBtn = C.h("button", { class: "button primary small", type: "button", text: "Import journeys", onclick: async () => {
+    if (!file.files[0]) { C.notice("Choose a CSV file first.", 3000, true); return; }
+    const fd = new FormData(); fd.append("file", file.files[0]);
+    try {
+      const r = await C.api("/api/admin/traffic/import", { method: "POST", form: fd });
+      const plural = (n, w) => `${n} ${w}${n === 1 ? "" : "s"}`;
+      const skipped = r.skipped.length ? `, ${plural(r.skipped.length, "row")} skipped (${r.skipped[0].replace(/\.$/, "")}${r.skipped.length > 1 ? " and more" : ""})` : "";
+      status.textContent = `Routing ${plural(r.rows, "journey")}${skipped}`;
+      const poll = async () => {
+        const j = await C.api(`/api/jobs/${r.job_id}`);
+        if (j.status === "done") { C.notice(`Imported ${plural(j.added, "journey")}${j.unrouted ? `, ${j.unrouted} could not be routed` : ""}${skipped}.`, 8000); traffic(); return; }
+        if (j.status === "error") { status.textContent = `Import failed: ${j.error}`; return; }
+        status.textContent = `Routing ${plural(r.rows, "journey")}: ${Math.round(100 * j.progress)}%${skipped}`;
+        setTimeout(poll, 2000);
+      };
+      poll();
+    } catch (x) { C.notice(x.message, 5000, true); }
+  } });
+  const refit = C.h("button", { class: "button small", type: "button", text: "Refit now", onclick: async () => { try { await C.api("/api/admin/traffic/refit", { method: "POST" }); C.notice("Model refitted."); traffic(); } catch (x) { C.notice(x.message, 4000, true); } } });
+  const importCard = C.h("section", { class: "card" },
+    C.h("div", { class: "card-head" }, C.h("div", {}, C.h("h3", { text: "Add observed journeys" }), C.h("p", { text: "Journey times from any source: number-plate cameras, patrol logs, GPS fleets" }))),
+    C.h("p", { class: "note", text: "CSV columns: from_lat, from_lon, to_lat, to_lon, depart (local time, for example 2026-11-06T18:05), seconds. Both ends must be in Bengaluru. Each row is routed for its free-flow time, then the model refits." }),
+    C.h("div", { class: "actions", style: { marginTop: "12px" } }, file, importBtn, refit), status);
+  const how = C.h("section", { class: "card" },
+    C.h("div", { class: "card-head" }, C.h("div", {}, C.h("h3", { text: "How the loop works" }))),
+    C.h("ol", { class: "note", style: { paddingLeft: "18px", margin: 0 } },
+      C.h("li", { text: "Starting point: real 2019 Bengaluru trip times between wards, by hour of day, compared with the free-flow estimate for the same trip." }),
+      C.h("li", { text: "Every time the same vehicle is seen at two cameras, or a dashcam with GPS is uploaded, the actual travel time is stored as a journey." }),
+      C.h("li", { text: "Journeys shift the 2019 profile towards today's traffic. Few journeys move it a little; many move it a lot." }),
+      C.h("li", { text: `Once ${d.min_holdout} journeys exist, the newest fifth are held out and the error with and without the local correction is reported here.` })),
+    prior ? C.h("p", { class: "disclaimer", text: `${prior.source.attribution}. Licence: ${prior.source.licence}.` }) : null);
+  const rows = d.journeys.map((j) => C.h("tr", {},
+    C.h("td", { class: "nowrap", text: dateTime(j.depart_ts) }), C.h("td", { text: j.source }), C.h("td", { text: j.note || `${j.from_lat.toFixed(3)}, ${j.from_lon.toFixed(3)} to ${j.to_lat.toFixed(3)}, ${j.to_lon.toFixed(3)}` }),
+    C.h("td", { class: "num", text: mins(j.observed_s) }), C.h("td", { class: "num", text: mins(j.freeflow_s) }), C.h("td", { class: "num", text: `${(j.observed_s / j.freeflow_s).toFixed(2)}×` }),
+    C.h("td", {}, C.h("div", { class: "acts" }, C.h("button", { class: "button small danger", type: "button", text: "Delete", onclick: async () => {
+      if (!confirm("Delete this journey? The model refits without it.")) return;
+      try { await C.api(`/api/admin/traffic/journeys/${j.id}`, { method: "DELETE" }); C.notice("Journey deleted."); traffic(); } catch (x) { C.notice(x.message, 4000, true); }
+    } })))));
+  const table = d.journeys.length ? C.h("div", { class: "tablewrap" }, C.h("table", { class: "dtable" },
+    C.h("thead", {}, C.h("tr", {}, ["Departed", "Source", "Journey", "Took", "Free-flow", "Ratio", ""].map((x2, i) => C.h("th", { class: i >= 3 && i <= 5 ? "num" : "", text: x2 })))),
+    C.h("tbody", {}, rows))) : empty("No journeys observed in this division yet.");
+  body.replaceChildren(kpis, C.h("div", { class: "grid" }, chart, importCard, how), C.h("h3", { style: { font: "600 17px var(--display)", margin: "26px 0 10px" }, text: "Journeys in this division" }), table);
+  chart.render();
+  st.resize = () => chart.render();
+}
+
+const TABS = [["overview", "Overview"], ["events", "Records"], ["cases", "Cases"], ["traffic", "Traffic"], ["accounts", "Stations and accounts"], ["audit", "Audit log"]];
 function show(tab) {
   st.tab = tab;
   st.resize = null;
   st.root.querySelectorAll(".subtabs button").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.tab === tab)));
-  ({ overview, events, cases, accounts, audit })[tab]();
+  ({ overview, events, cases, traffic, accounts, audit })[tab]();
 }
 
 export function mount(root, ctx) {

@@ -532,7 +532,7 @@ function renderRoutes(r) {
     seg.routes.forEach((rt, i) => {
       const colour = ROUTE_COLOURS[i % ROUTE_COLOURS.length];
       feats.push({ type: "Feature", properties: { colour, width: i === 0 ? 5 : 3, opacity: 0.35 + 0.6 * rt.probability, dashed: false }, geometry: { type: "LineString", coordinates: rt.geometry } });
-      kids.push(hypothesis(rt, colour, `${(rt.distance_m / 1000).toFixed(1)} km · ${(rt.duration_s / 60).toFixed(0)} min${seg.gap_s ? ` · ${(seg.gap_s / 60).toFixed(0)} min between sightings` : ""}`));
+      kids.push(hypothesis(rt, colour, `${(rt.distance_m / 1000).toFixed(1)} km · ${timing(rt)}${seg.gap_s ? ` · ${(seg.gap_s / 60).toFixed(0)} min between sightings` : ""}`));
     });
   });
   if ((r.onward || []).length) {
@@ -540,7 +540,8 @@ function renderRoutes(r) {
     r.onward.forEach((rt, i) => {
       const colour = ROUTE_COLOURS[(i + 1) % ROUTE_COLOURS.length];
       feats.push({ type: "Feature", properties: { colour, width: i === 0 ? 4 : 2.5, opacity: 0.3 + 0.65 * rt.probability, dashed: true }, geometry: { type: "LineString", coordinates: rt.geometry } });
-      kids.push(hypothesis(rt, colour, `to ${rt.destination} · ${(rt.distance_m / 1000).toFixed(1)} km · ${(rt.duration_s / 60).toFixed(0)} min${rt.eta_epoch ? " · arrives about " + fmtTime(rt.eta_epoch) : ""}`));
+      const arrive = rt.eta_range ? ` · arrives ${clockTime(rt.eta_range[0])}–${clockTime(rt.eta_range[1])}` : rt.eta_epoch ? " · arrives about " + fmtTime(rt.eta_epoch) : "";
+      kids.push(hypothesis(rt, colour, `to ${rt.destination} · ${(rt.distance_m / 1000).toFixed(1)} km · ${timing(rt)}${arrive}`));
     });
   }
   setLayer("routes", fc(feats));
@@ -555,12 +556,20 @@ function renderRoutes(r) {
   const all = feats.flatMap((f) => f.geometry.coordinates);
   if (all.length) fit(all, 15);
 }
+const clockTime = (epoch) => new Date(epoch * 1000).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+function timing(rt) {
+  const free = Math.max(1, Math.round((rt.freeflow_s || rt.duration_s) / 60));
+  if (!rt.typical_s) return `${free} min free-flow`;
+  const [a, , c] = rt.typical_s.map((x) => Math.max(1, Math.round(x / 60)));
+  return `typically ${a}–${c} min (free-flow ${free} min)`;
+}
 function hypothesis(rt, colour, meta) {
   return h("div", { class: "hypothesis", onclick: () => fit(rt.geometry, 16) },
     h("div", { class: "h-head" }, h("span", { class: "h-title" }, h("span", { class: "h-swatch", style: { background: colour } }), (rt.roads || []).slice(0, 3).join(" → ") || "Unnamed roads"),
       h("span", { class: "h-prob", text: pct(rt.probability, 0) })),
     h("div", { class: "sub muted", style: { fontSize: "12px" }, text: meta }),
-    (rt.reasons || []).length ? h("ul", { class: "h-reasons" }, rt.reasons.map((x) => h("li", { text: x }))) : null);
+    (rt.reasons || []).length ? h("ul", { class: "h-reasons" }, rt.reasons.map((x) => h("li", { text: x }))) : null,
+    rt.traffic_basis ? h("div", { class: "muted", style: { fontSize: "11.5px", marginTop: "4px" }, text: `Travel time: ${rt.traffic_basis}` }) : null);
 }
 
 function overlay(video, canvas, analysis, focusTrack) {

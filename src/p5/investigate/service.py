@@ -21,6 +21,7 @@ from p5.geo.geocode import photon
 from p5.geo.route import map_match, mp4_location, parse_track, position_at
 from p5.investigate.hints import parse as parse_hints
 from p5.investigate.hunt import rank, target_profile
+from p5.investigate.journeys import from_sightings, from_track
 from p5.investigate.routes import infer
 from p5.video.analyse import VideoAnalyser, VideoOptions
 
@@ -71,8 +72,9 @@ def video_summary(res: dict) -> str:
 
 
 class CaseStore:
-    def __init__(self, root: Path, pipeline, analyser: VideoAnalyser, ocr, store: Store):
+    def __init__(self, root: Path, pipeline, analyser: VideoAnalyser, ocr, store: Store, traffic=None, refit=None):
         self.root, self.pipeline, self.analyser, self.ocr, self.store = root, pipeline, analyser, ocr, store
+        self.traffic, self.refit = traffic or (lambda: None), refit or (lambda: None)
         self.root.mkdir(parents=True, exist_ok=True)
         self.lock = threading.Lock()
         self.jobs: dict[str, dict] = {}
@@ -253,8 +255,10 @@ class CaseStore:
                     best = env["location_candidates"][0]
                     if inside(best["lat"], best["lon"]) is not False:
                         cam["suggested_location"] = best
+                track_rows = []
                 if cam.get("gps"):
                     cam["route"] = map_match(cam["gps"])
+                    track_rows = from_track(f"{cid}:{cam_id}", cam["gps"])
                     for tr in res["tracks"]:
                         pos = position_at(cam["gps"], tr["first_t"])
                         if pos:
@@ -266,6 +270,9 @@ class CaseStore:
             self.store.record(ident, "camera_analysed", f"{cam['name']}: {video_summary(res)}",
                               {"counts": res["counts"], "alerts": res["alerts"], "meta": res["meta"]}, case_id=cid,
                               lat=cam["lat"], lon=cam["lon"], detections=_detections(res["tracks"]), station_id=case.get("station_id"))
+            if track_rows:
+                self.store.add_journeys(ident, "dashcam", track_rows, case_id=cid, station_id=case.get("station_id"))
+                self.refit()
             found = len(case.get("sightings", [])) - before
             if case.get("target") and found > 0:
                 best = max(case["sightings"], key=lambda s: s["score"])
@@ -318,7 +325,12 @@ class CaseStore:
         for s in sightings:
             if s["camera_id"] not in best or s["score"] > best[s["camera_id"]]["score"]:
                 best[s["camera_id"]] = s
-        result = infer(list(best.values()), hints, case["cameras"])
+        result = infer(list(best.values()), hints, case["cameras"], self.traffic())
+        ordered = sorted([x for x in best.values() if x.get("lat") is not None], key=lambda x: (x.get("t_abs") is None, x.get("t_abs") or 0))
+        observed = from_sightings(cid, ordered, result.get("segments", []))
+        if observed:
+            self.store.add_journeys(ident, "sighting", observed, case_id=cid, station_id=case.get("station_id"))
+            self.refit()
         with self.lock:
             fresh = self._owned(cid, ident)
             fresh["notes"], fresh["routes"] = case["notes"], result

@@ -53,6 +53,10 @@
 .chart .bubble { fill: var(--s1); fill-opacity: .85; stroke: var(--surface); stroke-width: 2; }
 .chart .quiet { fill: none; stroke: var(--axis); stroke-width: 1.2; opacity: .7; }
 .chart .cross { stroke: var(--axis); stroke-width: 1; }
+.chart .sub { font-size: 10.5px; }
+.chart .band { fill: var(--mag); fill-opacity: .16; stroke: none; }
+.chart .median { fill: none; stroke: var(--mag); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.chart .jdot { fill: var(--s1); stroke: var(--surface); stroke-width: 2; }
 .tip { position: absolute; pointer-events: none; z-index: 5; background: var(--band); color: var(--band-ink); border-radius: 6px; padding: 8px 10px; font-size: 12px; min-width: 120px;
   box-shadow: 0 6px 18px rgba(26, 20, 13, .25); transform: translate(-50%, calc(-100% - 10px)); white-space: nowrap; }
 .tip .t { color: var(--band-muted); margin-bottom: 4px; }

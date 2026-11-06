@@ -70,6 +70,28 @@ CREATE TABLE IF NOT EXISTS cases (
 );
 CREATE INDEX IF NOT EXISTS cases_division ON cases(division_id, updated_at);
 CREATE INDEX IF NOT EXISTS cases_station ON cases(station_id, updated_at);
+CREATE TABLE IF NOT EXISTS journeys (
+  id INTEGER PRIMARY KEY,
+  ts REAL NOT NULL,
+  source TEXT NOT NULL,
+  ref TEXT,
+  division_id TEXT NOT NULL,
+  station_id TEXT,
+  username TEXT,
+  case_id TEXT,
+  from_lat REAL NOT NULL,
+  from_lon REAL NOT NULL,
+  to_lat REAL NOT NULL,
+  to_lon REAL NOT NULL,
+  depart_ts REAL NOT NULL,
+  observed_s REAL NOT NULL,
+  freeflow_s REAL NOT NULL,
+  distance_m REAL NOT NULL,
+  note TEXT,
+  deleted_at REAL,
+  UNIQUE (source, ref)
+);
+CREATE INDEX IF NOT EXISTS journeys_division ON journeys(division_id, depart_ts);
 """
 
 KIND_GROUP = {"identify": "identify", "locate": "locate", "video": "video", "camera_analysed": "video"}
@@ -301,3 +323,43 @@ class Store:
             "points": rows(f"SELECT id, ts, kind, lat, lon, summary, station_id FROM events WHERE {ev} AND lat IS NOT NULL "
                            f"ORDER BY ts DESC LIMIT 500"),
         }
+
+    JOURNEY_FIELDS = ("from_lat", "from_lon", "to_lat", "to_lon", "depart_ts", "observed_s", "freeflow_s", "distance_m")
+
+    def add_journeys(self, ident: Identity, source: str, rows: list[dict], case_id: str | None = None, station_id: str | None = None) -> int:
+        added = 0
+        with self.write_lock:
+            c = self.conn()
+            c.execute("BEGIN IMMEDIATE")
+            try:
+                for r in rows:
+                    vals = [float(r[k]) for k in self.JOURNEY_FIELDS]
+                    c.execute(
+                        "INSERT INTO journeys (ts, source, ref, division_id, station_id, username, case_id, from_lat, from_lon, to_lat, to_lon, "
+                        "depart_ts, observed_s, freeflow_s, distance_m, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) "
+                        "ON CONFLICT(source, ref) DO UPDATE SET depart_ts = excluded.depart_ts, observed_s = excluded.observed_s, "
+                        "freeflow_s = excluded.freeflow_s, distance_m = excluded.distance_m, deleted_at = NULL",
+                        [time.time(), source, r.get("ref"), ident.division_id, station_id or ident.station_id, ident.username, case_id, *vals, r.get("note")])
+                    added += 1
+                c.execute("COMMIT")
+            except Exception:
+                c.execute("ROLLBACK")
+                raise
+        return added
+
+    def all_journeys(self) -> list[dict]:
+        rows = self.conn().execute(f"SELECT id, source, depart_ts, {', '.join(self.JOURNEY_FIELDS[5:])} FROM journeys WHERE deleted_at IS NULL").fetchall()
+        return [dict(r) for r in rows]
+
+    def journeys(self, ident: Identity, limit: int = 100, offset: int = 0) -> dict:
+        c = self.conn()
+        total = c.execute("SELECT COUNT(*) FROM journeys WHERE division_id = ? AND deleted_at IS NULL", (ident.division_id,)).fetchone()[0]
+        rows = c.execute("SELECT * FROM journeys WHERE division_id = ? AND deleted_at IS NULL ORDER BY depart_ts DESC LIMIT ? OFFSET ?",
+                         (ident.division_id, max(1, min(limit, 500)), max(0, offset))).fetchall()
+        return {"total": total, "journeys": [dict(r) for r in rows]}
+
+    def delete_journey(self, ident: Identity, jid: int) -> bool:
+        with self.write_lock:
+            cur = self.conn().execute("UPDATE journeys SET deleted_at = ? WHERE id = ? AND division_id = ? AND deleted_at IS NULL",
+                                      (time.time(), jid, ident.division_id))
+        return cur.rowcount > 0

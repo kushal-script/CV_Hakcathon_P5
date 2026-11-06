@@ -7,7 +7,9 @@ import json
 import logging
 import os
 import tempfile
+import threading
 import time
+import uuid
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -22,7 +24,9 @@ from p5.config import section
 from p5.detection.detector import Detector
 from p5.geo.exif import read_exif
 from p5.geo.locate import locate
+from p5.geo.traffic import TrafficModel
 from p5.identity import Identity, secret, verify
+from p5.investigate.journeys import fastest, parse_import
 from p5.investigate.service import CaseStore, _detections, video_summary
 from p5.io import InputError, load_image
 from p5.pipeline import Pipeline
@@ -59,11 +63,19 @@ def load() -> None:
         log.exception("OCR unavailable")
         ocr = None
     store = Store(DATA / "vahana.db")
-    state.update(pipeline=pipe, analyser=analyser, ocr=ocr, store=store, cases=CaseStore(DATA / "cases", pipe, analyser, ocr, store),
-                 secret=secret())
+    state.update(pipeline=pipe, analyser=analyser, ocr=ocr, store=store, secret=secret())
+    refit_traffic()
+    state["cases"] = CaseStore(DATA / "cases", pipe, analyser, ocr, store, traffic=lambda: state.get("traffic"), refit=refit_traffic)
     if state["secret"] is None:
         log.warning("P5_INTERNAL_SECRET is not set: every request except /api/health will be rejected")
     log.info("services loaded from %s", CONFIG)
+
+
+TRAFFIC_PRIOR = Path(os.environ.get("P5_REGION_DIR", ROOT / "assets" / "bengaluru")) / "traffic_prior.json"
+
+
+def refit_traffic() -> None:
+    state["traffic"] = TrafficModel.load(TRAFFIC_PRIOR, state["store"].all_journeys())
 
 
 def identity(request: Request) -> Identity:
@@ -463,3 +475,55 @@ def admin_export(days: int = 30, start: str | None = None, end: str | None = Non
             break
     name = f"vahana-{ident.division_id}-{datetime.now(IST).strftime('%Y%m%d-%H%M')}.csv"
     return Response(buf.getvalue(), media_type="text/csv", headers={"Content-Disposition": f'attachment; filename="{name}"'})
+
+
+@app.get("/api/admin/traffic")
+def admin_traffic(limit: int = 100, offset: int = 0, ident: Identity = Depends(admin)) -> dict:
+    model = state["traffic"]
+    return {**model.summary(), **store().journeys(ident, limit, offset)}
+
+
+@app.post("/api/admin/traffic/refit")
+def admin_traffic_refit(ident: Identity = Depends(admin)) -> dict:
+    refit_traffic()
+    return state["traffic"].summary()
+
+
+@app.delete("/api/admin/traffic/journeys/{jid}")
+def admin_traffic_delete(jid: int, ident: Identity = Depends(admin)) -> dict:
+    if not store().delete_journey(ident, jid):
+        raise HTTPException(404, "Journey not found.")
+    refit_traffic()
+    store().record(ident, "journey_deleted", f"Deleted travel-time journey {jid}", {"journey_id": jid})
+    return {"ok": True}
+
+
+def _import_journeys(job: dict, rows: list[dict], ident: Identity) -> None:
+    job["status"] = "running"
+    kept = []
+    try:
+        for k, r in enumerate(rows):
+            route = fastest((r["from_lat"], r["from_lon"]), (r["to_lat"], r["to_lon"]))
+            if route:
+                kept.append({**r, "ref": f"import:{job['id']}:{k}", "freeflow_s": route["duration_s"], "distance_m": route["distance_m"]})
+            job["progress"] = round((k + 1) / len(rows), 3)
+            time.sleep(1.0)
+        added = store().add_journeys(ident, "import", kept) if kept else 0
+        refit_traffic()
+        store().record(ident, "journeys_imported", f"Imported {added} travel-time journeys", {"rows": len(rows), "added": added})
+        job.update(status="done", progress=1.0, added=added, unrouted=len(rows) - len(kept))
+    except Exception as e:
+        job.update(status="error", error=str(e))
+
+
+@app.post("/api/admin/traffic/import")
+async def admin_traffic_import(file: UploadFile = File(...), ident: Identity = Depends(admin)) -> dict:
+    data = await read_upload(file, 2 * 2**20)
+    rows, errors = parse_import(data.decode("utf-8", "ignore"))
+    if not rows:
+        raise HTTPException(422, " ".join(errors) or "No usable rows.")
+    job = {"id": uuid.uuid4().hex[:10], "status": "queued", "progress": 0.0, "error": None, "station_id": None, "division_id": ident.division_id,
+           "rows": len(rows), "skipped": errors[:20]}
+    cases().jobs[job["id"]] = job
+    threading.Thread(target=_import_journeys, args=(job, rows, ident), daemon=True).start()
+    return {"job_id": job["id"], "rows": len(rows), "skipped": errors[:20]}
