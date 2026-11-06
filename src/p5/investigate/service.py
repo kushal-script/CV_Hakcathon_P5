@@ -19,6 +19,9 @@ from p5.store import Store
 from p5.geo.locate import cluster, ocr_evidence, queries, similarity
 from p5.geo.geocode import photon
 from p5.geo.route import map_match, mp4_location, parse_track, position_at
+from p5.geo.videoloc import file_sha256, locate_video
+from p5.geo.videoloc import graph as road_graph
+from p5.geo.videoloc.metadata import embedded_gps
 from p5.investigate.hints import parse as parse_hints
 from p5.investigate.hunt import rank, target_profile
 from p5.investigate.journeys import from_sightings, from_track
@@ -72,13 +75,16 @@ def video_summary(res: dict) -> str:
 
 
 class CaseStore:
-    def __init__(self, root: Path, pipeline, analyser: VideoAnalyser, ocr, store: Store, traffic=None, refit=None):
+    def __init__(self, root: Path, pipeline, analyser: VideoAnalyser, ocr, store: Store, traffic=None, refit=None,
+                 road_graph_path: Path | None = None, geo_workers: int = 2, validation: dict | None = None, places_path: Path | None = None):
         self.root, self.pipeline, self.analyser, self.ocr, self.store = root, pipeline, analyser, ocr, store
         self.traffic, self.refit = traffic or (lambda: None), refit or (lambda: None)
         self.root.mkdir(parents=True, exist_ok=True)
         self.lock = threading.Lock()
         self.jobs: dict[str, dict] = {}
         self.pool = ThreadPoolExecutor(max_workers=1)
+        self.geo_pool = ThreadPoolExecutor(max_workers=1)
+        self.road_graph_path, self.geo_workers, self.validation, self.places_path = road_graph_path, geo_workers, validation, places_path
 
     def _path(self, cid: str) -> Path:
         if not cid.isalnum() or len(cid) > 32:
@@ -209,10 +215,11 @@ class CaseStore:
         dest = cam_dir / f"{cam_id}{suffix}"
         shutil.move(str(video_path), dest)
         meta_loc = mp4_location(str(dest))
+        embedded = None if track else embedded_gps(str(dest))
         cam = {"id": cam_id, "name": (name or filename)[:120], "file": dest.name, "lat": lat, "lon": lon,
                "location_source": "investigator" if lat is not None else None, "start_time": start, "start_epoch": _epoch(start),
                "allowed_direction": list(allowed) if allowed else None, "status": "queued", "analysis": None,
-               "environment": None, "gps": None, "route": None}
+               "environment": None, "gps": None, "route": None, "sha256": file_sha256(dest), "geolocation": None}
         if cam["lat"] is None and meta_loc and inside(meta_loc["lat"], meta_loc["lon"]) is not False:
             cam["lat"], cam["lon"], cam["location_source"] = meta_loc["lat"], meta_loc["lon"], "video metadata"
         if track:
@@ -220,6 +227,15 @@ class CaseStore:
             cam["gps"] = pts
             if pts and cam["lat"] is None:
                 cam["lat"], cam["lon"], cam["location_source"] = pts[0]["lat"], pts[0]["lon"], "GPS track"
+        elif embedded and inside(embedded["points"][0]["lat"], embedded["points"][0]["lon"]) is not False:
+            pts = [{"lat": p["lat"], "lon": p["lon"], "epoch": p["epoch"], "t": p["t"]} for p in embedded["points"]]
+            if any(p["t"] is None for p in pts) and all(p["epoch"] is not None for p in pts):
+                for p in pts:
+                    p["t"] = p["epoch"] - pts[0]["epoch"]
+            if len(pts) >= 2:
+                cam["gps"], cam["gps_source"] = pts, embedded["source"]
+            if cam["lat"] is None:
+                cam["lat"], cam["lon"], cam["location_source"] = pts[0]["lat"], pts[0]["lon"], embedded["source"]
         with self.lock:
             case = self._owned(cid, ident)
             case["cameras"].append(cam)
@@ -306,6 +322,80 @@ class CaseStore:
             if case.get("target"):
                 case["sightings"] = rank(case["target"], case["cameras"])
             self._save(case)
+        return self.public(case)
+
+    def geolocate(self, cid: str, cam_id: str, lat: float, lon: float, radius_m: float, hfov_deg: float, ident: Identity) -> dict:
+        if inside(lat, lon) is False:
+            raise ValueError("The search area must be inside Bengaluru.")
+        if not 300 <= radius_m <= 3000:
+            raise ValueError("Choose a search radius between 300 m and 3 km.")
+        if not 20 <= hfov_deg <= 170:
+            raise ValueError("Enter the camera's horizontal field of view in degrees, between 20 and 170.")
+        if not self.road_graph_path or not Path(self.road_graph_path).exists():
+            raise ValueError("The road network used to locate footage is not installed on this server.")
+        case = self._owned(cid, ident)
+        cam = next(c for c in case["cameras"] if c["id"] == cam_id)
+        if cam.get("status") != "done":
+            raise ValueError("Wait for the footage analysis to finish first.")
+        if any(j.get("kind") == "geolocate" and j["status"] in ("queued", "running") and j["camera_id"] == cam_id for j in self.jobs.values()):
+            raise ValueError("This footage is already being located.")
+        job = uuid.uuid4().hex[:10]
+        self.jobs[job] = {"id": job, "kind": "geolocate", "case_id": cid, "camera_id": cam_id, "status": "queued", "progress": 0.0, "error": None,
+                          "station_id": case.get("station_id"), "division_id": case["division_id"]}
+        self.geo_pool.submit(self._run_geolocate, job, cid, cam_id, lat, lon, radius_m, hfov_deg, ident)
+        return {"job_id": job, "camera_id": cam_id}
+
+    def _run_geolocate(self, job: str, cid: str, cam_id: str, lat: float, lon: float, radius_m: float, hfov_deg: float, ident: Identity) -> None:
+        state = self.jobs[job]
+        state["status"] = "running"
+        try:
+            case = self._load(cid)
+            cam = next(c for c in case["cameras"] if c["id"] == cam_id)
+            path = self._path(cid) / "cameras" / cam["file"]
+            g = road_graph(self.road_graph_path)
+            res = locate_video(str(path), g, (lon, lat), radius_m, hfov_deg, workers=self.geo_workers,
+                               progress=lambda p: state.__setitem__("progress", round(min(p, 0.99), 3)), ocr=self.ocr,
+                               places_path=self.places_path if self.places_path and Path(self.places_path).exists() else None)
+            res.update(requested_by=ident.username, requested_at=time.time(), video_sha256=cam.get("sha256") or file_sha256(path),
+                       map_data=g.source, validation=self.validation)
+            with self.lock:
+                case = self._load(cid)
+                cam = next(c for c in case["cameras"] if c["id"] == cam_id)
+                cam["geolocation"] = res
+                self._save(case)
+            loc = res.get("location") or {}
+            label = {"candidate": "candidate route", "ambiguous": "two places fit", "not_located": "not located", "not_applicable": "cannot be matched"}.get(res["status"], res["status"])
+            conf = f" ({res['confidence']:.0%})" if res.get("confidence") is not None else ""
+            self.store.record(ident, "camera_geolocated", f"{cam['name']}: {label}{conf}",
+                              {"status": res["status"], "confidence": res.get("confidence"), "log10_likelihood_ratio": res.get("log10_likelihood_ratio"),
+                               "search_area": res.get("search_area"), "streets": res.get("streets", [])[:6]},
+                              case_id=cid, lat=loc.get("lat"), lon=loc.get("lon"), station_id=case.get("station_id"))
+            state["status"], state["progress"] = "done", 1.0
+        except Exception as e:
+            state["status"], state["error"] = "error", str(e)
+
+    def accept_geolocation(self, cid: str, cam_id: str, ident: Identity) -> dict:
+        with self.lock:
+            case = self._owned(cid, ident)
+            cam = next(c for c in case["cameras"] if c["id"] == cam_id)
+            geo = cam.get("geolocation")
+            if not geo or geo.get("status") != "candidate" or not geo.get("route"):
+                raise ValueError("Only a candidate route can be used for the camera.")
+            pts = [{"lat": p["lat"], "lon": p["lon"], "epoch": None, "t": p["t"]} for p in geo["route"]]
+            cam["gps"], cam["gps_source"] = pts, "estimated from camera motion"
+            cam["route"] = {"matched": True, "geometry": [[p["lon"], p["lat"]] for p in pts], "roads": geo.get("streets", []), "estimated": True}
+            cam["lat"], cam["lon"], cam["location_source"] = pts[0]["lat"], pts[0]["lon"], "estimated from camera motion"
+            geo["accepted_by"], geo["accepted_at"] = ident.username, time.time()
+            for tr in (cam.get("analysis") or {}).get("tracks", []):
+                pos = position_at(pts, tr["first_t"])
+                if pos:
+                    tr["lat"], tr["lon"] = pos
+            if case.get("target"):
+                case["sightings"] = rank(case["target"], case["cameras"])
+            self._save(case)
+        self.store.record(ident, "camera_location_confirmed", f"{cam['name']}: estimated route confirmed",
+                          {"streets": geo.get("streets", [])[:6], "confidence": geo.get("confidence")},
+                          case_id=cid, lat=pts[0]["lat"], lon=pts[0]["lon"], station_id=case.get("station_id"))
         return self.public(case)
 
     def video_path(self, cid: str, cam_id: str, ident: Identity) -> Path:

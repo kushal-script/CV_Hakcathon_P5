@@ -435,6 +435,120 @@ function renderCase(c) {
   out.replaceChildren(tgt, cams, sightings, routes);
   if (c.routes) renderRoutes(c.routes);
 }
+const GEO_LABEL = { candidate: ["Candidate route", "good"], ambiguous: ["Two places fit", "caution"], not_located: ["Not located", "alert"], not_applicable: ["Cannot be matched", "alert"] };
+function geoSummary(c, cam) {
+  const g = cam.geolocation;
+  if (!g) return null;
+  const [label, kind] = GEO_LABEL[g.status] || [g.status, ""];
+  return h("div", { class: "sub" }, h("span", { class: `tag ${kind}`, text: label }),
+    g.confidence != null ? ` ${pct(g.confidence, 1)}${g.status === "candidate" && g.location && g.location.street ? " · " + g.location.street : ""}${g.signs && g.signs.conflicting && g.signs.conflicting.length ? " · signs disagree" : g.signs && g.signs.supporting && g.signs.supporting.length ? " · signs agree" : ""} · ` : " ",
+    h("button", { class: "link", type: "button", text: "Evidence", onclick: (e) => { e.stopPropagation(); showGeolocation(c, cam); } }));
+}
+function caseStation(c) {
+  return ((session.region && session.region.stations) || []).find((s) => s.id === c.station_id) || (session.user && session.user.station) || null;
+}
+function geolocateForm(c, cam) {
+  const st = caseStation(c);
+  const centre = { lat: st && st.lat != null ? st.lat : 12.9716, lon: st && st.lon != null ? st.lon : 77.5946 };
+  const where = h("span", { class: "hint", text: st ? `Around ${st.name}` : "Around the city centre" });
+  const fov = h("input", { type: "number", min: 20, max: 170, step: 1, placeholder: "e.g. 70", required: true });
+  const radius = h("select", {}, ...[[1000, "1 km"], [1500, "1.5 km"], [2000, "2 km"], [3000, "3 km"]].map(([v, t]) => h("option", { value: v, text: t, selected: v === 1500 })));
+  const show = () => { setLayer("areas", fc([{ type: "Feature", properties: { colour: "#a8382a" }, geometry: { type: "Polygon", coordinates: [circle(centre.lat, centre.lon, +radius.value)] } }])); fit(circle(centre.lat, centre.lon, +radius.value), 15); };
+  radius.addEventListener("change", show);
+  const pick = h("button", { class: "button small", type: "button", text: "Move the centre", onclick: async () => { $("#sheet").close(); const p = await pickOnMap("Click the centre of the area to search"); centre.lat = p.lat; centre.lon = p.lon; where.textContent = `${p.lat.toFixed(5)}, ${p.lon.toFixed(5)}`; show(); $("#sheet").showModal(); } });
+  const go = h("button", { class: "button primary", type: "submit", text: "Search this area" });
+  const form = h("form", {},
+    h("p", { class: "note", text: "For a moving camera, such as a dashcam or a phone in a vehicle. The camera's turns, stops and speed are read from the footage and compared with every road in the area, using several independent searches. A result is shown only when one place fits far better than any other. This usually takes one to five minutes." }),
+    h("div", { class: "field" }, "Search area centre", h("div", { class: "actions", style: { marginTop: "5px" } }, pick, where)),
+    h("label", { class: "field" }, "Camera field of view (horizontal, degrees)", fov, h("span", { class: "hint", text: "From the camera's specification sheet. Phone main cameras are usually 65 to 75 degrees, dashcams 100 to 140." })),
+    h("label", { class: "field" }, "Search radius", radius),
+    h("p", { class: "disclaimer", text: "A smaller area gives a faster and more reliable answer. The result is a lead to verify, not evidence on its own." }),
+    h("div", { class: "actions" }, go));
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    go.disabled = true; go.textContent = "Starting";
+    const fd = new FormData(); fd.append("lat", centre.lat); fd.append("lon", centre.lon); fd.append("radius_m", radius.value); fd.append("hfov_deg", fov.value);
+    try {
+      const r = await api(`/api/cases/${c.id}/cameras/${cam.id}/geolocate`, { method: "POST", form: fd });
+      $("#sheet").close(); notice("Searching the area. The result appears on the camera when it is ready.", 5000);
+      await openCase(c.id); watchJob(c.id, r.job_id, cam.id);
+    } catch (x) { notice(x.message, 5000, true); go.disabled = false; go.textContent = "Search this area"; }
+  });
+  $("#sheet-title").textContent = `Where was “${cam.name}” filmed?`; $("#sheet-body").replaceChildren(form); $("#sheet").showModal(); show();
+}
+function showGeolocation(c, cam) {
+  const g = cam.geolocation;
+  const [label, kind] = GEO_LABEL[g.status] || [g.status, ""];
+  const kids = [h("p", {}, h("span", { class: `tag ${kind}`, text: label }), g.confidence != null ? ` Confidence ${pct(g.confidence, 1)}` : "")];
+  kids.push(h("p", { class: "note", text: g.reason || "" }));
+  const feats = [];
+  if (g.search_area) feats.push({ type: "Feature", properties: { colour: "#5c4a2c" }, geometry: { type: "Polygon", coordinates: [circle(g.search_area.lat, g.search_area.lon, g.search_area.radius_m)] } });
+  (g.alternatives || []).forEach((a) => feats.push({ type: "Feature", properties: { colour: "#d4952a" }, geometry: { type: "Polygon", coordinates: [circle(a.lat, a.lon, 60)] } }));
+  if (g.location) feats.push({ type: "Feature", properties: { colour: "#a8382a" }, geometry: { type: "Polygon", coordinates: [circle(g.location.lat, g.location.lon, g.location.radius_m || 50)] } });
+  setLayer("areas", fc(feats));
+  const line = (g.route || []).map((p) => [p.lon, p.lat]);
+  setLayer("routes", fc(line.length > 1 ? [{ type: "Feature", properties: { colour: "#a8382a", width: 4, opacity: 0.9, dashed: true }, geometry: { type: "LineString", coordinates: line } }] : []));
+  if (line.length) fit(line, 16); else if (g.search_area) fit(circle(g.search_area.lat, g.search_area.lon, g.search_area.radius_m), 15);
+  setKey([["sw", "#a8382a", "Estimated route and end point"], ["sw", "#d4952a", "Other places that fit"], ["sw", "#5c4a2c", "Search area"]]);
+  if (g.log10_likelihood_ratio != null && g.status !== "not_applicable") {
+    const lr = g.log10_likelihood_ratio;
+    kids.push(h("p", { text: lr >= 6 ? `The best route explains the camera movement more than a million times better than the best alternative found elsewhere in the area (likelihood ratio 10^${lr.toFixed(1)}).`
+      : `The best route explains the camera movement ${Math.round(10 ** lr).toLocaleString()} times better than the best alternative found elsewhere in the area.` }));
+  }
+  if (g.decoys && g.decoys.areas && g.decoys.areas.length) {
+    const m = g.decoys.log10_margin;
+    kids.push(h("p", { text: m == null ? `The same footage was also matched against ${g.decoys.areas.length} random areas of the city where it was not recorded.`
+      : m >= 2 ? `Checked against ${g.decoys.areas.length} random areas of the city where the footage was not recorded: the route here fits ${m >= 6 ? "more than a million" : Math.round(10 ** m).toLocaleString()} times better than the best of them.`
+      : `Checked against ${g.decoys.areas.length} random areas of the city where the footage was not recorded: the best of them fits ${m > 0 ? "only " + Math.round(10 ** m).toLocaleString() + " times worse than" : "as well as or better than"} the route here, so this area cannot be confirmed.` }));
+  }
+  if (g.search && g.search.agreeing_runs != null) kids.push(h("p", { class: "sub", text: `${g.search.agreeing_runs} of ${g.search.main_runs} independent searches ended at the same place.` }));
+  if ((g.streets || []).length) kids.push(h("p", {}, h("strong", { text: "Roads on the estimated route: " }), g.streets.join(" → ")));
+  if (g.signs) {
+    const sup = g.signs.supporting || [], con = g.signs.conflicting || [];
+    kids.push(h("h2", { style: { marginTop: "14px" }, text: "Signboards read in the footage" }));
+    kids.push(h("p", { class: "sub", text: `${g.signs.read} pieces of text read. ${sup.length} ${sup.length === 1 ? "matches" : "match"} a named place within 100 m of the route, ${con.length} ${con.length === 1 ? "names" : "name"} a place far from it.` }));
+    if (sup.length) kids.push(h("ul", { class: "rows" }, sup.map((s) => h("li", {}, h("span"), h("div", {}, h("div", { class: "title", text: `“${s.text}” at ${clock(s.t)}` }),
+      h("div", { class: "sub", text: `${s.matched} (${(s.category || "").replace("=", ": ")}), ${s.distance_m} m from the route. ${s.same_name_in_city > 1 ? `${s.same_name_in_city} places in the city share this name.` : "The only place in the city with this name."}` })),
+      h("span", { class: "score", text: "agrees" })))));
+    if (con.length) kids.push(h("ul", { class: "rows" }, con.map((s) => h("li", {}, h("span"), h("div", {}, h("div", { class: "title", text: `“${s.text}” at ${clock(s.t)}` }),
+      h("div", { class: "sub", text: `OpenStreetMap places ${s.matched} ${(s.distance_from_route_m / 1000).toFixed(1)} km from this route.` })),
+      h("span", { class: "score", text: "disagrees" })))));
+  }
+  if ((g.turns || []).length) {
+    kids.push(h("h2", { style: { marginTop: "14px" }, text: "Turns seen in the video and on the map" }));
+    kids.push(h("ul", { class: "rows" }, g.turns.map((t) => h("li", {},
+      t.frame_jpeg ? h("img", { src: jpg(t.frame_jpeg), alt: "" }) : h("span"),
+      h("div", {}, h("div", { class: "title", text: `${clock(t.from_s)} to ${clock(t.to_s)}` }),
+        h("div", { class: "sub", text: `Video ${t.video_deg > 0 ? "right" : "left"} ${Math.abs(t.video_deg).toFixed(0)}° · map ${t.map_deg > 0 ? "right" : "left"} ${Math.abs(t.map_deg).toFixed(0)}°` }),
+        h("div", { class: "sub", text: [t.street_from, t.street_to].filter(Boolean).join(" → ") })),
+      h("span", { class: "score", text: `${Math.abs(t.video_deg - t.map_deg).toFixed(0)}° apart` })))));
+  }
+  if (g.location) {
+    const { lat, lon } = g.location;
+    kids.push(h("p", { style: { marginTop: "12px" } }, "Check the place against street photos: ",
+      h("a", { href: `https://kartaview.org/map/@${lat},${lon},18z`, target: "_blank", rel: "noopener noreferrer", text: "KartaView" }), " · ",
+      h("a", { href: `https://www.mapillary.com/app/?lat=${lat}&lng=${lon}&z=18`, target: "_blank", rel: "noopener noreferrer", text: "Mapillary" })));
+  }
+  const m = g.camera_motion || {};
+  const facts = [
+    ["Footage used", `${clock(m.duration_s || 0)} (${clock(m.moving_s || 0)} moving, ${Math.round(m.total_turn_deg || 0)}° of turning)`],
+    ["Search area", g.search_area ? `${(g.search_area.radius_m / 1000).toFixed(1)} km around ${g.search_area.lat.toFixed(4)}, ${g.search_area.lon.toFixed(4)}${g.search ? `, ${g.search.roads_km} km of roads` : ""}` : "–"],
+    ["Simulations", g.search ? `${g.search.runs} independent searches of ${Number(g.search.particles_per_run).toLocaleString()} simulated vehicles each` : "–"],
+    ["Camera", g.camera_model || "–"],
+    ["Video SHA-256", g.video_sha256 || "–"],
+    ["Map data", g.map_data ? `${g.map_data.osm_source || "OpenStreetMap"} (${(g.map_data.osm_date || "").slice(0, 10)})` : "OpenStreetMap"],
+    ["Requested", `${g.requested_by || ""} ${g.requested_at ? fmtTime(g.requested_at) : ""}`],
+  ];
+  if (g.validation && g.validation.summary) facts.push(["Tested on", g.validation.summary]);
+  kids.push(h("dl", { class: "facts" }, facts.flatMap(([k, v]) => [h("dt", { text: k }), h("dd", { text: v })])));
+  kids.push(h("p", { class: "disclaimer", text: "An investigative lead, not evidence. Before acting on it, confirm at least two independent features of the footage (buildings, signboards, road layout) against street photos or a site visit." }));
+  if (g.status === "candidate" && !g.accepted_by) {
+    kids.push(h("div", { class: "actions" }, h("button", { class: "button primary", type: "button", text: "I have checked it: use this route for the camera", onclick: async () => {
+      try { inv.data = await api(`/api/cases/${c.id}/cameras/${cam.id}/geolocation/accept`, { method: "POST" }); $("#sheet").close(); renderCase(inv.data); drawCase(inv.data); notice("Route saved to the camera as an estimate."); }
+      catch (x) { notice(x.message, 5000, true); } } })));
+  } else if (g.accepted_by) kids.push(h("p", { class: "sub", text: `Confirmed by ${g.accepted_by} on ${fmtTime(g.accepted_at)}.` }));
+  $("#sheet-title").textContent = `Where “${cam.name}” was filmed`; $("#sheet-body").replaceChildren(...kids); $("#sheet").showModal();
+}
 function cameraRow(c, cam) {
   const status = cam.status === "done" ? `${cam.analysis.counts.total} vehicles · ${clock(cam.analysis.meta.analysed_s)} analysed` : cam.status === "error" ? `Failed: ${cam.error || "unknown error"}` : "Analysing";
   const where = cam.lat != null ? `${cam.lat.toFixed(4)}, ${cam.lon.toFixed(4)} (${cam.location_source})` : "Location not set";
@@ -444,7 +558,8 @@ function cameraRow(c, cam) {
     cam.analysis && cam.analysis.keyframe ? h("img", { src: jpg(cam.analysis.keyframe), alt: "" }) : h("span"),
     h("div", {}, h("div", { class: "title", text: cam.name }), h("div", { class: "sub", text: status }), h("div", { class: "sub", text: `${where}${cam.start_time ? " · starts " + fmtTime(cam.start_epoch) : ""}` }),
       cam.environment && cam.environment.texts.length ? h("div", { class: "sub", text: `Signs read: ${cam.environment.texts.slice(0, 5).join(" · ")}` }) : null,
-      h("div", { class: "actions" }, setLoc, sug), cam.status !== "done" && cam.status !== "error" ? h("div", { class: "progress" }, h("i", { id: `prog-${cam.id}`, style: { width: "4%" } })) : null),
+      geoSummary(c, cam),
+      h("div", { class: "actions" }, setLoc, sug, cam.status === "done" && !(cam.gps && cam.gps.length) ? h("button", { class: "link", type: "button", text: cam.geolocation ? "Search again" : "Find where this was filmed", onclick: (e) => { e.stopPropagation(); geolocateForm(c, cam); } }) : null), cam.status !== "done" && cam.status !== "error" ? h("div", { class: "progress" }, h("i", { id: `prog-${cam.id}`, style: { width: "4%" } })) : null),
     h("span", { class: "score", text: cam.analysis && cam.analysis.alerts.length ? `${cam.analysis.alerts.length} alert${cam.analysis.alerts.length > 1 ? "s" : ""}` : "" }));
 }
 async function updateCamera(c, cam, lat, lon) {
@@ -510,7 +625,7 @@ function drawCase(c) {
   setLayer("gps", fc(gps));
   clearLayers("areas");
   if (pts.length) fit(pts.map((f) => f.geometry.coordinates), 15);
-  setKey([["dot", PIN.cam, "Camera"], ["dot", PIN.seen, "Vehicle seen"], ...(gps.length ? [["sw", "#5c4a2c", "Dashcam route"]] : [])]);
+  setKey([["dot", PIN.cam, "Camera"], ["dot", PIN.seen, "Vehicle seen"], ...(gps.length ? [["sw", "#5c4a2c", c.cameras.some((x) => x.route && x.route.estimated) ? "Camera route (GPS or estimated from motion)" : "Dashcam route"]] : [])]);
 }
 async function runReason(c, btn) {
   const out = $("#route-out");

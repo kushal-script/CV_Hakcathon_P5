@@ -65,13 +65,23 @@ def load() -> None:
     store = Store(DATA / "vahana.db")
     state.update(pipeline=pipe, analyser=analyser, ocr=ocr, store=store, secret=secret())
     refit_traffic()
-    state["cases"] = CaseStore(DATA / "cases", pipe, analyser, ocr, store, traffic=lambda: state.get("traffic"), refit=refit_traffic)
+    state["cases"] = CaseStore(DATA / "cases", pipe, analyser, ocr, store, traffic=lambda: state.get("traffic"), refit=refit_traffic,
+                               road_graph_path=ROAD_GRAPH, geo_workers=GEO_WORKERS, validation=videoloc_validation(),
+                               places_path=REGION_DIR / "places.json.gz")
     if state["secret"] is None:
         log.warning("P5_INTERNAL_SECRET is not set: every request except /api/health will be rejected")
     log.info("services loaded from %s", CONFIG)
 
 
-TRAFFIC_PRIOR = Path(os.environ.get("P5_REGION_DIR", ROOT / "assets" / "bengaluru")) / "traffic_prior.json"
+REGION_DIR = Path(os.environ.get("P5_REGION_DIR", ROOT / "assets" / "bengaluru"))
+TRAFFIC_PRIOR = REGION_DIR / "traffic_prior.json"
+ROAD_GRAPH = REGION_DIR / "road_graph.npz"
+GEO_WORKERS = int(os.environ.get("P5_GEOLOC_WORKERS", max(1, min(6, (os.cpu_count() or 2) - 1))))
+
+
+def videoloc_validation() -> dict | None:
+    f = REGION_DIR / "videoloc_validation.json"
+    return json.loads(f.read_text()) if f.exists() else None
 
 
 def refit_traffic() -> None:
@@ -336,6 +346,27 @@ def update_camera(cid: str, cam_id: str, lat: float | None = Form(None), lon: fl
                   start_time: str | None = Form(None), name: str | None = Form(None), ident: Identity = Depends(identity)) -> dict:
     try:
         return cases().update_camera(cid, cam_id, lat, lon, start_time, name, ident)
+    except (KeyError, StopIteration):
+        raise HTTPException(404, "Camera not found.")
+    except ValueError as e:
+        raise HTTPException(422, str(e))
+
+
+@app.post("/api/cases/{cid}/cameras/{cam_id}/geolocate")
+def geolocate_camera(cid: str, cam_id: str, lat: float = Form(...), lon: float = Form(...), radius_m: float = Form(1500.0),
+                     hfov_deg: float = Form(...), ident: Identity = Depends(identity)) -> dict:
+    try:
+        return cases().geolocate(cid, cam_id, lat, lon, radius_m, hfov_deg, ident)
+    except (KeyError, StopIteration):
+        raise HTTPException(404, "Camera not found.")
+    except ValueError as e:
+        raise HTTPException(422, str(e))
+
+
+@app.post("/api/cases/{cid}/cameras/{cam_id}/geolocation/accept")
+def accept_geolocation(cid: str, cam_id: str, ident: Identity = Depends(identity)) -> dict:
+    try:
+        return cases().accept_geolocation(cid, cam_id, ident)
     except (KeyError, StopIteration):
         raise HTTPException(404, "Camera not found.")
     except ValueError as e:
