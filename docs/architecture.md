@@ -4,6 +4,43 @@
 
 ---
 
+## 0. As built (deployment and product extensions)
+
+Sections 1 to 10 are the design contract written before implementation. They still describe the recognition pipeline accurately. Three things changed when it was built. The Gradio app was replaced by a JSON API behind a Rust gateway with a custom web console. The GPU work ran on JarvisLabs instead of Kaggle. And the system grew into an investigation console for traffic police. The deployed system looks like this:
+
+```mermaid
+flowchart LR
+    B["Browser: web console<br/>web/index.html, app.js, styles.css"] -->|"HTTPS"| GW
+    B -->|"map tiles"| T["OpenFreeMap vector tiles<br/>EOX Sentinel-2 cloudless"]
+    subgraph C["Container (non-root, read-only filesystem)"]
+        GW["gateway (Rust, axum)<br/>Argon2id login, signed session cookie,<br/>rate limits, body limits, CSP, static files"]
+        GW -->|"/api on 127.0.0.1:8001"| API["app/server.py (FastAPI)"]
+        API --> PIPE["p5.pipeline.Pipeline<br/>detector, classical branch, decision"]
+        PIPE --> CAT["p5.catalogue<br/>US: Stanford Cars 196 models<br/>India: Indian market models"]
+        API --> VID["p5.video.analyse.VideoAnalyser<br/>p5.video.tracker.Tracker"]
+        API --> CASE["p5.investigate.service.CaseStore"]
+        CASE --> HUNT["p5.investigate.hunt<br/>calibrated match model (E19)"]
+        CASE --> RT["p5.investigate.hints, routes<br/>note parsing, route hypotheses"]
+        API --> GEO["p5.geo.exif, locate, geocode, route"]
+    end
+    GEO -->|"geocoding"| PH["Photon (OpenStreetMap)"]
+    RT -->|"routes, map matching"| OS["OSRM"]
+    RT -->|"isochrones"| VA["Valhalla"]
+```
+
+| Component | Responsibility | Key interfaces |
+|---|---|---|
+| `gateway/src/main.rs` | Only public entry point. Authenticates, rate-limits, sets security headers, serves `web/`, proxies `/api/*` with a request ID | `/auth/login`, `/auth/logout`, `/auth/me`, `/api/*` |
+| `app/server.py` | JSON API, upload validation, background jobs | `/api/predict`, `/api/locate`, `/api/video`, `/api/cases/*`, `/api/jobs/*`, `/api/meta`, `/api/health` |
+| `p5.catalogue` | Runs every catalogue's classifier on the same crops. Each catalogue has its own temperature, thresholds and OOD gate. The more specific answer wins, then the more confident one | `Catalogue.load`, `primary` |
+| `p5.video` | Detection every 1/8 s, two-stage IoU tracking, per-track best crops, make and model, colour, direction and wrong-way check | `VideoAnalyser.run(path, VideoOptions)` |
+| `p5.investigate` | Cases with a target photo and camera feeds, hunt scoring, note parsing, route hypotheses | `CaseStore`, `hunt.rank`, `hints.parse_places`, `routes.infer`, `routes.osrm_routes`, `routes.isochrone` |
+| `p5.geo` | EXIF GPS, OCR plus geocoding, GPS track parsing and map matching | `locate`, `parse_track`, `map_match`, `mp4_location` |
+
+Every tunable value is in `configs/` or in the calibrated files under `models/`. See `docs/PARAMETERS.md`.
+
+---
+
 ## 1. Overview
 
 The system has two halves.

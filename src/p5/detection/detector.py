@@ -7,6 +7,8 @@ import cv2
 import numpy as np
 import onnxruntime as ort
 
+ort.disable_telemetry_events()
+
 
 @dataclass
 class Detection:

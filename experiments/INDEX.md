@@ -12,3 +12,4 @@
 | [2026-11-06_15-40-58](2026-11-06_15-40-58/README.md) | E14: end-to-end robustness suite on 1,960 test images | robustness | Kushal | done | test | noise s1 81.9 → 90.9 | JarvisLabs A100 run r_69aa1469 |
 | [2026-11-06_15-40-59](2026-11-06_15-40-59/README.md) | E17: I-JEPA ViT-H/14 linear probe and fine-tune | deep | Kushal | done | val | 65.40 probe, 92.64 fine-tune | JarvisLabs A100 run r_70bef59c |
 | [2026-11-06_16-31-27](2026-11-06_16-31-27/README.md) | E15: final test evaluation of the deployed system (single run) | failure-analysis | Kushal | done | test | **94.69** deployed | local; reads test labels via scripts/eval_test.py only |
+| [2026-11-06_19-13-27](2026-11-06_19-13-27/README.md) | E19: vehicle hunt match model from simulated second camera views | calibration | Kushal | done | val | AUC 0.981, TPR 89.7% at 5% FPR | local CPU |

@@ -19,12 +19,38 @@ Computer Vision Hackathon 2026, Problem Statement P5. The system detects a vehic
 
 Full tables, ablations and failure cases: [eval_P5_TeamID.md](eval_P5_TeamID.md). Per-experiment records: [experiments/INDEX.md](experiments/INDEX.md).
 
+## Beyond the brief: an investigation console for traffic police
+
+The recognition system is the core of **Vahana Drishti**, a web console designed around the needs of the Bengaluru Traffic Police. Everything runs on open data and open-source maps (no Google services).
+
+| Feature | What it does | Where |
+|---|---|---|
+| Identify | Upload a photo: vehicle, make, model and year with calibrated confidence, every classical and deep intermediate step, and the classical, deep and hybrid answers side by side | `src/p5/pipeline.py` |
+| Locate a photo | Exact coordinates from EXIF GPS when present, otherwise reads signboards and road names (RapidOCR) and geocodes them inside Bengaluru with OpenStreetMap (Photon), clustering agreeing candidates | `src/p5/geo/` |
+| Video analysis | Detects and tracks every vehicle (Kalman filter with two-stage Hungarian matching), names make and model per track, colour, direction of travel and wrong-way alerts. Signboards and shop names read from key frames describe the surroundings and suggest where the camera is | `src/p5/video/` |
+| Route from video | Dashcam GPS (GPX, CSV, NMEA or the MP4 location atom) is snapped to the road network with OSRM map matching and drawn on the map | `src/p5/geo/route.py` |
+| Vehicle hunt | Upload a photo of the wanted car and the feeds of several cameras: every track is scored with a calibrated match probability and the sightings are placed on the map in time order | `src/p5/investigate/hunt.py`, E19 |
+| Blind-spot reasoning | Free-text notes from officers ("seen near Brigade Road heading to Indiranagar, may stop for fuel, avoided Silk Board") are parsed into places, roles, times and activities. Candidate routes between sightings and onward are ranked by consistency with the notes, with travel-time feasibility and cameras that did not see the car. Reachable areas are drawn as isochrones | `src/p5/investigate/hints.py`, `routes.py` |
+| Map | MapLibre with OpenFreeMap streets, Sentinel-2 cloudless satellite imagery and extruded 3D buildings from OpenStreetMap | `web/` |
+
+Every tunable value is in a config file, and [docs/PARAMETERS.md](docs/PARAMETERS.md) states whether it was fitted on validation data, is an operational constant, or is a documented assumption.
+
+### Security
+
+* A Rust gateway (`gateway/`, axum) is the only public entry point. The Python service listens on loopback only.
+* Logins use Argon2id password hashes from a mounted users file. Sessions are HMAC-SHA256 signed cookies (HttpOnly, Secure, SameSite=Strict). Scripted clients use bearer tokens stored as SHA-256 hashes.
+* Per-IP token-bucket rate limits (stricter on login), request body limits, a method allowlist, path traversal checks and a request ID on every proxied call.
+* A strict Content-Security-Policy, `X-Frame-Options: DENY`, `nosniff`, `no-referrer`, a Permissions-Policy, COOP/CORP and HSTS.
+* Uploads are checked by content (image decoding, video file signatures) and size. The frontend builds the DOM with `textContent` only.
+* The container runs as a non-root user on a read-only filesystem with all Linux capabilities dropped.
+
 ## Documentation
 
 | Document | Contents |
 |---|---|
 | [eval_P5_TeamID.md](eval_P5_TeamID.md) | Comparative evaluation in the required metric order, ablation and failure-case analysis |
 | [docs/IMPLEMENTATION_NOTES.md](docs/IMPLEMENTATION_NOTES.md) | What was built and every deviation from the plan |
+| [docs/PARAMETERS.md](docs/PARAMETERS.md) | Every configurable value and where it comes from |
 | [docs/FINAL_APPROACH.md](docs/FINAL_APPROACH.md) | Execution plan: requirement coverage, components, experiments, timeline, risks, viva prep |
 | [docs/architecture.md](docs/architecture.md) | Architecture diagrams, module responsibilities and interfaces |
 | [docs/LITERATURE_SURVEY.md](docs/LITERATURE_SURVEY.md) | Literature survey (178 references) |
@@ -35,15 +61,23 @@ Full tables, ablations and failure cases: [eval_P5_TeamID.md](eval_P5_TeamID.md)
 
 ```
 src/p5/
-  classical/       quality analysis, enhancement, saliency ROI, GrabCut refinement, geometry, features, SVM
+  classical/       quality analysis, enhancement, saliency ROI, GrabCut refinement, geometry, features, SVM, colour naming
   detection/       ONNX detector, box selection, YOLO training
   classification/  crops, dataset, model factory (timm and I-JEPA), training, export, ONNX classifier, CAM
   confidence/      temperature scaling, selective thresholds, decision policy
   hybrid/          late fusion
   eval/            classification, detection, robustness, statistics
-  pipeline.py      end-to-end inference used by the API
-app/server.py      FastAPI backend: /api/predict, /api/health, /api/meta
-scripts/           data preparation, training launchers, evaluation, packaging
+  video/           vehicle tracker and video analysis
+  geo/             EXIF and OCR geolocation, geocoding, GPS tracks, map matching and routing
+  investigate/     cases, vehicle hunt, note parsing and route inference
+  catalogue.py     several classifiers (US and Indian market) behind one decision
+  pipeline.py      end-to-end image inference used by the API
+app/server.py      FastAPI service (loopback only behind the gateway)
+gateway/           Rust gateway: auth, rate limits, security headers, static files, proxy
+web/               web console (HTML, CSS, JavaScript, MapLibre)
+configs/           app, investigation and hunt settings
+deploy/            container entrypoint
+scripts/           data preparation, training launchers, calibration, evaluation, packaging
 experiments/       experiment records
 ```
 
@@ -62,11 +96,20 @@ PYTHONPATH=src .venv/bin/uvicorn app.server:app --port 8000
 curl -F "file=@car.jpg" http://localhost:8000/api/predict
 ```
 
-Docker:
+Docker (gateway and API in one image):
 
 ```bash
-docker build -t p5 . && docker run -p 8000:8000 p5
+docker build -t vahana-drishti .
+printf '%s' 'a long passphrase' | docker run --rm -i --entrypoint vahana-gateway vahana-drishti hash-password
 ```
+
+Put the printed hash in a users file, `{"users": [{"username": "officer", "password_hash": "<hash>"}], "api_tokens": []}`, then run:
+
+```bash
+docker run -d -p 127.0.0.1:8080:8080 -e P5_SESSION_SECRET="$(openssl rand -hex 32)" -v "$PWD/users.json:/run/secrets/users.json:ro" -v "$PWD/cases:/app/data" --read-only --tmpfs /tmp --cap-drop ALL --security-opt no-new-privileges vahana-drishti
+```
+
+Serve it behind HTTPS. Set `P5_TRUST_PROXY=true` when a reverse proxy or tunnel sets the client IP headers.
 
 ## Reproduction
 

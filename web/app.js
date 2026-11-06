@@ -369,7 +369,7 @@ function renderCase(c) {
     c.sightings.length ? h("ul", { class: "rows" }, c.sightings.slice(0, 12).map((s) => h("li", { class: "clickable", onclick: () => openCamera(c, s.camera_id, s.t_video) },
       h("img", { src: jpg(s.thumbnail), alt: "" }),
       h("div", {}, h("div", { class: "title", text: s.camera_name }), h("div", { class: "sub", text: `${s.t_abs ? fmtTime(s.t_abs) : "at " + clock(s.t_video)} · ${s.label} · heading ${s.direction}` }),
-        h("div", { class: "sub", text: `appearance ${pct(s.appearance, 0)} · model ${pct(s.model_overlap, 0)} · colour ${s.colour === 1 ? "same" : s.colour > 0 ? "similar" : "different"}` })),
+        h("div", { class: "sub", text: `look ${s.appearance.toFixed(2)} · model ${pct(s.model_overlap, 0)} · colour ${s.colour === 1 ? "same" : s.colour > 0 ? "similar" : "different"}` })),
       h("span", { class: "score", text: pct(s.score, 0) }))))
       : h("p", { class: "note", text: c.cameras.some((x) => x.status === "done") ? "No matching vehicle in the analysed footage." : "Sightings appear here once footage is analysed." })) : null;
 
@@ -446,7 +446,7 @@ function drawCase(c) {
   const pts = [];
   c.cameras.filter((x) => x.lat != null).forEach((x) => pts.push({ type: "Feature", properties: { colour: "#3d3a35", r: 6, label: x.name, title: x.name, detail: x.status === "done" ? `${x.analysis.counts.total} vehicles` : "Analysing" }, geometry: { type: "Point", coordinates: [x.lon, x.lat] } }));
   const seen = new Set();
-  c.sightings.filter((s) => s.lat != null && s.score >= 0.5).forEach((s) => {
+  c.sightings.filter((s) => s.lat != null).forEach((s) => {
     if (seen.has(s.camera_id)) return; seen.add(s.camera_id);
     pts.push({ type: "Feature", properties: { colour: "#2f5a43", r: 9, label: "", title: `Seen at ${s.camera_name}`, detail: `${s.t_abs ? fmtTime(s.t_abs) : clock(s.t_video)} · match ${pct(s.score, 0)}` }, geometry: { type: "Point", coordinates: [s.lon, s.lat] } });
   });

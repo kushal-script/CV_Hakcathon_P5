@@ -208,15 +208,26 @@ def tree_images(cat: str, width: int, limit: int) -> list[dict]:
     return out[:limit]
 
 
-def brand_of(name: str, makers: list[str]) -> str:
-    prefixes = [m for m in makers if name.lower().startswith(m.lower() + " ")]
-    return max(prefixes, key=len) if prefixes else name.split()[0]
+def assign_makes(classes: list[dict], known: set[str]) -> list[str]:
+    firsts = {b.split()[0].lower() for b in known}
+    multi = sorted((b for b in known if " " in b), key=len, reverse=True)
+    makes = []
+    for c in classes:
+        low = c["name"].lower()
+        m = next((b for b in multi if low.startswith(b.lower() + " ")), None)
+        if m is None:
+            first = c["name"].split()[0]
+            own = [b for b in c.get("brands", []) if not re.fullmatch(r"Q\d+", b)]
+            m = first if first.lower() in firsts or not own else own[0]
+        makes.append(m)
+    longer = sorted((m for m in set(makes) if " " in m), key=len, reverse=True)
+    return [next((x for x in longer if x.lower().startswith(m.lower() + " ")), m) for m in makes]
 
 
-def india_taxonomy(classes: list[dict]) -> Taxonomy:
+def india_taxonomy(classes: list[dict], known: set[str]) -> Taxonomy:
     names = [c["name"] for c in classes]
-    make_of = [brand_of(c["name"], c["makers"]) for c in classes]
-    model_of = [n[len(m):].strip() or n for n, m in zip(names, make_of)]
+    make_of = assign_makes(classes, known)
+    model_of = [n[len(m):].strip() if n.lower().startswith(m.lower() + " ") else n for n, m in zip(names, make_of)]
     return Taxonomy(names=names, make_of=make_of, model_of=model_of, year_of=[0] * len(names), display_make_of=make_of,
                     family_of=list(range(len(names))), family_names=names)
 
@@ -372,6 +383,7 @@ def main() -> int:
         from p5.detection.detector import Detector
         det = Detector(ROOT / "models" / "detector_coco.onnx", threads=1, iou=0.5)
         classes = unique_categories(json.loads((args.assets / "candidate_classes.json").read_text()))
+        classes.sort(key=lambda c: (c.get("india_priority", 1), c["name"]))
         lock = threading.Semaphore(os.cpu_count() or 4)
         done = 0
         with ThreadPoolExecutor(args.workers) as ex:
@@ -492,7 +504,8 @@ def main() -> int:
                 dropped.append({"qid": q, "name": cand[q]["name"], "n": n, "photographers": len(groups), "reason": "too few independent photographers"})
                 continue
             idx = len(classes)
-            classes.append({"id": idx, "qid": q, "name": cand[q]["name"], "makers": cand[q]["makers"], "commons": cand[q]["commons"],
+            classes.append({"id": idx, "qid": q, "name": cand[q]["name"], "makers": cand[q]["makers"], "brands": cand[q].get("brands", []),
+                            "commons": cand[q]["commons"],
                             "n": n, "train": len(parts["train"]), "val": len(parts["val"]), "test": len(parts["test"])})
             for s, rs in parts.items():
                 for r in rs:
@@ -500,7 +513,8 @@ def main() -> int:
                                        "by2": r["by2"], "license": r["license"], "artist": r["artist"], "page": r["page"]})
         (args.assets / "classes.json").write_text(json.dumps(classes, indent=1))
         (args.assets / "dropped_classes.json").write_text(json.dumps(dropped, indent=1))
-        india_taxonomy(classes).save(args.assets / "taxonomy")
+        known = {b for c in cand.values() for b in c.get("brands", []) if not re.fullmatch(r"Q\d+", b)}
+        india_taxonomy(classes, known).save(args.assets / "taxonomy")
         with (args.assets / "split.csv").open("w", newline="") as fh:
             w = csv.DictWriter(fh, fieldnames=list(split_rows[0].keys()))
             w.writeheader()

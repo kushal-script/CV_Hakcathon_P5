@@ -31,7 +31,7 @@ def batches(index: pd.DataFrame, crop_dir: Path, meta: dict, bs: int):
     for k in range(0, len(rows), bs):
         xs = []
         for r in rows[k:k + bs]:
-            img = Image.open(crop_dir / f"{int(r.id):05d}.jpg").convert("RGB")
+            img = Image.open(crop_dir / (r.file if hasattr(r, "file") else f"{int(r.id):05d}.jpg")).convert("RGB")
             c = np.asarray(make_crop(img, (r.bx1, r.by1, r.bx2, r.by2), meta["size"], meta["pad"]))
             xs.append(((c.transpose(2, 0, 1).astype(np.float32) / 255.0) - mean) / std)
         yield np.stack(xs)
@@ -67,16 +67,25 @@ def main() -> int:
     p.add_argument("--eval", type=int, default=0, help="0 = full val split")
     p.add_argument("--threads", type=int, default=2)
     p.add_argument("--method", default="percentile", choices=["minmax", "entropy", "percentile"])
+    p.add_argument("--split-csv", type=Path, default=None)
+    p.add_argument("--crops", type=Path, default=None)
+    p.add_argument("--save-test-logits", action="store_true", help="also cache INT8 test logits for a later one-time evaluation (no metrics computed)")
     args = p.parse_args()
 
     meta = json.loads((args.export / "classifier_meta.json").read_text())
     tax = Taxonomy.load(args.assets / "taxonomy")
-    index = pd.read_csv(args.cache / "index_train.csv")
-    val_ids = set(read_ids(args.assets / "splits" / "val_ids.txt"))
-    train_df, val_df = index[~index.id.isin(val_ids)], index[index.id.isin(val_ids)]
+    if args.split_csv:
+        index = pd.read_csv(args.split_csv)
+        index["id"] = range(len(index))
+        train_df, val_df = index[index.split == "train"], index[index.split == "val"]
+        crop_dir = args.crops
+    else:
+        index = pd.read_csv(args.cache / "index_train.csv")
+        val_ids = set(read_ids(args.assets / "splits" / "val_ids.txt"))
+        train_df, val_df = index[~index.id.isin(val_ids)], index[index.id.isin(val_ids)]
+        crop_dir = args.cache / "crops" / "train"
     if args.eval:
         val_df = val_df.sample(args.eval, random_state=0)
-    crop_dir = args.cache / "crops" / "train"
 
     fp32, pre, int8 = args.export / "classifier.onnx", args.export / "classifier_pre.onnx", args.export / "classifier_int8.onnx"
     quant_pre_process(str(fp32), str(pre), skip_symbolic_shape=True)
@@ -96,6 +105,11 @@ def main() -> int:
         np.savez_compressed(args.export / f"val_logits_{name}.npz", logits=z, labels=y, ids=val_df.id.to_numpy())
         print(json.dumps({name: res[name]}), flush=True)
     res["delta_top1"] = res["int8"]["top1"] - res["fp32"]["top1"]
+    if args.split_csv and args.save_test_logits:
+        test_df = index[index.split == "test"]
+        z, _ = evaluate(int8, test_df, crop_dir, meta, args.threads)
+        np.savez_compressed(args.export / "test_logits_int8.npz", logits=z, labels=test_df.class_id.to_numpy(), ids=test_df.id.to_numpy(),
+                            files=test_df.file.to_numpy())
     (args.export / "quantization.json").write_text(json.dumps(res, indent=1))
     return 0
 

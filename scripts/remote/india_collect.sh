@@ -5,7 +5,7 @@ OUT="${OUT:-/home/work/india}"
 cd "$PROJECT"
 TOTAL=$(python -c "import json, sys; sys.path.insert(0, 'scripts'); from build_india_dataset import unique_categories; print(len(unique_categories(json.load(open('assets/india/candidate_classes.json')))))")
 while true; do
-  python scripts/build_india_dataset.py --out "$OUT" --stage collect --offline --workers 12 --downloads 8 --fetch-concurrency "${FETCH:-6}" | grep -v "not listed yet"
+  python scripts/build_india_dataset.py --out "$OUT" --stage collect --offline --workers 4 --downloads 4 --fetch-concurrency "${FETCH:-6}" | grep -v "not listed yet"
   DONE=$(ls "$OUT/collected" 2>/dev/null | wc -l)
   echo "collected $DONE/$TOTAL"
   [ "$DONE" -ge "$TOTAL" ] && break

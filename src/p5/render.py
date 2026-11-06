@@ -16,8 +16,9 @@ def draw_box(rgb: np.ndarray, box, text: str, colour, below: bool = False) -> No
     ty = y1 - 6 if y1 - th - 10 > 0 else y1 + th + 10
     if below:
         ty = y2 + th + 8 if y2 + th + 12 < rgb.shape[0] else y2 - 6
-    cv2.rectangle(rgb, (x1, ty - th - 6), (x1 + tw + 8, ty + base - 2), colour, -1)
-    cv2.putText(rgb, text, (x1 + 4, ty - 2), cv2.FONT_HERSHEY_SIMPLEX, scale, (255, 255, 255), max(1, t - 1), cv2.LINE_AA)
+    lx = max(0, min(x1, rgb.shape[1] - tw - 8))
+    cv2.rectangle(rgb, (lx, ty - th - 6), (lx + tw + 8, ty + base - 2), colour, -1)
+    cv2.putText(rgb, text, (lx + 4, ty - 2), cv2.FONT_HERSHEY_SIMPLEX, scale, (255, 255, 255), max(1, t - 1), cv2.LINE_AA)
 
 
 def fit(rgb: np.ndarray, max_side: int) -> np.ndarray:

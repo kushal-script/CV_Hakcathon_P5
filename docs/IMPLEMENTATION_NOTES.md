@@ -17,8 +17,13 @@
 | Robustness suite (E14) | done | `experiments/2026-11-06_15-40-58` |
 | Final test evaluation and failure analysis (E15) | done | `experiments/2026-11-06_16-31-27`, `eval_P5_TeamID.md` |
 | I-JEPA research arm (E17, not in the original plan) | done | `experiments/2026-11-06_15-40-59` |
-| Backend API (FastAPI) and Dockerfile | built, tested locally | `app/server.py`, `Dockerfile` |
-| Web frontend and public hosting | not started | hosting choice still open |
+| Backend API (FastAPI) | done | `app/server.py` |
+| Rust security gateway and multi-stage Docker image | done, running on a JarvisLabs CPU VM | `gateway/`, `Dockerfile`, `deploy/` |
+| Web console (identify, investigate, video, 3D map) | done | `web/` |
+| Investigation features: video tracking, geolocation, vehicle hunt, blind-spot routes | done | `src/p5/video/`, `src/p5/geo/`, `src/p5/investigate/` |
+| Vehicle hunt calibration (E19) | done | `experiments/2026-11-06_19-13-27` |
+| Indian-market dataset and classifier (E18) | in progress | `scripts/build_india_dataset.py`, `assets/india/` |
+| Public HTTPS URL | pending | needs a tunnel or reverse proxy in front of the VM |
 | Web-image out-of-catalogue set (planned E13 dev/test split) | not collected | τ_ood tuned on in-distribution val only |
 
 ## Deviations from the plan
@@ -31,7 +36,10 @@
 6. **Quantization location:** ONNX Runtime's percentile calibration ran out of memory on the 16 GB laptop, so E11 ran on the instance CPU. INT8 is 3.3× faster on Apple M3 but slower on the instance's AMD EPYC 7542 (no VNNI). The deployed precision should be chosen by measuring on the actual host.
 7. **Input guard:** the minimum image side was 64 px. Six Stanford Cars test images are smaller and were rejected during E15. The guard is now 32 px; E15 numbers keep the original guard.
 8. **Added experiment E17:** I-JEPA ViT-H/14 (self-supervised on ImageNet-1k) as a research comparison: 66.2% frozen linear probe, 93.1% fine-tuned on test GT crops; no ensemble gain. Not deployable on CPU.
-9. **Plan items not done:** the web-image out-of-catalogue set (so τ_ood is set at 95% in-distribution TPR without OOD tuning), the SSB open-set benchmark, and the `tests/test_architecture.py` diagram check.
+9. **Serving stack, final:** the planned Gradio app was replaced by a JSON API behind a Rust gateway (authentication, rate limiting, security headers) and a hand-built web console. Hosting moved from a Hugging Face Space to a JarvisLabs CPU VM (8 vCPU, AMD EPYC 9555 with AVX-512 VNNI), where the INT8 pipeline runs at p50 0.28 s per image with 2 threads.
+10. **Vehicle hunt weights:** the first version used hand-set weights and floors. They were replaced by a logistic model fitted in E19, and the hand-set values were removed from the config.
+11. **Indian-market catalogue:** the brief's dataset is US-market only. A second catalogue was built from free-licensed Wikimedia Commons photos of models that Wikidata and Wikipedia link to the Indian market. Commons rate-limits image downloads per IP (HTTP 429), so downloads were capped at 150 photos per model and models with Wikidata evidence of Indian manufacture were collected first. Many current Indian models have fewer than 20 free photos on Commons, which limits how well they can be recognised.
+12. **Plan items not done:** the web-image out-of-catalogue set (so τ_ood is set at 95% in-distribution TPR without OOD tuning), the SSB open-set benchmark, and the `tests/test_architecture.py` diagram check.
 
 ## Test-label hygiene
 `scripts/eval_test.py` is the only code that reads test labels. `experiments/test_log.csv` lists its three calls, all on the same frozen system: the main evaluation, a call that added the detector-selected column to the robustness table, and failure-case extraction.

@@ -45,6 +45,7 @@ def parse_args(argv=None) -> argparse.Namespace:
     p.add_argument("--split-csv", type=Path, default=None)
     p.add_argument("--crops", type=Path, default=None)
     p.add_argument("--init", type=Path, default=None)
+    p.add_argument("--balance", choices=["none", "sqrt"], default="none")
     return p.parse_args(argv)
 
 
@@ -158,7 +159,13 @@ def main(argv=None) -> int:
     train_ds = CropDataset(tr_df, train=True, aug=not args.no_aug, seed=args.seed, **common)
     val_ds = CropDataset(va_df, train=False, **common)
     pin = device.type == "cuda"
-    train_dl = DataLoader(train_ds, args.batch, shuffle=True, num_workers=args.workers, pin_memory=pin,
+    sampler = None
+    if args.balance == "sqrt":
+        counts = np.bincount(tr_df.class_id.to_numpy(), minlength=len(tax.names)).astype(float)
+        weights = 1.0 / np.sqrt(counts[tr_df.class_id.to_numpy()])
+        sampler = torch.utils.data.WeightedRandomSampler(torch.as_tensor(weights, dtype=torch.double), len(tr_df), replacement=True,
+                                                         generator=torch.Generator().manual_seed(args.seed))
+    train_dl = DataLoader(train_ds, args.batch, shuffle=sampler is None, sampler=sampler, num_workers=args.workers, pin_memory=pin,
                           drop_last=True, persistent_workers=args.workers > 0)
     val_dl = DataLoader(val_ds, args.batch * 2, shuffle=False, num_workers=args.workers, pin_memory=pin)
 

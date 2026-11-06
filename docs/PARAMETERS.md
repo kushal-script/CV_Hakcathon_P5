@@ -15,7 +15,7 @@ Each value below is one of three kinds:
 | `t_d` (temperature) | Fitted | `scripts/calibrate.py`: NLL minimisation on validation logits (E13 for Stanford, E18 for India) |
 | `tau_hi`, `tau_fam`, `tau_make` | Fitted | Lowest confidence at which validation accuracy reaches 97% (model, family) or 95% (make). Bootstrap CIs are in each `calibration.json` |
 | `tau_ood` | Fitted | 5th percentile of the validation max-logit, i.e. 95% of in-catalogue cars pass. No out-of-catalogue set was used, so OOD rejection is not tuned |
-| `tau_lo = 0.10`, `tau_det = 0.25` | Assumption, checked | Planned defaults for "weak" and "confident" detections. Held-out check (E15): 99 of 100 COCO no-car test images are rejected |
+| `tau_lo = 0.10`, `tau_det = 0.25` | Fitted | E06 on validation: 99.14% recall and 0 of 100 COCO no-car dev images accepted. Held-out check in E15: 99 of 100 COCO no-car test images rejected |
 | `beta = 0` | Fitted | E12 fusion rule rejected classical fusion (+0.12 points, p = 1.0) |
 
 ## Image pipeline (`configs/app.yaml`)

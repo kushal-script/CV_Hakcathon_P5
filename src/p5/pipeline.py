@@ -238,10 +238,12 @@ class Pipeline:
     def panels(self, rgb, enhanced, work, applied, vehicles, roi, sroi, cam_img) -> dict[str, str]:
         out = {}
         annotated = work.copy()
-        for k, v in enumerate(vehicles):
-            d = v.decision
+        for k in list(range(1, len(vehicles))) + ([0] if vehicles else []):
+            d = vehicles[k].decision
             colour = render.COLOURS["secondary"] if k else render.COLOURS.get(d["level"], render.COLOURS["class"])
-            render.draw_box(annotated, v.box, f"{d['label']} {d['confidence']:.0%}", colour)
+            short = d["label"] if d["level"] in ("class", "family") else (d.get("make") or "vehicle")
+            text = f"{d['label']} {d['confidence']:.0%}" if k == 0 else f"{k + 1}. {short}"
+            render.draw_box(annotated, vehicles[k].box, text, colour, below=k > 0)
         out["annotated"] = render.jpeg(annotated, 1024)
         if applied:
             out["original"] = render.jpeg(rgb)

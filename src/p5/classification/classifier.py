@@ -10,6 +10,8 @@ from PIL import Image
 
 from p5.classification.crop import make_crop
 
+ort.disable_telemetry_events()
+
 
 @dataclass
 class DeepOut:

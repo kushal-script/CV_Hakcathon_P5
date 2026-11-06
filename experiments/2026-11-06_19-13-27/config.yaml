@@ -1,0 +1,29 @@
+experiment:
+  id: "2026-11-06_19-13-27"
+  title: "E19: vehicle hunt match model from simulated second camera views"
+  type: "calibration"
+  seed: 7
+
+data:
+  source: Stanford Cars validation split (assets/splits/val_ids.txt)
+  vehicles: 815
+  fit_eval_split: half of the vehicles fit the model, the other half evaluate it
+
+second_camera_view:
+  box_jitter: {scale: 0.12, shift: 0.06}
+  horizontal_flip: 0.5
+  downscale: [0.2, 0.6]
+  gamma: [0.6, 1.6]
+  channel_gain: [0.85, 1.15]
+  gaussian_blur: {p: 0.5, sigma: [0.3, 1.5]}
+  jpeg_quality: [25, 70]
+
+pairs:
+  positive: reference crop with a second camera view of the same vehicle
+  negatives_per_vehicle: one of the same model (other vehicle), three of other models
+
+model:
+  features: [appearance cosine, Bhattacharyya overlap of calibrated class probabilities, colour agreement]
+  classifier: deployed INT8 TResNet-L (models/classifier.onnx)
+  fit: L2 regularised logistic regression (Newton), l2 = 0.001
+  operating_point: 5% false positives on the fitting half
