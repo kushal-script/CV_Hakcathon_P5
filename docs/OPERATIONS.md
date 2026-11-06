@@ -80,7 +80,12 @@ To rebuild the 2019 profile from the source data, run `python3 scripts/build_tra
 
 ExifTool is installed in the image, so GPS tracks recorded inside dashcam or phone videos are read when the footage is uploaded. For footage without GPS, an investigator can open a camera in a case and choose Find where this was filmed. They set a search area of up to 3 km and the camera's horizontal field of view.
 
-* **Server load:** the job uses up to `P5_GEOLOC_WORKERS` processes, by default the number of CPU cores minus one, capped at 6. One job runs at a time. For a two-minute clip in a 1.5 km area in central Bengaluru, measured on 6 cores of an Apple M3 laptop, the searches and decoys took 95 s. Peak memory was 0.7 GB for the service plus 0.6 GB per worker. Reading the camera motion and the signboards adds roughly another minute. Timings on the server VM have not been measured yet.
+* **Server load:** the job uses up to `P5_GEOLOC_WORKERS` processes, by default the number of CPU cores minus one, capped at 6. One job runs at a time. These times were measured inside the production container on the 8 vCPU server, with the 122 s KITTI test video at 640 × 192 px:
+  * **Searching central Bengaluru** (1.5 km area) took 29 s, including 3 s to read the camera motion. The footage was filmed in Karlsruhe, so the search declined it.
+  * **Extra steps for a candidate route:** the four decoy areas took 31 s and reading signboards from 62 frames took 11 s. A two-minute clip that gives a candidate route in Bengaluru therefore takes about 70 s.
+  * **Karlsruhe, where the footage was filmed** (2 km area): the whole job took 47 s and gave a candidate route 31 m from the true position.
+  * **Memory:** the container peaked at 3.1 GB, against its 24 GB limit.
+  * **Not measured:** higher-resolution video takes longer to decode.
 * **Data files:** the road graph (`assets/bengaluru/road_graph.npz`) and the place names (`assets/bengaluru/places.json.gz`) are built from the Geofabrik southern India extract. Rebuild them with `python3 scripts/build_road_graph.py` and `python3 scripts/build_place_index.py` (both need `pip install osmium shapely`), then rebuild the image. The graph records the date of its OpenStreetMap data, and every result shows it.
 * **Records:** each result stores the video's SHA-256 hash, the search settings and who requested it. It is written to the case and the activity log. Using a candidate route for a camera is a separate, logged action by the investigator.
 
