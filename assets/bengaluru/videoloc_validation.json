@@ -33,6 +33,16 @@
    "candidates_without_decoy_check": 15,
    "correct_without_decoy_check": 15,
    "note": "Turn and speed errors replayed from real KITTI video on routes through the Bengaluru road graph"
+  },
+  {
+   "set": "Simulated Bengaluru drives, all checks",
+   "clips": 20,
+   "candidates": 10,
+   "correct_within_50m": 10,
+   "precision_ci95": [
+    0.722,
+    1.0
+   ]
   }
  ],
  "when_footage_is_not_from_the_area": [
@@ -45,9 +55,10 @@
   },
   {
    "set": "Simulated Bengaluru drives searched 4 to 8 km from where they happened",
-   "clips": 23,
+   "clips": 20,
    "false_without_decoy_check": 9,
-   "note": "Decoy check not run on this set"
+   "false_candidates": 3,
+   "false_rate": 0.15
   }
  ],
  "summary": "When the footage is from the search area, every candidate route in testing was within 50 m. When it is not, a route that is wrong can still pass, so a candidate must be confirmed with independent features before it is used.",

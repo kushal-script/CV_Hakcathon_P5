@@ -1,0 +1,117 @@
+{
+ "rule": "A candidate route is reported only when, inside the search area, the probability within 50 m of one place is at least 0.99 (which needs a likelihood ratio of at least 99 against the best alternative found by a separate search), and the area also fits at least 99 times better than the best of 4 random decoy areas of the city.",
+ "when_footage_is_from_the_area": [
+  {
+   "set": "KITTI development clips",
+   "clips": 40,
+   "candidates_without_decoy_check": 30,
+   "correct_without_decoy_check": 30,
+   "candidates": 27,
+   "correct_within_50m": 27,
+   "precision_ci95": [
+    0.875,
+    1.0
+   ],
+   "note": "Odometry drives 00, 02, 05, 06, 07, 08, 09, 10. Drives 0018, 0020 and 0027 also fitted the noise settings, and the thresholds were chosen here"
+  },
+  {
+   "set": "KITTI fresh drives (never used for settings)",
+   "clips": 13,
+   "candidates_without_decoy_check": 1,
+   "correct_without_decoy_check": 1,
+   "note": "Mostly short, slow or highway clips with few turns, so the system declined almost all of them"
+  },
+  {
+   "set": "Field of view stated about 5 degrees wrong, camera height unknown",
+   "clips": 20,
+   "candidates_without_decoy_check": 13,
+   "correct_without_decoy_check": 13
+  },
+  {
+   "set": "Simulated Bengaluru drives",
+   "clips": 30,
+   "candidates_without_decoy_check": 15,
+   "correct_without_decoy_check": 15,
+   "note": "Turn and speed errors replayed from real KITTI video on routes through the Bengaluru road graph"
+  },
+  {
+   "set": "Simulated Bengaluru drives, all checks",
+   "clips": 20,
+   "candidates": 10,
+   "correct_within_50m": 10,
+   "precision_ci95": [
+    0.722,
+    1.0
+   ]
+  }
+ ],
+ "when_footage_is_not_from_the_area": [
+  {
+   "set": "KITTI clips searched in random Bengaluru areas",
+   "clips": 40,
+   "false_without_decoy_check": 18,
+   "false_candidates": 7,
+   "false_rate": 0.175
+  },
+  {
+   "set": "Simulated Bengaluru drives searched 4 to 8 km from where they happened",
+   "clips": 20,
+   "false_without_decoy_check": 9,
+   "false_candidates": 3,
+   "false_rate": 0.15
+  }
+ ],
+ "summary": "When the footage is from the search area, every candidate route in testing was within 50 m. When it is not, a route that is wrong can still pass, so a candidate must be confirmed with independent features before it is used.",
+ "limits": [
+  "Needs a moving camera with at least a minute of driving and several turns.",
+  "Needs the camera's horizontal field of view. Wide fisheye dashcam lenses are untested.",
+  "Cannot tell on its own whether the footage was recorded inside the search area.",
+  "Validated on KITTI video from Karlsruhe and on simulated Bengaluru drives, not yet on real Bengaluru dashcam footage with GPS.",
+  "Roads missing from OpenStreetMap cannot be matched."
+ ],
+ "development_errors_m": {
+  "median": 4.3,
+  "max": 39.5,
+  "p90": 19.5
+ },
+ "coverage_by_length_development": {
+  "60 s": "11 of 20",
+  "120 s": "12 of 15",
+  "240 s": "4 of 5"
+ },
+ "end_to_end_video": {
+  "file": "KITTI 2011_09_30_drive_0034, 122 s, 10 fps, 640 px",
+  "status": "candidate",
+  "error_m": 32,
+  "log10_likelihood_ratio": 65.5,
+  "agreeing_runs": "6 of 6",
+  "seconds": 47
+ },
+ "training_noise_fit": {
+  "turn_error_per_frame_deg_median": [
+   0.073,
+   0.089,
+   0.078
+  ],
+  "turn_drift_10s_sd_deg": [
+   1.06,
+   0.96,
+   1.18
+  ],
+  "speed_log_ratio_sd": [
+   0.198,
+   0.238,
+   0.236
+  ],
+  "residual_sd_deg": [
+   2.2,
+   2.6,
+   2.44
+  ],
+  "residual_correlation_steps": [
+   6.7,
+   6.1,
+   4.7
+  ]
+ }
+}

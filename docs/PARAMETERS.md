@@ -95,6 +95,33 @@ Drive times start from OSRM's free-flow estimate and are scaled to Bengaluru tra
 | Dashcam windows: 1 km minimum, 3 km target, 900 s maximum, 15 per track | Assumption | Long enough for the timing to be meaningful, short enough that one long stop does not dominate, and capped so one long video cannot outweigh many cases |
 | Import: 2,000 rows, 1 s to 6 h, both ends inside Bengaluru, 1 s between routing calls | Operational | File size limit, plausibility checks and a polite rate for the public OSRM server |
 
+## Locating moving-camera footage (`src/p5/geo/videoloc/`)
+
+A dashcam or a phone in a vehicle is located by matching its turns, stops and speed against the road network. E21 has the method and the evaluation. Values marked fitted come from three KITTI training drives (2011_09_30 drives 0018, 0020 and 0027). Values chosen on development clips used the KITTI odometry drives and never the fresh test drives.
+
+| Value | Kind | Source |
+|---|---|---|
+| Road network: drivable OpenStreetMap ways inside the city boundary plus 0.02°, without parking aisles, driveways and private roads | Operational | `scripts/build_road_graph.py` from the Geofabrik southern India extract. The asset records the extract date |
+| Frames at 5 per second, 640 px wide, 600 corners on an 8 × 8 grid, forward-backward tracking within 1 px, RANSAC 1 px | Operational | Standard settings for pyramidal Lucas-Kanade tracking and the five-point essential matrix in OpenCV |
+| Standstill when the median image motion is below 0.031 image widths per second | Fitted | Geometric middle between the 90th percentile for stopped frames (2.4 px) and the 10th percentile for moving frames (6.5 px) on the training drives. Stopped frames had produced turn errors of up to 177° |
+| Rotation check: fall back to a homography when the rotation implies more image motion than was measured | Physics | A rotation cannot move image points further than they actually moved |
+| Heading noise 4° | Assumption | The training drives give 2.2 to 2.6° and their likelihood is highest at 1.5 to 3°. 4° leaves room for less precise OpenStreetMap geometry in Bengaluru |
+| Heading outliers 5% | Development | 1% was the training-drive maximum likelihood value, but 5% fixed two of three confidently wrong development clips |
+| Heading drift 1° per √s | Fitted | Maximum likelihood on the training drives |
+| Turn shape: heading blends over 7 m either side of a junction | Fitted | Maximum likelihood on the training drives |
+| Evidence correlation time 1.34 s | Fitted | Integrated autocorrelation of heading residuals on the training drives. Each frame counts as 0.2 / 1.34 of an independent observation, so correlated frames are not counted many times |
+| Evidence ramp over the first 30 s | Development | Early frames count gradually so that the true place is not dropped before the first turns are seen |
+| Initial camera to road angle, standard deviation 45° | Assumption | The camera may start mid-turn. One training drive does, and a tight prior lost the true place within 2 s |
+| Speed noise 0.224 per √s | Fitted | Distance error of the road-surface speed reading over 5, 10 and 30 s windows on the training drives |
+| Camera scale: unknown camera height, log-uniform between 0.8 and 3 | Assumption | Covers car and bus dashcams |
+| Field of view: required from the investigator, with ±10% lens tolerance | Assumption | The focal length cannot be recovered from forward motion: the epipolar fit was flat from 150 to 900 px. Without the field of view an evaluation run was confidently wrong. Development clips with the field of view stated 5° wrong stay correct |
+| U-turns turn clockwise | Geographic fact | Traffic in India keeps to the left |
+| 1 simulated vehicle per metre of road, between 150,000 and 400,000 | Operational | Fewer per metre lost the true place in testing. The cap bounds memory on the server |
+| 4 standard and 2 exact-mass searches, 2 challenge searches outside 150 m of the best start, 4 decoy areas with 3 searches each | Operational | Independent searches cover search failures. The challenge measures uniqueness inside the area, and the decoys measure fit against random places in the city |
+| Candidate route only at 99% or above, against both the best alternative in the area and the best of 4 decoy areas at least 5 km away | Development | The only confidently wrong development answers had likelihood ratios below 100. The same 99:1 rule is used for the challenge and for the decoys. Decoys were added after footage from outside the area produced a confident route in 18 of 40 controls. With them it is 7 of 40, which is why every candidate needs the investigator's confirmation |
+| Signboards: OCR every 2 s on up to 90 frames, OCR confidence 0.6, a name must keep 6 letters after common words are removed; support within 100 m of the route, contradiction when every place with that name (at most 3 in the city) is over 300 m away | Assumption | Signs are legible from a vehicle for roughly a block. The checks are shown to the investigator and do not change the status |
+| Search radius 300 m to 3 km, at least 10 s of camera movement | Operational | Larger areas need more simulated vehicles than the server can hold |
+
 ## Indian-market dataset (`scripts/build_india_dataset.py`)
 
 | Value | Kind | Source |

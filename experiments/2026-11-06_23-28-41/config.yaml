@@ -1,0 +1,55 @@
+experiment:
+  id: "2026-11-06_23-28-41"
+  title: "E21: locating moving-camera footage by matching its motion to the Bengaluru road network"
+  type: "evaluation"
+
+data:
+  kitti_raw: https://s3.eu-central-1.amazonaws.com/avg-kitti/raw_data (image_00 and oxts only, fetched with range requests)
+  kitti_licence: CC BY-NC-SA 3.0
+  training_drives: [2011_09_30_drive_0018, 2011_09_30_drive_0020, 2011_09_30_drive_0027]
+  development_drives: [2011_09_30_drive_0018, 2011_09_30_drive_0020, 2011_09_30_drive_0027, 2011_09_30_drive_0028, 2011_09_30_drive_0033, 2011_09_30_drive_0034, 2011_10_03_drive_0027, 2011_10_03_drive_0034]
+  fresh_drives: [2011_09_26_drive_0022, 2011_09_26_drive_0036, 2011_09_26_drive_0101, 2011_09_26_drive_0117, 2011_09_29_drive_0071, 2011_10_03_drive_0042, 2011_10_03_drive_0047]
+  osm_bengaluru: Geofabrik southern-zone extract, replication timestamp 2026-11-04T21:21:03Z
+  osm_karlsruhe: Geofabrik karlsruhe-regbez extract, 8.33 to 8.52 E, 48.95 to 49.08 N
+
+clips:
+  development: 60, 120 and 240 s, starting at multiples of the length, at most 4 per length and drive
+  fresh: first and last 60 s of each drive
+  search_area: 2 km radius in Karlsruhe, 1.5 km in Bengaluru, centre offset uniformly up to 1 km (750 m)
+  controls: development clips searched in random 1.5 km Bengaluru areas; simulated drives searched 4 to 8 km away
+
+motion:
+  frames_per_second: 5
+  width_px: 640
+  corners: 600 on an 8 x 8 grid
+  standstill_widths_per_second: 0.031
+
+filter:
+  heading_noise_deg: 4
+  heading_outliers: 0.05
+  heading_drift_deg_per_sqrt_s: 1.0
+  turn_half_width_m: 7
+  evidence_correlation_s: 1.34
+  evidence_ramp_s: 30
+  initial_heading_sd_deg: 45
+  speed_noise_per_sqrt_s: 0.224
+  camera_scale_known_camera: lognormal around 1.65 m, sd 0.15
+  camera_scale_stated_lens: log-uniform 0.8 to 3
+  lens_factors_stated_lens: [0.9, 0.95, 1.0, 1.05, 1.1]
+
+search:
+  particles_per_metre: 1.0
+  particles_min: 150000
+  particles_max: 400000
+  standard_runs: 4
+  exact_mass_runs: 2
+  challenge_runs: 2
+  challenge_exclusion_m: 150
+  decoy_areas: 4
+  decoy_runs_each: 3
+  decoy_min_distance_m: 5000
+
+decision:
+  probability_within_50m: 0.99
+  likelihood_ratio_vs_alternative: 99
+  likelihood_ratio_vs_best_decoy: 99

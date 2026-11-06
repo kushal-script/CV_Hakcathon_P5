@@ -26,10 +26,12 @@ flowchart LR
         CASE --> RT["p5.investigate.hints, routes<br/>note parsing, route hypotheses"]
         RT --> TT["p5.geo.traffic<br/>hourly Bengaluru drive times (E20)<br/>corrected by observed journeys"]
         API --> GEO["p5.geo.exif, locate, geocode, route"]
+        CASE --> VL["p5.geo.videoloc<br/>camera motion, particle filter on the road graph,<br/>challenge and decoy searches, signboards"]
     end
     GEO -->|"geocoding"| PH["Photon (OpenStreetMap)"]
     RT -->|"routes, map matching"| OS["OSRM"]
     RT -->|"isochrones"| VA["Valhalla"]
+    VL -.->|"street photo links for the investigator"| KV["KartaView, Mapillary"]
 ```
 
 | Component | Responsibility | Key interfaces |
@@ -41,6 +43,7 @@ flowchart LR
 | `p5.video` | Detection every 1/8 s, two-stage IoU tracking, per-track best crops, make and model, colour, direction and wrong-way check | `VideoAnalyser.run(path, VideoOptions)` |
 | `p5.investigate` | Cases with a target photo and camera feeds, hunt scoring, note parsing, route hypotheses, and journeys observed between sightings or along dashcam tracks | `CaseStore`, `hunt.rank`, `hints.parse_places`, `routes.infer`, `routes.osrm_routes`, `routes.isochrone`, `journeys.from_sightings`, `journeys.from_track` |
 | `p5.geo` | EXIF GPS, OCR plus geocoding, GPS track parsing and map matching, and drive times by hour of day with a learned local correction | `locate`, `parse_track`, `map_match`, `mp4_location`, `TrafficModel.predict`, `TrafficModel.prob_within` |
+| `p5.geo.videoloc` | Locates moving-camera footage without GPS. `motion.py` measures turns, stops and road-surface speed with tracked features and the essential matrix. `filter.py` is a particle filter over the directed OpenStreetMap road graph (`graph.py`). `search.py` runs independent searches, a challenge search outside the best start and decoy searches in random areas. `signs.py` checks OCR text against named places. `metadata.py` reads GPS tracks embedded in the video file with ExifTool | `locate_video`, `search`, `decoys`, `embedded_gps`, `match_signs`, `conflicting_signs`; API `/api/cases/{id}/cameras/{cam}/geolocate` and `/geolocation/accept` |
 
 Every tunable value is in `configs/` or in the calibrated files under `models/`. See `docs/PARAMETERS.md`.
 
