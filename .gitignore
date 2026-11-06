@@ -1,0 +1,37 @@
+# Data & downloads (Stanford Cars is ~2 GB — never commit)
+data/
+*.zip
+*.tgz
+*.mat
+
+# Model weights / exports (host on HF Hub or GitHub Releases instead)
+*.pt
+*.pth
+*.onnx
+*.ckpt
+*.safetensors
+runs/
+weights/
+checkpoints/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+.pytest_cache/
+
+# Secrets
+.env
+kaggle.json
+*.key
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Experiment outputs too large for git (checkpoints, ONNX, predictions)
+experiments/*/artifacts/*
+!experiments/*/artifacts/.gitkeep

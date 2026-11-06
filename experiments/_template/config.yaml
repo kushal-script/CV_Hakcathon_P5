@@ -1,0 +1,39 @@
+experiment:
+  id: "{{ID}}"
+  title: "{{TITLE}}"
+  type: "{{TYPE}}"
+  seed: 42
+
+data:
+  root: data/stanford_cars
+  split: {train: 0.9, val: 0.1, stratified: true}
+  crop: none
+  crop_padding: 0.10
+  image_size: 384
+
+model:
+  backbone: null
+  pretrained: true
+  heads: [class_196]
+
+train:
+  optimizer: adamw
+  lr: 1.0e-4
+  weight_decay: 0.05
+  epochs: 30
+  batch_size: 32
+  schedule: cosine
+  warmup_epochs: 2
+  label_smoothing: 0.1
+  augment: [random_resized_crop, hflip, randaugment, random_erasing, cutmix]
+  amp: true
+
+classical:
+  preprocess: []
+  features: []
+  classifier: null
+
+eval:
+  splits: [val]
+  tta: false
+  temperature_scaling: false
