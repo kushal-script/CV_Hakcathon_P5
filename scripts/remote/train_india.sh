@@ -21,5 +21,5 @@ OUT="$WORK/runs/$NAME/export_int8"
 mkdir -p "$OUT"
 cp "$WORK/runs/$NAME/export/classifier.onnx" "$WORK/runs/$NAME/export/classifier_meta.json" "$WORK/runs/$NAME/export/head.npz" "$OUT/"
 python scripts/quantize.py --export "$OUT" --assets "$PROJECT/assets/india" --split-csv "$PROJECT/assets/india/split.csv" \
-  --crops "$WORK/india/crops" --threads 4 --calib 320 --save-test-logits
+  --crops "$WORK/india/crops" --threads 8 --calib 320 --save-test-logits
 echo "job done: $NAME"

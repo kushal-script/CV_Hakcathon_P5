@@ -94,3 +94,5 @@
   .detail { grid-template-columns: 1fr; }
   .filters input[type=search] { width: 100%; }
 }
+.dtable select { padding: 5px 8px; border: 1px solid var(--hair-strong); border-radius: 4px; background: var(--surface); font-size: 12.5px; max-width: 220px; }
+.dtable textarea { width: 100%; }

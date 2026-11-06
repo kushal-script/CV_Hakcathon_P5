@@ -1,0 +1,4542 @@
+{
+ "generated": "2026-11-06T16:15:15+00:00",
+ "sources": [
+  {
+   "id": "bcp",
+   "name": "Bengaluru City Police: Law & Order",
+   "url": "https://bcp.karnataka.gov.in/24/law-&-order-/en",
+   "retrieved": "2026-11-06T15:40:53+00:00",
+   "note": "Authority for law-and-order, CEN and women police stations, their division and phone numbers."
+  },
+  {
+   "id": "bcp_traffic",
+   "name": "Bengaluru City Police: Traffic",
+   "url": "https://bcp.karnataka.gov.in/26/traffic-/en",
+   "retrieved": "2026-11-06T15:40:54+00:00",
+   "note": "Traffic police stations by traffic division with phone numbers, cross-checked against btp."
+  },
+  {
+   "id": "bcp_cyber",
+   "name": "Bengaluru City Police: Cyber Crime Police Station",
+   "url": "https://bcp.karnataka.gov.in/10/cyber-crime-police-station-/en",
+   "retrieved": "2026-11-06T15:40:56+00:00",
+   "note": "City-wide Cyber Crime Police Station in the Commissioner's office premises; also states that 8 CEN police stations exist."
+  },
+  {
+   "id": "bcp_overview",
+   "name": "Bengaluru City Police: Overview",
+   "url": "https://bcp.karnataka.gov.in/6/overview/en",
+   "retrieved": "2026-11-06T15:40:57+00:00",
+   "note": "States the current law-and-order divisions (zones), each headed by a DCP."
+  },
+  {
+   "id": "bcp_officers",
+   "name": "Bengaluru City Police: Senior Officers list",
+   "url": "https://bcp.karnataka.gov.in/41/-senior-officers-list-/en",
+   "retrieved": "2026-11-06T15:40:59+00:00",
+   "note": "Names a DCP for each law-and-order division (West and East zones) and for the four traffic divisions."
+  },
+  {
+   "id": "btp",
+   "name": "Bengaluru Traffic Police: Traffic Police Station Locator",
+   "url": "https://btp.karnataka.gov.in/btp_map_locations/en",
+   "retrieved": "2026-11-06T15:40:59+00:00",
+   "note": "Authority for traffic police stations, their traffic division (DCP) and phone numbers. Its coordinates break ties between OSM matches and, when they pass the checks in coordinate_rule, place stations that OSM and the geocoder do not (official_btp)."
+  },
+  {
+   "id": "ksp",
+   "name": "Karnataka State Police: Police Station Locator, Bengaluru City (linked from the BCP site)",
+   "url": "https://ksp.karnataka.gov.in/home-fetch?select=district_id&value=5&dependent=district_row_id",
+   "retrieved": "2026-11-06T15:41:00+00:00",
+   "note": "Used to link alternate official names and to corroborate OSM matches. When they pass the checks in coordinate_rule its coordinates place stations that OSM, the geocoder and the BTP locator do not (official_ksp); many of its values are invalid and are dropped. Addresses are not copied: they are cut at 45 characters at the source."
+  },
+  {
+   "id": "osm",
+   "name": "OpenStreetMap via the Overpass API (amenity=police)",
+   "url": "https://overpass-api.de/api/interpreter",
+   "retrieved": "2026-11-06T15:42:27+00:00",
+   "note": "Coordinates of matched stations; query bbox (12.7, 77.25, 13.35, 77.95) (S, W, N, E). ODbL 1.0, (c) OpenStreetMap contributors."
+  },
+  {
+   "id": "osm_boundary",
+   "name": "OpenStreetMap relation 2020589 (Bengaluru Urban)",
+   "url": "https://www.openstreetmap.org/relation/2020589",
+   "retrieved": "2026-11-06T15:45:58+00:00",
+   "note": "No OSM boundary=police relation for the Bengaluru City Police was found (Overpass search of boundary=police relations in 12.7-13.35 N, 77.25-77.95 E), so the Bengaluru Urban district boundary is used"
+  },
+  {
+   "id": "nominatim",
+   "name": "Nominatim geocoder (OpenStreetMap data)",
+   "url": "https://nominatim.openstreetmap.org/search",
+   "retrieved": "2026-11-06T15:52:23+00:00",
+   "note": "Only for official stations without an OSM match, bounded to (77.37, 12.83, 77.88, 13.15) (lon/lat); a result is kept only if its name carries the station's place and kind, and results more than 500 m apart are treated as ambiguous."
+  }
+ ],
+ "coordinate_rule": "A position comes from the matched OpenStreetMap feature (osm), else from a Nominatim result named for the station (geocoded), else from the station's BTP locator position and then its KSP locator position (official_btp, official_ksp), each accepted only if it either lies inside the Bengaluru Urban district polygon and within 8 km of the centroid of OSM-located stations in the same official division (the five-way division when that official division has fewer than 3), or lies outside the district polygon, at any distance, and within 10 km of an OSM-located station that is itself outside the district (cluster check); is not within 50 m of another station's position of the same kind in the same locator; and, for a traffic or women station, lies within 3 km of the OSM position of the law-and-order station of the same place; otherwise it is null.",
+ "divisions": [
+  {
+   "id": "central",
+   "name": "Central"
+  },
+  {
+   "id": "north",
+   "name": "North"
+  },
+  {
+   "id": "south",
+   "name": "South"
+  },
+  {
+   "id": "east",
+   "name": "East"
+  },
+  {
+   "id": "west",
+   "name": "West"
+  }
+ ],
+ "division_rule": "Official divisions named Central, North, South, East or West (including the Traffic East, West, North and South divisions) keep that name, and every other official division is assigned whole to the one of these five whose centroid, the mean coordinate of the stations with coordinates in that law-and-order division, is nearest to its own centroid.",
+ "division_centroids": {
+  "central": {
+   "centroid": [
+    12.97693,
+    77.59172
+   ],
+   "stations_with_coordinates": 11
+  },
+  "north": {
+   "centroid": [
+    13.01529,
+    77.56364
+   ],
+   "stations_with_coordinates": 13
+  },
+  "south": {
+   "centroid": [
+    12.93663,
+    77.57076
+   ],
+   "stations_with_coordinates": 11
+  },
+  "east": {
+   "centroid": [
+    12.99649,
+    77.63115
+   ],
+   "stations_with_coordinates": 13
+  },
+  "west": {
+   "centroid": [
+    12.96416,
+    77.5523
+   ],
+   "stations_with_coordinates": 14
+  }
+ },
+ "division_mapping": {
+  "Central": {
+   "division": "central",
+   "method": "same name"
+  },
+  "East": {
+   "division": "east",
+   "method": "same name"
+  },
+  "West": {
+   "division": "west",
+   "method": "same name"
+  },
+  "North": {
+   "division": "north",
+   "method": "same name"
+  },
+  "South": {
+   "division": "south",
+   "method": "same name"
+  },
+  "South East": {
+   "division": "south",
+   "method": "nearest centroid",
+   "distances_km": {
+    "central": 6.22,
+    "north": 11.41,
+    "south": 5.04,
+    "east": 7.97,
+    "west": 8.09
+   },
+   "centroid": [
+    12.92632,
+    77.61608
+   ],
+   "stations_with_coordinates": 7
+  },
+  "North East": {
+   "division": "east",
+   "method": "nearest centroid",
+   "distances_km": {
+    "central": 16.63,
+    "north": 14.02,
+    "south": 21.59,
+    "east": 13.78,
+    "west": 19.55
+   },
+   "centroid": [
+    13.12034,
+    77.63519
+   ],
+   "stations_with_coordinates": 10
+  },
+  "Whitefield": {
+   "division": "east",
+   "method": "nearest centroid",
+   "distances_km": {
+    "central": 13.0,
+    "north": 16.88,
+    "south": 15.58,
+    "east": 9.29,
+    "west": 17.22
+   },
+   "centroid": [
+    12.9666,
+    77.71122
+   ],
+   "stations_with_coordinates": 8
+  },
+  "South West": {
+   "division": "south",
+   "method": "nearest centroid",
+   "distances_km": {
+    "central": 11.49,
+    "north": 13.59,
+    "south": 6.78,
+    "east": 16.07,
+    "west": 7.87
+   },
+   "centroid": [
+    12.90066,
+    77.5202
+   ],
+   "stations_with_coordinates": 7
+  },
+  "North West": {
+   "division": "north",
+   "method": "nearest centroid",
+   "distances_km": {
+    "central": 12.46,
+    "north": 7.56,
+    "south": 14.35,
+    "east": 15.08,
+    "west": 10.69
+   },
+   "centroid": [
+    13.04683,
+    77.50185
+   ],
+   "stations_with_coordinates": 7
+  },
+  "Electronic City": {
+   "division": "south",
+   "method": "nearest centroid",
+   "distances_km": {
+    "central": 14.6,
+    "north": 19.73,
+    "south": 11.92,
+    "east": 15.75,
+    "west": 15.55
+   },
+   "centroid": [
+    12.85528,
+    77.6424
+   ],
+   "stations_with_coordinates": 4
+  },
+  "Traffic East": {
+   "division": "east",
+   "method": "same name"
+  },
+  "Traffic West": {
+   "division": "west",
+   "method": "same name"
+  },
+  "Traffic North": {
+   "division": "north",
+   "method": "same name"
+  },
+  "Traffic South": {
+   "division": "south",
+   "method": "same name"
+  }
+ },
+ "official_structure": {
+  "law_and_order_divisions": [
+   "Central",
+   "East",
+   "West",
+   "North",
+   "South",
+   "South East",
+   "North East",
+   "Whitefield",
+   "South West",
+   "North West",
+   "Electronic City"
+  ],
+  "overview_zones": [
+   "East",
+   "West",
+   "South",
+   "North",
+   "Central",
+   "South East",
+   "North East",
+   "North West",
+   "South West",
+   "Whitefield",
+   "Electronic City"
+  ],
+  "traffic_divisions": [
+   "Traffic East",
+   "Traffic North",
+   "Traffic South",
+   "Traffic West"
+  ]
+ },
+ "stations": [
+  {
+   "id": "ps-ashoknagar",
+   "name": "Ashoknagar Police Station",
+   "kind": "law_and_order",
+   "official_division": "Central",
+   "division": "central",
+   "division_inferred": false,
+   "lat": 12.971632,
+   "lon": 77.610204,
+   "coord_source": "osm",
+   "osm": "way/403473919",
+   "address": null,
+   "phone": "9480801116, 080-22942580, 080-22942076",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Ashok Nagar Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-cubbon-park",
+   "name": "Cubbon Park Police Station",
+   "kind": "law_and_order",
+   "official_division": "Central",
+   "division": "central",
+   "division_inferred": false,
+   "lat": 12.97624,
+   "lon": 77.598346,
+   "coord_source": "osm",
+   "osm": "node/428843493",
+   "address": null,
+   "phone": "9480801122, 080-22942591, 080-22942087",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Cubbon Park Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-halasuru-gate",
+   "name": "Halasuru Gate Police Station",
+   "kind": "law_and_order",
+   "official_division": "Central",
+   "division": "central",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "9480801115, 080-22942579, 080-22942075",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [
+    "Halasurgate Police Station"
+   ],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: Halasuru Gate police station); no official locator position",
+   "inside_boundary": null
+  },
+  {
+   "id": "ps-high-ground",
+   "name": "High Ground Police Station",
+   "kind": "law_and_order",
+   "official_division": "Central",
+   "division": "central",
+   "division_inferred": false,
+   "lat": 12.990059,
+   "lon": 77.592724,
+   "coord_source": "osm",
+   "osm": "way/775169696",
+   "address": null,
+   "phone": "9480801126, 080-22942587, 080-22942083",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "High Grounds Police Station"
+   ],
+   "coord_note": "OSM name match 'High Grounds Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-sj-park",
+   "name": "S.J Park Police Station",
+   "kind": "law_and_order",
+   "official_division": "Central",
+   "division": "central",
+   "division_inferred": false,
+   "lat": 12.960948,
+   "lon": 77.58313,
+   "coord_source": "osm",
+   "osm": "way/347425037",
+   "address": null,
+   "phone": "9480801119, 080-22942583, 080-22942079",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "S.J. Park Police Station"
+   ],
+   "coord_note": "OSM name match 'S.J. Park Police'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-sr-nagar",
+   "name": "S.R Nagar Police Station",
+   "kind": "law_and_order",
+   "official_division": "Central",
+   "division": "central",
+   "division_inferred": false,
+   "lat": 12.963254,
+   "lon": 77.592064,
+   "coord_source": "osm",
+   "osm": "node/2577231853",
+   "address": null,
+   "phone": "9480801117, 080-22942582, 080-22942078",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Sampangiramanagar Police Station"
+   ],
+   "coord_note": "OSM name match 'Sampangi Rama Nagar Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-sadashiva-nagar",
+   "name": "Sadashiva Nagar Police Station",
+   "kind": "law_and_order",
+   "official_division": "Central",
+   "division": "central",
+   "division_inferred": false,
+   "lat": 13.014966,
+   "lon": 77.572487,
+   "coord_source": "osm",
+   "osm": "way/772835104",
+   "address": null,
+   "phone": "9480801127, 080-22942589, 080-22942085",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Sadashivanagar Police Station"
+   ],
+   "coord_note": "OSM name match 'Sadhashivanagar Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-seshadripuram",
+   "name": "Seshadripuram Police Station",
+   "kind": "law_and_order",
+   "official_division": "Central",
+   "division": "central",
+   "division_inferred": false,
+   "lat": 12.988128,
+   "lon": 77.574432,
+   "coord_source": "osm",
+   "osm": "node/1026508950",
+   "address": null,
+   "phone": "9480801125, 080-22942586, 080-22942082",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Seshadripuram Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-vidhana-soudha",
+   "name": "Vidhana Soudha Police Station",
+   "kind": "law_and_order",
+   "official_division": "Central",
+   "division": "central",
+   "division_inferred": false,
+   "lat": 12.977373,
+   "lon": 77.588436,
+   "coord_source": "osm",
+   "osm": "node/3761248698",
+   "address": null,
+   "phone": "9480801123, 080-22942590, 080-22942086",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Vidhana Soudha Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-viveknagar",
+   "name": "Viveknagar Police Station",
+   "kind": "law_and_order",
+   "official_division": "Central",
+   "division": "central",
+   "division_inferred": false,
+   "lat": 12.951868,
+   "lon": 77.622351,
+   "coord_source": "osm",
+   "osm": "way/1153736764",
+   "address": null,
+   "phone": "9480801121, 080-22942584, 080-22942080",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Viveknagar Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-vyalikaval",
+   "name": "Vyalikaval Police Station",
+   "kind": "law_and_order",
+   "official_division": "Central",
+   "division": "central",
+   "division_inferred": false,
+   "lat": 13.001573,
+   "lon": 77.578628,
+   "coord_source": "osm",
+   "osm": "node/1462686365",
+   "address": null,
+   "phone": "9480801128, 080-22942588, 080-22942084",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Vyali Kaval Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-wilson-garden",
+   "name": "Wilson Garden Police Station",
+   "kind": "law_and_order",
+   "official_division": "Central",
+   "division": "central",
+   "division_inferred": false,
+   "lat": 12.950184,
+   "lon": 77.59612,
+   "coord_source": "osm",
+   "osm": "way/1307025478",
+   "address": null,
+   "phone": "9480801118, 080-22942581, 080-22942077",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Wilsongarden Police Station"
+   ],
+   "coord_note": "OSM name match 'Wilson Garden Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-banaswadi",
+   "name": "Banaswadi Police Station",
+   "kind": "law_and_order",
+   "official_division": "East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 13.019673,
+   "lon": 77.640156,
+   "coord_source": "osm",
+   "osm": "way/1366656620",
+   "address": null,
+   "phone": "9480801222, 080-22942552, 080-25453103",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Banaswadi Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-bharathinagar",
+   "name": "Bharathinagar Police Station",
+   "kind": "law_and_order",
+   "official_division": "East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 12.991198,
+   "lon": 77.612084,
+   "coord_source": "osm",
+   "osm": "way/1377007431",
+   "address": null,
+   "phone": "9480801216, 080-22942547, 080-25366393",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Bharathi Nagar Police Station"
+   ],
+   "coord_note": "OSM name match 'Bharthinagar Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-byappanahalli",
+   "name": "Byappanahalli Police Station",
+   "kind": "law_and_order",
+   "official_division": "East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 12.991735,
+   "lon": 77.657343,
+   "coord_source": "osm",
+   "osm": "way/1354126975",
+   "address": null,
+   "phone": "9480801227, 080-22942545, 080-25243800",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Baiyyapannahalli Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-commercial-street",
+   "name": "Commercial Street Police Station",
+   "kind": "law_and_order",
+   "official_division": "East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 12.98257,
+   "lon": 77.607098,
+   "coord_source": "osm",
+   "osm": "node/1474302941",
+   "address": null,
+   "phone": "9480801218, 080-22942549, 080-25587880",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Commercial Street Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-dj-halli",
+   "name": "D.J.Halli Police Station",
+   "kind": "law_and_order",
+   "official_division": "East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 13.011415,
+   "lon": 77.613093,
+   "coord_source": "osm",
+   "osm": "way/1202598212",
+   "address": null,
+   "phone": "9480801220, 080-22942550, 080-25466413",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Devarajeevanahalli Police Station"
+   ],
+   "coord_note": "OSM name match 'DJ Halli Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-govindrajpura",
+   "name": "Govindrajpura Police Station",
+   "kind": "law_and_order",
+   "official_division": "East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "9480801024, 080-22943305",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [
+    "Govindapura Police Station"
+   ],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: Govindrajpura police station; Govindapura police station); no official locator position",
+   "inside_boundary": null
+  },
+  {
+   "id": "ps-halasuru",
+   "name": "Halasuru Police Station",
+   "kind": "law_and_order",
+   "official_division": "East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 12.974781,
+   "lon": 77.625278,
+   "coord_source": "osm",
+   "osm": "way/369295553",
+   "address": null,
+   "phone": "9480801226, 080-22942540",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Halasur Police Station"
+   ],
+   "coord_note": "OSM name match 'Halasuru Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-hennuru",
+   "name": "Hennuru Police Station",
+   "kind": "law_and_order",
+   "official_division": "East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 13.02377,
+   "lon": 77.645771,
+   "coord_source": "osm",
+   "osm": "node/2475357989",
+   "address": null,
+   "phone": "9480801225, 080-22942557, 080-25442250",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Hennur Police Station"
+   ],
+   "coord_note": "OSM name match 'Hennur Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-indiranagar",
+   "name": "Indiranagar Police Station",
+   "kind": "law_and_order",
+   "official_division": "East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 12.983025,
+   "lon": 77.638406,
+   "coord_source": "osm",
+   "osm": "way/331352075",
+   "address": null,
+   "phone": "9480801228, 080-22942541, 080-25257371",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Indira Nagar Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-jb-nagar",
+   "name": "J.B.Nagar Police Station",
+   "kind": "law_and_order",
+   "official_division": "East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 12.967771,
+   "lon": 77.655694,
+   "coord_source": "osm",
+   "osm": "node/940525605",
+   "address": null,
+   "phone": "9480801229, 080-22942543, 080-25264352",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Jeevan Bheemanagar Police Station"
+   ],
+   "coord_note": "OSM name match 'Jeevan Bhima Nagar Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-kg-halli",
+   "name": "K.G.Halli Police Station",
+   "kind": "law_and_order",
+   "official_division": "East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 13.019412,
+   "lon": 77.619238,
+   "coord_source": "osm",
+   "osm": "way/1416675135",
+   "address": null,
+   "phone": "9480801223, 080-22942556, 080-25474595",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Kadugondana Halli Police Station"
+   ],
+   "coord_note": "OSM name match 'Kadugondanahalli Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-pulakeshinagar",
+   "name": "Pulakeshinagar Police Station",
+   "kind": "law_and_order",
+   "official_division": "East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 12.999347,
+   "lon": 77.619613,
+   "coord_source": "osm",
+   "osm": "way/1107016495",
+   "address": null,
+   "phone": "9480801215, 080-22942548, 080-25487365",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Pulakeshi Nagar Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-ramamurthy-nagar",
+   "name": "Ramamurthy Nagar Police Station",
+   "kind": "law_and_order",
+   "official_division": "East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 13.004188,
+   "lon": 77.665939,
+   "coord_source": "osm",
+   "osm": "node/6991301269",
+   "address": null,
+   "phone": "9480801224, 080-22942554, 080-25650222",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Ramamurthy Nagar Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-shivajinagar",
+   "name": "Shivajinagar Police Station",
+   "kind": "law_and_order",
+   "official_division": "East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 12.98551,
+   "lon": 77.60525,
+   "coord_source": "official_ksp",
+   "osm": null,
+   "address": null,
+   "phone": "9480801219, 080-22942597, 080-25368597",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match or geocode; KSP locator position 12.985510,77.605250: inside the district boundary, 3.32 km from the centroid of 12 OSM-located stations in East: accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-bandepalya",
+   "name": "Bandepalya Police Station",
+   "kind": "law_and_order",
+   "official_division": "Electronic City",
+   "division": "south",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "9480801078, 080-22942236",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: Bandepalya police station); no official locator position",
+   "inside_boundary": null
+  },
+  {
+   "id": "ps-beguru",
+   "name": "Beguru Police Station",
+   "kind": "law_and_order",
+   "official_division": "Electronic City",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.87812,
+   "lon": 77.62435,
+   "coord_source": "official_ksp",
+   "osm": null,
+   "address": null,
+   "phone": "9480801217, 080-22942551",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match or geocode; KSP locator position 12.878120,77.624350: inside the district boundary, 4.28 km from the centroid of 3 OSM-located stations in Electronic City: accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-electronic-city",
+   "name": "Electronic City Police Station",
+   "kind": "law_and_order",
+   "official_division": "Electronic City",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.839963,
+   "lon": 77.663139,
+   "coord_source": "osm",
+   "osm": "node/459436210",
+   "address": null,
+   "phone": "9480801623, 080-22943469",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Electronics City Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-hebbagodi",
+   "name": "Hebbagodi Police Station",
+   "kind": "law_and_order",
+   "official_division": "Electronic City",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.826365,
+   "lon": 77.682085,
+   "coord_source": "osm",
+   "osm": "node/283650908",
+   "address": null,
+   "phone": "9480802451, 080-27832922",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Hebbagodi Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-hulimavu",
+   "name": "Hulimavu Police Station",
+   "kind": "law_and_order",
+   "official_division": "Electronic City",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.87667,
+   "lon": 77.600042,
+   "coord_source": "osm",
+   "osm": "node/1918889488",
+   "address": null,
+   "phone": "9480801622, 080-22943470",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Hulimavu Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-parappana-agrahara",
+   "name": "Parappana Agrahara Police Station",
+   "kind": "law_and_order",
+   "official_division": "Electronic City",
+   "division": "south",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "9480801627, 080-22943468",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: Parappana Agrahara police station); no official locator position",
+   "inside_boundary": null
+  },
+  {
+   "id": "ps-hebbala",
+   "name": "Hebbala Police Station",
+   "kind": "law_and_order",
+   "official_division": "North",
+   "division": "north",
+   "division_inferred": false,
+   "lat": 13.038619,
+   "lon": 77.589624,
+   "coord_source": "osm",
+   "osm": "node/1299725537",
+   "address": null,
+   "phone": "9480801331, 080-22942535",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Hebbal Police Station"
+   ],
+   "coord_note": "OSM name match 'Hebbal Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-jc-nagar",
+   "name": "J.C.Nagar Police Station",
+   "kind": "law_and_order",
+   "official_division": "North",
+   "division": "north",
+   "division_inferred": false,
+   "lat": 13.005717,
+   "lon": 77.593412,
+   "coord_source": "osm",
+   "osm": "node/5862563586",
+   "address": null,
+   "phone": "9480801329, 080-22942534",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "J.C. Nagar Police Station"
+   ],
+   "coord_note": "OSM name match 'JC Nagara Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-jalahalli",
+   "name": "Jalahalli Police Station",
+   "kind": "law_and_order",
+   "official_division": "North",
+   "division": "north",
+   "division_inferred": false,
+   "lat": 13.048648,
+   "lon": 77.549567,
+   "coord_source": "osm",
+   "osm": "node/521144416",
+   "address": null,
+   "phone": "9480801323, 080-22942527",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Jalahalli Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-mahalakshmi-layout",
+   "name": "Mahalakshmi Layout Police Station",
+   "kind": "law_and_order",
+   "official_division": "North",
+   "division": "north",
+   "division_inferred": false,
+   "lat": 13.002841,
+   "lon": 77.547416,
+   "coord_source": "osm",
+   "osm": "way/781541656",
+   "address": null,
+   "phone": "9480801318, 080-22942523",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Mahalakshmipuram Police Station"
+   ],
+   "coord_note": "OSM name match 'Mahalakshmipuram Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-malleshwaram",
+   "name": "Malleshwaram Police Station",
+   "kind": "law_and_order",
+   "official_division": "North",
+   "division": "north",
+   "division_inferred": false,
+   "lat": 12.996681,
+   "lon": 77.569671,
+   "coord_source": "osm",
+   "osm": "node/428857750",
+   "address": null,
+   "phone": "9480801315, 080-22942519",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Maleshwaram Police station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-nandini-layout",
+   "name": "Nandini Layout Police Station",
+   "kind": "law_and_order",
+   "official_division": "North",
+   "division": "north",
+   "division_inferred": false,
+   "lat": 13.012468,
+   "lon": 77.536829,
+   "coord_source": "osm",
+   "osm": "node/2090827123",
+   "address": null,
+   "phone": "9480801317, 080-22942539",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Nandini Layout Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-rmc-yard",
+   "name": "R.M.C Yard Police Station",
+   "kind": "law_and_order",
+   "official_division": "North",
+   "division": "north",
+   "division_inferred": false,
+   "lat": 13.02977,
+   "lon": 77.54024,
+   "coord_source": "official_ksp",
+   "osm": null,
+   "address": null,
+   "phone": "9480801325, 080-22942531",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [
+    "R.M.C. Yard Police Station"
+   ],
+   "coord_note": "no OSM match or geocode; KSP locator position 13.029770,77.540240: inside the district boundary, 3.25 km from the centroid of 12 OSM-located stations in North: accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-rt-nagar",
+   "name": "R.T.Nagar Police Station",
+   "kind": "law_and_order",
+   "official_division": "North",
+   "division": "north",
+   "division_inferred": false,
+   "lat": 13.024685,
+   "lon": 77.593196,
+   "coord_source": "osm",
+   "osm": "way/1386042651",
+   "address": null,
+   "phone": "9480801330, 080-22942538",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "R.T. Nagar Police Station"
+   ],
+   "coord_note": "OSM name match 'RT Nagar Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-rajajinagar",
+   "name": "Rajajinagar Police Station",
+   "kind": "law_and_order",
+   "official_division": "North",
+   "division": "north",
+   "division_inferred": false,
+   "lat": 12.99461,
+   "lon": 77.554366,
+   "coord_source": "osm",
+   "osm": "way/1111108766",
+   "address": null,
+   "phone": "9480801316, 080-22942522",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Rajaji Nagar Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-sanjayanagar",
+   "name": "Sanjayanagar Police Station",
+   "kind": "law_and_order",
+   "official_division": "North",
+   "division": "north",
+   "division_inferred": false,
+   "lat": 13.033459,
+   "lon": 77.575922,
+   "coord_source": "osm",
+   "osm": "node/966862788",
+   "address": null,
+   "phone": "9480801332, 080-22942533",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Sanjay Nagar Police Station"
+   ],
+   "coord_note": "OSM name match 'Sanjayanagar Police station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-srirampura",
+   "name": "Srirampura Police Station",
+   "kind": "law_and_order",
+   "official_division": "North",
+   "division": "north",
+   "division_inferred": false,
+   "lat": 12.99005,
+   "lon": 77.564937,
+   "coord_source": "osm",
+   "osm": "way/271785239",
+   "address": null,
+   "phone": "9480801321, 080-22942520",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Srirampura Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-subramanya-nagar",
+   "name": "Subramanya Nagar Police Station",
+   "kind": "law_and_order",
+   "official_division": "North",
+   "division": "north",
+   "division_inferred": false,
+   "lat": 13.003374,
+   "lon": 77.553759,
+   "coord_source": "osm",
+   "osm": "way/1370050102",
+   "address": null,
+   "phone": "9480801320, 080-22942524",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Subramanyanagar Police Station"
+   ],
+   "coord_note": "OSM name match 'Subramanyanagar Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-yeshwanthapura",
+   "name": "Yeshwanthapura Police Station",
+   "kind": "law_and_order",
+   "official_division": "North",
+   "division": "north",
+   "division_inferred": false,
+   "lat": 13.017886,
+   "lon": 77.558418,
+   "coord_source": "osm",
+   "osm": "way/1087700050",
+   "address": null,
+   "phone": "9480801322, 080-22942526",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Yeshwantpura Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-amruthahalli",
+   "name": "Amruthahalli Police Station",
+   "kind": "law_and_order",
+   "official_division": "North East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 13.05693,
+   "lon": 77.59853,
+   "coord_source": "osm",
+   "osm": "way/346481825",
+   "address": null,
+   "phone": "9480801417, 080-22943644",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Amruthahally Police Station"
+   ],
+   "coord_note": "OSM name match 'Amrutahalli Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-bhagaluru",
+   "name": "Bhagaluru Police Station",
+   "kind": "law_and_order",
+   "official_division": "North East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 13.140103,
+   "lon": 77.670434,
+   "coord_source": "osm",
+   "osm": "way/1187884325",
+   "address": null,
+   "phone": "9480801418, 080-28469100",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Bagalur Police Station"
+   ],
+   "coord_note": "OSM name match 'Bagaluru Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-chikkajala",
+   "name": "Chikkajala Police Station",
+   "kind": "law_and_order",
+   "official_division": "North East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 13.17329,
+   "lon": 77.63321,
+   "coord_source": "official_ksp",
+   "osm": null,
+   "address": null,
+   "phone": "9480801419, 080-28467200",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match or geocode; KSP locator position 13.173290,77.633210: inside the district boundary, 7.98 km from the centroid of 6 OSM-located stations in North East: accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-devanahalli",
+   "name": "Devanahalli Police Station",
+   "kind": "law_and_order",
+   "official_division": "North East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 13.24548,
+   "lon": 77.71238,
+   "coord_source": "official_ksp",
+   "osm": null,
+   "address": null,
+   "phone": "9480801420, 080-27680333",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match or geocode; KSP locator position 13.245480,77.712380: 5.28 km outside the district boundary (boundary check waived by the cluster check), cluster check 5.19 km from International Airport Police Station (OSM, outside the district): accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-international-airport",
+   "name": "International Airport Police Station",
+   "kind": "law_and_order",
+   "official_division": "North East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 13.199223,
+   "lon": 77.705658,
+   "coord_source": "osm",
+   "osm": "way/474302061",
+   "address": null,
+   "phone": "9480801421, 080-22001102",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "BIAL Police Station"
+   ],
+   "coord_note": "OSM unnamed or generic feature 'Police Station' 37 m from the ksp coordinate",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-kodigehalli",
+   "name": "Kodigehalli Police Station",
+   "kind": "law_and_order",
+   "official_division": "North East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 13.062197,
+   "lon": 77.574109,
+   "coord_source": "osm",
+   "osm": "node/2340693281",
+   "address": null,
+   "phone": "9480801422, 080-22943703",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Kodigehalli Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-kothanuru",
+   "name": "Kothanuru Police Station",
+   "kind": "law_and_order",
+   "official_division": "North East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 13.055514,
+   "lon": 77.646326,
+   "coord_source": "osm",
+   "osm": "way/537716165",
+   "address": null,
+   "phone": "9480801423, 080-22943694",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Kothanur Police Station"
+   ],
+   "coord_note": "OSM name match 'Kothanur Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-sampigehalli",
+   "name": "Sampigehalli Police Station",
+   "kind": "law_and_order",
+   "official_division": "North East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 13.07533,
+   "lon": 77.63334,
+   "coord_source": "official_ksp",
+   "osm": null,
+   "address": null,
+   "phone": "9480801424, 080-22943692, 080-22746458",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match or geocode; KSP locator position 13.075330,77.633340: inside the district boundary, 2.92 km from the centroid of 6 OSM-located stations in North East: accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-vidyaranyapura",
+   "name": "Vidyaranyapura Police Station",
+   "kind": "law_and_order",
+   "official_division": "North East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "9480801327, 080-22942528",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: Vidyaranyapura police station); KSP locator position 12.969020,77.512480 not used: within 0 m of the KSP position of 'Annapoorneshwari Nagar PS'",
+   "inside_boundary": null
+  },
+  {
+   "id": "ps-yelahanka-new-town",
+   "name": "Yelahanka New Town Police Station",
+   "kind": "law_and_order",
+   "official_division": "North East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 13.09994,
+   "lon": 77.5841,
+   "coord_source": "official_ksp",
+   "osm": null,
+   "address": null,
+   "phone": "9480801416, 080-22942537",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match or geocode; KSP locator position 13.099940,77.584100: inside the district boundary, 5.13 km from the centroid of 6 OSM-located stations in North East: accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-yelahanka",
+   "name": "Yelahanka Police Station",
+   "kind": "law_and_order",
+   "official_division": "North East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 13.095358,
+   "lon": 77.59381,
+   "coord_source": "osm",
+   "osm": "way/774716173",
+   "address": null,
+   "phone": "9480801415, 080-22942536",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Yelahanka Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-bagalgunte",
+   "name": "Bagalgunte Police Station",
+   "kind": "law_and_order",
+   "official_division": "North West",
+   "division": "north",
+   "division_inferred": false,
+   "lat": 13.05955,
+   "lon": 77.50366,
+   "coord_source": "official_ksp",
+   "osm": null,
+   "address": null,
+   "phone": "9480801547, 080-28396900",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [
+    "Bagalagunte Police Station"
+   ],
+   "coord_note": "no OSM match or geocode; KSP locator position 13.059550,77.503660: inside the district boundary, 1.47 km from the centroid of 4 OSM-located stations in North West: accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-byadralli",
+   "name": "Byadralli Police Station",
+   "kind": "law_and_order",
+   "official_division": "North West",
+   "division": "north",
+   "division_inferred": false,
+   "lat": 12.986768,
+   "lon": 77.491253,
+   "coord_source": "osm",
+   "osm": "node/4518518597",
+   "address": null,
+   "phone": "9480801550, 080-22943002",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Byadarahalli Police Station"
+   ],
+   "coord_note": "OSM name match 'Byadarahalli Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-gangammanagudi",
+   "name": "Gangammanagudi Police Station",
+   "kind": "law_and_order",
+   "official_division": "North West",
+   "division": "north",
+   "division_inferred": false,
+   "lat": 13.072097,
+   "lon": 77.530192,
+   "coord_source": "osm",
+   "osm": "way/628639504",
+   "address": null,
+   "phone": "9480801326, 080-22942530",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Gangammana Gudi Police Station"
+   ],
+   "coord_note": "OSM near spelling feature 'Gangammagudi Police Station' 23 m from the ksp coordinate",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-madanayakanahalli",
+   "name": "Madanayakanahalli Police Station",
+   "kind": "law_and_order",
+   "official_division": "North West",
+   "division": "north",
+   "division_inferred": false,
+   "lat": 13.06221,
+   "lon": 77.46233,
+   "coord_source": "official_ksp",
+   "osm": null,
+   "address": null,
+   "phone": "9480802472, 080-23713699",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [
+    "Madanayakanahally Police Station"
+   ],
+   "coord_note": "no OSM match or geocode; KSP locator position 13.062210,77.462330: inside the district boundary, 5.26 km from the centroid of 4 OSM-located stations in North West: accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-peenya",
+   "name": "Peenya Police Station",
+   "kind": "law_and_order",
+   "official_division": "North West",
+   "division": "north",
+   "division_inferred": false,
+   "lat": 13.036011,
+   "lon": 77.521185,
+   "coord_source": "osm",
+   "osm": "node/1794656846",
+   "address": null,
+   "phone": "9480801324, 080-22942532",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Peenya Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-rajagopal-nagar",
+   "name": "Rajagopal Nagar Police Station",
+   "kind": "law_and_order",
+   "official_division": "North West",
+   "division": "north",
+   "division_inferred": false,
+   "lat": 13.01735,
+   "lon": 77.51357,
+   "coord_source": "official_ksp",
+   "osm": null,
+   "address": null,
+   "phone": "9480801319, 080-22942525",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match or geocode; KSP locator position 13.017350,77.513570: inside the district boundary, 3.36 km from the centroid of 4 OSM-located stations in North West: accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-rajanakunte",
+   "name": "Rajanakunte Police Station",
+   "kind": "law_and_order",
+   "official_division": "North West",
+   "division": "north",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "9480802457, 080-28468936",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [
+    "Rajanukunte Police Station"
+   ],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: Rajanakunte police station); no official locator position",
+   "inside_boundary": null
+  },
+  {
+   "id": "ps-soladevanahalli",
+   "name": "Soladevanahalli Police Station",
+   "kind": "law_and_order",
+   "official_division": "North West",
+   "division": "north",
+   "division_inferred": false,
+   "lat": 13.093794,
+   "lon": 77.490758,
+   "coord_source": "osm",
+   "osm": "way/348159485",
+   "address": null,
+   "phone": "9480801328, 080-28394805",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Soladevanahalli Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-banashankari",
+   "name": "Banashankari Police Station",
+   "kind": "law_and_order",
+   "official_division": "South",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.922912,
+   "lon": 77.565005,
+   "coord_source": "osm",
+   "osm": "node/2123630629",
+   "address": null,
+   "phone": "9480801527, 080-22942564",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Banashankari Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-basavanagudi",
+   "name": "Basavanagudi Police Station",
+   "kind": "law_and_order",
+   "official_division": "South",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.942187,
+   "lon": 77.574333,
+   "coord_source": "osm",
+   "osm": "way/1330344687",
+   "address": null,
+   "phone": "9480801516, 080-22942561",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Basavangudi Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-ck-acchukattu",
+   "name": "C K Acchukattu Police Station",
+   "kind": "law_and_order",
+   "official_division": "South",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.930133,
+   "lon": 77.560604,
+   "coord_source": "osm",
+   "osm": "node/4444115045",
+   "address": null,
+   "phone": "9480801532, 080-22943483",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Channammanakere Achu Kattu Police Station"
+   ],
+   "coord_note": "OSM name match 'Chennamanakere Achukattu Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-giri-nagar",
+   "name": "Giri Nagar Police Station",
+   "kind": "law_and_order",
+   "official_division": "South",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.935917,
+   "lon": 77.543968,
+   "coord_source": "osm",
+   "osm": "node/953626886",
+   "address": null,
+   "phone": "9480801528, 080-22942577",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Girinagar Police Station"
+   ],
+   "coord_note": "OSM name match 'Girinagar Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-hanumantha-nagara",
+   "name": "Hanumantha Nagara Police Station",
+   "kind": "law_and_order",
+   "official_division": "South",
+   "division": "south",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "9480801524, 080-22942576",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [
+    "Hanumanthanagar Police Station"
+   ],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: Hanumantha Nagara police station); no official locator position",
+   "inside_boundary": null
+  },
+  {
+   "id": "ps-jp-nagar",
+   "name": "J.P.Nagar Police Station",
+   "kind": "law_and_order",
+   "official_division": "South",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.911851,
+   "lon": 77.587541,
+   "coord_source": "osm",
+   "osm": "way/347236620",
+   "address": null,
+   "phone": "9480801517, 080-22942563",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Jayaprakash Nagar Police Station"
+   ],
+   "coord_note": "OSM name match 'JP Nagar Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-jayanagar",
+   "name": "Jayanagar Police Station",
+   "kind": "law_and_order",
+   "official_division": "South",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.928565,
+   "lon": 77.581366,
+   "coord_source": "osm",
+   "osm": "node/303925790",
+   "address": null,
+   "phone": "9480801515, 080-22942562",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Jayanagar 4th Block Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-kg-nagar",
+   "name": "K G Nagar Police Station",
+   "kind": "law_and_order",
+   "official_division": "South",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.94916,
+   "lon": 77.56318,
+   "coord_source": "official_ksp",
+   "osm": null,
+   "address": null,
+   "phone": "9480801525, 080-22942578",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [
+    "Kempegowda Nagar Police Station"
+   ],
+   "coord_note": "no OSM match or geocode; KSP locator position 12.949160,77.563180: inside the district boundary, 2.05 km from the centroid of 9 OSM-located stations in South: accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-puttenahalli",
+   "name": "Puttenahalli Police Station",
+   "kind": "law_and_order",
+   "official_division": "South",
+   "division": "south",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "9480801523, 080-22942566",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: Puttenahalli police station); no official locator position",
+   "inside_boundary": null
+  },
+  {
+   "id": "ps-shankarapuram",
+   "name": "Shankarapuram Police Station",
+   "kind": "law_and_order",
+   "official_division": "South",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.953873,
+   "lon": 77.570101,
+   "coord_source": "osm",
+   "osm": "node/1791567417",
+   "address": null,
+   "phone": "9480801526, 080-22942558",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Shankarpura Police Station"
+   ],
+   "coord_note": "OSM name match 'Shankarapuram Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-siddapura",
+   "name": "Siddapura Police Station",
+   "kind": "law_and_order",
+   "official_division": "South",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.938872,
+   "lon": 77.59238,
+   "coord_source": "osm",
+   "osm": "way/131396829",
+   "address": null,
+   "phone": "9480801519, 080-22942572",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Siddapura Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-vv-puram",
+   "name": "V V Puram Police Station",
+   "kind": "law_and_order",
+   "official_division": "South",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.960181,
+   "lon": 77.571999,
+   "coord_source": "official_ksp",
+   "osm": null,
+   "address": null,
+   "phone": "9480801522, 080-22942574",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [
+    "Vishveshwarapuram Police Station"
+   ],
+   "coord_note": "no OSM match or geocode; KSP locator position 12.960181,77.571999: inside the district boundary, 3.07 km from the centroid of 9 OSM-located stations in South: accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-adugodi",
+   "name": "Adugodi Police Station",
+   "kind": "law_and_order",
+   "official_division": "South East",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.939227,
+   "lon": 77.610171,
+   "coord_source": "osm",
+   "osm": "way/1084382251",
+   "address": null,
+   "phone": "9480801518, 080-22942573",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Adugodi Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-bommanahalli",
+   "name": "Bommanahalli Police Station",
+   "kind": "law_and_order",
+   "official_division": "South East",
+   "division": "south",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "9480801544, 080-22942269",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: Bommanahalli police station); no official locator position",
+   "inside_boundary": null
+  },
+  {
+   "id": "ps-hsr-layout",
+   "name": "H.S.R Layout Police Station",
+   "kind": "law_and_order",
+   "official_division": "South East",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.920177,
+   "lon": 77.651303,
+   "coord_source": "osm",
+   "osm": "way/610388969",
+   "address": null,
+   "phone": "9480801626, 080-22943467",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "HSR Layout Police Station"
+   ],
+   "coord_note": "OSM name match 'HSR Police station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-koramangala",
+   "name": "Koramangala Police Station",
+   "kind": "law_and_order",
+   "official_division": "South East",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.941098,
+   "lon": 77.621411,
+   "coord_source": "osm",
+   "osm": "way/1099882755",
+   "address": null,
+   "phone": "9480801625, 080-22942570",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Koramangala Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-madivala",
+   "name": "Madivala Police Station",
+   "kind": "law_and_order",
+   "official_division": "South East",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.921017,
+   "lon": 77.620662,
+   "coord_source": "official_ksp",
+   "osm": null,
+   "address": null,
+   "phone": "9480801624, 080-22942568",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match or geocode; KSP locator position 12.921017,77.620662: inside the district boundary, 0.83 km from the centroid of 5 OSM-located stations in South East: accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-mico-layout",
+   "name": "Mico Layout Police Station",
+   "kind": "law_and_order",
+   "official_division": "South East",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.908585,
+   "lon": 77.610698,
+   "coord_source": "osm",
+   "osm": "way/349794011",
+   "address": null,
+   "phone": "9480801620, 080-22942569",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Mico Layout Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-suddaguntepalya",
+   "name": "Suddaguntepalya Police Station",
+   "kind": "law_and_order",
+   "official_division": "South East",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.92579,
+   "lon": 77.60775,
+   "coord_source": "official_ksp",
+   "osm": null,
+   "address": null,
+   "phone": "9480801425, 080-22942762",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match or geocode; KSP locator position 12.925790,77.607750: inside the district boundary, 1.00 km from the centroid of 5 OSM-located stations in South East: accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-thilakanagar",
+   "name": "Thilakanagar Police Station",
+   "kind": "law_and_order",
+   "official_division": "South East",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.928367,
+   "lon": 77.590569,
+   "coord_source": "osm",
+   "osm": "node/691164726",
+   "address": null,
+   "phone": "9480801621, 080-22942571",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Thilaknagar Police Station"
+   ],
+   "coord_note": "OSM name match 'Tilaknagar Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-jnanabharathi",
+   "name": "Jnanabharathi Police Station",
+   "kind": "law_and_order",
+   "official_division": "South West",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.95055,
+   "lon": 77.50027,
+   "coord_source": "official_ksp",
+   "osm": null,
+   "address": null,
+   "phone": "9480801723, 080-22942513",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match or geocode; KSP locator position 12.950550,77.500270: inside the district boundary, 6.99 km from the centroid of 5 OSM-located stations in South West: accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-ks-layout",
+   "name": "KS Layout Police Station",
+   "kind": "law_and_order",
+   "official_division": "South West",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.905094,
+   "lon": 77.562955,
+   "coord_source": "osm",
+   "osm": "way/1148268346",
+   "address": null,
+   "phone": "9480801531, 080-22942567",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Kumaraswamy Layout Police Station"
+   ],
+   "coord_note": "OSM name match 'Kumaraswamy Layout Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-kengeri",
+   "name": "Kengeri Police Station",
+   "kind": "law_and_order",
+   "official_division": "South West",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.910491,
+   "lon": 77.481543,
+   "coord_source": "osm",
+   "osm": "node/11248318176",
+   "address": null,
+   "phone": "9480801724, 080-22942510",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Kengeri Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-konanakunte",
+   "name": "Konanakunte Police Station",
+   "kind": "law_and_order",
+   "official_division": "South West",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.883835,
+   "lon": 77.566363,
+   "coord_source": "osm",
+   "osm": "way/1176579523",
+   "address": null,
+   "phone": "9480801520, 080-22942560",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Konanakunte Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-kumbalagodu",
+   "name": "Kumbalagodu Police Station",
+   "kind": "law_and_order",
+   "official_division": "South West",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.884217,
+   "lon": 77.449857,
+   "coord_source": "osm",
+   "osm": "way/1050574678",
+   "address": null,
+   "phone": "9480802808, 080-28437599",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Kumbalagudu Police Station"
+   ],
+   "coord_note": "OSM name match 'Kumbalagodu Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-subramanyapura",
+   "name": "Subramanyapura Police Station",
+   "kind": "law_and_order",
+   "official_division": "South West",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.901516,
+   "lon": 77.544093,
+   "coord_source": "geocoded",
+   "osm": null,
+   "address": null,
+   "phone": "9480801529, 080-22942565",
+   "sources": [
+    "bcp",
+    "ksp",
+    "nominatim"
+   ],
+   "aliases": [],
+   "coord_note": "Nominatim result highway=bus_stop 'Subramanyapura Police Station' (node/11602243184) for query 'Subramanyapura police station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-talaghattapura",
+   "name": "Talaghattapura Police Station",
+   "kind": "law_and_order",
+   "official_division": "South West",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.868946,
+   "lon": 77.536285,
+   "coord_source": "osm",
+   "osm": "node/4457764089",
+   "address": null,
+   "phone": "9480801075, 080-22942359",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Thalaghattapura Police Station"
+   ],
+   "coord_note": "OSM name match 'Thalaghattapura Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-annapurneshwari-nagar",
+   "name": "Annapurneshwari Nagar Police Station",
+   "kind": "law_and_order",
+   "official_division": "West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "9480801715, 080-23482644",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [
+    "Annapoorneshwari Nagar Police Station"
+   ],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: Annapurneshwari Nagar police station); KSP locator position 12.969020,77.512480 not used: within 0 m of the KSP position of 'Vidyaranyapura PS'",
+   "inside_boundary": null
+  },
+  {
+   "id": "ps-basaveshwara-nagar",
+   "name": "Basaveshwara Nagar Police Station",
+   "kind": "law_and_order",
+   "official_division": "West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": 12.985417,
+   "lon": 77.542602,
+   "coord_source": "osm",
+   "osm": "way/1458729111",
+   "address": null,
+   "phone": "9480801729, 080-22942516",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Basaveshwaranagar Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-byatarayanapura",
+   "name": "Byatarayanapura Police Station",
+   "kind": "law_and_order",
+   "official_division": "West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": 12.9514,
+   "lon": 77.54012,
+   "coord_source": "official_ksp",
+   "osm": null,
+   "address": null,
+   "phone": "9480801721, 080-22942507",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match or geocode; KSP locator position 12.951400,77.540120: inside the district boundary, 1.58 km from the centroid of 9 OSM-located stations in West: accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-chamarajpete",
+   "name": "Chamarajpete Police Station",
+   "kind": "law_and_order",
+   "official_division": "West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": 12.960477,
+   "lon": 77.56432,
+   "coord_source": "osm",
+   "osm": "node/1789726678",
+   "address": null,
+   "phone": "9480801521, 080-22942575",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Chamarajpet Police Station"
+   ],
+   "coord_note": "OSM name match 'Chamarajapet Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-chandra-layout",
+   "name": "Chandra Layout Police Station",
+   "kind": "law_and_order",
+   "official_division": "West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": 12.958931,
+   "lon": 77.528382,
+   "coord_source": "osm",
+   "osm": "node/11917792343",
+   "address": null,
+   "phone": "9480801722, 080-22942512",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Chandra Layout Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-city-market",
+   "name": "City Market Police Station",
+   "kind": "law_and_order",
+   "official_division": "West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": 12.96494,
+   "lon": 77.576188,
+   "coord_source": "osm",
+   "osm": "node/1843611471",
+   "address": null,
+   "phone": "9480801717, 080-22942506",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM alternative name match 'Krishna Rajendra Market Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-cottonpete",
+   "name": "Cottonpete Police Station",
+   "kind": "law_and_order",
+   "official_division": "West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": 12.968092,
+   "lon": 77.570094,
+   "coord_source": "osm",
+   "osm": "node/1806966026",
+   "address": null,
+   "phone": "9480801719, 080-22942508",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Cottonpet Police Station"
+   ],
+   "coord_note": "OSM name match 'Cottenpet Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-govindarajanagar",
+   "name": "Govindarajanagar Police Station",
+   "kind": "law_and_order",
+   "official_division": "West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "9480801049, 080-22942283",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [
+    "Govindaraja Nagar Police Station"
+   ],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: Govindarajanagar police station); no official locator position",
+   "inside_boundary": null
+  },
+  {
+   "id": "ps-jj-nagar",
+   "name": "J.J.Nagar Police Station",
+   "kind": "law_and_order",
+   "official_division": "West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": 12.964359,
+   "lon": 77.555159,
+   "coord_source": "osm",
+   "osm": "node/4101097589",
+   "address": null,
+   "phone": "9480801720, 080-22942509",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Jagajeevanram Nagar Police Station"
+   ],
+   "coord_note": "OSM near spelling feature 'J J R Nagar Police station' 32 m from the ksp coordinate",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-kp-agrahara",
+   "name": "K.P.Agrahara Police Station",
+   "kind": "law_and_order",
+   "official_division": "West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": 12.97251,
+   "lon": 77.56158,
+   "coord_source": "official_ksp",
+   "osm": null,
+   "address": null,
+   "phone": "9480801730, 080-22942518",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [
+    "Kempapura Agrahara Police Station"
+   ],
+   "coord_note": "no OSM match or geocode; KSP locator position 12.972510,77.561580: inside the district boundary, 1.73 km from the centroid of 9 OSM-located stations in West: accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-kalasipalya",
+   "name": "Kalasipalya Police Station",
+   "kind": "law_and_order",
+   "official_division": "West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": 12.95737,
+   "lon": 77.57736,
+   "coord_source": "official_ksp",
+   "osm": null,
+   "address": null,
+   "phone": "9480801718, 080-22942504",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match or geocode; KSP locator position 12.957370,77.577360: inside the district boundary, 3.06 km from the centroid of 9 OSM-located stations in West: accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-kamakshipalya",
+   "name": "Kamakshipalya Police Station",
+   "kind": "law_and_order",
+   "official_division": "West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": 12.98222,
+   "lon": 77.53202,
+   "coord_source": "official_ksp",
+   "osm": null,
+   "address": null,
+   "phone": "9480801728, 080-22942517",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match or geocode; KSP locator position 12.982220,77.532020: inside the district boundary, 2.92 km from the centroid of 9 OSM-located stations in West: accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-magadi-road",
+   "name": "Magadi Road Police Station",
+   "kind": "law_and_order",
+   "official_division": "West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": 12.974486,
+   "lon": 77.55125,
+   "coord_source": "osm",
+   "osm": "node/1820438239",
+   "address": null,
+   "phone": "9480801727, 080-23350483",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Magadi Road Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-rr-nagar",
+   "name": "R R Nagar Police Station",
+   "kind": "law_and_order",
+   "official_division": "West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": 12.912812,
+   "lon": 77.520516,
+   "coord_source": "osm",
+   "osm": "way/1443188659",
+   "address": null,
+   "phone": "9480801725, 080-22942559",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Rajarajeshwari Nagar Police Station"
+   ],
+   "coord_note": "OSM name match 'Rajarajeshwari Nagar Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-upparpete",
+   "name": "Upparpete Police Station",
+   "kind": "law_and_order",
+   "official_division": "West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": 12.97448,
+   "lon": 77.57482,
+   "coord_source": "official_ksp",
+   "osm": null,
+   "address": null,
+   "phone": "9480801716, 080-22942503",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [
+    "Upparpet Police Station"
+   ],
+   "coord_note": "no OSM match or geocode; KSP locator position 12.974480,77.574820: inside the district boundary, 3.05 km from the centroid of 9 OSM-located stations in West: accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-vijayanagar",
+   "name": "Vijayanagar Police Station",
+   "kind": "law_and_order",
+   "official_division": "West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": 12.970726,
+   "lon": 77.537725,
+   "coord_source": "osm",
+   "osm": "node/1778917090",
+   "address": null,
+   "phone": "9480801726, 080-22942514",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Vijayanagar Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-avalahalli",
+   "name": "Avalahalli Police Station",
+   "kind": "law_and_order",
+   "official_division": "Whitefield",
+   "division": "east",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "9480802473, 080-28472500",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [
+    "Avalahally Police Station"
+   ],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: Avalahalli police station); no official locator position",
+   "inside_boundary": null
+  },
+  {
+   "id": "ps-bellanduru",
+   "name": "Bellanduru Police Station",
+   "kind": "law_and_order",
+   "official_division": "Whitefield",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 12.919015,
+   "lon": 77.667964,
+   "coord_source": "osm",
+   "osm": "way/610389734",
+   "address": null,
+   "phone": "9480801543, 080-25747771",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Bellanduru Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-hal",
+   "name": "H.A.L Police Station",
+   "kind": "law_and_order",
+   "official_division": "Whitefield",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 12.955069,
+   "lon": 77.682808,
+   "coord_source": "osm",
+   "osm": "way/346857854",
+   "address": null,
+   "phone": "9480801616, 080-22942542",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'HAL Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-kr-puram",
+   "name": "K.R.Puram Police Station",
+   "kind": "law_and_order",
+   "official_division": "Whitefield",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 13.008633,
+   "lon": 77.693206,
+   "coord_source": "osm",
+   "osm": "way/997867402",
+   "address": null,
+   "phone": "9480801221, 080-22942553",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "K.R. Puram Police Station"
+   ],
+   "coord_note": "OSM name match 'KR Puram Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-kadugodi",
+   "name": "Kadugodi Police Station",
+   "kind": "law_and_order",
+   "official_division": "Whitefield",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 12.995384,
+   "lon": 77.757468,
+   "coord_source": "osm",
+   "osm": "node/1497217077",
+   "address": null,
+   "phone": "9480801619, 080-22943471",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Kadugodi Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-mahadevapura",
+   "name": "Mahadevapura Police Station",
+   "kind": "law_and_order",
+   "official_division": "Whitefield",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 12.996813,
+   "lon": 77.692838,
+   "coord_source": "osm",
+   "osm": "way/1353870716",
+   "address": null,
+   "phone": "9480801230, 080-22485113",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Mahadevpura Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-marathahalli",
+   "name": "Marathahalli Police Station",
+   "kind": "law_and_order",
+   "official_division": "Whitefield",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 12.944405,
+   "lon": 77.697378,
+   "coord_source": "osm",
+   "osm": "way/1570552542",
+   "address": null,
+   "phone": "9480801615, 080-25639999",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Marathahalli Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-varthur",
+   "name": "Varthur Police Station",
+   "kind": "law_and_order",
+   "official_division": "Whitefield",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 12.938025,
+   "lon": 77.746933,
+   "coord_source": "osm",
+   "osm": "way/1450036308",
+   "address": null,
+   "phone": "9480801618, 080-28539196",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Varthur Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "ps-whitefield",
+   "name": "Whitefield Police Station",
+   "kind": "law_and_order",
+   "official_division": "Whitefield",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 12.975442,
+   "lon": 77.751146,
+   "coord_source": "osm",
+   "osm": "way/1088209026",
+   "address": null,
+   "phone": "9480801617, 080-22943472",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Whitefield Police Station -Office of the Deputy Commisionner'",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-banasawadi",
+   "name": "Banasawadi Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 13.01963,
+   "lon": 77.64031,
+   "coord_source": "official_ksp",
+   "osm": null,
+   "address": null,
+   "phone": "9480801819, 080-22942217",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match or geocode; BTP locator position 13.019699,77.640013 not used: within 0 m of the BTP position of 'K.G.Halli Traffic PS'; KSP locator position 13.019630,77.640310: inside the district boundary, 4.58 km from the centroid of 7 OSM-located stations in Traffic East, 0.02 km from Banaswadi Police Station (OSM): accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-hal-old-airport",
+   "name": "HAL Old Airport Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 12.958801,
+   "lon": 77.667509,
+   "coord_source": "osm",
+   "osm": "node/4447398385",
+   "address": null,
+   "phone": "9480801817, 080-22943115, 080-22942678",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Airport Traffic Police Station"
+   ],
+   "coord_note": "OSM phone match 'HAL Traffic Police Station' (same number as the official listing)",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-halasuru",
+   "name": "Halasuru Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 12.974505,
+   "lon": 77.625385,
+   "coord_source": "official_btp",
+   "osm": null,
+   "address": null,
+   "phone": "9480801815, 080-22942659",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp"
+   ],
+   "aliases": [
+    "Halasoor Traffic Police Station",
+    "Halasur Traffic Police Station"
+   ],
+   "coord_note": "no OSM match or geocode; BTP locator position 12.974505,77.625385: inside the district boundary, 5.16 km from the centroid of 7 OSM-located stations in Traffic East, 0.03 km from Halasuru Police Station (OSM): accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-jeevan-bheemanagar",
+   "name": "Jeevan Bheemanagar Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 12.967409,
+   "lon": 77.655901,
+   "coord_source": "osm",
+   "osm": "node/1500601533",
+   "address": null,
+   "phone": "9480801816, 080-22942919, 080-22942658",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Indiranagar Traffic Police Station",
+    "Jeevan Bhima Nagar Traffic Police Station"
+   ],
+   "coord_note": "OSM name match 'Indiranagar Traffic Police Station' (chosen among 2 OSM features with this name by the btp coordinate)",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-kg-halli",
+   "name": "K.G.Halli Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 13.019814,
+   "lon": 77.619254,
+   "coord_source": "osm",
+   "osm": "way/1416675134",
+   "address": null,
+   "phone": "9480801584, 080-22942969",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Kghalli Traffic Police Station",
+    "K G Halli Traffic Police Station"
+   ],
+   "coord_note": "OSM name match 'Kadugondanahalli Traffic Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-kr-puram",
+   "name": "K.R.Puram Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 13.007872,
+   "lon": 77.693817,
+   "coord_source": "osm",
+   "osm": "way/1443406415",
+   "address": null,
+   "phone": "9480801818, 080-22942927",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'KR Puram Traffic Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-mahadevapura",
+   "name": "Mahadevapura Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 12.996489,
+   "lon": 77.693564,
+   "coord_source": "osm",
+   "osm": "node/12246090205",
+   "address": null,
+   "phone": "9449296253, 080-22943389",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Mahadevapura Traffic Police'",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-pulikeshinagar",
+   "name": "Pulikeshinagar Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 12.999452,
+   "lon": 77.619763,
+   "coord_source": "official_btp",
+   "osm": null,
+   "address": null,
+   "phone": "9480801820, 080-29442925, 080-22942924",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp"
+   ],
+   "aliases": [
+    "Frazer Town Traffic Police Station",
+    "Pulakeshinagar Traffic Police Station"
+   ],
+   "coord_note": "no OSM match or geocode; BTP locator position 12.999452,77.619763: inside the district boundary, 5.55 km from the centroid of 7 OSM-located stations in Traffic East, 0.02 km from Pulakeshinagar Police Station (OSM): accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-shivajinagar",
+   "name": "Shivajinagar Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 12.987968,
+   "lon": 77.60355,
+   "coord_source": "osm",
+   "osm": "way/1157218004",
+   "address": null,
+   "phone": "9480801821, 080-22942921, 080-22942920",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Shivajinagar Traffic Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-whitefield",
+   "name": "Whitefield Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": 12.994247,
+   "lon": 77.75718,
+   "coord_source": "osm",
+   "osm": "way/136492654",
+   "address": null,
+   "phone": "9480801831, 080-22943706",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Whitefield Traffic Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-chikkabanavara",
+   "name": "Chikkabanavara Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic North",
+   "division": "north",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "080-22943516, 9480801134",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: Chikkabanavara traffic police station); BTP locator position 13.093555,77.489268: inside the district boundary, 10.61 km from the centroid of 18 OSM-located stations in the north division, as Traffic North has 2: rejected, more than 8 km from the centroid",
+   "inside_boundary": null
+  },
+  {
+   "id": "tps-chikkajala",
+   "name": "Chikkajala Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic North",
+   "division": "north",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "080-22943186, 9480801934",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: Chikkajala traffic police station); BTP locator position 13.070723,77.636256: inside the district boundary, 9.84 km from the centroid of 18 OSM-located stations in the north division, as Traffic North has 2: rejected, more than 8 km from the centroid; KSP locator position 13.172387,77.633579: inside the district boundary, 18.25 km from the centroid of 18 OSM-located stations in the north division, as Traffic North has 2: rejected, more than 8 km from the centroid",
+   "inside_boundary": null
+  },
+  {
+   "id": "tps-devanahalli-airport",
+   "name": "Devanahalli Airport Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic North",
+   "division": "north",
+   "division_inferred": false,
+   "lat": 13.200756,
+   "lon": 77.709504,
+   "coord_source": "official_ksp",
+   "osm": null,
+   "address": null,
+   "phone": "080-27681100, 9480801074",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp"
+   ],
+   "aliases": [
+    "Devanahalli Traffic Police Station",
+    "BIAL Traffic Police Station"
+   ],
+   "coord_note": "no OSM match or geocode; BTP locator position 13.232945,77.712677: 4.05 km outside the district boundary (boundary check waived by the cluster check), cluster check 3.83 km from International Airport Police Station (OSM, outside the district), 3.83 km from International Airport Police Station (OSM): rejected, more than 3 km from International Airport Police Station (OSM); KSP locator position 13.200756,77.709504: 0.66 km outside the district boundary, cluster check 0.45 km from International Airport Police Station (OSM, outside the district), 0.45 km from International Airport Police Station (OSM): accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-hebbala",
+   "name": "Hebbala Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic North",
+   "division": "north",
+   "division_inferred": false,
+   "lat": 13.042409,
+   "lon": 77.588976,
+   "coord_source": "official_ksp",
+   "osm": null,
+   "address": null,
+   "phone": "080-22943023, 9480801931",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp"
+   ],
+   "aliases": [
+    "Hebbal Traffic Police Station"
+   ],
+   "coord_note": "no OSM match or geocode; BTP locator position 13.033359,77.588629 not used: within 3 m of the BTP position of 'R.T. Nagar Traffic PS'; KSP locator position 13.042409,77.588976: inside the district boundary, 3.83 km from the centroid of 18 OSM-located stations in the north division, as Traffic North has 2, 0.43 km from Hebbala Police Station (OSM): accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-hennuru",
+   "name": "Hennuru Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic North",
+   "division": "north",
+   "division_inferred": false,
+   "lat": 13.070633,
+   "lon": 77.636367,
+   "coord_source": "osm",
+   "osm": "way/1351244014",
+   "address": null,
+   "phone": "080-22943732, 9449295596",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Hennur Traffic Police Station"
+   ],
+   "coord_note": "OSM name match 'Hennur Traffic Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-jalahalli",
+   "name": "Jalahalli Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic North",
+   "division": "north",
+   "division_inferred": false,
+   "lat": 13.04882,
+   "lon": 77.549463,
+   "coord_source": "official_btp",
+   "osm": null,
+   "address": null,
+   "phone": "080-22943020, 9480801558",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match or geocode; BTP locator position 13.048820,77.549463: inside the district boundary, 2.74 km from the centroid of 18 OSM-located stations in the north division, as Traffic North has 2, 0.02 km from Jalahalli Police Station (OSM): accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-peenya",
+   "name": "Peenya Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic North",
+   "division": "north",
+   "division_inferred": false,
+   "lat": 13.036029,
+   "lon": 77.521234,
+   "coord_source": "official_btp",
+   "osm": null,
+   "address": null,
+   "phone": "080-22942674, 9364107012, 9480801923",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp"
+   ],
+   "aliases": [
+    "Peeny Traffic Police Station"
+   ],
+   "coord_note": "no OSM match or geocode; BTP locator position 13.036029,77.521234: inside the district boundary, 4.16 km from the centroid of 18 OSM-located stations in the north division, as Traffic North has 2, 0.01 km from Peenya Police Station (OSM): accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-rt-nagar",
+   "name": "R.T. Nagar Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic North",
+   "division": "north",
+   "division_inferred": false,
+   "lat": 13.033376,
+   "lon": 77.588611,
+   "coord_source": "osm",
+   "osm": "way/963352879",
+   "address": null,
+   "phone": "080-22943026, 9480801932, 080-22942813",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "R T Nagar Traffic Police Station",
+    "R.T.Nagar Traffic Police Station"
+   ],
+   "coord_note": "OSM name match 'R T Nagar Traffic Police station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-rajajinagar",
+   "name": "Rajajinagar Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic North",
+   "division": "north",
+   "division_inferred": false,
+   "lat": 12.994635,
+   "lon": 77.554219,
+   "coord_source": "official_btp",
+   "osm": null,
+   "address": null,
+   "phone": "080-22942807, 080-22943016, 9480801924",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match or geocode; BTP locator position 12.994635,77.554219: inside the district boundary, 3.47 km from the centroid of 18 OSM-located stations in the north division, as Traffic North has 2, 0.02 km from Rajajinagar Police Station (OSM): accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-sanjaynagar",
+   "name": "Sanjaynagar Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic North",
+   "division": "north",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "080-22943035, 9480801135, 9480801134",
+   "sources": [
+    "bcp_traffic",
+    "btp"
+   ],
+   "aliases": [
+    "Sanjayanagara Traffic Police Station"
+   ],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: Sanjaynagar traffic police station); BTP locator position 13.033460,77.488479: inside the district boundary, 7.59 km from the centroid of 18 OSM-located stations in the north division, as Traffic North has 2, 9.47 km from Sanjayanagar Police Station (OSM): rejected, more than 3 km from Sanjayanagar Police Station (OSM)",
+   "inside_boundary": null
+  },
+  {
+   "id": "tps-yelahanka",
+   "name": "Yelahanka Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic North",
+   "division": "north",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "080-22943024, 9480801933",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: Yelahanka traffic police station); BTP locator position 13.025280,77.574963: inside the district boundary, 1.83 km from the centroid of 18 OSM-located stations in the north division, as Traffic North has 2, 8.06 km from Yelahanka Police Station (OSM): rejected, more than 3 km from Yelahanka Police Station (OSM); KSP locator position 13.095107,77.594119: inside the district boundary, 8.65 km from the centroid of 18 OSM-located stations in the north division, as Traffic North has 2, 0.04 km from Yelahanka Police Station (OSM): rejected, more than 8 km from the centroid",
+   "inside_boundary": null
+  },
+  {
+   "id": "tps-yeshwanthpura",
+   "name": "Yeshwanthpura Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic North",
+   "division": "north",
+   "division_inferred": false,
+   "lat": 13.018129,
+   "lon": 77.558145,
+   "coord_source": "official_btp",
+   "osm": null,
+   "address": null,
+   "phone": "080-22942661, 9480801925",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp"
+   ],
+   "aliases": [
+    "Yeshwanthapura Traffic Police Station"
+   ],
+   "coord_note": "no OSM match or geocode; BTP locator position 13.018129,77.558145: inside the district boundary, 0.84 km from the centroid of 18 OSM-located stations in the north division, as Traffic North has 2, 0.04 km from Yeshwanthapura Police Station (OSM): accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-adugodi",
+   "name": "Adugodi Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic South",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.941567,
+   "lon": 77.60876,
+   "coord_source": "osm",
+   "osm": "way/1084382246",
+   "address": null,
+   "phone": "9480801822, 080-22943125",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Adugodi Traffic Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-banashankari",
+   "name": "Banashankari Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic South",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.928986,
+   "lon": 77.567782,
+   "coord_source": "official_btp",
+   "osm": null,
+   "address": null,
+   "phone": "9480801929, 080-22943108, 7760412526",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match or geocode; BTP locator position 12.928986,77.567782: inside the district boundary, 6.93 km from the centroid of 6 OSM-located stations in Traffic South, 0.74 km from Banashankari Police Station (OSM): accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-basavanagudi",
+   "name": "Basavanagudi Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic South",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.94207,
+   "lon": 77.574306,
+   "coord_source": "official_btp",
+   "osm": null,
+   "address": null,
+   "phone": "9480801928, 080-22942668",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match or geocode; BTP locator position 12.942070,77.574306: inside the district boundary, 7.19 km from the centroid of 6 OSM-located stations in Traffic South, 0.01 km from Basavanagudi Police Station (OSM): accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-bellanduru",
+   "name": "Bellanduru Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic South",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.921785,
+   "lon": 77.661631,
+   "coord_source": "osm",
+   "osm": "node/4445356402",
+   "address": null,
+   "phone": "9449296666, 080-22943513",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Bellanduru Traffic Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-electronic-city",
+   "name": "Electronic City Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic South",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.839429,
+   "lon": 77.661459,
+   "coord_source": "osm",
+   "osm": "node/4447380551",
+   "address": null,
+   "phone": "9480801832, 080-22943718",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Electranic City Traffic Police Station"
+   ],
+   "coord_note": "OSM name match 'Electronics City Traffic Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-hsr-layout",
+   "name": "HSR Layout Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic South",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.913903,
+   "lon": 77.637683,
+   "coord_source": "official_btp",
+   "osm": null,
+   "address": null,
+   "phone": "9480801426, 080-25747574",
+   "sources": [
+    "btp",
+    "ksp"
+   ],
+   "aliases": [
+    "HSR Lay Out Traffic Police Station"
+   ],
+   "coord_note": "no OSM match or geocode; BTP locator position 12.913903,77.637683: inside the district boundary, 2.25 km from the centroid of 6 OSM-located stations in Traffic South, 1.63 km from H.S.R Layout Police Station (OSM): accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-hulimavu",
+   "name": "Hulimavu Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic South",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.856575,
+   "lon": 77.588978,
+   "coord_source": "osm",
+   "osm": "node/4443656796",
+   "address": null,
+   "phone": "9480801553, 080-22943470",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Hulimavu Traffic Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-jp-nagar",
+   "name": "J P Nagar Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic South",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.911767,
+   "lon": 77.587583,
+   "coord_source": "official_btp",
+   "osm": null,
+   "address": null,
+   "phone": "9480801136, 080-22943192",
+   "sources": [
+    "btp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match or geocode; BTP locator position 12.911767,77.587583: inside the district boundary, 4.17 km from the centroid of 6 OSM-located stations in Traffic South, 0.01 km from J.P.Nagar Police Station (OSM): accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-jayanagara",
+   "name": "Jayanagara Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic South",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.928401,
+   "lon": 77.581245,
+   "coord_source": "official_btp",
+   "osm": null,
+   "address": null,
+   "phone": "9480801927, 080-22942669",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp"
+   ],
+   "aliases": [
+    "Jayanagar Traffic Police Station"
+   ],
+   "coord_note": "no OSM match or geocode; BTP locator position 12.928401,77.581245: inside the district boundary, 5.65 km from the centroid of 6 OSM-located stations in Traffic South, 0.02 km from Jayanagar Police Station (OSM): accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-ks-layout",
+   "name": "K S Layout Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic South",
+   "division": "south",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "9480801930, 080-22943109",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp"
+   ],
+   "aliases": [
+    "KS Layout Traffic Police Station",
+    "Kumaraswamy Layout Traffic Police Station"
+   ],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: K S Layout traffic police station; Kumaraswamy Layout traffic police station); BTP locator position 12.900971,77.544480: inside the district boundary, 8.59 km from the centroid of 6 OSM-located stations in Traffic South, 2.05 km from KS Layout Police Station (OSM): rejected, more than 8 km from the centroid; KSP locator position 12.901160,77.544275: inside the district boundary, 8.62 km from the centroid of 6 OSM-located stations in Traffic South, 2.07 km from KS Layout Police Station (OSM): rejected, more than 8 km from the centroid",
+   "inside_boundary": null
+  },
+  {
+   "id": "tps-madiwala",
+   "name": "Madiwala Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic South",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.921012,
+   "lon": 77.62067,
+   "coord_source": "osm",
+   "osm": "way/348457970",
+   "address": null,
+   "phone": "9480801824, 080-22942805, 9741908957",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Madivala Traffic Police Station"
+   ],
+   "coord_note": "OSM name match 'Madiwala Traffic Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-mico-layout",
+   "name": "Mico Layout Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic South",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.913204,
+   "lon": 77.600983,
+   "coord_source": "osm",
+   "osm": "node/11649535553",
+   "address": null,
+   "phone": "9480801825, 080-22943118",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Micolayout Traffic Police Station"
+   ],
+   "coord_note": "OSM name match 'Mico Layout Traffic Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-thalagattapura",
+   "name": "Thalagattapura Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic South",
+   "division": "south",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "9449296259, 080-22942862",
+   "sources": [
+    "bcp_traffic",
+    "btp"
+   ],
+   "aliases": [
+    "Talaghattapur Traffic Police Station"
+   ],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: Thalagattapura traffic police station); BTP locator position 12.869249,77.536492: inside the district boundary, 10.02 km from the centroid of 6 OSM-located stations in Traffic South, 0.04 km from Talaghattapura Police Station (OSM): rejected, more than 8 km from the centroid",
+   "inside_boundary": null
+  },
+  {
+   "id": "tps-vv-puram",
+   "name": "V.V.Puram Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic South",
+   "division": "south",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "9480801926, 080-22943029",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp"
+   ],
+   "aliases": [
+    "VV Puram Traffic Police Station",
+    "V V Puram Traffic Police Station"
+   ],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: V.V.Puram traffic police station; Vishveshwarapuram traffic police station); BTP locator position 12.957234,77.577376: inside the district boundary, 8.20 km from the centroid of 6 OSM-located stations in Traffic South: rejected, more than 8 km from the centroid; KSP locator position 12.960586,77.564034 not used: within 39 m of the KSP position of 'Chamarajpet Traffic PS'",
+   "inside_boundary": null
+  },
+  {
+   "id": "tps-ashok-nagar",
+   "name": "Ashok Nagar Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": 12.971659,
+   "lon": 77.610146,
+   "coord_source": "official_btp",
+   "osm": null,
+   "address": null,
+   "phone": "080-22943122, 9480801823",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp"
+   ],
+   "aliases": [
+    "Ashoknagara Traffic Police Station",
+    "Ashoknagar Traffic Police Station"
+   ],
+   "coord_note": "no OSM match or geocode; BTP locator position 12.971659,77.610146: inside the district boundary, 3.62 km from the centroid of 5 OSM-located stations in Traffic West, 0.01 km from Ashoknagar Police Station (OSM): accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-byatarayanapura",
+   "name": "Byatarayanapura Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": 12.950294,
+   "lon": 77.540715,
+   "coord_source": "official_btp",
+   "osm": null,
+   "address": null,
+   "phone": "080-22943011, 9480801919, 080-22942657",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp"
+   ],
+   "aliases": [
+    "Byatrarayanapura Traffic Police Station"
+   ],
+   "coord_note": "no OSM match or geocode; BTP locator position 12.950294,77.540715: inside the district boundary, 4.62 km from the centroid of 5 OSM-located stations in Traffic West: accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-chamarajapete",
+   "name": "Chamarajapete Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": 12.960283,
+   "lon": 77.564566,
+   "coord_source": "official_btp",
+   "osm": null,
+   "address": null,
+   "phone": "080-22942664, 9480801916",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp"
+   ],
+   "aliases": [
+    "Chamarajpet Traffic Police Station"
+   ],
+   "coord_note": "no OSM match or geocode; BTP locator position 12.960283,77.564566: inside the district boundary, 1.90 km from the centroid of 5 OSM-located stations in Traffic West, 0.03 km from Chamarajpete Police Station (OSM): accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-city-market",
+   "name": "City Market Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": 12.970675,
+   "lon": 77.572001,
+   "coord_source": "official_btp",
+   "osm": null,
+   "address": null,
+   "phone": "080-22942808, 9480801917, 080-22943006",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match or geocode; BTP locator position 12.970675,77.572001: inside the district boundary, 0.55 km from the centroid of 5 OSM-located stations in Traffic West, 0.78 km from City Market Police Station (OSM): accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-cubbon-park",
+   "name": "Cubbon Park Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": 12.976005,
+   "lon": 77.598112,
+   "coord_source": "osm",
+   "osm": "node/12670396699",
+   "address": null,
+   "phone": "080-22942675, 9480801828",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Cubbonpark Traffic Police Station"
+   ],
+   "coord_note": "OSM name match 'Cubbon Park Traffic Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-halasur-gate",
+   "name": "Halasur Gate Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": 12.966542,
+   "lon": 77.587016,
+   "coord_source": "osm",
+   "osm": "way/208827398",
+   "address": null,
+   "phone": "080-22942660, 9480801829",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Halsur Gate Traffic Police Station"
+   ],
+   "coord_note": "OSM name match 'Halasuru Gate Traffic Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-high-ground",
+   "name": "High Ground Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": 12.98489,
+   "lon": 77.582891,
+   "coord_source": "osm",
+   "osm": "node/5229482744",
+   "address": null,
+   "phone": "080-22942916, 9480801827",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "High Grounds Traffic Police Station"
+   ],
+   "coord_note": "OSM name match 'High Grounds Traffic Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-jnanabharathi",
+   "name": "Jnanabharathi Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": 12.976501,
+   "lon": 77.512735,
+   "coord_source": "official_btp",
+   "osm": null,
+   "address": null,
+   "phone": "080-22942271, 9480801137",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match or geocode; BTP locator position 12.976501,77.512735: inside the district boundary, 6.95 km from the centroid of 5 OSM-located stations in Traffic West: accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-kamakshipalya",
+   "name": "Kamakshipalya Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": 12.982304,
+   "lon": 77.532445,
+   "coord_source": "official_btp",
+   "osm": null,
+   "address": null,
+   "phone": "080-22943009, 9480801921",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match or geocode; BTP locator position 12.982304,77.532445: inside the district boundary, 4.92 km from the centroid of 5 OSM-located stations in Traffic West: accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-kengeri",
+   "name": "Kengeri Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "080-22943013, 9480806021",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: Kengeri traffic police station); BTP locator position 12.910420,77.481577: inside the district boundary, 12.41 km from the centroid of 5 OSM-located stations in Traffic West, 0.01 km from Kengeri Police Station (OSM): rejected, more than 8 km from the centroid",
+   "inside_boundary": null
+  },
+  {
+   "id": "tps-magadi-road",
+   "name": "Magadi Road Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": 12.974287,
+   "lon": 77.551153,
+   "coord_source": "official_btp",
+   "osm": null,
+   "address": null,
+   "phone": "080-22942672, 9480801918",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match or geocode; BTP locator position 12.974287,77.551153: inside the district boundary, 2.78 km from the centroid of 5 OSM-located stations in Traffic West, 0.02 km from Magadi Road Police Station (OSM): accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-sadashivanagar",
+   "name": "Sadashivanagar Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": 13.014759,
+   "lon": 77.572689,
+   "coord_source": "official_btp",
+   "osm": null,
+   "address": null,
+   "phone": "080-22942804, 9480801830",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp"
+   ],
+   "aliases": [
+    "Sadashivanagara Traffic Police Station"
+   ],
+   "coord_note": "no OSM match or geocode; BTP locator position 13.014759,77.572689: inside the district boundary, 4.72 km from the centroid of 5 OSM-located stations in Traffic West, 0.03 km from Sadashiva Nagar Police Station (OSM): accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-sheshadripuram",
+   "name": "Sheshadripuram Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "080-22943774, 9480801138",
+   "sources": [
+    "bcp_traffic",
+    "btp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: Sheshadripuram traffic police station); BTP locator position 12.984653,77.527151: inside the district boundary, 5.54 km from the centroid of 5 OSM-located stations in Traffic West, 5.14 km from Seshadripuram Police Station (OSM): rejected, more than 3 km from Seshadripuram Police Station (OSM)",
+   "inside_boundary": null
+  },
+  {
+   "id": "tps-upparpet",
+   "name": "Upparpet Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": 12.974519,
+   "lon": 77.574934,
+   "coord_source": "osm",
+   "osm": "way/1030050639",
+   "address": null,
+   "phone": "080-22942665, 9480801915",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Upparpete Traffic Police Station"
+   ],
+   "coord_note": "OSM name match 'Upparpet Traffic Police Station'",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-vijayanagar",
+   "name": "Vijayanagar Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": 12.960648,
+   "lon": 77.54082,
+   "coord_source": "osm",
+   "osm": "way/1238631225",
+   "address": null,
+   "phone": "080-22942809, 9480801920",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [
+    "Vijaynagara Traffic Police Station"
+   ],
+   "coord_note": "OSM name match 'Vijayanagara Traffic Police Station' (chosen among 2 OSM features with this name by the btp coordinate)",
+   "inside_boundary": true
+  },
+  {
+   "id": "tps-wilson-garden",
+   "name": "Wilson Garden Traffic Police Station",
+   "kind": "traffic",
+   "official_division": "Traffic West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": 12.950109,
+   "lon": 77.596128,
+   "coord_source": "official_btp",
+   "osm": null,
+   "address": null,
+   "phone": "080-22943120, 9480801826",
+   "sources": [
+    "bcp_traffic",
+    "btp",
+    "ksp"
+   ],
+   "aliases": [
+    "Wilsongarden Traffic Police Station"
+   ],
+   "coord_note": "no OSM match or geocode; BTP locator position 12.950109,77.596128: inside the district boundary, 3.26 km from the centroid of 5 OSM-located stations in Traffic West, 0.01 km from Wilson Garden Police Station (OSM): accepted",
+   "inside_boundary": true
+  },
+  {
+   "id": "cen-central",
+   "name": "Central CEN Police Station",
+   "kind": "cen",
+   "official_division": "Central",
+   "division": "central",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "080-22942458",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: Central CEN police station); no official locator position",
+   "inside_boundary": null
+  },
+  {
+   "id": "cen-east",
+   "name": "East CEN Police Station",
+   "kind": "cen",
+   "official_division": "East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "8277945509",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: East CEN police station); no official locator position",
+   "inside_boundary": null
+  },
+  {
+   "id": "cen-north",
+   "name": "North CEN Police Station",
+   "kind": "cen",
+   "official_division": "North",
+   "division": "north",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "9480801066, 080-22942302",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: North CEN police station); no official locator position",
+   "inside_boundary": null
+  },
+  {
+   "id": "cen-north-east",
+   "name": "North East CEN Police Station",
+   "kind": "cen",
+   "official_division": "North East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "9480801051, 080-22943810, 080-28562004",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: North East CEN police station); no official locator position",
+   "inside_boundary": null
+  },
+  {
+   "id": "cen-south",
+   "name": "South CEN Police Station",
+   "kind": "cen",
+   "official_division": "South",
+   "division": "south",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "9480801099, 080-22943507",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: South CEN police station); no official locator position",
+   "inside_boundary": null
+  },
+  {
+   "id": "cen-south-east",
+   "name": "South East CEN Police Station",
+   "kind": "cen",
+   "official_division": "South East",
+   "division": "south",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "9480801058, 080-22942759",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: South East CEN police station); no official locator position",
+   "inside_boundary": null
+  },
+  {
+   "id": "cen-west",
+   "name": "West CEN Police Station",
+   "kind": "cen",
+   "official_division": "West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "9480801113, 080-22943242",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: West CEN police station); no official locator position",
+   "inside_boundary": null
+  },
+  {
+   "id": "cen-whitefield",
+   "name": "Whitefield CEN Police Station",
+   "kind": "cen",
+   "official_division": "Whitefield",
+   "division": "east",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "9480801146, 080-22942872",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: Whitefield CEN police station); no official locator position",
+   "inside_boundary": null
+  },
+  {
+   "id": "wps-shivajinagar",
+   "name": "Shivajinagar Women Police Station",
+   "kind": "women",
+   "official_division": "East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "9480801120, 080-22942585",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [
+    "East Zone Women Police Station"
+   ],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: Shivajinagar women police station; East Zone women police station); no official locator position",
+   "inside_boundary": null
+  },
+  {
+   "id": "wps-north",
+   "name": "North Women Police Station",
+   "kind": "women",
+   "official_division": "North",
+   "division": "north",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "9480801067, 080-22942616",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: North women police station); no official locator position",
+   "inside_boundary": null
+  },
+  {
+   "id": "wps-north-east",
+   "name": "North East Women Police Station",
+   "kind": "women",
+   "official_division": "North East",
+   "division": "east",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "9480801052, 080-22943188",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: North East women police station); KSP locator position 13.004501,77.517746: inside the district boundary, 16.38 km from the centroid of 6 OSM-located stations in North East: rejected, more than 8 km from the centroid",
+   "inside_boundary": null
+  },
+  {
+   "id": "wps-basavanagudi",
+   "name": "Basavanagudi Women Police Station",
+   "kind": "women",
+   "official_division": "South",
+   "division": "south",
+   "division_inferred": false,
+   "lat": 12.929227,
+   "lon": 77.567851,
+   "coord_source": "osm",
+   "osm": "node/1815951927",
+   "address": null,
+   "phone": "9480801530, 080-22943250",
+   "sources": [
+    "bcp",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM unnamed or generic feature 'Women's Police Station' 25 m from the ksp coordinate",
+   "inside_boundary": true
+  },
+  {
+   "id": "wps-south-east",
+   "name": "South East Women Police Station",
+   "kind": "women",
+   "official_division": "South East",
+   "division": "south",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "9480801059, 080-22943180",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: South East women police station); no official locator position",
+   "inside_boundary": null
+  },
+  {
+   "id": "wps-west",
+   "name": "West Women Police Station",
+   "kind": "women",
+   "official_division": "West",
+   "division": "west",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "9480801114, 080-22943448",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: West women police station); no official locator position",
+   "inside_boundary": null
+  },
+  {
+   "id": "wps-whitefield",
+   "name": "Whitefield Women Police Station",
+   "kind": "women",
+   "official_division": "Whitefield",
+   "division": "east",
+   "division_inferred": false,
+   "lat": null,
+   "lon": null,
+   "coord_source": null,
+   "osm": null,
+   "address": null,
+   "phone": "9480801147, 080-22943510",
+   "sources": [
+    "bcp",
+    "ksp"
+   ],
+   "aliases": [],
+   "coord_note": "no OSM match; Nominatim found nothing named for this station (queries: Whitefield women police station); no official locator position",
+   "inside_boundary": null
+  },
+  {
+   "id": "ops-cyber-crime",
+   "name": "Cyber Crime Police Station",
+   "kind": "other",
+   "official_division": null,
+   "division": "central",
+   "division_inferred": true,
+   "lat": 12.984089,
+   "lon": 77.594723,
+   "coord_source": "osm",
+   "osm": "way/782014099",
+   "address": null,
+   "phone": null,
+   "sources": [
+    "bcp_cyber",
+    "ksp",
+    "osm"
+   ],
+   "aliases": [],
+   "coord_note": "OSM name match 'Cyber Crime Police Station'",
+   "inside_boundary": true,
+   "division_note": "nearest station with an official division: ps-high-ground (0.70 km)"
+  }
+ ],
+ "not_included": [
+  {
+   "name": "Bengaluru City East DCRE PS",
+   "source": "ksp",
+   "reason": "listed only by the KSP locator, not on the BCP or BTP station lists"
+  },
+  {
+   "name": "Bengaluru City West DCRE PS",
+   "source": "ksp",
+   "reason": "listed only by the KSP locator, not on the BCP or BTP station lists"
+  },
+  {
+   "name": "CCB Bengaluru City Police",
+   "source": "ksp",
+   "reason": "listed only by the KSP locator, not on the BCP or BTP station lists"
+  },
+  {
+   "name": "Central Women PS",
+   "source": "ksp",
+   "reason": "listed only by the KSP locator, not on the BCP or BTP station lists"
+  },
+  {
+   "name": "DCRE HQ PS Bengaluru",
+   "source": "ksp",
+   "reason": "listed only by the KSP locator, not on the BCP or BTP station lists"
+  },
+  {
+   "name": "East Women PS",
+   "source": "ksp",
+   "reason": "listed only by the KSP locator, not on the BCP or BTP station lists"
+  },
+  {
+   "name": "Malleshwaram Traffic PS",
+   "source": "ksp",
+   "reason": "listed only by the KSP locator, not on the BCP or BTP station lists"
+  },
+  {
+   "name": "South Women PS",
+   "source": "ksp",
+   "reason": "listed only by the KSP locator, not on the BCP or BTP station lists"
+  },
+  {
+   "name": "chikkabanavara PS",
+   "source": "ksp",
+   "reason": "listed only by the KSP locator, not on the BCP or BTP station lists"
+  }
+ ]
+}
