@@ -23,7 +23,7 @@
 
 ## Deviations from the plan
 
-1. **Compute:** training ran on a JarvisLabs A100 40GB instead of free Kaggle T4s. Jobs are plain scripts in `scripts/remote/` launched with the `jl` CLI; every log and artifact was synced back into `runs/remote/` (git-ignored). Total GPU instance cost was about ₹270.
+1. **Compute:** training ran on a JarvisLabs A100 40GB instead of free Kaggle T4s. Jobs are plain scripts in `scripts/remote/` launched with the `jl` CLI; every log and artifact was synced back into `runs/remote/` (git-ignored). Total GPU instance cost was about ₹293 (A100 on demand, about 3.5 hours including downloads).
 2. **Serving stack:** a FastAPI JSON API (`app/server.py`: `/api/predict`, `/api/health`, `/api/meta`) replaces the planned Gradio app, so any web frontend can call it. The frontend and host are still to be decided.
 3. **Enhancement policy:** the plan applied the classical enhancement whenever quality flags fired. E12 showed that always enhancing can hurt (brightening exposes sensor noise that defeats the detector). The pipeline now runs the detector on both the original and the enhanced image and keeps the more confident one. On the test robustness subset this is never worse than raw by more than 0.7 points and gains up to +9.4.
 4. **Fusion:** classical score fusion was implemented and tested (E12) but rejected by its pre-registered rule (+0.12 points, p = 1.0). It ships with β = 0, so the classical SVM drives the comparison view and panels, not the decision.

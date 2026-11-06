@@ -15,3 +15,8 @@ onnxruntime
 ultralytics
 pytest
 transformers
+rapidocr
+fastapi
+uvicorn[standard]
+python-multipart
+pillow-heif

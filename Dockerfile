@@ -6,7 +6,7 @@ RUN useradd -m -u 1000 app
 WORKDIR /app
 
 COPY requirements-app.txt .
-RUN pip install -r requirements-app.txt
+RUN pip install -r requirements-app.txt && python -c "from rapidocr import RapidOCR; RapidOCR()"
 
 COPY --chown=app:app pyproject.toml ./
 COPY --chown=app:app src ./src
@@ -14,6 +14,8 @@ RUN pip install --no-deps .
 COPY --chown=app:app app ./app
 COPY --chown=app:app configs ./configs
 COPY --chown=app:app models ./models
+RUN mkdir -p /app/data && chown app:app /app/data
+ENV P5_DATA_DIR=/app/data
 
 USER app
 EXPOSE 8000
