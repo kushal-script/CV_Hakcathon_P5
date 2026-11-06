@@ -1,5 +1,6 @@
 # Data & downloads (Stanford Cars is ~2 GB — never commit)
 data/
+cache/
 *.zip
 *.tgz
 *.mat
