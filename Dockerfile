@@ -19,12 +19,14 @@ RUN pip install --no-deps .
 COPY app ./app
 COPY configs ./configs
 COPY models ./models
-COPY web ./web
+COPY web/public ./web/public
+COPY web/app ./web/app
+COPY assets/bengaluru ./assets/bengaluru
 COPY --from=gateway /build/target/release/vahana-gateway /usr/local/bin/vahana-gateway
 COPY deploy/entrypoint.sh /usr/local/bin/entrypoint
-RUN mkdir -p /app/data && chown app:app /app/data && rm -rf /app/web/_dev
+RUN mkdir -p /app/data /app/state && chown app:app /app/data /app/state
 
-ENV P5_DATA_DIR=/app/data P5_WEB_DIR=/app/web P5_CONFIG=/app/configs/app.yaml P5_INVESTIGATION_CONFIG=/app/configs/investigation.yaml P5_ALLOWED_ORIGINS="" P5_UPSTREAM=http://127.0.0.1:8001 P5_LISTEN=0.0.0.0:8080 P5_USERS_FILE=/run/secrets/users.json
+ENV P5_DATA_DIR=/app/data P5_DB=/app/state/gateway.db P5_REGION_DIR=/app/assets/bengaluru P5_BOUNDARY=/app/assets/bengaluru/boundary.geojson P5_WEB_DIR=/app/web P5_CONFIG=/app/configs/app.yaml P5_INVESTIGATION_CONFIG=/app/configs/investigation.yaml P5_ALLOWED_ORIGINS="" P5_UPSTREAM=http://127.0.0.1:8001 P5_LISTEN=0.0.0.0:8080
 USER app
 EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=5s --start-period=60s CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/api/health')"

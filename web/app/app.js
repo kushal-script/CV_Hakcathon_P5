@@ -1,10 +1,11 @@
 const CFG = window.P5_CONFIG || {};
 const API = (CFG.apiBase || "").replace(/\/$/, "");
-const ROUTE_COLOURS = ["#2f5a43", "#a5662a", "#9b3a26", "#6b6b2f", "#6e4b3a", "#57534e", "#8a7a55", "#3d3a35"];
+const ROUTE_COLOURS = ["#a8382a", "#5c4a2c", "#d4952a", "#3e6a44", "#8a5a2b", "#b56a4f", "#6e5a37", "#4d4234"];
+const PIN = { cam: "#2b2318", seen: "#a8382a", best: "#a8382a", other: "#d4952a", station: "#5c4a2c", own: "#a8382a" };
 const LEVEL = {
   class: ["Model identified", "good"], family: ["Model family, year uncertain", "caution"], make: ["Make only", "caution"],
   abstain: ["Not certain", "caution"], ood_make: ["Make only, model outside the catalogue", "alert"],
-  ood: ["Not one of the 196 known models", "alert"], no_vehicle: ["No vehicle found", "alert"],
+  ood: ["Outside the known catalogues", "alert"], no_vehicle: ["No vehicle found", "alert"],
 };
 
 function h(tag, props = {}, ...kids) {
@@ -29,51 +30,78 @@ const clock = (s) => { if (s == null) return "–"; const m = Math.floor(s / 60)
 const jpg = (b64) => (b64 ? `data:image/jpeg;base64,${b64}` : "");
 const fmtTime = (epoch) => (epoch == null ? "–" : new Date(epoch * 1000).toLocaleString([], { dateStyle: "medium", timeStyle: "short" }));
 
-function notice(msg, ms = 3200) {
+function notice(msg, ms = 3600, bad = false) {
   const n = $("#notice");
-  n.textContent = msg; n.hidden = false;
+  n.textContent = msg; n.hidden = false; n.classList.toggle("bad", bad);
   clearTimeout(notice.t); notice.t = setTimeout(() => (n.hidden = true), ms);
+}
+
+const session = { user: null, region: null };
+const lanes = { n: 0 };
+function traffic(on) {
+  lanes.n = Math.max(0, lanes.n + (on ? 1 : -1));
+  $("#lanes").classList.toggle("on", lanes.n > 0);
+  document.querySelector(".side-art")?.classList.toggle("busy-now", lanes.n > 0);
 }
 
 class AuthError extends Error {}
 async function api(path, { method = "GET", form, json } = {}) {
   const opts = { method, credentials: "same-origin", headers: {} };
+  if (method !== "GET") opts.headers["X-Requested-With"] = "vahana";
   if (form) opts.body = form;
   if (json) { opts.body = JSON.stringify(json); opts.headers["Content-Type"] = "application/json"; }
-  const res = await fetch(API + path, opts);
-  if (res.status === 401) { showLogin(); throw new AuthError("Please sign in."); }
+  traffic(true);
+  let res;
+  try { res = await fetch(API + path, opts); } finally { traffic(false); }
+  if (res.status === 401) { location.replace("/login?ended=1&next=" + encodeURIComponent(location.pathname)); throw new AuthError("Please sign in."); }
   const type = res.headers.get("content-type") || "";
   const data = type.includes("json") ? await res.json() : await res.text();
+  if (res.status === 403 && data && data.detail === "Change your password first.") { location.replace("/login?change=1"); throw new AuthError(data.detail); }
   if (!res.ok) throw new Error((data && data.detail) || (typeof data === "string" && data) || `Request failed (${res.status})`);
   return data;
 }
 
-function showLogin() { $("#login").hidden = false; }
-$("#login-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const fd = new FormData(e.target);
-  $("#login-error").textContent = "";
-  try {
-    const res = await fetch(API + "/auth/login", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username: fd.get("username"), password: fd.get("password") }) });
-    if (!res.ok) throw new Error(res.status === 429 ? "Too many attempts. Wait a minute and try again." : "Incorrect username or password.");
-    $("#login").hidden = true; e.target.reset(); $("#logout").hidden = false; boot();
-  } catch (err) { $("#login-error").textContent = err.message; }
+async function signOut() {
+  const entry = $("#entry");
+  entry.hidden = false; entry.classList.remove("open", "leaving");
+  $("#entry-name").textContent = "Signing out"; $("#entry-kn").textContent = "ನಿರ್ಗಮನ"; $("#entry-sub").textContent = "";
+  await fetch(API + "/auth/logout", { method: "POST", credentials: "same-origin", headers: { "X-Requested-With": "vahana" } }).catch(() => {});
+  setTimeout(() => location.replace("/login"), 450);
+}
+$("#logout").addEventListener("click", signOut);
+$("#menu-btn").addEventListener("click", (e) => {
+  e.stopPropagation();
+  const m = $("#menu"); m.hidden = !m.hidden; $("#menu-btn").setAttribute("aria-expanded", String(!m.hidden));
 });
-$("#logout").addEventListener("click", async () => {
-  await fetch(API + "/auth/logout", { method: "POST", credentials: "same-origin" }).catch(() => {});
-  location.reload();
+document.addEventListener("click", (e) => { if (!$("#menu").hidden && !$("#menu").contains(e.target)) { $("#menu").hidden = true; $("#menu-btn").setAttribute("aria-expanded", "false"); } });
+$("#change-pw").addEventListener("click", () => {
+  $("#menu").hidden = true; $("#pw-error").hidden = true; $("#pw-form").reset();
+  $("#pw-form [name=username]").value = session.user ? session.user.username : "";
+  $("#pw-sheet").showModal(); $("#pw-current").focus();
+});
+$("#pw-close").addEventListener("click", () => $("#pw-sheet").close());
+$("#pw-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const err = $("#pw-error"); err.hidden = true;
+  if ($("#pw-new").value !== $("#pw-repeat").value) { err.textContent = "The new passwords do not match."; err.hidden = false; return; }
+  try {
+    const res = await fetch(API + "/auth/password", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json", "X-Requested-With": "vahana" },
+      body: JSON.stringify({ current: $("#pw-current").value, new: $("#pw-new").value }) });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.detail || "Could not change the password.");
+    $("#pw-sheet").close(); notice("Password changed. Other devices were signed out.");
+  } catch (x) { err.textContent = x.message; err.hidden = false; }
 });
 
 async function health() {
   const el = $("#health");
   try {
-    const r = await api("/api/health");
+    const r = await fetch(API + "/api/health").then((x) => x.json());
     el.textContent = r.status === "ok" ? "Service online" : "Starting"; el.className = `health ${r.status === "ok" ? "ok" : ""}`;
-  } catch (e) { if (!(e instanceof AuthError)) { el.textContent = "Service unreachable"; el.className = "health down"; } }
+  } catch { el.textContent = "Service unreachable"; el.className = "health down"; }
 }
 
-const NEUTRAL_WATER = { light: "#d6d2c8", dark: "#2a2925" };
+const NEUTRAL_WATER = { light: "#d9cfbb", dark: "#2b241a" };
 function isBluish(c) {
   const m = /^#([0-9a-f]{6})$/i.exec(c) || /^#([0-9a-f]{3})$/i.exec(c);
   let r, g, b;
@@ -154,32 +182,45 @@ async function initMap() {
   try {
     style = stripBlue(await (await fetch(CFG.mapStyle || "https://tiles.openfreemap.org/styles/positron")).json());
   } catch {
-    style = { version: 8, sources: {}, layers: [{ id: "bg", type: "background", paint: { "background-color": "#ece9e2" } }] };
+    style = { version: 8, sources: {}, layers: [{ id: "bg", type: "background", paint: { "background-color": "#efe7d6" } }] };
   }
   style.sources.satellite = { type: "raster", tiles: ["https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2021_3857/default/g/{z}/{y}/{x}.jpg"],
     tileSize: 256, maxzoom: 15, attribution: "Sentinel-2 cloudless 2021 by EOX IT Services GmbH (contains modified Copernicus Sentinel data)" };
   style.layers.splice(1, 0, { id: "satellite", type: "raster", source: "satellite", layout: { visibility: "none" } });
-  map.m = new maplibregl.Map({ container: "map", style, center: CFG.center || [77.5946, 12.9716], zoom: CFG.zoom || 11.6, maxPitch: 70, attributionControl: { compact: true } });
+  const bb = session.region && session.region.bbox;
+  const bounds = bb ? [[bb[0] - 0.08, bb[1] - 0.06], [bb[2] + 0.08, bb[3] + 0.06]] : null;
+  const own = session.user && session.user.station;
+  map.m = new maplibregl.Map({ container: "map", style, center: own && own.lon != null ? [own.lon, own.lat] : CFG.center || [77.5946, 12.9716],
+    zoom: own && own.lon != null ? 12.6 : CFG.zoom || 11.2, maxPitch: 70, minZoom: 9.4, ...(bounds ? { maxBounds: bounds } : {}), attributionControl: { compact: true } });
   map.m.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), "top-right");
   map.ready = new Promise((res) => map.m.on("load", res));
   await map.ready;
   const add = (id, type, paint, filter, layout) => map.m.addLayer({ id, type, source: id.split(":")[0], paint, ...(filter ? { filter } : {}), ...(layout ? { layout } : {}) });
-  for (const s of ["iso", "routes", "gps", "areas", "points"]) map.m.addSource(s, { type: "geojson", data: fc() });
+  for (const s of ["boundary", "stations", "iso", "routes", "gps", "areas", "points"]) map.m.addSource(s, { type: "geojson", data: fc() });
+  add("boundary", "line", { "line-color": "#a8382a", "line-width": 1.6, "line-opacity": 0.55, "line-dasharray": [3, 2] });
   add("iso", "fill", { "fill-color": ["get", "colour"], "fill-opacity": ["get", "opacity"] });
   add("iso:line", "line", { "line-color": ["get", "colour"], "line-width": 1, "line-opacity": 0.6 });
-  add("gps", "line", { "line-color": "#57534e", "line-width": 2, "line-dasharray": [1, 2] });
+  add("gps", "line", { "line-color": "#5c4a2c", "line-width": 2, "line-dasharray": [1, 2] });
   add("routes", "line", { "line-color": ["get", "colour"], "line-width": ["get", "width"], "line-opacity": ["get", "opacity"] }, ["!", ["get", "dashed"]], { "line-cap": "round", "line-join": "round" });
   add("routes:dash", "line", { "line-color": ["get", "colour"], "line-width": ["get", "width"], "line-opacity": ["get", "opacity"], "line-dasharray": [2, 1.5] }, ["get", "dashed"], { "line-cap": "round" });
   add("areas", "fill", { "fill-color": ["get", "colour"], "fill-opacity": 0.12 });
   add("areas:line", "line", { "line-color": ["get", "colour"], "line-width": 1.2 });
-  add("points", "circle", { "circle-radius": ["get", "r"], "circle-color": ["get", "colour"], "circle-stroke-color": "#fbfaf7", "circle-stroke-width": 2 });
+  add("stations", "circle", { "circle-radius": ["case", ["get", "own"], 7, 4.5], "circle-color": ["case", ["get", "own"], "#a8382a", "#5c4a2c"],
+    "circle-stroke-color": "#fbf7ef", "circle-stroke-width": 1.5, "circle-opacity": 0.9 });
+  map.m.addLayer({ id: "stations:label", type: "symbol", source: "stations", minzoom: 12.5, layout: { "text-field": ["get", "short"], "text-size": 11, "text-offset": [0, 1.1], "text-anchor": "top", "text-optional": true },
+    paint: { "text-color": "#4d4234", "text-halo-color": "#fbf7ef", "text-halo-width": 1.4 } });
+  add("points", "circle", { "circle-radius": ["get", "r"], "circle-color": ["get", "colour"], "circle-stroke-color": "#fbf7ef", "circle-stroke-width": 2 });
   map.m.addLayer({ id: "points:label", type: "symbol", source: "points", layout: { "text-field": ["get", "label"], "text-size": 12, "text-offset": [0, 1.3], "text-anchor": "top", "text-optional": true },
-    paint: { "text-color": "#1d1c1a", "text-halo-color": "#fbfaf7", "text-halo-width": 1.5 } });
+    paint: { "text-color": "#241c13", "text-halo-color": "#fbf7ef", "text-halo-width": 1.5 } });
   map.loaded = true;
   for (const [name, data] of Object.entries(map.data)) { const src = map.m.getSource(name); if (src) src.setData(data); }
   map.m.on("click", "points", (e) => {
     const p = e.features[0].properties;
     new maplibregl.Popup({ closeButton: false }).setLngLat(e.lngLat).setDOMContent(h("div", {}, h("strong", { text: p.title || p.label }), p.detail ? h("div", { class: "muted", text: p.detail }) : null)).addTo(map.m);
+  });
+  map.m.on("click", "stations", (e) => {
+    const p = e.features[0].properties;
+    new maplibregl.Popup({ closeButton: false }).setLngLat(e.lngLat).setDOMContent(h("div", {}, h("strong", { text: p.name }), h("div", { class: "muted", text: p.detail }))).addTo(map.m);
   });
   map.m.on("mouseenter", "points", () => (map.m.getCanvas().style.cursor = "pointer"));
   map.m.on("mouseleave", "points", () => (map.m.getCanvas().style.cursor = map.picking ? "crosshair" : ""));
@@ -191,7 +232,7 @@ async function initMap() {
   if (map.m.getSource("openmaptiles")) {
     map.m.addLayer({ id: "buildings-3d", type: "fill-extrusion", source: "openmaptiles", "source-layer": "building", minzoom: 13,
       filter: ["!=", ["get", "hide_3d"], true], layout: { visibility: "none" },
-      paint: { "fill-extrusion-color": ["interpolate", ["linear"], ["coalesce", ["get", "render_height"], 6], 0, "#e4e0d7", 40, "#cdc7bb", 120, "#b5ad9e"],
+      paint: { "fill-extrusion-color": ["interpolate", ["linear"], ["coalesce", ["get", "render_height"], 6], 0, "#ebe2d0", 40, "#d6c6a8", 120, "#bca783"],
         "fill-extrusion-height": ["coalesce", ["get", "render_height"], 6], "fill-extrusion-base": ["coalesce", ["get", "render_min_height"], 0],
         "fill-extrusion-opacity": 0.9, "fill-extrusion-vertical-gradient": true } }, "iso");
   }
@@ -222,7 +263,8 @@ function uploader(label, onFile) {
   label.addEventListener("dragleave", () => label.classList.remove("over"));
   label.addEventListener("drop", (e) => { e.preventDefault(); label.classList.remove("over"); if (e.dataTransfer.files[0]) onFile(e.dataTransfer.files[0]); });
 }
-const busy = (text) => h("div", { class: "busy", text });
+const busy = (text, sub) => h("div", { class: "busy", role: "status" }, h("span", { class: "signal cycle", "aria-hidden": "true" }, h("i"), h("i"), h("i")),
+  h("span", {}, text, sub ? h("small", { text: sub }) : null));
 const problem = (text) => h("div", { class: "problem", role: "alert", text });
 const section = (title, ...kids) => h("div", { class: "section" }, h("h2", { text: title }), ...kids);
 
@@ -314,14 +356,14 @@ function renderLocate(r, out) {
   }
   const areas = [], points = [];
   cands.forEach((c, i) => {
-    const colour = i === 0 ? "#2f5a43" : "#a5662a";
+    const colour = i === 0 ? PIN.best : PIN.other;
     areas.push({ type: "Feature", properties: { colour }, geometry: { type: "Polygon", coordinates: [circle(c.lat, c.lon, c.radius_m)] } });
     points.push({ type: "Feature", properties: { colour, r: i === 0 ? 7 : 5, label: i === 0 ? c.label : "", title: c.label, detail: `${pct(c.confidence)} · ±${Math.round(c.radius_m)} m · ${c.source.replace("_", " ")}` },
       geometry: { type: "Point", coordinates: [c.lon, c.lat] } });
   });
   setLayer("areas", fc(areas)); setLayer("points", fc(points));
   fit(cands.slice(0, 3).map((c) => [c.lon, c.lat]), 15);
-  setKey([["dot", "#2f5a43", "Most likely location"], ["dot", "#a5662a", "Other candidates"]]);
+  setKey([["dot", PIN.best, "Most likely location"], ["dot", PIN.other, "Other candidates"]]);
   out.replaceChildren(
     texts.length ? h("p", { class: "note", text: `Text read in the photo: ${texts.slice(0, 8).join(" · ")}` }) : null,
     h("ul", { class: "rows" }, cands.map((c) => h("li", { class: "clickable", style: { gridTemplateColumns: "1fr auto" }, onclick: () => map.m.flyTo({ center: [c.lon, c.lat], zoom: 16 }) },
@@ -333,15 +375,28 @@ const inv = { id: null, data: null, poll: null };
 async function loadCases(selectId) {
   const sel = $("#case-select");
   const list = await api("/api/cases");
-  sel.replaceChildren(h("option", { value: "", text: list.length ? "Select a case" : "No cases yet" }), ...list.map((c) => h("option", { value: c.id, text: `${c.name}${c.target ? " · " + c.target : ""}` })));
+  const admin = session.user && session.user.role === "division_admin";
+  sel.replaceChildren(h("option", { value: "", text: list.length ? "Select a case" : "No cases yet" }), ...list.map((c) => h("option", { value: c.id,
+    text: `${c.name}${c.target ? " · " + c.target : ""}${admin && c.station_name ? " · " + c.station_name : ""}${c.status === "closed" ? " (closed)" : ""}` })));
   if (selectId) sel.value = selectId;
   if (sel.value) openCase(sel.value); else renderCase(null);
 }
 $("#case-select").addEventListener("change", (e) => (e.target.value ? openCase(e.target.value) : renderCase(null)));
-$("#case-new").addEventListener("click", async () => {
-  const fd = new FormData(); fd.append("name", `Case ${new Date().toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}`);
+async function createCase(name, stationId) {
+  const fd = new FormData(); fd.append("name", name);
+  if (stationId) fd.append("station_id", stationId);
   const c = await api("/api/cases", { method: "POST", form: fd });
   await loadCases(c.id);
+}
+$("#case-new").addEventListener("click", async () => {
+  const name = `Case ${new Date().toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}`;
+  if (!session.user || session.user.role !== "division_admin") { createCase(name).catch((e) => notice(e.message, 4000, true)); return; }
+  const input = h("input", { type: "text", value: name, maxlength: 120 });
+  const sel = h("select", {}, ...(session.region ? session.region.stations : []).map((x) => h("option", { value: x.id, text: x.name })));
+  const go = h("button", { class: "button primary", type: "submit", text: "Open case" });
+  const form = h("form", {}, h("label", { class: "field" }, "Case name", input), h("label", { class: "field" }, "Station responsible", sel), h("div", { class: "actions" }, go));
+  form.addEventListener("submit", async (e) => { e.preventDefault(); try { await createCase(input.value.trim() || name, sel.value); $("#sheet").close(); } catch (x) { notice(x.message, 4000, true); } });
+  $("#sheet-title").textContent = "Open a case"; $("#sheet-body").replaceChildren(form); $("#sheet").showModal();
 });
 async function openCase(id) {
   inv.id = id;
@@ -444,18 +499,18 @@ function watchJob(cid, jobId, camId) {
 }
 function drawCase(c) {
   const pts = [];
-  c.cameras.filter((x) => x.lat != null).forEach((x) => pts.push({ type: "Feature", properties: { colour: "#3d3a35", r: 6, label: x.name, title: x.name, detail: x.status === "done" ? `${x.analysis.counts.total} vehicles` : "Analysing" }, geometry: { type: "Point", coordinates: [x.lon, x.lat] } }));
+  c.cameras.filter((x) => x.lat != null).forEach((x) => pts.push({ type: "Feature", properties: { colour: PIN.cam, r: 6, label: x.name, title: x.name, detail: x.status === "done" ? `${x.analysis.counts.total} vehicles` : "Analysing" }, geometry: { type: "Point", coordinates: [x.lon, x.lat] } }));
   const seen = new Set();
   c.sightings.filter((s) => s.lat != null).forEach((s) => {
     if (seen.has(s.camera_id)) return; seen.add(s.camera_id);
-    pts.push({ type: "Feature", properties: { colour: "#2f5a43", r: 9, label: "", title: `Seen at ${s.camera_name}`, detail: `${s.t_abs ? fmtTime(s.t_abs) : clock(s.t_video)} · match ${pct(s.score, 0)}` }, geometry: { type: "Point", coordinates: [s.lon, s.lat] } });
+    pts.push({ type: "Feature", properties: { colour: PIN.seen, r: 9, label: "", title: `Seen at ${s.camera_name}`, detail: `${s.t_abs ? fmtTime(s.t_abs) : clock(s.t_video)} · match ${pct(s.score, 0)}` }, geometry: { type: "Point", coordinates: [s.lon, s.lat] } });
   });
   setLayer("points", fc(pts));
   const gps = c.cameras.filter((x) => x.route && x.route.matched).map((x) => ({ type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: x.route.geometry } }));
   setLayer("gps", fc(gps));
   clearLayers("areas");
   if (pts.length) fit(pts.map((f) => f.geometry.coordinates), 15);
-  setKey([["dot", "#3d3a35", "Camera"], ["dot", "#2f5a43", "Vehicle seen"], ...(gps.length ? [["sw", "#57534e", "Dashcam route"]] : [])]);
+  setKey([["dot", PIN.cam, "Camera"], ["dot", PIN.seen, "Vehicle seen"], ...(gps.length ? [["sw", "#5c4a2c", "Dashcam route"]] : [])]);
 }
 async function runReason(c, btn) {
   const out = $("#route-out");
@@ -490,13 +545,13 @@ function renderRoutes(r) {
   }
   setLayer("routes", fc(feats));
   const iso = (r.reachable && r.reachable.features) || [];
-  const shades = ["#a5662a", "#b88a4a", "#cdb58a"];
+  const shades = ["#d4952a", "#c9a25c", "#e2c98f"];
   setLayer("iso", fc(iso.map((f, i) => ({ ...f, properties: { colour: shades[i % 3], opacity: 0.1 } }))));
-  if (iso.length) keys.push(["sw", "#b88a4a", "Reachable in 5, 10, 15 min"]);
+  if (iso.length) keys.push(["sw", "#c9a25c", "Reachable in 5, 10, 15 min"]);
   if (!kids.length) kids.push(h("p", { class: "note", text: "Add footage with matched sightings, or describe what is known, to reconstruct a route." }));
   kids.push(h("p", { class: "disclaimer", text: (r.assumptions || []).join(" ") }));
   out.replaceChildren(...kids);
-  setKey([["dot", "#3d3a35", "Camera"], ["dot", "#2f5a43", "Vehicle seen"], ["sw", "#2f5a43", "Route between sightings"], ["sw", "#a5662a", "Possible onward route"], ...keys]);
+  setKey([["dot", PIN.cam, "Camera"], ["dot", PIN.seen, "Vehicle seen"], ["sw", ROUTE_COLOURS[0], "Route between sightings"], ["sw", ROUTE_COLOURS[1], "Possible onward route"], ...keys]);
   const all = feats.flatMap((f) => f.geometry.coordinates);
   if (all.length) fit(all, 15);
 }
@@ -524,13 +579,13 @@ function overlay(video, canvas, analysis, focusTrack) {
       for (const b of tr.boxes) { if (b[0] <= t + 0.07) box = b; else break; }
       if (!box || t - box[0] > 0.6) continue;
       const [, x1, y1, x2, y2] = box;
-      const colour = tr.wrong_way ? "#d98a74" : focusTrack === tr.id ? "#7fae8f" : "#f3f1ec";
+      const colour = tr.wrong_way ? "#ff6a4d" : focusTrack === tr.id ? "#e2ad2e" : "#f6efe2";
       ctx.strokeStyle = colour; ctx.lineWidth = focusTrack === tr.id ? 3 : 2;
       ctx.strokeRect(ox + x1 * s, oy + y1 * s, (x2 - x1) * s, (y2 - y1) * s);
       const label = `${tr.id} · ${tr.label}${tr.wrong_way ? " · wrong way" : ""}`;
-      ctx.font = "600 12px Inter, system-ui, sans-serif";
+      ctx.font = "600 12px system-ui, sans-serif";
       const w = ctx.measureText(label).width + 10;
-      ctx.fillStyle = "rgba(20,19,17,0.78)"; ctx.fillRect(ox + x1 * s, Math.max(0, oy + y1 * s - 20), w, 18);
+      ctx.fillStyle = "rgba(36,28,19,0.8)"; ctx.fillRect(ox + x1 * s, Math.max(0, oy + y1 * s - 20), w, 18);
       ctx.fillStyle = colour; ctx.fillText(label, ox + x1 * s + 5, Math.max(13, oy + y1 * s - 7));
     }
     if (!video.isConnected) return;
@@ -565,6 +620,7 @@ function openCamera(c, camId, t) {
   $("#sheet").showModal();
 }
 $("#sheet-close").addEventListener("click", () => { $("#sheet").close(); $("#sheet-body").replaceChildren(); });
+$("#sheet").addEventListener("close", () => $("#sheet-body").replaceChildren());
 
 async function runVideo(file) {
   const out = $("#video-out");
@@ -578,23 +634,81 @@ async function runVideo(file) {
   } catch (e) { out.replaceChildren(problem(e.message)); }
 }
 
-document.querySelectorAll(".segmented button").forEach((b) => b.addEventListener("click", () => {
-  document.querySelectorAll(".segmented button").forEach((x) => x.setAttribute("aria-selected", String(x === b)));
-  document.querySelectorAll(".view").forEach((v) => (v.hidden = v.id !== `view-${b.dataset.view}`));
+const KIND = { identify: "Identification", locate: "Photo located", video: "Video analysed", case_created: "Case opened", case_updated: "Case updated",
+  case_deleted: "Case deleted", hunt_target: "Hunt target", camera_added: "Footage added", camera_analysed: "Footage analysed", hunt_sighting: "Possible sighting",
+  route_inference: "Route reasoning", admin_event_deleted: "Record deleted" };
+const when = (ts) => {
+  const d = new Date(ts * 1000), now = new Date();
+  const same = d.toDateString() === now.toDateString();
+  return same ? d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : d.toLocaleDateString([], { day: "numeric", month: "short" });
+};
+async function loadActivity() {
+  const out = $("#activity-out");
+  out.replaceChildren(busy("Loading recent activity"));
+  try {
+    const r = await api("/api/activity?limit=40");
+    if (!r.events.length) { out.replaceChildren(h("p", { class: "note", text: "Nothing recorded yet. Identifications, footage and cases from your station appear here." })); return; }
+    out.replaceChildren(h("p", { class: "muted", style: { fontSize: "12px" }, text: `${r.total} record${r.total === 1 ? "" : "s"} in total` }),
+      h("ul", { class: "feed" }, r.events.map((e) => h("li", {}, h("span", { class: "when", text: when(e.ts) }),
+        h("span", {}, h("span", { class: "kind", text: KIND[e.kind] || e.kind }), h("div", { class: "what", text: e.summary }), h("div", { class: "muted", style: { fontSize: "12px" }, text: e.username }))))));
+  } catch (e) { if (!(e instanceof AuthError)) out.replaceChildren(problem(e.message)); }
+}
+
+const consoleState = { mod: null };
+async function showConsole(on) {
+  $("#layout").hidden = on; $("#console").hidden = !on;
+  if (!on) { map.m && map.m.resize(); return; }
+  if (!consoleState.mod) consoleState.mod = await import("./admin.js?v=6");
+  consoleState.mod.mount($("#console"), { api, h, busy, problem, notice, session, AuthError, KIND, LEVEL, pct, jpg, when });
+}
+
+document.querySelectorAll(".tabs button").forEach((b) => b.addEventListener("click", () => {
+  document.querySelectorAll(".tabs button").forEach((x) => x.setAttribute("aria-selected", String(x === b)));
+  const view = b.dataset.view;
+  showConsole(view === "division").catch((e) => notice(e.message, 4000, true));
+  if (view === "division") return;
+  document.querySelectorAll(".view").forEach((v) => (v.hidden = v.id !== `view-${view}`));
   clearLayers("points", "routes", "iso", "areas", "gps"); setKey([]);
-  if (b.dataset.view === "investigate") loadCases(inv.id).catch((e) => !(e instanceof AuthError) && notice(e.message));
+  if (view === "investigate") loadCases(inv.id).catch((e) => !(e instanceof AuthError) && notice(e.message));
+  if (view === "activity") loadActivity();
 }));
 
-let booted = false;
+function drawRegion() {
+  const r = session.region;
+  if (!r) return;
+  if (r.boundary) setLayer("boundary", r.boundary);
+  const ownId = session.user.station && session.user.station.id;
+  setLayer("stations", fc(r.stations.filter((s) => s.lat != null).map((s) => ({ type: "Feature",
+    properties: { own: s.id === ownId, name: s.name, short: s.name.replace(/ (Traffic )?Police Station$/i, ""),
+      detail: `${({ law_and_order: "Law and order", traffic: "Traffic", cen: "CEN", women: "Women" })[s.kind] || "Police"} station${s.official_division ? " · " + s.official_division + " division" : ""}` },
+    geometry: { type: "Point", coordinates: [s.lon, s.lat] } }))));
+}
+
 async function boot() {
-  await health();
-  if (booted) return;
-  booted = true;
-  setInterval(health, 30000);
-  const me = await fetch(API + "/auth/me", { credentials: "same-origin" }).catch(() => null);
-  if (me && me.ok) $("#logout").hidden = false;
+  const entry = $("#entry");
+  const me = await fetch(API + "/auth/me", { credentials: "same-origin" });
+  if (!me.ok) { location.replace("/login"); return; }
+  const info = await me.json();
+  if (info.must_change) { location.replace("/login?change=1"); return; }
+  session.user = info.user;
+  const u = session.user;
+  const isAdmin = u.role === "division_admin";
+  $("#station-name").textContent = u.station ? u.station.name : u.display_name;
+  $("#station-meta").replaceChildren(document.createTextNode(`${u.division.name} Division`), h("span", { class: "kn", text: ({ central: "ಕೇಂದ್ರ", north: "ಉತ್ತರ", south: "ದಕ್ಷಿಣ", east: "ಪೂರ್ವ", west: "ಪಶ್ಚಿಮ" })[u.division.id] || "" }),
+    isAdmin ? h("span", { class: "role", text: "Division admin" }) : null);
+  $("#who-name").textContent = u.station ? u.station.name : u.display_name;
+  $("#who-id").textContent = `${u.username} · ${u.division.name} Division`;
+  $("#tab-division").hidden = !isAdmin;
+  $("#entry-name").textContent = u.station ? u.station.name : u.display_name;
+  $("#entry-sub").textContent = `${u.division.name} Division` + (isAdmin ? " · Division administrator" : "");
+  try { session.region = await api("/api/region"); } catch (e) { if (e instanceof AuthError) return; }
+  health(); setInterval(health, 30000);
+  drawRegion();
+  initMap().catch((e) => notice(`Map failed to load: ${e.message}`, 5000, true));
+  setTimeout(() => entry.classList.add("open"), 250);
+  setTimeout(() => entry.classList.add("leaving"), 1250);
+  setTimeout(() => { entry.hidden = true; entry.classList.remove("leaving"); }, 1650);
 }
 uploader($("#up-identify"), runIdentify);
 uploader($("#up-video"), runVideo);
-initMap().catch((e) => notice(`Map failed to load: ${e.message}`));
-boot();
+boot().catch((e) => { notice(e.message, 6000, true); $("#entry").hidden = true; });

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import base64
 import json
 import shutil
 import threading
@@ -12,6 +13,9 @@ from pathlib import Path
 import numpy as np
 
 from p5.config import hunt_model, section
+from p5.identity import Identity
+from p5.region import inside, station
+from p5.store import Store
 from p5.geo.locate import cluster, ocr_evidence, queries, similarity
 from p5.geo.geocode import photon
 from p5.geo.route import map_match, mp4_location, parse_track, position_at
@@ -49,16 +53,33 @@ def environment(frames: list[np.ndarray], ocr) -> dict:
     return {"texts": sorted({e.text for e in ev})[:20], "location_candidates": cands}
 
 
+def _detections(tracks: list[dict], source: str = "video") -> list[dict]:
+    out = []
+    for tr in tracks:
+        d = tr.get("decision") or {}
+        out.append({"source": source, "label": d.get("label"), "make": d.get("make"), "level": d.get("level"),
+                    "confidence": d.get("confidence"), "catalogue": d.get("catalogue"), "vehicle_class": tr.get("class"),
+                    "colour": (tr.get("colour") or {}).get("name"), "wrong_way": tr.get("wrong_way", False)})
+    return out
+
+
+def video_summary(res: dict) -> str:
+    counts = res["counts"]["by_class"]
+    parts = ", ".join(f"{n} {k}{'s' if n != 1 else ''}" for k, n in sorted(counts.items(), key=lambda kv: -kv[1]))
+    alerts = len(res.get("alerts", []))
+    return f"{res['counts']['total']} vehicles tracked" + (f" ({parts})" if parts else "") + (f", {alerts} wrong-way" if alerts else "")
+
+
 class CaseStore:
-    def __init__(self, root: Path, pipeline, analyser: VideoAnalyser, ocr):
-        self.root, self.pipeline, self.analyser, self.ocr = root, pipeline, analyser, ocr
+    def __init__(self, root: Path, pipeline, analyser: VideoAnalyser, ocr, store: Store):
+        self.root, self.pipeline, self.analyser, self.ocr, self.store = root, pipeline, analyser, ocr, store
         self.root.mkdir(parents=True, exist_ok=True)
         self.lock = threading.Lock()
         self.jobs: dict[str, dict] = {}
         self.pool = ThreadPoolExecutor(max_workers=1)
 
     def _path(self, cid: str) -> Path:
-        if not cid.isalnum():
+        if not cid.isalnum() or len(cid) > 32:
             raise KeyError(cid)
         return self.root / cid
 
@@ -74,25 +95,45 @@ class CaseStore:
         tmp = d / "case.json.tmp"
         tmp.write_text(json.dumps(case))
         tmp.replace(d / "case.json")
+        self.store.index_case(case)
 
-    def create(self, name: str | None = None) -> dict:
+    @staticmethod
+    def allowed(case: dict, ident: Identity) -> bool:
+        if case.get("deleted_at") or "division_id" not in case:
+            return False
+        if ident.is_admin:
+            return case["division_id"] == ident.division_id
+        return case.get("station_id") == ident.station_id
+
+    def _owned(self, cid: str, ident: Identity) -> dict:
+        case = self._load(cid)
+        if not self.allowed(case, ident):
+            raise KeyError(cid)
+        return case
+
+    def create(self, ident: Identity, name: str | None = None, station_id: str | None = None) -> dict:
+        if ident.is_admin:
+            st = station(station_id)
+            if not st or st.get("division") != ident.division_id:
+                raise ValueError("Choose a police station in your division for this case.")
+        else:
+            station_id = ident.station_id
         cid = uuid.uuid4().hex[:10]
-        case = {"id": cid, "name": name or f"Case {cid[:4].upper()}", "created": time.time(), "target": None,
-                "cameras": [], "notes": [], "sightings": [], "routes": None}
+        case = {"id": cid, "name": (name or f"Case {cid[:4].upper()}").strip()[:120], "created": time.time(), "target": None,
+                "cameras": [], "notes": [], "sightings": [], "routes": None, "station_id": station_id,
+                "division_id": ident.division_id, "created_by": ident.username, "status": "open"}
         with self.lock:
             self._save(case)
+        self.store.record(ident, "case_created", f"Opened {case['name']}", {"name": case["name"]}, case_id=cid, station_id=station_id)
         return self.public(case)
 
-    def get(self, cid: str) -> dict:
-        return self.public(self._load(cid))
+    def get(self, cid: str, ident: Identity) -> dict:
+        return self.public(self._owned(cid, ident))
 
-    def list(self) -> list[dict]:
-        out = []
-        for f in sorted(self.root.glob("*/case.json"), key=lambda f: -f.stat().st_mtime):
-            c = json.loads(f.read_text())
-            out.append({"id": c["id"], "name": c["name"], "created": c["created"], "cameras": len(c["cameras"]),
-                        "target": (c.get("target") or {}).get("label")})
-        return out
+    def list(self, ident: Identity) -> list[dict]:
+        return [{"id": c["id"], "name": c["name"], "created": c["created_at"], "cameras": c["cameras"], "target": c["target_label"],
+                 "status": c["status"], "station_id": c["station_id"], "station_name": c["station_name"]}
+                for c in self.store.cases(ident)]
 
     def public(self, case: dict) -> dict:
         c = json.loads(json.dumps(case))
@@ -103,32 +144,74 @@ class CaseStore:
             for tr in (cam.get("analysis") or {}).get("tracks", []):
                 for k in PUBLIC_DROP:
                     tr.pop(k, None)
+        st = station(c.get("station_id"))
+        c["station_name"] = st["name"] if st else c.get("station_id")
         return c
 
-    def set_target(self, cid: str, data: bytes) -> dict:
+    def update(self, cid: str, ident: Identity, name: str | None = None, status: str | None = None, station_id: str | None = None) -> dict:
+        changes = {}
+        with self.lock:
+            case = self._owned(cid, ident)
+            if name and name.strip():
+                case["name"] = changes["name"] = name.strip()[:120]
+            if status:
+                if status not in ("open", "closed"):
+                    raise ValueError("Status must be open or closed.")
+                case["status"] = changes["status"] = status
+            if station_id and station_id != case.get("station_id"):
+                if not ident.is_admin:
+                    raise PermissionError("Only a division administrator can reassign a case.")
+                st = station(station_id)
+                if not st or st.get("division") != ident.division_id:
+                    raise ValueError("Choose a police station in your division.")
+                case["station_id"] = changes["station_id"] = station_id
+            self._save(case)
+        if changes:
+            self.store.record(ident, "case_updated", f"Updated {case['name']}: " + ", ".join(f"{k} = {v}" for k, v in changes.items()),
+                              changes, case_id=cid, station_id=case.get("station_id"))
+        return self.public(case)
+
+    def delete(self, cid: str, ident: Identity) -> None:
+        with self.lock:
+            case = self._owned(cid, ident)
+            case["deleted_at"], case["deleted_by"] = time.time(), ident.username
+            self._save(case)
+        self.store.record(ident, "case_deleted", f"Deleted {case['name']}", {"name": case["name"]}, case_id=cid, station_id=case.get("station_id"))
+
+    def set_target(self, cid: str, data: bytes, ident: Identity) -> dict:
+        self._owned(cid, ident)
         prof = target_profile(self.pipeline, data)
         with self.lock:
-            case = self._load(cid)
+            case = self._owned(cid, ident)
             case["target"] = prof
             case["sightings"] = rank(prof, case["cameras"])
             self._save(case)
+        d = prof["decision"]
+        self.store.record(ident, "hunt_target", f"Hunt target set: {prof['label']}",
+                          {"label": prof["label"], "decision": d, "sightings": len(case["sightings"])}, case_id=cid,
+                          thumb=base64.b64decode(prof["thumbnail"]) if prof.get("thumbnail") else None,
+                          detections=[{"source": "target", "label": d.get("label"), "make": d.get("make"), "level": d.get("level"),
+                                       "confidence": d.get("confidence"), "colour": prof["colour"]["name"], "vehicle_class": "car"}],
+                          station_id=case.get("station_id"))
         return self.public(case)
 
     def add_camera(self, cid: str, video_path: Path, filename: str, name: str | None, lat: float | None, lon: float | None,
-                   start: str | None, allowed: tuple[float, float] | None, track: tuple[bytes, str] | None) -> dict:
-        case = self._load(cid)
+                   start: str | None, allowed: tuple[float, float] | None, track: tuple[bytes, str] | None, ident: Identity) -> dict:
+        case = self._owned(cid, ident)
+        if lat is not None and lon is not None and inside(lat, lon) is False:
+            raise ValueError("The camera location must be inside Bengaluru.")
         cam_id = uuid.uuid4().hex[:8]
         cam_dir = self._path(cid) / "cameras"
         cam_dir.mkdir(exist_ok=True)
-        suffix = Path(filename).suffix.lower() or ".mp4"
+        suffix = Path(filename).suffix.lower() if Path(filename).suffix.lower() in (".mp4", ".mov", ".avi", ".mkv", ".webm", ".m4v") else ".mp4"
         dest = cam_dir / f"{cam_id}{suffix}"
         shutil.move(str(video_path), dest)
         meta_loc = mp4_location(str(dest))
-        cam = {"id": cam_id, "name": name or filename, "file": dest.name, "lat": lat, "lon": lon,
+        cam = {"id": cam_id, "name": (name or filename)[:120], "file": dest.name, "lat": lat, "lon": lon,
                "location_source": "investigator" if lat is not None else None, "start_time": start, "start_epoch": _epoch(start),
                "allowed_direction": list(allowed) if allowed else None, "status": "queued", "analysis": None,
                "environment": None, "gps": None, "route": None}
-        if cam["lat"] is None and meta_loc:
+        if cam["lat"] is None and meta_loc and inside(meta_loc["lat"], meta_loc["lon"]) is not False:
             cam["lat"], cam["lon"], cam["location_source"] = meta_loc["lat"], meta_loc["lon"], "video metadata"
         if track:
             pts = parse_track(*track)
@@ -136,15 +219,24 @@ class CaseStore:
             if pts and cam["lat"] is None:
                 cam["lat"], cam["lon"], cam["location_source"] = pts[0]["lat"], pts[0]["lon"], "GPS track"
         with self.lock:
-            case = self._load(cid)
+            case = self._owned(cid, ident)
             case["cameras"].append(cam)
             self._save(case)
+        self.store.record(ident, "camera_added", f"Footage added: {cam['name']}", {"camera": cam["name"], "location_source": cam["location_source"]},
+                          case_id=cid, lat=cam["lat"], lon=cam["lon"], station_id=case.get("station_id"))
         job = uuid.uuid4().hex[:10]
-        self.jobs[job] = {"id": job, "case_id": cid, "camera_id": cam_id, "status": "queued", "progress": 0.0, "error": None}
-        self.pool.submit(self._run_camera, job, cid, cam_id, dest, allowed)
+        self.jobs[job] = {"id": job, "case_id": cid, "camera_id": cam_id, "status": "queued", "progress": 0.0, "error": None,
+                          "station_id": case.get("station_id"), "division_id": case["division_id"]}
+        self.pool.submit(self._run_camera, job, cid, cam_id, dest, allowed, ident)
         return {"job_id": job, "camera_id": cam_id}
 
-    def _run_camera(self, job: str, cid: str, cam_id: str, path: Path, allowed) -> None:
+    def job(self, job_id: str, ident: Identity) -> dict:
+        j = self.jobs.get(job_id)
+        if not j or (ident.is_admin and j["division_id"] != ident.division_id) or (not ident.is_admin and j["station_id"] != ident.station_id):
+            raise KeyError(job_id)
+        return {k: v for k, v in j.items() if k not in ("station_id", "division_id")}
+
+    def _run_camera(self, job: str, cid: str, cam_id: str, path: Path, allowed, ident: Identity) -> None:
         state = self.jobs[job]
         state["status"] = "running"
         try:
@@ -159,16 +251,28 @@ class CaseStore:
                 cam["duration_s"] = res["meta"].get("analysed_s")
                 if cam["lat"] is None and env and env["location_candidates"]:
                     best = env["location_candidates"][0]
-                    cam["suggested_location"] = best
+                    if inside(best["lat"], best["lon"]) is not False:
+                        cam["suggested_location"] = best
                 if cam.get("gps"):
                     cam["route"] = map_match(cam["gps"])
                     for tr in res["tracks"]:
                         pos = position_at(cam["gps"], tr["first_t"])
                         if pos:
                             tr["lat"], tr["lon"] = pos
+                before = len(case.get("sightings", []))
                 if case.get("target"):
                     case["sightings"] = rank(case["target"], case["cameras"])
                 self._save(case)
+            self.store.record(ident, "camera_analysed", f"{cam['name']}: {video_summary(res)}",
+                              {"counts": res["counts"], "alerts": res["alerts"], "meta": res["meta"]}, case_id=cid,
+                              lat=cam["lat"], lon=cam["lon"], detections=_detections(res["tracks"]), station_id=case.get("station_id"))
+            found = len(case.get("sightings", [])) - before
+            if case.get("target") and found > 0:
+                best = max(case["sightings"], key=lambda s: s["score"])
+                self.store.record(ident, "hunt_sighting", f"{found} possible sighting{'s' if found != 1 else ''} of {case['target']['label']} "
+                                  f"(best match {best['score']:.0%} at {best['camera_name']})",
+                                  {"new": found, "best": {k: best.get(k) for k in ("camera_name", "score", "t_video", "label")}},
+                                  case_id=cid, lat=best.get("lat"), lon=best.get("lon"), station_id=case.get("station_id"))
             state["status"], state["progress"] = "done", 1.0
         except Exception as e:
             state["status"], state["error"] = "error", str(e)
@@ -180,33 +284,35 @@ class CaseStore:
                 self._save(case)
 
     def update_camera(self, cid: str, cam_id: str, lat: float | None, lon: float | None, start: str | None,
-                      name: str | None) -> dict:
+                      name: str | None, ident: Identity) -> dict:
+        if lat is not None and lon is not None and inside(lat, lon) is False:
+            raise ValueError("The camera location must be inside Bengaluru.")
         with self.lock:
-            case = self._load(cid)
+            case = self._owned(cid, ident)
             cam = next(c for c in case["cameras"] if c["id"] == cam_id)
             if lat is not None and lon is not None:
                 cam["lat"], cam["lon"], cam["location_source"] = lat, lon, "investigator"
             if start:
                 cam["start_time"], cam["start_epoch"] = start, _epoch(start)
             if name:
-                cam["name"] = name
+                cam["name"] = name[:120]
             if case.get("target"):
                 case["sightings"] = rank(case["target"], case["cameras"])
             self._save(case)
         return self.public(case)
 
-    def video_path(self, cid: str, cam_id: str) -> Path:
-        case = self._load(cid)
+    def video_path(self, cid: str, cam_id: str, ident: Identity) -> Path:
+        case = self._owned(cid, ident)
         cam = next(c for c in case["cameras"] if c["id"] == cam_id)
         return self._path(cid) / "cameras" / cam["file"]
 
-    def reason(self, cid: str, text: str, min_score: float | None = None) -> dict:
+    def reason(self, cid: str, text: str, ident: Identity, min_score: float | None = None) -> dict:
         min_score = hunt_model()["threshold"] if min_score is None else min_score
         hints = parse_hints(text) if text.strip() else {"places": [], "times": [], "activities": [], "direction": None, "text": ""}
         with self.lock:
-            case = self._load(cid)
+            case = self._owned(cid, ident)
         if text.strip():
-            case["notes"].append({"text": text, "at": time.time()})
+            case["notes"].append({"text": text[:2000], "at": time.time(), "by": ident.username})
         sightings = [s for s in case["sightings"] if s["score"] >= min_score]
         best: dict[str, dict] = {}
         for s in sightings:
@@ -214,7 +320,13 @@ class CaseStore:
                 best[s["camera_id"]] = s
         result = infer(list(best.values()), hints, case["cameras"])
         with self.lock:
-            fresh = self._load(cid)
+            fresh = self._owned(cid, ident)
             fresh["notes"], fresh["routes"] = case["notes"], result
             self._save(fresh)
+        top = (result.get("onward") or [None])[0]
+        self.store.record(ident, "route_inference",
+                          f"Route reasoning: {len(result.get('segments', []))} segment(s), {len(result.get('onward', []))} onward hypotheses"
+                          + (f", most likely towards {top.get('destination')} ({top.get('probability', 0):.0%})" if top else ""),
+                          {"note": text[:500], "places": [p.get("text") for p in hints.get("places", [])]}, case_id=cid,
+                          station_id=case.get("station_id"))
         return result

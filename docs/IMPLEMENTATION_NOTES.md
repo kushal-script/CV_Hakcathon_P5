@@ -23,7 +23,8 @@
 | Investigation features: video tracking, geolocation, vehicle hunt, blind-spot routes | done | `src/p5/video/`, `src/p5/geo/`, `src/p5/investigate/` |
 | Vehicle hunt calibration (E19) | done | `experiments/2026-11-06_19-13-27` |
 | Indian-market dataset and classifier (E18) | in progress | `scripts/build_india_dataset.py`, `assets/india/` |
-| Public HTTPS URL | pending | needs a tunnel or reverse proxy in front of the VM |
+| Station and division accounts, scoped data, division admin console | done | `gateway/src/`, `src/p5/store.py`, `web/app/admin.js` |
+| Public HTTPS URL | done | Cloudflare quick tunnel (systemd service on the VM) to the gateway on loopback. The address changes if the tunnel restarts |
 | Web-image out-of-catalogue set (planned E13 dev/test split) | not collected | τ_ood tuned on in-distribution val only |
 
 ## Deviations from the plan
@@ -39,7 +40,8 @@
 9. **Serving stack, final:** the planned Gradio app was replaced by a JSON API behind a Rust gateway (authentication, rate limiting, security headers) and a hand-built web console. Hosting moved from a Hugging Face Space to a JarvisLabs CPU VM (8 vCPU, AMD EPYC 9555 with AVX-512 VNNI), where the INT8 pipeline runs at p50 0.28 s per image with 2 threads.
 10. **Vehicle hunt weights:** the first version used hand-set weights and floors. They were replaced by a logistic model fitted in E19, and the hand-set values were removed from the config.
 11. **Indian-market catalogue:** the brief's dataset is US-market only. A second catalogue was built from free-licensed Wikimedia Commons photos of models that Wikidata and Wikipedia link to the Indian market. Commons rate-limits image downloads per IP (HTTP 429), so downloads were capped at 150 photos per model and models with Wikidata evidence of Indian manufacture were collected first. Many current Indian models have fewer than 20 free photos on Commons, which limits how well they can be recognised.
-12. **Plan items not done:** the web-image out-of-catalogue set (so τ_ood is set at 95% in-distribution TPR without OOD tuning), the SSB open-set benchmark, and the `tests/test_architecture.py` diagram check.
+12. **Access control:** the first gateway used a fixed users file and stateless signed cookies. It now keeps divisions, stations, accounts, sessions and an audit log in SQLite, with one account per Bengaluru police station and one administrator per division (Central, North, South, East, West). Sessions are server-side so they can be revoked. Sign-in requires a device location inside Bengaluru, and the console's HTML and scripts are served only to signed-in users. Every prediction is stored as a scoped event, which feeds the division console's charts.
+13. **Plan items not done:** the web-image out-of-catalogue set (so τ_ood is set at 95% in-distribution TPR without OOD tuning), the SSB open-set benchmark, and the `tests/test_architecture.py` diagram check.
 
 ## Test-label hygiene
 `scripts/eval_test.py` is the only code that reads test labels. `experiments/test_log.csv` lists its three calls, all on the same frozen system: the main evaluation, a call that added the detector-selected column to the robustness table, and failure-case extraction.

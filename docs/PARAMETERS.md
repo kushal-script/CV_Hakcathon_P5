@@ -89,3 +89,15 @@ There is no ground-truth dataset of routes taken through camera blind spots in B
 | `--min-car-share 0.5` | Assumption | Drops classes that the detector mostly sees as trucks (commercial vehicles) |
 | `--min-images 40`, `--holdout 0.15`, `--min-holdout 6` | Assumption | Smallest class kept, and photographer-disjoint 70/15/15 splits with at least 6 validation and test images per class |
 | `--merge-overlap 0.5` | Assumption | A class is merged into another when at least half of its listed photos also appear under the other (sub-category) |
+
+## Access control (gateway environment)
+
+| Value | Kind | Source |
+|---|---|---|
+| `P5_IDLE_MINUTES = 60`, `P5_SESSION_HOURS = 12` | Operational | A shift-length session that ends after an hour without use |
+| `P5_LOCKOUT_AFTER = 5`, `P5_LOCKOUT_MINUTES = 15` | Operational | Common account-lockout practice. Sign-in is also limited to 6 attempts per minute per IP (`P5_LOGIN_PER_MINUTE`) |
+| `P5_API_PER_MINUTE = 240` | Operational | Per-IP limit on API calls, above the rate a person can click |
+| Password rule | Operational | At least 12 characters, three character classes or 16 or more characters, not containing the user ID. One-time passwords are 3 groups of 4 characters from a 55-symbol alphabet (about 69 bits) |
+| `P5_DEVICE_GEOFENCE = required`, `P5_GEOFENCE_MARGIN_M = 2000` | Operational | Sign-in only from a device location inside the Bengaluru boundary in `assets/bengaluru/boundary.geojson`, with 2 km of slack for location error |
+| `P5_ALLOWED_COUNTRIES = IN` | Operational | Applied to Cloudflare's country header when `P5_TRUST_PROXY=true` |
+| Five divisions | Data | The owner's requirement (Central, North, South, East, West). How official divisions map onto them is recorded in `assets/bengaluru/police_stations.json` |

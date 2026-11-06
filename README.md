@@ -35,11 +35,20 @@ The recognition system is the core of **Vahana Drishti**, a web console designed
 
 Every tunable value is in a config file, and [docs/PARAMETERS.md](docs/PARAMETERS.md) states whether it was fitted on validation data, is an operational constant, or is a documented assumption.
 
+### Access model
+
+* **One account per police station**, created from the station register in `assets/bengaluru/police_stations.json`. Stations sit in five divisions: Central, North, South, East and West.
+* **One administrator per division.** An administrator sees every record, case and account of the stations in the division. The admin can correct or delete records, open, close, reassign and delete cases, reset station passwords, disable or unlock accounts, read the security audit log, and see charts of everything the system predicted. A station sees only its own records and cases.
+* **Bengaluru only.** Sign-in requires the device to report a location inside the Bengaluru boundary (with a 2 km margin). The gateway refuses requests that Cloudflare marks as coming from outside India. Camera locations must fall inside the city, and the map cannot leave it.
+* **Nothing is visible before sign-in.** The gateway serves only the sign-in page and its assets to anonymous visitors. The console's HTML and scripts, and every API call, require a valid session.
+
 ### Security
 
-* A Rust gateway (`gateway/`, axum) is the only public entry point. The Python service listens on loopback only.
-* Logins use Argon2id password hashes from a mounted users file. Sessions are HMAC-SHA256 signed cookies (HttpOnly, Secure, SameSite=Strict). Scripted clients use bearer tokens stored as SHA-256 hashes.
-* Per-IP token-bucket rate limits (stricter on login), request body limits, a method allowlist, path traversal checks and a request ID on every proxied call.
+* A Rust gateway (`gateway/`, axum) is the only public entry point. The Python service listens on loopback only and accepts a request only with an identity that the gateway signed with HMAC-SHA256 seconds earlier.
+* Accounts, sessions and the audit log live in SQLite (the C library is compiled into the gateway, WAL mode). Passwords are Argon2id hashes. Every account starts with a one-time password that must be changed at the first sign-in.
+* Sessions are random 256-bit tokens stored only as SHA-256 hashes, so they can be revoked server side. They expire after 60 idle minutes or 12 hours. Changing a password or a reset by an administrator signs out every other session.
+* An account locks for 15 minutes after 5 failed attempts. Sign-in is also rate limited per IP. Unknown IDs take as long to reject as wrong passwords.
+* Every state-changing request needs a same-origin marker header and is refused when the browser reports a cross-site origin. Cookies are HttpOnly, Secure and SameSite=Strict.
 * A strict Content-Security-Policy, `X-Frame-Options: DENY`, `nosniff`, `no-referrer`, a Permissions-Policy, COOP/CORP and HSTS.
 * Uploads are checked by content (image decoding, video file signatures) and size. The frontend builds the DOM with `textContent` only.
 * The container runs as a non-root user on a read-only filesystem with all Linux capabilities dropped.
@@ -100,16 +109,13 @@ Docker (gateway and API in one image):
 
 ```bash
 docker build -t vahana-drishti .
-printf '%s' 'a long passphrase' | docker run --rm -i --entrypoint vahana-gateway vahana-drishti hash-password
+docker run -d --name vahana -p 127.0.0.1:8080:8080 -v "$PWD/state:/app/state" -v "$PWD/cases:/app/data" --read-only --tmpfs /tmp --cap-drop ALL --security-opt no-new-privileges vahana-drishti
+docker exec vahana vahana-gateway provision --stations /app/assets/bengaluru/police_stations.json --credentials /app/state/credentials.csv
 ```
 
-Put the printed hash in a users file, `{"users": [{"username": "officer", "password_hash": "<hash>"}], "api_tokens": []}`, then run:
+`provision` creates the divisions, the stations, one account per station and one administrator per division, and writes their one-time passwords to a new file readable only by its owner. Rerunning it adds new stations and leaves existing accounts alone. `vahana-gateway reset-password <id>` issues a new one-time password from the server console.
 
-```bash
-docker run -d -p 127.0.0.1:8080:8080 -e P5_SESSION_SECRET="$(openssl rand -hex 32)" -v "$PWD/users.json:/run/secrets/users.json:ro" -v "$PWD/cases:/app/data" --read-only --tmpfs /tmp --cap-drop ALL --security-opt no-new-privileges vahana-drishti
-```
-
-Serve it behind HTTPS. Set `P5_TRUST_PROXY=true` when a reverse proxy or tunnel sets the client IP headers.
+Serve it behind HTTPS and set `P5_TRUST_PROXY=true` when a reverse proxy or tunnel sets the client IP and country headers. Other settings: `P5_DEVICE_GEOFENCE` (`required` or `off`), `P5_ALLOWED_COUNTRIES` (default `IN`), `P5_IDLE_MINUTES`, `P5_SESSION_HOURS`, `P5_LOCKOUT_AFTER`, `P5_LOCKOUT_MINUTES`.
 
 ## Reproduction
 
