@@ -174,6 +174,48 @@ def main() -> int:
               "4. **Missed detection in clutter:** a Lamborghini on a show stand behind a crowd; three small cars, none detected.",
               "5. **Rejected input:** 6 test images smaller than 64 px were refused by the input guard (since lowered to 32 px; the numbers above keep the original guard).", ""]
 
+    pp = lambda v, d=1: f"{pct(v, d)}%"
+    india = RUNS / "e18_test" / "test_report.json"
+    if india.exists():
+        ir = load(india)
+        main_arm, base_arm = "e18v3_india_e05init", "e18v3_india_imagenet"
+        a, b = ir[main_arm], ir[base_arm]
+        L += ["## 10. Extension: Indian-market catalogue (E18)", "",
+              "A second catalogue of car models sold or made in India, built from free-licensed Wikimedia Commons photos of models that Wikidata "
+              "and Wikipedia link to the Indian market. Photos were cropped with the COCO detector and split 70/15/15 so that no photographer "
+              f"appears in two splits. Test split: **{a['n']:,} photos, {a['classes_in_test']} models**, read once by `scripts/eval_india.py`.", "",
+              "| Model (INT8, single view) | Top-1 (%) | 95% CI | Top-5 (%) | Macro Top-1 (%) | Make Top-1 (%) | ECE after temperature (%) |",
+              "|---|---|---|---|---|---|---|"]
+        for name, r in (("TResNet-L, started from the Stanford Cars model (deployed)", a), ("TResNet-L, started from ImageNet", b)):
+            L.append(f"| {name} | {pct(r['top1'])} | {pct(r['top1_ci95'][0])}–{pct(r['top1_ci95'][1])} | {pct(r['top5'])} | {pct(r['macro_top1'])} | "
+                     f"{pct(r['make_top1'])} | {pct(r['ece'])} |")
+        m = ir.get("mcnemar")
+        if m:
+            L += ["", f"Starting from the Stanford Cars model is right on {m['a_only']} photos where the ImageNet start is wrong, and wrong on "
+                      f"{m['b_only']} where it is right (McNemar p = {m['p_value']:.2g})."]
+        us = ir.get("us_catalogue_on_india_test")
+        if us:
+            L += ["", "**Why a second catalogue:** the Stanford Cars model answers a specific model for "
+                      f"{pp(us['us_answers_a_model'])} of these Indian photos and flags {pp(us['us_flags_out_of_catalogue'])} as outside its catalogue. "
+                      f"On the {us['images_with_brand_in_us_catalogue']:,} photos whose make also exists in Stanford Cars, it names the make correctly "
+                      f"{pp(us['us_make_top1_on_shared_brands'])} of the time, against {pp(us['india_make_top1_on_shared_brands'])} for the Indian model."]
+        lv = a["levels"]
+        tot = sum(lv.values())
+        L += ["", f"Decision levels on the test split with thresholds fitted on validation: model named {pp(lv.get('class', 0) / tot)} of the time "
+                  f"(correct {pp(a['level_accuracy'].get('class', 0))}), make only {pp(lv.get('make', 0) / tot)}, not sure "
+                  f"{pp(lv.get('abstain', 0) / tot)}, outside the catalogue {pp((lv.get('ood', 0) + lv.get('ood_make', 0)) / tot)}.", ""]
+    hunt = ROOT / "configs" / "hunt_model.json"
+    if hunt.exists():
+        hm = json.loads(hunt.read_text())
+        r = hm["report"]
+        L += ["## 11. Extension: vehicle hunt match model (E19)", "",
+              f"Match probability between a target photo and a camera track, fitted on {hm['n_vehicles']} Stanford Cars validation vehicles with simulated second-camera views "
+              "and evaluated on a held-out half.", "",
+              "| AUC | TPR at 1% FPR | TPR at 5% FPR (deployed threshold) | TPR at 10% FPR | FPR on another vehicle of the same model |",
+              "|---|---|---|---|---|",
+              f"| {r['auc_eval']:.3f} | {pp(r['tpr_eval_at_fpr']['0.01'])} | {pp(r['tpr_eval_at_fpr']['0.05'])} | {pp(r['tpr_eval_at_fpr']['0.1'])} | "
+              f"{pp(r['fpr_eval_by_kind']['same model, other vehicle'])} |", ""]
+
     out = args.out or ROOT / f"eval_P5_{args.team}.md"
     out.write_text("\n".join(L) + "\n")
     print(f"wrote {out}")

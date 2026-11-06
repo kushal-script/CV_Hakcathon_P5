@@ -1,6 +1,6 @@
 # P5: Intelligent Fine-Grained Vehicle Recognition and Analysis System
 
-Computer Vision Hackathon 2026, Problem Statement P5. The system detects a vehicle in an uploaded image, identifies its make, model and year among the 196 Stanford Cars classes, and gives a calibrated confidence with every answer. Classical computer vision (quality analysis, quality-gated enhancement, GrabCut ROI refinement, Canny edges and contours, colour/texture/geometry features) works alongside deep learning (a fine-tuned YOLO26s detector and a fine-tuned TResNet-L classifier). A decision policy answers at the model, family or make level, flags cars outside the catalogue, and reports "no vehicle" when there is none.
+Computer Vision Hackathon 2026, Problem Statement P5, Team T55 (1RUA24CSE0216, 1RUA24CSE0228, 1RUA24CSE0229, 1RUA24CSE0275, 1RUA24CSE0244). The system detects a vehicle in an uploaded image, identifies its make, model and year among the 196 Stanford Cars classes, and gives a calibrated confidence with every answer. Classical computer vision (quality analysis, quality-gated enhancement, GrabCut ROI refinement, Canny edges and contours, colour/texture/geometry features) works alongside deep learning (a fine-tuned YOLO26s detector and a fine-tuned TResNet-L classifier). A decision policy answers at the model, family or make level, flags cars outside the catalogue, and reports "no vehicle" when there is none.
 
 ## Results (Stanford Cars test, n = 8,041)
 
@@ -17,7 +17,7 @@ Computer Vision Hackathon 2026, Problem Statement P5. The system detects a vehic
 | Full pipeline latency, 2 CPU threads (Apple M3, INT8) | p50 0.59 s, p95 1.10 s |
 | Robustness, Gaussian noise s1 / speckle s3 / contrast s5 | 81.9 → 90.9 / 78.9 → 88.3 / 83.9 → 91.2 with the classical enhancement |
 
-Full tables, ablations and failure cases: [eval_P5_TeamID.md](eval_P5_TeamID.md). Per-experiment records: [experiments/INDEX.md](experiments/INDEX.md).
+Full tables, ablations and failure cases: [eval_P5_T55.md](eval_P5_T55.md). Per-experiment records: [experiments/INDEX.md](experiments/INDEX.md).
 
 ## Beyond the brief: an investigation console for traffic police
 
@@ -57,7 +57,7 @@ Every tunable value is in a config file, and [docs/PARAMETERS.md](docs/PARAMETER
 
 | Document | Contents |
 |---|---|
-| [eval_P5_TeamID.md](eval_P5_TeamID.md) | Comparative evaluation in the required metric order, ablation and failure-case analysis |
+| [eval_P5_T55.md](eval_P5_T55.md) | Comparative evaluation in the required metric order, ablation and failure-case analysis |
 | [docs/IMPLEMENTATION_NOTES.md](docs/IMPLEMENTATION_NOTES.md) | What was built and every deviation from the plan |
 | [docs/PARAMETERS.md](docs/PARAMETERS.md) | Every configurable value and where it comes from |
 | [docs/OPERATIONS.md](docs/OPERATIONS.md) | Deployment, accounts, settings, updates and backups |
@@ -134,7 +134,7 @@ GPU jobs are plain scripts launched on a JarvisLabs A100 (`scripts/remote/*.sh`)
 | Calibration (E13) | `python3 scripts/calibrate.py --logits <INT8 val logits> --out runs/e13_calibration` |
 | Package models | `python3 scripts/package_models.py --classifier <export_int8> --detector <detector.onnx> --classical <classical_global.npz> --thresholds <thresholds.yaml>` |
 | Test evaluation (E15) | `python3 scripts/eval_test.py ...` (the only script that reads test labels; calls are logged) |
-| Evaluation file | `python3 scripts/make_tables.py --team <TeamID> --usns <USN1,...>` |
+| Evaluation file | `python3 scripts/make_tables.py --team T55 --usns 1RUA24CSE0216,1RUA24CSE0228,1RUA24CSE0229,1RUA24CSE0275,1RUA24CSE0244` |
 
 ## Dataset
 

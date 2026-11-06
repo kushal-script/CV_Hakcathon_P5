@@ -15,7 +15,7 @@
 | Fusion and enhancement tuning (E12) | done | `experiments/2026-11-06_15-40-56` |
 | Calibration and thresholds (E13) | done | `experiments/2026-11-06_15-40-57` |
 | Robustness suite (E14) | done | `experiments/2026-11-06_15-40-58` |
-| Final test evaluation and failure analysis (E15) | done | `experiments/2026-11-06_16-31-27`, `eval_P5_TeamID.md` |
+| Final test evaluation and failure analysis (E15) | done | `experiments/2026-11-06_16-31-27`, `eval_P5_T55.md` |
 | I-JEPA research arm (E17, not in the original plan) | done | `experiments/2026-11-06_15-40-59` |
 | Backend API (FastAPI) | done | `app/server.py` |
 | Rust security gateway and multi-stage Docker image | done, running on a JarvisLabs CPU VM | `gateway/`, `Dockerfile`, `deploy/` |

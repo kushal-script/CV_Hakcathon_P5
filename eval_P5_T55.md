@@ -1,6 +1,6 @@
-USN1,USN2,USN3,USN4
+1RUA24CSE0216,1RUA24CSE0228,1RUA24CSE0229,1RUA24CSE0275,1RUA24CSE0244
 
-# eval_P5_TeamID: Intelligent Fine-Grained Vehicle Recognition and Analysis System
+# eval_P5_T55: Intelligent Fine-Grained Vehicle Recognition and Analysis System
 
 All numbers are on the Stanford Cars **test split (n = 8,041)** unless marked val. Models, thresholds and the enhancement rule were frozen on train/validation before test labels were read; test labels are read only by `scripts/eval_test.py` and every call is logged in `experiments/test_log.csv`.
 
@@ -185,4 +185,12 @@ Worked cases (figures in `experiments/2026-11-06_16-31-27/figures/`):
 3. **Probable label error:** labelled HUMMER H3T, predicted GMC Canyon at 96%; the truck carries a Chevrolet Z71 badge (Colorado, same platform as Canyon and H3T).
 4. **Missed detection in clutter:** a Lamborghini on a show stand behind a crowd; three small cars, none detected.
 5. **Rejected input:** 6 test images smaller than 64 px were refused by the input guard (since lowered to 32 px; the numbers above keep the original guard).
+
+## 11. Extension: vehicle hunt match model (E19)
+
+Match probability between a target photo and a camera track, fitted on 815 Stanford Cars validation vehicles with simulated second-camera views and evaluated on a held-out half.
+
+| AUC | TPR at 1% FPR | TPR at 5% FPR (deployed threshold) | TPR at 10% FPR | FPR on another vehicle of the same model |
+|---|---|---|---|---|
+| 0.981 | 58.6% | 89.7% | 96.3% | 22.4% |
 
