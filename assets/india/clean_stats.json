@@ -1,0 +1,11 @@
+{
+ "class_not_collected": 0,
+ "images": 33647,
+ "vehicle_too_small": 3276,
+ "no_vehicle": 1849,
+ "several_large_vehicles": 568,
+ "listed_under_two_classes": 1902,
+ "duplicate": 132,
+ "cross_class_duplicates": 0,
+ "kept": 27822
+}

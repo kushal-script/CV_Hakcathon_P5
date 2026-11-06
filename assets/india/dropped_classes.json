@@ -1,0 +1,436 @@
+[
+ {
+  "qid": "Q111666207",
+  "name": "BMW 7 Series (G70)",
+  "n": 72,
+  "photographers": 7,
+  "reason": "too few independent photographers"
+ },
+ {
+  "qid": "Q4848835",
+  "name": "Bajaj RE60",
+  "n": 10,
+  "car_share": 0.4,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q55393226",
+  "name": "Baojun 530",
+  "n": 12,
+  "car_share": 0.833,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q19944712",
+  "name": "Daewoo LeMans",
+  "n": 15,
+  "photographers": 3,
+  "reason": "too few independent photographers"
+ },
+ {
+  "qid": "Q20182903",
+  "name": "Datsun DB Series",
+  "n": 4,
+  "car_share": 0.75,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q17048991",
+  "name": "Datsun DS Series",
+  "n": 2,
+  "car_share": 0.5,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q377180",
+  "name": "Datsun Type 11",
+  "n": 11,
+  "car_share": 0.364,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q1333140",
+  "name": "Datsun Type 12",
+  "n": 2,
+  "car_share": 0.5,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q24540408",
+  "name": "Datsun redi-GO",
+  "n": 2,
+  "car_share": 1.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q17053069",
+  "name": "Force Gurkha",
+  "n": 4,
+  "car_share": 0.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q138862829",
+  "name": "Freelander 8",
+  "n": 5,
+  "car_share": 0.8,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q10861051",
+  "name": "Hindustan Contessa",
+  "n": 8,
+  "car_share": 0.875,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q119142683",
+  "name": "Honda Elevate",
+  "n": 2,
+  "car_share": 1.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q106423063",
+  "name": "Hyundai Alcazar",
+  "n": 3,
+  "car_share": 0.667,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q84761756",
+  "name": "Hyundai Aura",
+  "n": 2,
+  "car_share": 1.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q118220305",
+  "name": "Hyundai Exter",
+  "n": 2,
+  "car_share": 1.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q60486326",
+  "name": "Hyundai Santro",
+  "n": 9,
+  "car_share": 1.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q17055638",
+  "name": "Hyundai Xcent",
+  "n": 1,
+  "car_share": 1.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q6275482",
+  "name": "Jonga",
+  "n": 10,
+  "car_share": 0.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q131469827",
+  "name": "Kia Syros",
+  "n": 3,
+  "car_share": 0.333,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q17071159",
+  "name": "Mahindra Armada",
+  "n": 3,
+  "car_share": 0.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q134780679",
+  "name": "Mahindra BE 6",
+  "n": 3,
+  "car_share": 0.667,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q19893528",
+  "name": "Mahindra Genio",
+  "n": 5,
+  "car_share": 0.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q24890883",
+  "name": "Mahindra KUV100",
+  "n": 14,
+  "car_share": 0.857,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q60742780",
+  "name": "Mahindra Marazzo",
+  "n": 4,
+  "car_share": 1.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q3277732",
+  "name": "Mahindra Maxx",
+  "n": 4,
+  "car_share": 0.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q17084646",
+  "name": "Mahindra Quanto",
+  "n": 3,
+  "car_share": 0.333,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q55640965",
+  "name": "Mahindra Roxor",
+  "n": 3,
+  "car_share": 0.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q24907456",
+  "name": "Mahindra TUV300",
+  "n": 7,
+  "car_share": 0.286,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q87124587",
+  "name": "Mahindra Verito Vibe",
+  "n": 2,
+  "car_share": 1.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q61630113",
+  "name": "Mahindra XUV300",
+  "n": 5,
+  "car_share": 1.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q108120003",
+  "name": "Mahindra XUV700",
+  "n": 8,
+  "car_share": 0.875,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q3073545",
+  "name": "Mahindra Xylo",
+  "n": 4,
+  "car_share": 0.75,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q3296025",
+  "name": "Maruti SX4",
+  "n": 2,
+  "car_share": 1.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q114873976",
+  "name": "Maruti XL6",
+  "n": 2,
+  "car_share": 1.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q99934822",
+  "name": "Renault Kiger",
+  "n": 11,
+  "car_share": 0.909,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q65125527",
+  "name": "Renault Triber",
+  "n": 9,
+  "car_share": 1.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q1094009",
+  "name": "Rover CityRover",
+  "n": 5,
+  "car_share": 1.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q136087489",
+  "name": "Suzuki Victoris",
+  "n": 3,
+  "car_share": 1.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q29578335",
+  "name": "TaMo Racemo",
+  "n": 7,
+  "car_share": 0.857,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q7687791",
+  "name": "Tata Aria",
+  "n": 8,
+  "car_share": 1.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q18110678",
+  "name": "Tata Bolt",
+  "n": 6,
+  "car_share": 1.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q130218206",
+  "name": "Tata Curvv",
+  "n": 2,
+  "car_share": 1.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q959035",
+  "name": "Tata Estate",
+  "n": 6,
+  "car_share": 0.833,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q60346506",
+  "name": "Tata Harrier",
+  "n": 7,
+  "car_share": 1.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q29578336",
+  "name": "Tata Hexa",
+  "n": 10,
+  "car_share": 1.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q12072602",
+  "name": "Tata LPT 613",
+  "n": 12,
+  "car_share": 0.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q7687811",
+  "name": "Tata Magic",
+  "n": 2,
+  "car_share": 0.5,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q7687813",
+  "name": "Tata Magic Iris",
+  "n": 3,
+  "car_share": 0.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q108443942",
+  "name": "Tata Punch",
+  "n": 5,
+  "car_share": 1.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q16058028",
+  "name": "Tata Super Ace",
+  "n": 9,
+  "car_share": 0.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q23637398",
+  "name": "Tata Tiago",
+  "n": 11,
+  "car_share": 1.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q29578340",
+  "name": "Tata Tigor",
+  "n": 2,
+  "car_share": 1.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q1550254",
+  "name": "Tata Winger",
+  "n": 8,
+  "car_share": 0.25,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q7698885",
+  "name": "Tempo Trax",
+  "n": 8,
+  "car_share": 0.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q115152621",
+  "name": "VinFast VF 6",
+  "n": 14,
+  "car_share": 1.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q24883601",
+  "name": "Volkswagen Ameo",
+  "n": 3,
+  "car_share": 1.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q136806558",
+  "name": "Wuling Starlight 560",
+  "n": 21,
+  "photographers": 3,
+  "reason": "too few independent photographers"
+ },
+ {
+  "qid": "Q105044283",
+  "name": "\u0160koda Kushaq",
+  "n": 5,
+  "car_share": 1.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q130223132",
+  "name": "\u0160koda Kylaq",
+  "n": 2,
+  "car_share": 1.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q392036",
+  "name": "\u0160koda Rapid (India)",
+  "n": 11,
+  "car_share": 1.0,
+  "reason": "too few images"
+ },
+ {
+  "qid": "Q109315466",
+  "name": "\u0160koda Slavia",
+  "n": 2,
+  "car_share": 1.0,
+  "reason": "too few images"
+ }
+]

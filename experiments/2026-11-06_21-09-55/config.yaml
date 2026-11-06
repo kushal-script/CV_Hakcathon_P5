@@ -1,0 +1,38 @@
+experiment:
+  id: "2026-11-06_21-09-55"
+  title: "E18: Indian-market catalogue from free-licensed photos"
+  type: "deep"
+  seed: 42
+
+data:
+  builder: scripts/build_india_dataset.py
+  candidates: Wikidata car models made in, originating from or made by a manufacturer based in India, plus models linked from Wikipedia articles on the Indian automotive industry and each manufacturer's Indian arm
+  photos: Wikimedia Commons, free licences only, 960 or 500 px thumbnails, at most 150 per Commons category, normalised to 500 px before cropping
+  cleaning: COCO detector car or truck at >= 0.5 covering >= 18% of the frame, no second vehicle at least half its size, 16% padded crop, dHash deduplication, files listed under two classes dropped
+  split: 70/15/15 by photographer, validation and test each capped at 30% of a class, at least 15 photos and 2 validation and test photos per class
+  classes: 282
+  images: {train: 18585, val: 4499, test: 4298}
+
+model:
+  backbone: tresnet_l.miil_in1k_448
+  image_size: 368
+  arms:
+    e18v3_india_e05init: initialised from the E05 Stanford Cars model (classifier head replaced)
+    e18v3_india_imagenet: initialised from ImageNet-1k only
+
+train:
+  epochs: 25
+  batch: 32
+  lr: 0.0002
+  head_lr: 0.002
+  weight_decay: 0.05
+  label_smoothing: 0.1
+  sampling: square-root class balanced
+  augmentation: same as E05 (box jitter, flip, RandAugment n=2 m=7, down-then-up scaling, CLAHE or gamma, random erasing)
+
+export:
+  onnx: logits and feature map
+  quantization: static INT8 QDQ, per-channel, percentile calibration on 320 training crops
+
+calibration:
+  temperature and decision thresholds fitted on the INT8 validation logits with scripts/calibrate.py (500 bootstrap resamples)

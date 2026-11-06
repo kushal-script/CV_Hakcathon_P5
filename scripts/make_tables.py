@@ -195,7 +195,7 @@ def main() -> int:
                       f"{m['b_only']} where it is right (McNemar p = {m['p_value']:.2g})."]
         us = ir.get("us_catalogue_on_india_test")
         if us:
-            L += ["", "**Why a second catalogue:** the Stanford Cars model answers a specific model for "
+            L += ["", "**Why a second catalogue:** the Stanford Cars model names a specific model for "
                       f"{pp(us['us_answers_a_model'])} of these Indian photos and flags {pp(us['us_flags_out_of_catalogue'])} as outside its catalogue. "
                       f"On the {us['images_with_brand_in_us_catalogue']:,} photos whose make also exists in Stanford Cars, it names the make correctly "
                       f"{pp(us['us_make_top1_on_shared_brands'])} of the time, against {pp(us['india_make_top1_on_shared_brands'])} for the Indian model."]

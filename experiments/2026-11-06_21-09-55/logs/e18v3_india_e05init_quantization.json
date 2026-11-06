@@ -1,0 +1,27 @@
+{
+ "n": 4499,
+ "threads": 8,
+ "calib": 320,
+ "method": "percentile",
+ "fp32": {
+  "top1": 0.8448544120915759,
+  "top5": 0.9302067126028006,
+  "make_top1": 0.8973105134474327,
+  "family_top1": 0.8448544120915759,
+  "year_twin_confusion": null,
+  "rebadge_twin_confusion": null,
+  "latency_p50_ms": 107.19778900966048,
+  "size_mb": 206.9
+ },
+ "int8": {
+  "top1": 0.8437430540120027,
+  "top5": 0.9275394532118248,
+  "make_top1": 0.897755056679262,
+  "family_top1": 0.8437430540120027,
+  "year_twin_confusion": null,
+  "rebadge_twin_confusion": null,
+  "latency_p50_ms": 195.6670938525349,
+  "size_mb": 53.1
+ },
+ "delta_top1": -0.001111358079573188
+}

@@ -1,0 +1,43 @@
+{
+ "cache": null,
+ "assets": "/home/p5/assets/india",
+ "out": "/home/work/runs/e18v3_india_e05init",
+ "backbone": "tresnet_l.miil_in1k_448",
+ "size": 368,
+ "epochs": 25,
+ "batch": 32,
+ "lr": 0.0002,
+ "head_lr": 0.002,
+ "wd": 0.05,
+ "warmup": 2.0,
+ "smoothing": 0.1,
+ "workers": 15,
+ "seed": 42,
+ "no_aug": false,
+ "full_image": false,
+ "eval_every": 5,
+ "limit": 0,
+ "compile": false,
+ "device": "cuda",
+ "llrd": 1.0,
+ "split_csv": "/home/p5/assets/india/split.csv",
+ "crops": "/home/work/india/crops",
+ "init": "/home/work/init/e05_model.pt",
+ "balance": "sqrt",
+ "mean": [
+  0.0,
+  0.0,
+  0.0
+ ],
+ "std": [
+  1.0,
+  1.0,
+  1.0
+ ],
+ "interpolation": "bilinear",
+ "num_classes": 282,
+ "train_n": 18585,
+ "val_n": 4499,
+ "amp": "torch.bfloat16",
+ "torch": "2.11.0+cu130"
+}

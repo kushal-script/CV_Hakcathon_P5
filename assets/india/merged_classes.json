@@ -1,0 +1,44 @@
+[
+ {
+  "qid": "Q1631801",
+  "name": "Austin A40 Devon",
+  "merged_into": "Q781033",
+  "into_name": "Austin A40"
+ },
+ {
+  "qid": "Q3802370",
+  "name": "Austin A40 Somerset",
+  "merged_into": "Q781033",
+  "into_name": "Austin A40"
+ },
+ {
+  "qid": "Q488154",
+  "name": "Chevrolet Aveo T200",
+  "merged_into": "Q497226",
+  "into_name": "Chevrolet Aveo"
+ },
+ {
+  "qid": "Q111666705",
+  "name": "Mercedes-Benz EQS SUV",
+  "merged_into": "Q97120016",
+  "into_name": "Mercedes-Benz EQS"
+ },
+ {
+  "qid": "Q9355803",
+  "name": "Tata Indica Vista",
+  "merged_into": "Q1145323",
+  "into_name": "Tata Indica"
+ },
+ {
+  "qid": "Q1550278",
+  "name": "Tata Sierra",
+  "merged_into": "Q906268",
+  "into_name": "Tata TL"
+ },
+ {
+  "qid": "Q7687833",
+  "name": "Tata Sumo Grande",
+  "merged_into": "Q1550231",
+  "into_name": "Tata Sumo"
+ }
+]

@@ -348,7 +348,7 @@ def main() -> int:
     p.add_argument("--downloads", type=int, default=4)
     p.add_argument("--min-box-frac", type=float, default=0.18)
     p.add_argument("--min-det", type=float, default=0.5)
-    p.add_argument("--min-car-share", type=float, default=0.5)
+    p.add_argument("--min-car-share", type=float, default=0.0)
     p.add_argument("--holdout", type=float, default=0.15)
     p.add_argument("--min-holdout", type=int, default=6)
     p.add_argument("--merge-overlap", type=float, default=0.5)
@@ -497,8 +497,15 @@ def main() -> int:
             keys.sort(key=lambda g: len(groups[g]))
             n = len(items)
             parts = {"test": [], "val": [], "train": []}
+            cap = 2 * args.holdout * n
             for g in keys:
-                target = "test" if len(parts["test"]) < args.holdout * n else "val" if len(parts["val"]) < args.holdout * n else "train"
+                size = len(groups[g])
+                if len(parts["test"]) < args.holdout * n and len(parts["test"]) + size <= cap:
+                    target = "test"
+                elif len(parts["val"]) < args.holdout * n and len(parts["val"]) + size <= cap:
+                    target = "val"
+                else:
+                    target = "train"
                 parts[target].extend(groups[g])
             if len(parts["train"]) < 0.5 * n or min(len(parts["val"]), len(parts["test"])) < args.min_holdout:
                 dropped.append({"qid": q, "name": cand[q]["name"], "n": n, "photographers": len(groups), "reason": "too few independent photographers"})

@@ -1,0 +1,9 @@
+tau_lo: 0.1
+tau_det: 0.25
+tau_hi: 0.92
+tau_fam: 0.92
+tau_make: 0.42
+tau_ood: -3.037158966064453
+t_d: 0.6675869805918462
+t_f: null
+beta: 0.0

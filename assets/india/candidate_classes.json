@@ -1,0 +1,4515 @@
+[
+ {
+  "qid": "Q758729",
+  "name": "Audi A4",
+  "makers": [
+   "Audi AG"
+  ],
+  "commons": "Audi A4",
+  "brands": [
+   "Audi"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q758752",
+  "name": "Audi A5",
+  "makers": [
+   "Audi AG"
+  ],
+  "commons": "Audi A5",
+  "brands": [
+   "Audi"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q758718",
+  "name": "Audi A6",
+  "makers": [
+   "Audi AG"
+  ],
+  "commons": "Audi A6",
+  "brands": [
+   "Audi"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q758768",
+  "name": "Audi Q3",
+  "makers": [
+   "Audi AG"
+  ],
+  "commons": "Audi Q3",
+  "brands": [
+   "Audi"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q758769",
+  "name": "Audi Q5",
+  "makers": [
+   "Audi AG"
+  ],
+  "commons": "Audi Q5",
+  "brands": [
+   "Audi"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q118840",
+  "name": "Audi Q7",
+  "makers": [
+   "Audi AG"
+  ],
+  "commons": "Audi Q7",
+  "brands": [
+   "Audi"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q16687488",
+  "name": "Audi Q8",
+  "makers": [
+   "Audi AG"
+  ],
+  "commons": "Audi Q8",
+  "brands": [
+   "Audi"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q56669231",
+  "name": "Audi Q8 e-tron",
+  "makers": [
+   "Audi AG"
+  ],
+  "commons": "Audi e-tron",
+  "brands": [
+   "Audi"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q60849683",
+  "name": "Audi e-tron GT",
+  "makers": [
+   "Audi AG"
+  ],
+  "commons": "Audi e-tron GT",
+  "brands": [
+   "Audi"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q781028",
+  "name": "Austin 7",
+  "makers": [
+   "British Motor Corporation"
+  ],
+  "commons": "Austin 7",
+  "brands": [
+   "Q781156"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q781033",
+  "name": "Austin A40",
+  "makers": [
+   "British Motor Corporation"
+  ],
+  "commons": "Austin A40",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 2
+ },
+ {
+  "qid": "Q1631801",
+  "name": "Austin A40 Devon",
+  "makers": [
+   "British Motor Corporation"
+  ],
+  "commons": "Austin A40 Devon",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q3802370",
+  "name": "Austin A40 Somerset",
+  "makers": [
+   "British Motor Corporation"
+  ],
+  "commons": "Austin A40 Somerset",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q71291013",
+  "name": "BMW 2 Series Gran Coupe",
+  "makers": [
+   "BMW"
+  ],
+  "commons": "BMW Serie 2 Gran Coup\u00e9",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q466066",
+  "name": "BMW 3 Series",
+  "makers": [
+   "BMW"
+  ],
+  "commons": "BMW 3 Series",
+  "brands": [
+   "Q796364"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q499497",
+  "name": "BMW 4 Series",
+  "makers": [
+   "BMW"
+  ],
+  "commons": "BMW 4 Series",
+  "brands": [
+   "Q796364"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q501613",
+  "name": "BMW 5 Series",
+  "makers": [
+   "BMW"
+  ],
+  "commons": "BMW 5 Series",
+  "brands": [
+   "Q796364"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q796427",
+  "name": "BMW 6 Series",
+  "makers": [
+   "BMW"
+  ],
+  "commons": "BMW 6 Series",
+  "brands": [
+   "Q796364"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q503274",
+  "name": "BMW 7 Series",
+  "makers": [
+   "BMW"
+  ],
+  "commons": "BMW 7 Series",
+  "brands": [
+   "Q796364"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q111666207",
+  "name": "BMW 7 Series (G70)",
+  "makers": [
+   "BMW"
+  ],
+  "commons": "BMW G70",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q739844",
+  "name": "BMW 8 Series",
+  "makers": [
+   "BMW"
+  ],
+  "commons": "BMW 8 Series",
+  "brands": [
+   "Q796364"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q746980",
+  "name": "BMW X1",
+  "makers": [
+   "BMW"
+  ],
+  "commons": "BMW X1",
+  "brands": [
+   "Q796364"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q112222244",
+  "name": "BMW X1 (U11)",
+  "makers": [
+   "BMW"
+  ],
+  "commons": "BMW U11",
+  "brands": [
+   "BMW"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q796780",
+  "name": "BMW X3",
+  "makers": [
+   "BMW"
+  ],
+  "commons": "BMW X3",
+  "brands": [
+   "Q796364"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q4836084",
+  "name": "BMW X4",
+  "makers": [
+   "BMW"
+  ],
+  "commons": "BMW X4",
+  "brands": [
+   "Q796364"
+  ],
+  "made_in_india": false,
+  "india_priority": 2
+ },
+ {
+  "qid": "Q796778",
+  "name": "BMW X5",
+  "makers": [
+   "BMW"
+  ],
+  "commons": "BMW X5",
+  "brands": [
+   "Q796364"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q796781",
+  "name": "BMW X6",
+  "makers": [
+   "BMW"
+  ],
+  "commons": "BMW X6",
+  "brands": [
+   "Q796364"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q12062564",
+  "name": "BMW X7",
+  "makers": [
+   "BMW"
+  ],
+  "commons": "BMW G07",
+  "brands": [
+   "Q796364"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q109967114",
+  "name": "BMW XM",
+  "makers": [
+   "BMW"
+  ],
+  "commons": "BMW XM",
+  "brands": [
+   "BMW"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q2332702",
+  "name": "BMW Z Models",
+  "makers": [
+   "BMW"
+  ],
+  "commons": "BMW Z",
+  "brands": [
+   "Q796364"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q86663388",
+  "name": "BMW iX",
+  "makers": [
+   "BMW"
+  ],
+  "commons": "BMW iX",
+  "brands": [
+   "BMW"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q108894190",
+  "name": "BYD Atto 3",
+  "makers": [
+   "BYD Auto"
+  ],
+  "commons": "BYD Atto 3",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 2
+ },
+ {
+  "qid": "Q4848835",
+  "name": "Bajaj RE60",
+  "makers": [
+   "Bajaj Auto"
+  ],
+  "commons": "Bajaj Qute",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q55393226",
+  "name": "Baojun 530",
+  "makers": [
+   "Baojun"
+  ],
+  "commons": "Baojun 530",
+  "brands": [
+   "Baojun"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q120836291",
+  "name": "Baojun Yunduo",
+  "makers": [
+   "SAIC-GM-Wuling"
+  ],
+  "commons": "Baojun Yunduo",
+  "brands": [
+   "Baojun"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q19606707",
+  "name": "Bentley Bentayga",
+  "makers": [
+   "Bentley"
+  ],
+  "commons": "Bentley Bentayga",
+  "brands": [
+   "Bentley"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q497226",
+  "name": "Chevrolet Aveo",
+  "makers": [
+   "General Motors"
+  ],
+  "commons": "Chevrolet Aveo",
+  "brands": [
+   "Chevrolet"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q488154",
+  "name": "Chevrolet Aveo T200",
+  "makers": [
+   "Daewoo Motors",
+   "General Motors"
+  ],
+  "commons": "Chevrolet Aveo (T200)",
+  "brands": [
+   "Chevrolet"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q482542",
+  "name": "Chevrolet Captiva",
+  "makers": [
+   "General Motors"
+  ],
+  "commons": "Chevrolet Captiva",
+  "brands": [
+   "Chevrolet"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q494073",
+  "name": "Chevrolet Cruze",
+  "makers": [
+   "Chevrolet",
+   "General Motors"
+  ],
+  "commons": "Chevrolet Cruze",
+  "brands": [
+   "Chevrolet"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q4036099",
+  "name": "Chevrolet Deluxe",
+  "makers": [
+   "General Motors"
+  ],
+  "commons": "Chevrolet Deluxe",
+  "brands": [
+   "Chevrolet"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q610395",
+  "name": "Chevrolet Sail",
+  "makers": [
+   "SAIC General Motors"
+  ],
+  "commons": "Chevrolet Sail",
+  "brands": [
+   "Chevrolet"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q14515874",
+  "name": "Chevrolet Spark",
+  "makers": [
+   "General Motors"
+  ],
+  "commons": "Chevrolet Spark",
+  "brands": [
+   "Chevrolet"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q726411",
+  "name": "Citro\u00ebn C3",
+  "makers": [
+   "Citro\u00ebn",
+   "Peugeot"
+  ],
+  "commons": "Citro\u00ebn C3",
+  "brands": [
+   "Citro\u00ebn"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q108760254",
+  "name": "Citro\u00ebn C3 (CC21)",
+  "makers": [
+   "Citro\u00ebn"
+  ],
+  "commons": "Citro\u00ebn C3 (India and Latin America)",
+  "brands": [
+   "Citro\u00ebn"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q5122860",
+  "name": "Citro\u00ebn C3 Aircross",
+  "makers": [
+   "Citro\u00ebn"
+  ],
+  "commons": "Citro\u00ebn C3 Aircross",
+  "brands": [
+   "Citro\u00ebn"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q29402168",
+  "name": "Citro\u00ebn C5 Aircross",
+  "makers": [
+   "Groupe PSA"
+  ],
+  "commons": "Citro\u00ebn C5 Aircross",
+  "brands": [
+   "Citro\u00ebn"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1156868",
+  "name": "Dacia Lodgy",
+  "makers": [
+   "Dacia"
+  ],
+  "commons": "Dacia Lodgy",
+  "brands": [
+   "Dacia"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q668565",
+  "name": "Dacia Logan",
+  "makers": [
+   "Dacia"
+  ],
+  "commons": "Dacia Logan",
+  "brands": [
+   "Dacia"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q493989",
+  "name": "Daewoo Lacetti",
+  "makers": [
+   "General Motors"
+  ],
+  "commons": "Daewoo Lacetti",
+  "brands": [
+   "Chevrolet"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q19944712",
+  "name": "Daewoo LeMans",
+  "makers": [
+   "General Motors"
+  ],
+  "commons": "Daewoo LeMans",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1131572",
+  "name": "Daihatsu Terios",
+  "makers": [
+   "Daihatsu"
+  ],
+  "commons": "Daihatsu Terios",
+  "brands": [
+   "Daihatsu"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q3489002",
+  "name": "Datsun 510",
+  "makers": [
+   "Datsun"
+  ],
+  "commons": "Datsun Bluebird (510)",
+  "brands": [
+   "Datsun"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q20182903",
+  "name": "Datsun DB Series",
+  "makers": [
+   "Nissan"
+  ],
+  "commons": "Datsun DB-series",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q17048991",
+  "name": "Datsun DS Series",
+  "makers": [
+   "Nissan"
+  ],
+  "commons": "Datsun DS-series",
+  "brands": [
+   "Datsun"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q13921088",
+  "name": "Datsun Go",
+  "makers": [
+   "Nissan"
+  ],
+  "commons": "Datsun GO",
+  "brands": [
+   "Datsun"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q1172693",
+  "name": "Datsun Sports",
+  "makers": [
+   "Nissan"
+  ],
+  "commons": "Datsun Fairlady",
+  "brands": [
+   "Datsun"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q377180",
+  "name": "Datsun Type 11",
+  "makers": [
+   "Nissan"
+  ],
+  "commons": "Datsun Model 11",
+  "brands": [
+   "Datsun"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1333140",
+  "name": "Datsun Type 12",
+  "makers": [
+   "Nissan"
+  ],
+  "commons": "Datsun Model 12",
+  "brands": [
+   "Datsun"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q18330788",
+  "name": "Datsun mi-DO",
+  "makers": [
+   "Datsun"
+  ],
+  "commons": "Datsun mi-Do",
+  "brands": [
+   "Datsun"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q16687622",
+  "name": "Datsun on-Do",
+  "makers": [
+   "Datsun"
+  ],
+  "commons": "Datsun on-Do",
+  "brands": [
+   "Datsun"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q24540408",
+  "name": "Datsun redi-GO",
+  "makers": [
+   "Nissan"
+  ],
+  "commons": "Datsun Redi-Go",
+  "brands": [
+   "Datsun"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1234241",
+  "name": "Dodge Kingsway",
+  "makers": [
+   "Dodge"
+  ],
+  "commons": "Dodge Kingsway",
+  "brands": [
+   "Dodge"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1410426",
+  "name": "Fiat 1100",
+  "makers": [
+   "Fiat"
+  ],
+  "commons": "Fiat 1100",
+  "brands": [
+   "Fiat"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q22101820",
+  "name": "Fiat 1100",
+  "makers": [
+   "Fiat"
+  ],
+  "commons": "Fiat 1100",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 2
+ },
+ {
+  "qid": "Q494744",
+  "name": "Fiat 124",
+  "makers": [
+   "Fiat"
+  ],
+  "commons": "Fiat 124",
+  "brands": [
+   "Fiat"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q927839",
+  "name": "Fiat 500",
+  "makers": [
+   "Fiat"
+  ],
+  "commons": "Fiat 500 (type 312)",
+  "brands": [
+   "Fiat"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q636082",
+  "name": "Fiat 500 Topolino",
+  "makers": [
+   "Fiat"
+  ],
+  "commons": "Fiat Topolino",
+  "brands": [
+   "Fiat"
+  ],
+  "made_in_india": false,
+  "india_priority": 2
+ },
+ {
+  "qid": "Q1132226",
+  "name": "Fiat Bravo",
+  "makers": [
+   "Fiat"
+  ],
+  "commons": "Fiat Bravo (type 198)",
+  "brands": [
+   "Fiat"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q864676",
+  "name": "Fiat Linea",
+  "makers": [
+   "Fiat"
+  ],
+  "commons": "Fiat Linea",
+  "brands": [
+   "Fiat"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q525756",
+  "name": "Fiat Palio",
+  "makers": [
+   "Fiat"
+  ],
+  "commons": "Fiat Palio",
+  "brands": [
+   "Fiat"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1410639",
+  "name": "Fiat Siena",
+  "makers": [
+   "Fiat"
+  ],
+  "commons": "Fiat Siena",
+  "brands": [
+   "Fiat"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q741949",
+  "name": "Fiat Uno",
+  "makers": [
+   "Fiat"
+  ],
+  "commons": "Fiat Uno",
+  "brands": [
+   "Fiat"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q17053069",
+  "name": "Force Gurkha",
+  "makers": [
+   "Force Motors"
+  ],
+  "commons": "Force Gurkha",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q338888",
+  "name": "Ford EcoSport",
+  "makers": [
+   "Ford do Brasil"
+  ],
+  "commons": "Ford EcoSport",
+  "brands": [
+   "Ford"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q504644",
+  "name": "Ford Escort",
+  "makers": [
+   "Ford of Europe"
+  ],
+  "commons": "Ford Escort (Europe)",
+  "brands": [
+   "Ford"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q3077075",
+  "name": "Ford Everest",
+  "makers": [
+   "Ford Motor Company"
+  ],
+  "commons": "Ford Everest",
+  "brands": [
+   "Ford"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q3077171",
+  "name": "Ford Fiesta",
+  "makers": [
+   "Ford Motor Company"
+  ],
+  "commons": "Ford Fiesta",
+  "brands": [
+   "Ford"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q3077085",
+  "name": "Ford Figo",
+  "makers": [
+   "Ford Motor Company"
+  ],
+  "commons": "Ford Figo",
+  "brands": [
+   "Ford Motor Company"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q525076",
+  "name": "Ford Fusion Europe",
+  "makers": [
+   "Ford Germany"
+  ],
+  "commons": "Ford Fusion (Europe)",
+  "brands": [
+   "Ford"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1436869",
+  "name": "Ford Ikon",
+  "makers": [
+   "Ford Motor Company"
+  ],
+  "commons": "Ford Ikon",
+  "brands": [
+   "Ford"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q18355800",
+  "name": "Ford Mondeo 2nd generation",
+  "makers": [
+   "Ford Motor Company"
+  ],
+  "commons": "Ford Mondeo Mk III",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q5467907",
+  "name": "Ford Ranger T6",
+  "makers": [
+   "Ford Motor Company"
+  ],
+  "commons": "Ford Ranger (T6)",
+  "brands": [
+   "Ford"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q5470327",
+  "name": "Formula Rolon",
+  "makers": [
+   "Super Speeds"
+  ],
+  "commons": "Formula Rolon",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q138862829",
+  "name": "Freelander 8",
+  "makers": [
+   "Chery Jaguar Land Rover"
+  ],
+  "commons": "Freelander 8",
+  "brands": [
+   "Freelander"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1619367",
+  "name": "Hindustan Ambassador",
+  "makers": [
+   "Hindustan Motors"
+  ],
+  "commons": "Hindustan Ambassador",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q10861051",
+  "name": "Hindustan Contessa",
+  "makers": [
+   "Hindustan Motors"
+  ],
+  "commons": "Hindustan Contessa",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q463632",
+  "name": "Honda Accord",
+  "makers": [
+   "Honda"
+  ],
+  "commons": "Honda Accord",
+  "brands": [
+   "Honda"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q11338295",
+  "name": "Honda Amaze",
+  "makers": [
+   "Honda"
+  ],
+  "commons": "Honda Amaze",
+  "brands": [
+   "Honda"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q22752926",
+  "name": "Honda BR-V",
+  "makers": [
+   "Honda"
+  ],
+  "commons": "Honda BR-V",
+  "brands": [
+   "Honda"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q3271160",
+  "name": "Honda Brio",
+  "makers": [
+   "Honda"
+  ],
+  "commons": "Honda Brio",
+  "brands": [
+   "Honda"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q255461",
+  "name": "Honda CR-V",
+  "makers": [
+   "Honda"
+  ],
+  "commons": "Honda CR-V",
+  "brands": [
+   "Honda"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1162891",
+  "name": "Honda City",
+  "makers": [
+   "Honda"
+  ],
+  "commons": "Honda City",
+  "brands": [
+   "Honda"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q216747",
+  "name": "Honda Civic",
+  "makers": [
+   "Honda"
+  ],
+  "commons": "Honda Civic",
+  "brands": [
+   "Honda"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q119142683",
+  "name": "Honda Elevate",
+  "makers": [
+   "Honda"
+  ],
+  "commons": "Honda Elevate",
+  "brands": [
+   "Honda Cars India"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q1135125",
+  "name": "Honda Fit",
+  "makers": [
+   "Honda"
+  ],
+  "commons": "Honda Fit",
+  "brands": [
+   "Honda"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1626626",
+  "name": "Honda Mobilio",
+  "makers": [
+   "Honda"
+  ],
+  "commons": "Honda Mobilio",
+  "brands": [
+   "Honda"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q28744342",
+  "name": "Honda WR-V",
+  "makers": [
+   "Honda"
+  ],
+  "commons": "Honda WR-V",
+  "brands": [
+   "Honda"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q109546578",
+  "name": "Honda ZR-V",
+  "makers": [
+   "Honda"
+  ],
+  "commons": "Honda ZR-V",
+  "brands": [
+   "Honda"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q482410",
+  "name": "Hyundai Accent",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "commons": "Hyundai Accent",
+  "brands": [
+   "Hyundai"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q106423063",
+  "name": "Hyundai Alcazar",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "commons": "Hyundai Alcazar",
+  "brands": [
+   "Hyundai Motor Company"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q84761756",
+  "name": "Hyundai Aura",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "commons": "Hyundai Aura",
+  "brands": [
+   "Hyundai Motor Company"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q482530",
+  "name": "Hyundai Avante (Elantra)",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "commons": "Hyundai Elantra",
+  "brands": [
+   "Hyundai Motor Company"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q102322338",
+  "name": "Hyundai Bayon",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "commons": "Hyundai Bayon",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q18683502",
+  "name": "Hyundai Creta",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "commons": "Hyundai Creta",
+  "brands": [
+   "Hyundai"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q488076",
+  "name": "Hyundai Eon",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "commons": "Hyundai Eon",
+  "brands": [
+   "Hyundai Motor Company"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q118220305",
+  "name": "Hyundai Exter",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "commons": "Hyundai Exter",
+  "brands": [
+   "Hyundai Motor India Limited"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q482462",
+  "name": "Hyundai Getz",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "commons": "Hyundai Getz",
+  "brands": [
+   "Hyundai Motor Company"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q99342695",
+  "name": "Hyundai Ioniq 5",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "commons": "Hyundai Ioniq 5",
+  "brands": [
+   "Ioniq"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q30322680",
+  "name": "Hyundai Kona",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "commons": "Hyundai Kona",
+  "brands": [
+   "Hyundai Motor Company"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q489852",
+  "name": "Hyundai Santa Fe",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "commons": "Hyundai Santa Fe",
+  "brands": [
+   "Hyundai Motor Company"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q60486326",
+  "name": "Hyundai Santro",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "commons": "Hyundai Santro",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q482458",
+  "name": "Hyundai Sonata",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "commons": "Hyundai Sonata",
+  "brands": [
+   "Hyundai Motor Company"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q482697",
+  "name": "Hyundai Terracan",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "commons": "Hyundai Terracan",
+  "brands": [
+   "Hyundai Motor Company"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q482430",
+  "name": "Hyundai Tucson",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "commons": "Hyundai Tucson",
+  "brands": [
+   "Hyundai Motor Company"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q62381823",
+  "name": "Hyundai Venue",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "commons": "Hyundai Venue",
+  "brands": [
+   "Hyundai Motor Company"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q17055638",
+  "name": "Hyundai Xcent",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "commons": "Hyundai Xcent",
+  "brands": [
+   "Hyundai Motor Company"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q494384",
+  "name": "Hyundai i10",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "commons": "Hyundai i10",
+  "brands": [
+   "Hyundai"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q494379",
+  "name": "Hyundai i20",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "commons": "Hyundai i20",
+  "brands": [
+   "Hyundai Motor Company"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q122776207",
+  "name": "IM LS6",
+  "makers": [
+   "IM Motors"
+  ],
+  "commons": "IM LS6",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1674944",
+  "name": "Isuzu D-Max",
+  "makers": [
+   "General Motors",
+   "Isuzu"
+  ],
+  "commons": "Isuzu D-Max",
+  "brands": [
+   "Isuzu"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q18559560",
+  "name": "Isuzu MU-X",
+  "makers": [
+   "Isuzu"
+  ],
+  "commons": "Isuzu MU-X",
+  "brands": [
+   "Isuzu"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q219029",
+  "name": "Isuzu Panther",
+  "makers": [
+   "Isuzu"
+  ],
+  "commons": "Isuzu Panther",
+  "brands": [
+   "Isuzu"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q15939056",
+  "name": "Jaguar XE",
+  "makers": [
+   "Jaguar Land Rover"
+  ],
+  "commons": "Jaguar XE",
+  "brands": [
+   "Jaguar"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q383827",
+  "name": "Jaguar XF series",
+  "makers": [
+   "Jaguar Cars",
+   "Jaguar Land Rover"
+  ],
+  "commons": "Jaguar XF",
+  "brands": [
+   "Jaguar"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1678526",
+  "name": "Jaguar XJ (X351)",
+  "makers": [
+   "Jaguar Land Rover"
+  ],
+  "commons": "Jaguar XJ (X351)",
+  "brands": [
+   "Jaguar"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1512553",
+  "name": "Jeep CJ",
+  "makers": [
+   "Willys"
+  ],
+  "commons": "Jeep CJ",
+  "brands": [
+   "Jeep"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q108380558",
+  "name": "Jeep Commander",
+  "makers": [
+   "Jeep"
+  ],
+  "commons": "Jeep Commander (2021)",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1686208",
+  "name": "Jeep Compass",
+  "makers": [
+   "Jeep"
+  ],
+  "commons": "Jeep Compass",
+  "brands": [
+   "Jeep"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1129521",
+  "name": "Jeep Grand Cherokee",
+  "makers": [
+   "Stellantis North America"
+  ],
+  "commons": "Jeep Grand Cherokee",
+  "brands": [
+   "Jeep"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q21233165",
+  "name": "Jeep Grand Cherokee",
+  "makers": [
+   "Stellantis"
+  ],
+  "commons": "Jeep Grand Cherokee (WK2)",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1353305",
+  "name": "Jeep Wrangler",
+  "makers": [
+   "Stellantis North America"
+  ],
+  "commons": "Jeep Wrangler",
+  "brands": [
+   "Jeep"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q47036821",
+  "name": "Jeep Wrangler (JK)",
+  "makers": [
+   "DaimlerChrysler",
+   "Fiat Chrysler Automobiles"
+  ],
+  "commons": "Jeep Wrangler (JK)",
+  "brands": [
+   "Jeep"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q47036822",
+  "name": "Jeep Wrangler (JL)",
+  "makers": [
+   "Fiat Chrysler Automobiles"
+  ],
+  "commons": "Jeep Wrangler (JL)",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q6275482",
+  "name": "Jonga",
+  "makers": [
+   "Nissan"
+  ],
+  "commons": "Jonga",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 2
+ },
+ {
+  "qid": "Q488191",
+  "name": "Kia Carens",
+  "makers": [
+   "Kia"
+  ],
+  "commons": "Kia Carens",
+  "brands": [
+   "Kia"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q488173",
+  "name": "Kia Carnival",
+  "makers": [
+   "Kia"
+  ],
+  "commons": "Kia Carnival",
+  "brands": [
+   "Kia"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q105975708",
+  "name": "Kia EV6",
+  "makers": [
+   "Kia"
+  ],
+  "commons": "Kia EV6",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q110114350",
+  "name": "Kia EV9",
+  "makers": [
+   "Kia"
+  ],
+  "commons": "Kia EV9",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q65044174",
+  "name": "Kia Seltos",
+  "makers": [
+   "Kia"
+  ],
+  "commons": "Kia Seltos",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q97613890",
+  "name": "Kia Sonet",
+  "makers": [
+   "Kia"
+  ],
+  "commons": "Kia Sonet",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q489836",
+  "name": "Kia Sorento",
+  "makers": [
+   "Kia"
+  ],
+  "commons": "Kia Sorento",
+  "brands": [
+   "Kia"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q131469827",
+  "name": "Kia Syros",
+  "makers": [
+   "Kia"
+  ],
+  "commons": "Kia Syros",
+  "brands": [
+   "Kia"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q1574740",
+  "name": "LADA Granta",
+  "makers": [
+   "AvtoVAZ"
+  ],
+  "commons": "Lada Granta",
+  "brands": [
+   "Lada"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q126102024",
+  "name": "Lamborghini Temerario",
+  "makers": [
+   "Lamborghini"
+  ],
+  "commons": "Lamborghini Temerario",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q3077088",
+  "name": "Lamborghini Urus",
+  "makers": [
+   "Lamborghini"
+  ],
+  "commons": "Lamborghini Urus",
+  "brands": [
+   "Lamborghini"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1140003",
+  "name": "Land Rover Discovery series",
+  "makers": [
+   "Jaguar Land Rover"
+  ],
+  "commons": "Land Rover Discovery",
+  "brands": [
+   "Land Rover"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q577397",
+  "name": "Lexus ES",
+  "makers": [
+   "Toyota"
+  ],
+  "commons": "Lexus ES",
+  "brands": [
+   "Lexus"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q22084860",
+  "name": "Lexus LC",
+  "makers": [
+   "Toyota"
+  ],
+  "commons": "Lexus LC",
+  "brands": [
+   "Lexus"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q65147581",
+  "name": "Lexus LM",
+  "makers": [
+   "Toyota"
+  ],
+  "commons": "Lexus LM",
+  "brands": [
+   "Lexus"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1044847",
+  "name": "Lexus LS",
+  "makers": [
+   "Toyota"
+  ],
+  "commons": "Lexus LS",
+  "brands": [
+   "Lexus"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1509972",
+  "name": "Lexus LX",
+  "makers": [
+   "Toyota"
+  ],
+  "commons": "Lexus LX",
+  "brands": [
+   "Lexus"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q16325434",
+  "name": "Lexus NX",
+  "makers": [
+   "Toyota"
+  ],
+  "commons": "Lexus NX",
+  "brands": [
+   "Lexus"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q660273",
+  "name": "Lexus RX",
+  "makers": [
+   "Toyota"
+  ],
+  "commons": "Lexus RX",
+  "brands": [
+   "Lexus"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q30635583",
+  "name": "MG ZS",
+  "makers": [
+   "MG Motor"
+  ],
+  "commons": "MG ZS (crossover)",
+  "brands": [
+   "MG marque"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q17071159",
+  "name": "Mahindra Armada",
+  "makers": [
+   "Mahindra & Mahindra"
+  ],
+  "commons": "Mahindra Utiliti",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q2912183",
+  "name": "Mahindra Axe",
+  "makers": [
+   "Mahindra & Mahindra"
+  ],
+  "commons": "Mahindra Axe",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q134780679",
+  "name": "Mahindra BE 6",
+  "makers": [
+   "Mahindra & Mahindra"
+  ],
+  "commons": "Mahindra BE 6",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q19893528",
+  "name": "Mahindra Genio",
+  "makers": [
+   "Mahindra & Mahindra"
+  ],
+  "commons": "Mahindra Genio",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q24890883",
+  "name": "Mahindra KUV100",
+  "makers": [
+   "Mahindra & Mahindra"
+  ],
+  "commons": "Mahindra KUV100",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q60742780",
+  "name": "Mahindra Marazzo",
+  "makers": [
+   "Mahindra & Mahindra"
+  ],
+  "commons": "Mahindra Marazzo",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q3277732",
+  "name": "Mahindra Maxx",
+  "makers": [
+   "Mahindra & Mahindra"
+  ],
+  "commons": "Mahindra Maxx",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q17084646",
+  "name": "Mahindra Quanto",
+  "makers": [
+   "Mahindra & Mahindra"
+  ],
+  "commons": "Mahindra Quanto",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q55640965",
+  "name": "Mahindra Roxor",
+  "makers": [
+   "Mahindra & Mahindra"
+  ],
+  "commons": "Mahindra Roxor",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q2722862",
+  "name": "Mahindra Scorpio",
+  "makers": [
+   "Mahindra & Mahindra"
+  ],
+  "commons": "Mahindra Scorpio",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q24907456",
+  "name": "Mahindra TUV300",
+  "makers": [
+   "Mahindra & Mahindra"
+  ],
+  "commons": "Mahindra TUV300",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q962700",
+  "name": "Mahindra Thar",
+  "makers": [
+   "Mahindra & Mahindra"
+  ],
+  "commons": "Mahindra Thar",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q87124587",
+  "name": "Mahindra Verito Vibe",
+  "makers": [
+   "Mahindra & Mahindra"
+  ],
+  "commons": "Mahindra Verito",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q61630113",
+  "name": "Mahindra XUV300",
+  "makers": [
+   "Mahindra & Mahindra"
+  ],
+  "commons": "Mahindra XUV300",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q14153143",
+  "name": "Mahindra XUV500",
+  "makers": [
+   "Mahindra & Mahindra"
+  ],
+  "commons": "Mahindra XUV500",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q108120003",
+  "name": "Mahindra XUV700",
+  "makers": [
+   "Mahindra & Mahindra"
+  ],
+  "commons": "Mahindra XUV700",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q3073545",
+  "name": "Mahindra Xylo",
+  "makers": [
+   "Mahindra & Mahindra"
+  ],
+  "commons": "Mahindra Xylo",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q12061442",
+  "name": "Mahindra e2o",
+  "makers": [
+   "Mahindra Electric"
+  ],
+  "commons": "Mahindra e2o",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q1460363",
+  "name": "Maruti 800",
+  "makers": [
+   "Maruti Suzuki"
+  ],
+  "commons": "Maruti 800",
+  "brands": [
+   "Maruti Suzuki"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q674982",
+  "name": "Maruti Gypsy",
+  "makers": [
+   "Maruti Suzuki"
+  ],
+  "commons": "Maruti Gypsy",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q16040665",
+  "name": "Maruti Omni",
+  "makers": [
+   "Maruti Suzuki"
+  ],
+  "commons": "Maruti Omni",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q3296025",
+  "name": "Maruti SX4",
+  "makers": [
+   "Maruti Suzuki"
+  ],
+  "commons": "Maruti SX4",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q96418903",
+  "name": "Maruti Suzuki Alto",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Maruti Suzuki Alto",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q87705301",
+  "name": "Maruti Suzuki Wagon R",
+  "makers": [
+   "Maruti Suzuki"
+  ],
+  "commons": "Maruti Wagon R",
+  "brands": [
+   "Maruti Suzuki"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q114873976",
+  "name": "Maruti XL6",
+  "makers": [
+   "Maruti Suzuki"
+  ],
+  "commons": "Maruti XL6",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q572465",
+  "name": "Maruti Zen",
+  "makers": [
+   "Maruti Suzuki"
+  ],
+  "commons": "Maruti Zen",
+  "brands": [
+   "Maruti Suzuki"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q6005400",
+  "name": "Maserati Ghibli III",
+  "makers": [
+   "Maserati"
+  ],
+  "commons": "Maserati Ghibli III",
+  "brands": [
+   "Maserati"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q123038",
+  "name": "Maserati GranTurismo",
+  "makers": [
+   "Fiat",
+   "Maserati"
+  ],
+  "commons": "Maserati GranTurismo",
+  "brands": [
+   "Maserati"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q100881867",
+  "name": "Maserati Grecale",
+  "makers": [
+   "Maserati"
+  ],
+  "commons": "Maserati Grecale",
+  "brands": [
+   "Maserati"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q80862",
+  "name": "Maserati Levante",
+  "makers": [
+   "Fiat",
+   "Maserati"
+  ],
+  "commons": "Maserati Levante",
+  "brands": [
+   "Maserati"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q85846574",
+  "name": "Maserati MC20",
+  "makers": [
+   "Maserati"
+  ],
+  "commons": "Maserati MC20",
+  "brands": [
+   "Maserati"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1132565",
+  "name": "Maserati Quattroporte",
+  "makers": [
+   "Fiat",
+   "Maserati"
+  ],
+  "commons": "Maserati Quattroporte",
+  "brands": [
+   "Maserati"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q55089087",
+  "name": "Maxus D90",
+  "makers": [
+   "Maxus"
+  ],
+  "commons": "Maxus D90",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q109653553",
+  "name": "Maxus G90",
+  "makers": [
+   "Maxus"
+  ],
+  "commons": "Maxus Mifa 9",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q331694",
+  "name": "Mercedes-Benz C-Class",
+  "makers": [
+   "Mercedes-Benz Group"
+  ],
+  "commons": "Mercedes-Benz C-Class",
+  "brands": [
+   "Mercedes-Benz"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q324127",
+  "name": "Mercedes-Benz E-Class",
+  "makers": [
+   "Mercedes-Benz"
+  ],
+  "commons": "Mercedes-Benz E-Class",
+  "brands": [
+   "Mercedes-Benz"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q97120016",
+  "name": "Mercedes-Benz EQS",
+  "makers": [
+   "Mercedes-Benz Group"
+  ],
+  "commons": "Mercedes-Benz EQS",
+  "brands": [
+   "Mercedes-Benz"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q111666705",
+  "name": "Mercedes-Benz EQS SUV",
+  "makers": [
+   "Mercedes-Benz Group"
+  ],
+  "commons": "Mercedes-Benz X296",
+  "brands": [
+   "Mercedes-Benz"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q659251",
+  "name": "Mercedes-Benz G-Class",
+  "makers": [
+   "Mercedes-Benz Group"
+  ],
+  "commons": "Mercedes-Benz G-Class",
+  "brands": [
+   "Mercedes-Benz"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1128405",
+  "name": "Mercedes-Benz GL-Class",
+  "makers": [
+   "Mercedes-Benz Group"
+  ],
+  "commons": "Mercedes-Benz GL-Class",
+  "brands": [
+   "Mercedes-Benz"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q11338233",
+  "name": "Mercedes-Benz GLA",
+  "makers": [
+   "Mercedes-Benz",
+   "Mercedes-Benz Group"
+  ],
+  "commons": "Mercedes-Benz GLA-Class",
+  "brands": [
+   "Mercedes-Benz"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q20634916",
+  "name": "Mercedes-Benz GLC",
+  "makers": [
+   "Mercedes-Benz Cars"
+  ],
+  "commons": "Mercedes-Benz GLC-Class",
+  "brands": [
+   "Mercedes-Benz"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q24056154",
+  "name": "Mercedes-Benz GLE-Class",
+  "makers": [
+   "Mercedes-Benz Group"
+  ],
+  "commons": "Mercedes-Benz GLE-Class",
+  "brands": [
+   "Mercedes-Benz"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q461469",
+  "name": "Mercedes-Benz S-Class",
+  "makers": [
+   "Mercedes-Benz Group"
+  ],
+  "commons": "Mercedes-Benz S-Class",
+  "brands": [
+   "Mercedes-Benz"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q345168",
+  "name": "Mercedes-Benz Vito",
+  "makers": [
+   "Mercedes-Benz Vans"
+  ],
+  "commons": "Mercedes-Benz Vito",
+  "brands": [
+   "Mercedes-Benz"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q977429",
+  "name": "Mercedes-Benz W210",
+  "makers": [
+   "Mercedes-Benz Group"
+  ],
+  "commons": "Mercedes-Benz W210",
+  "brands": [
+   "Mercedes-Benz"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1511429",
+  "name": "Mercedes-Benz type 124",
+  "makers": [
+   "Daimler-Benz AG"
+  ],
+  "commons": "Mercedes-Benz W124",
+  "brands": [
+   "Mercedes-Benz"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q36024",
+  "name": "Mini",
+  "makers": [
+   "British Leyland",
+   "British Motor Corporation",
+   "Rover Group"
+  ],
+  "commons": "Mini",
+  "brands": [
+   "Mini"
+  ],
+  "made_in_india": false,
+  "india_priority": 2
+ },
+ {
+  "qid": "Q1578941",
+  "name": "Mini Countryman",
+  "makers": [
+   "BMW"
+  ],
+  "commons": "Mini Countryman",
+  "brands": [
+   "Mini"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q11781425",
+  "name": "Mini Hatch",
+  "makers": [
+   "BMW"
+  ],
+  "commons": "BMW Mini",
+  "brands": [
+   "Mini"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q14552308",
+  "name": "Mitsubishi Delica",
+  "makers": [
+   "Mitsubishi Motors"
+  ],
+  "commons": "Mitsubishi Delica",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1548674",
+  "name": "Morris Minor",
+  "makers": [
+   "British Motor Corporation"
+  ],
+  "commons": "Morris Minor",
+  "brands": [
+   "Morris Motors"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q19116097",
+  "name": "Morris Oxford series II",
+  "makers": [
+   "Morris Motors"
+  ],
+  "commons": "Morris Oxford series II",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q19116072",
+  "name": "Morris Oxford series III",
+  "makers": [
+   "Morris Motors"
+  ],
+  "commons": "Morris Oxford series III",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1948539",
+  "name": "Morris Ten",
+  "makers": [
+   "British Motor Corporation"
+  ],
+  "commons": "Morris 10",
+  "brands": [
+   "Morris Motors"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q936668",
+  "name": "Nissan 370Z",
+  "makers": [
+   "Nissan"
+  ],
+  "commons": "Nissan 370Z",
+  "brands": [
+   "Nissan"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1476157",
+  "name": "Nissan Cherry",
+  "makers": [
+   "Nissan"
+  ],
+  "commons": "Nissan Cherry",
+  "brands": [
+   "Datsun"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q499109",
+  "name": "Nissan GT-R",
+  "makers": [
+   "Nissan"
+  ],
+  "commons": "Nissan GT-R",
+  "brands": [
+   "Nissan"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q26186522",
+  "name": "Nissan Kicks",
+  "makers": [
+   "Nissan"
+  ],
+  "commons": "Nissan Kicks",
+  "brands": [
+   "Nissan"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q97501874",
+  "name": "Nissan Magnite",
+  "makers": [
+   "Nissan"
+  ],
+  "commons": "Nissan Magnite",
+  "brands": [
+   "Nissan"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q377287",
+  "name": "Nissan Maxima",
+  "makers": [
+   "Nissan"
+  ],
+  "commons": "Nissan Maxima",
+  "brands": [
+   "Nissan"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q738470",
+  "name": "Nissan Micra",
+  "makers": [
+   "Nissan",
+   "Renault"
+  ],
+  "commons": "Nissan Micra",
+  "brands": [
+   "Nissan"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1394779",
+  "name": "Nissan NV200",
+  "makers": [
+   "Nissan"
+  ],
+  "commons": "Nissan NV200",
+  "brands": [
+   "Nissan"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1141487",
+  "name": "Nissan Patrol",
+  "makers": [
+   "Nissan"
+  ],
+  "commons": "Nissan Patrol",
+  "brands": [
+   "Nissan"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1993805",
+  "name": "Nissan Pixo",
+  "makers": [
+   "Nissan",
+   "Renault"
+  ],
+  "commons": "Nissan Pixo",
+  "brands": [
+   "Nissan"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q2575681",
+  "name": "Nissan S30",
+  "makers": [
+   "Datsun",
+   "Nissan"
+  ],
+  "commons": "Datsun S30",
+  "brands": [
+   "Datsun"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q719974",
+  "name": "Nissan Sentra",
+  "makers": [
+   "Nissan"
+  ],
+  "commons": "Nissan Sentra",
+  "brands": [
+   "Nissan"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q643635",
+  "name": "Nissan Skyline",
+  "makers": [
+   "Nissan"
+  ],
+  "commons": "Nissan Skyline",
+  "brands": [
+   "Nissan"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1132451",
+  "name": "Nissan Sunny",
+  "makers": [
+   "Nissan"
+  ],
+  "commons": "Nissan Sunny",
+  "brands": [
+   "Nissan"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1068935",
+  "name": "Nissan Teana",
+  "makers": [
+   "Nissan"
+  ],
+  "commons": "Nissan Teana",
+  "brands": [
+   "Nissan"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q136450180",
+  "name": "Nissan Tekton",
+  "makers": [
+   "Nissan"
+  ],
+  "commons": "Nissan Tekton",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q375074",
+  "name": "Nissan Violet",
+  "makers": [
+   "Datsun"
+  ],
+  "commons": "Datsun Violet",
+  "brands": [
+   "Datsun"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1135638",
+  "name": "Nissan X-Trail",
+  "makers": [
+   "Nissan"
+  ],
+  "commons": "Nissan X-Trail",
+  "brands": [
+   "Nissan"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q338545",
+  "name": "Nissan Z-car",
+  "makers": [
+   "Nissan"
+  ],
+  "commons": "Fairlady Z",
+  "brands": [
+   "Datsun"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1350",
+  "name": "Opel Astra",
+  "makers": [
+   "Opel"
+  ],
+  "commons": "Opel Astra",
+  "brands": [
+   "Opel"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q376916",
+  "name": "Opel Corsa",
+  "makers": [
+   "Opel"
+  ],
+  "commons": "Opel Corsa",
+  "brands": [
+   "Opel"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1139986",
+  "name": "Peugeot 309",
+  "makers": [
+   "Peugeot"
+  ],
+  "commons": "Peugeot 309",
+  "brands": [
+   "Peugeot"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1652882",
+  "name": "Plymouth Belvedere",
+  "makers": [
+   "Plymouth"
+  ],
+  "commons": "Plymouth Belvedere",
+  "brands": [
+   "Plymouth"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q830617",
+  "name": "Plymouth Savoy",
+  "makers": [
+   "Plymouth"
+  ],
+  "commons": "Plymouth Savoy",
+  "brands": [
+   "Plymouth"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q219357",
+  "name": "Porsche 911",
+  "makers": [
+   "Porsche"
+  ],
+  "commons": "Porsche 911",
+  "brands": [
+   "Porsche"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q337148",
+  "name": "Porsche Cayenne",
+  "makers": [
+   "Porsche"
+  ],
+  "commons": "Porsche Cayenne",
+  "brands": [
+   "Porsche"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q2753440",
+  "name": "Porsche Macan",
+  "makers": [
+   "Porsche"
+  ],
+  "commons": "Porsche Macan",
+  "brands": [
+   "Porsche"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q501349",
+  "name": "Porsche Panamera",
+  "makers": [
+   "Porsche"
+  ],
+  "commons": "Porsche Panamera",
+  "brands": [
+   "Porsche"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q56307011",
+  "name": "Porsche Taycan",
+  "makers": [
+   "Porsche"
+  ],
+  "commons": "Porsche Taycan",
+  "brands": [
+   "Porsche"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q3401649",
+  "name": "Premier Padmini",
+  "makers": [
+   "Premier Automobiles Limited"
+  ],
+  "commons": "Premier Padmini",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q1165231",
+  "name": "Range Rover Sport",
+  "makers": [
+   "Jaguar Land Rover"
+  ],
+  "commons": "Range Rover Sport",
+  "brands": [
+   "Land Rover"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q28843797",
+  "name": "Range Rover Velar",
+  "makers": [
+   "Jaguar Land Rover"
+  ],
+  "commons": "Land Rover Range Rover Velar",
+  "brands": [
+   "Land Rover"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1394749",
+  "name": "Reliant Kitten",
+  "makers": [
+   "Reliant"
+  ],
+  "commons": "Reliant Kitten",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 2
+ },
+ {
+  "qid": "Q1124536",
+  "name": "Renault 16",
+  "makers": [
+   "Renault"
+  ],
+  "commons": "Renault 16",
+  "brands": [
+   "Renault"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q903839",
+  "name": "Renault Captur",
+  "makers": [
+   "Renault"
+  ],
+  "commons": "Renault Captur",
+  "brands": [
+   "Renault"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q950506",
+  "name": "Renault Duster/Dacia Duster",
+  "makers": [
+   "Dacia",
+   "Nissan",
+   "Renault"
+  ],
+  "commons": "Dacia Duster",
+  "brands": [
+   "Dacia"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1050584",
+  "name": "Renault Fluence",
+  "makers": [
+   "Renault"
+  ],
+  "commons": "Renault Fluence",
+  "brands": [
+   "Renault"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q99934822",
+  "name": "Renault Kiger",
+  "makers": [
+   "Renault"
+  ],
+  "commons": "Renault Kiger",
+  "brands": [
+   "Renault"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q867211",
+  "name": "Renault Koleos",
+  "makers": [
+   "Renault"
+  ],
+  "commons": "Renault Koleos",
+  "brands": [
+   "Renault"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q19960305",
+  "name": "Renault Kwid",
+  "makers": [
+   "Renault"
+  ],
+  "commons": "Renault Kwid",
+  "brands": [
+   "Renault"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q65125527",
+  "name": "Renault Triber",
+  "makers": [
+   "Renault"
+  ],
+  "commons": "Renault Triber",
+  "brands": [
+   "Renault"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q1094009",
+  "name": "Rover CityRover",
+  "makers": [
+   "Q848620"
+  ],
+  "commons": "Rover CityRover",
+  "brands": [
+   "Rover"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q492037",
+  "name": "SEAT 124",
+  "makers": [
+   "Fiat"
+  ],
+  "commons": "SEAT 124",
+  "brands": [
+   "SEAT"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1141171",
+  "name": "SsangYong Rexton",
+  "makers": [
+   "KG Mobility"
+  ],
+  "commons": "SsangYong Rexton",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q14544591",
+  "name": "Standard Atlas",
+  "makers": [
+   "Standard Motor Company"
+  ],
+  "commons": "Standard vans",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 2
+ },
+ {
+  "qid": "Q942382",
+  "name": "Standard Eight",
+  "makers": [
+   "Standard Motor Company"
+  ],
+  "commons": "Standard Eight",
+  "brands": [
+   "Standard Motor Company"
+  ],
+  "made_in_india": false,
+  "india_priority": 2
+ },
+ {
+  "qid": "Q338701",
+  "name": "Standard Vanguard",
+  "makers": [
+   "Standard Motor Company"
+  ],
+  "commons": "Standard Vanguard",
+  "brands": [
+   "Standard Motor Company"
+  ],
+  "made_in_india": false,
+  "india_priority": 2
+ },
+ {
+  "qid": "Q1324599",
+  "name": "Subaru Forester",
+  "makers": [
+   "Subaru"
+  ],
+  "commons": "Subaru Forester",
+  "brands": [
+   "Subaru"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q922201",
+  "name": "Suzuki Alto",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Alto",
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q23924645",
+  "name": "Suzuki Baleno",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Baleno (2015)",
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q24907907",
+  "name": "Suzuki Brezza",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Brezza",
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q16725870",
+  "name": "Suzuki Celerio",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Celerio",
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q24906041",
+  "name": "Suzuki Ciaz",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Ciaz",
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q2746511",
+  "name": "Suzuki Cultus",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Cultus",
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1502062",
+  "name": "Suzuki Cultus Crescent",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Baleno (1995)",
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q4050439",
+  "name": "Suzuki Ertiga",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Ertiga",
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q116180373",
+  "name": "Suzuki Fronx",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Fronx",
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q112841757",
+  "name": "Suzuki Grand Vitara",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Grand Vitara (3rd generation)",
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q932329",
+  "name": "Suzuki Ignis",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Ignis",
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1410131",
+  "name": "Suzuki Jimny",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Jimny",
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1783541",
+  "name": "Suzuki Kizashi",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Kizashi",
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1537625",
+  "name": "Suzuki MR Wagon",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki MR Wagon",
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q70362516",
+  "name": "Suzuki S-Presso",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki S-Presso",
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q751540",
+  "name": "Suzuki SX4",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki SX4",
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q679435",
+  "name": "Suzuki Splash",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Splash",
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q750262",
+  "name": "Suzuki Swift",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Swift",
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q136087489",
+  "name": "Suzuki Victoris",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Victoris",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1130587",
+  "name": "Suzuki Vitara",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Vitara",
+  "brands": [
+   "Suzuki"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q153108",
+  "name": "Suzuki Wagon R",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Wagon R",
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1374737",
+  "name": "Suzuki XL-7",
+  "makers": [
+   "General Motors",
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki XL-7",
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q130899798",
+  "name": "Suzuki e Vitara",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki e Vitara",
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q29578335",
+  "name": "TaMo Racemo",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tamo Racemo Concept",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q7687786",
+  "name": "Tata 407",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata trucks",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q65054324",
+  "name": "Tata Altroz",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata Altroz",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q7687791",
+  "name": "Tata Aria",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata Aria",
+  "brands": [
+   "Tata Motors Limited"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q18110678",
+  "name": "Tata Bolt",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata Bolt",
+  "brands": [
+   "Tata Motors Limited"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q130218206",
+  "name": "Tata Curvv",
+  "makers": [
+   "Tata Motors Passenger Vehicles"
+  ],
+  "commons": "Tata Curvv",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q959035",
+  "name": "Tata Estate",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata Estate",
+  "brands": [
+   "Tata Motors Limited"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q60346506",
+  "name": "Tata Harrier",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata Buzzard Sport at GIMS 2019",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q29578336",
+  "name": "Tata Hexa",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata Hexa",
+  "brands": [
+   "Tata Motors Limited"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q1145323",
+  "name": "Tata Indica",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata Indica",
+  "brands": [
+   "Tata Motors Limited"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q9355803",
+  "name": "Tata Indica Vista",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata Indica Vista",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q10860515",
+  "name": "Tata Indigo",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata Indigo",
+  "brands": [
+   "Tata Motors Limited"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q12072602",
+  "name": "Tata LPT 613",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata LTP",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q7687811",
+  "name": "Tata Magic",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata Magic",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q7687813",
+  "name": "Tata Magic Iris",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata Magic Iris",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q152238",
+  "name": "Tata Nano",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata Nano",
+  "brands": [
+   "Tata Motors Limited"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q44954468",
+  "name": "Tata Nexon",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata Nexon",
+  "brands": [
+   "Tata Motors Limited"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q108443942",
+  "name": "Tata Punch",
+  "makers": [
+   "Tata Motors Passenger Vehicles"
+  ],
+  "commons": "Tata Punch",
+  "brands": [
+   "Tata Motors Passenger Vehicles"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q1110581",
+  "name": "Tata Safari",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata Safari",
+  "brands": [
+   "Tata Motors Limited"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q1550278",
+  "name": "Tata Sierra",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata Sierra",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q1550231",
+  "name": "Tata Sumo",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata Sumo",
+  "brands": [
+   "Tata Motors Limited"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q7687833",
+  "name": "Tata Sumo Grande",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata Sumo Grande",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q16058028",
+  "name": "Tata Super Ace",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata Super Ace",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q906268",
+  "name": "Tata TL",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata TL",
+  "brands": [
+   "Tata Motors Limited"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q23637398",
+  "name": "Tata Tiago",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata Tiago",
+  "brands": [
+   "Tata Motors Limited"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q29578340",
+  "name": "Tata Tigor",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata Tigor",
+  "brands": [
+   "Tata Motors Limited"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q10860517",
+  "name": "Tata Venture",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata Venture",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q1550254",
+  "name": "Tata Winger",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata Winger",
+  "brands": [
+   "Tata Motors Limited"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q15241332",
+  "name": "Tata Xenon",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata Xenon",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q7698885",
+  "name": "Tempo Trax",
+  "makers": [
+   "Force Motors"
+  ],
+  "commons": "Tempo Trax",
+  "brands": [],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q1582046",
+  "name": "Toyota Alphard",
+  "makers": [
+   "Toyota"
+  ],
+  "commons": "Toyota Alphard",
+  "brands": [
+   "Toyota"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q500035",
+  "name": "Toyota Camry",
+  "makers": [
+   "Toyota"
+  ],
+  "commons": "Toyota Camry",
+  "brands": [
+   "Toyota"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q125228953",
+  "name": "Toyota Camry (XV80)",
+  "makers": [
+   "Toyota"
+  ],
+  "commons": "Toyota Camry (XV80)",
+  "brands": [
+   "Toyota"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q243543",
+  "name": "Toyota Corolla",
+  "makers": [
+   "FAW Toyota",
+   "Toyota"
+  ],
+  "commons": "Toyota Corolla",
+  "brands": [
+   "Toyota"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1725648",
+  "name": "Toyota Etios",
+  "makers": [
+   "Toyota"
+  ],
+  "commons": "Toyota Etios",
+  "brands": [
+   "Toyota"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1424419",
+  "name": "Toyota Fortuner",
+  "makers": [
+   "Toyota"
+  ],
+  "commons": "Toyota Fortuner",
+  "brands": [
+   "Toyota"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q848607",
+  "name": "Toyota Hilux",
+  "makers": [
+   "Toyota"
+  ],
+  "commons": "Toyota HiLux",
+  "brands": [
+   "Toyota"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1402888",
+  "name": "Toyota Innova",
+  "makers": [
+   "Toyota"
+  ],
+  "commons": "Toyota Innova",
+  "brands": [
+   "Toyota"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q2303949",
+  "name": "Toyota Kijang",
+  "makers": [
+   "Toyota"
+  ],
+  "commons": "Toyota Kijang",
+  "brands": [
+   "Toyota"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q914069",
+  "name": "Toyota Land Cruiser",
+  "makers": [
+   "Toyota"
+  ],
+  "commons": "Toyota Land Cruiser",
+  "brands": [
+   "Toyota"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q2594060",
+  "name": "Toyota Land Cruiser Prado",
+  "makers": [
+   "Toyota"
+  ],
+  "commons": "Toyota Land Cruiser Prado",
+  "brands": [
+   "Toyota"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q213115",
+  "name": "Toyota Prius",
+  "makers": [
+   "Toyota"
+  ],
+  "commons": "Toyota Prius",
+  "brands": [
+   "Toyota"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1858584",
+  "name": "Triumph Herald",
+  "makers": [
+   "Triumph"
+  ],
+  "commons": "Triumph Herald",
+  "brands": [
+   "Triumph"
+  ],
+  "made_in_india": false,
+  "india_priority": 2
+ },
+ {
+  "qid": "Q115152621",
+  "name": "VinFast VF 6",
+  "makers": [
+   "VinFast"
+  ],
+  "commons": "VinFast VF 6",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 2
+ },
+ {
+  "qid": "Q111784765",
+  "name": "VinFast VF 7",
+  "makers": [
+   "VinFast"
+  ],
+  "commons": "VinFast VF 7",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 2
+ },
+ {
+  "qid": "Q24883601",
+  "name": "Volkswagen Ameo",
+  "makers": [
+   "Volkswagen India"
+  ],
+  "commons": "Volkswagen Ameo",
+  "brands": [
+   "Volkswagen"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q152946",
+  "name": "Volkswagen Beetle",
+  "makers": [
+   "Volkswagen Group"
+  ],
+  "commons": "Volkswagen Type 1",
+  "brands": [
+   "Volkswagen"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q1968742",
+  "name": "Volkswagen Beetle",
+  "makers": [
+   "Volkswagen Group"
+  ],
+  "commons": "Volkswagen Beetle",
+  "brands": [
+   "Volkswagen"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q697152",
+  "name": "Volkswagen Jetta",
+  "makers": [
+   "Volkswagen Group"
+  ],
+  "commons": "Volkswagen Jetta",
+  "brands": [
+   "Volkswagen"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q216754",
+  "name": "Volkswagen Passat",
+  "makers": [
+   "Volkswagen Group"
+  ],
+  "commons": "Volkswagen Passat",
+  "brands": [
+   "Volkswagen"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q15305561",
+  "name": "Volkswagen Passat B8",
+  "makers": [
+   "Volkswagen Group"
+  ],
+  "commons": "Volkswagen Passat B8",
+  "brands": [
+   "Volkswagen"
+  ],
+  "made_in_india": true,
+  "india_priority": 0
+ },
+ {
+  "qid": "Q158736",
+  "name": "Volkswagen Phaeton",
+  "makers": [
+   "Volkswagen Group"
+  ],
+  "commons": "Volkswagen Phaeton",
+  "brands": [
+   "Volkswagen"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q247819",
+  "name": "Volkswagen Polo",
+  "makers": [
+   "Volkswagen Group"
+  ],
+  "commons": "Volkswagen Polo",
+  "brands": [
+   "Volkswagen"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q2063072",
+  "name": "Volkswagen Polo Mk5",
+  "makers": [
+   "Volkswagen Group"
+  ],
+  "commons": "Volkswagen Polo V",
+  "brands": [
+   "Volkswagen"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q15966358",
+  "name": "Volkswagen T-Roc",
+  "makers": [
+   "Volkswagen"
+  ],
+  "commons": "Volkswagen T-Roc",
+  "brands": [
+   "Volkswagen"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q7940334",
+  "name": "Volkswagen Taigun",
+  "makers": [
+   "Volkswagen Group"
+  ],
+  "commons": "Volkswagen Taigun Concept",
+  "brands": [
+   "Volkswagen"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q782671",
+  "name": "Volkswagen Tiguan",
+  "makers": [
+   "Volkswagen Group"
+  ],
+  "commons": "Volkswagen Tiguan",
+  "brands": [
+   "Volkswagen"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q208553",
+  "name": "Volkswagen Touareg",
+  "makers": [
+   "Volkswagen Group"
+  ],
+  "commons": "Volkswagen Touareg",
+  "brands": [
+   "Volkswagen"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q32860581",
+  "name": "Volkswagen Vento (A05)",
+  "makers": [
+   "Volkswagen"
+  ],
+  "commons": "Volkswagen Polo V Sedan",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q43706733",
+  "name": "Volkswagen Virtus",
+  "makers": [
+   "Volkswagen"
+  ],
+  "commons": "Volkswagen Virtus",
+  "brands": [
+   "Volkswagen"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q20916608",
+  "name": "Volvo S90",
+  "makers": [
+   "Volvo Cars"
+  ],
+  "commons": "Volvo S90 (SPA)",
+  "brands": [
+   "Volvo Cars"
+  ],
+  "made_in_india": false,
+  "india_priority": 2
+ },
+ {
+  "qid": "Q28127228",
+  "name": "Volvo XC40",
+  "makers": [
+   "Volvo Cars"
+  ],
+  "commons": "Volvo XC40",
+  "brands": [
+   "Volvo Cars"
+  ],
+  "made_in_india": false,
+  "india_priority": 2
+ },
+ {
+  "qid": "Q933275",
+  "name": "Volvo XC90",
+  "makers": [
+   "Volvo Cars"
+  ],
+  "commons": "Volvo XC90",
+  "brands": [
+   "Volvo Cars"
+  ],
+  "made_in_india": false,
+  "india_priority": 2
+ },
+ {
+  "qid": "Q495075",
+  "name": "Willys MB",
+  "makers": [
+   "Ford Motor Company",
+   "Willys"
+  ],
+  "commons": "Willys MB / Ford GPW",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q112210974",
+  "name": "Wuling Air EV",
+  "makers": [
+   "SAIC-GM-Wuling"
+  ],
+  "commons": "Wuling Air EV",
+  "brands": [
+   "Wuling Motors"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q16974650",
+  "name": "Wuling Hongguang",
+  "makers": [
+   "SAIC-GM-Wuling"
+  ],
+  "commons": "Wuling Hongguang",
+  "brands": [
+   "Wuling Motors"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q136806558",
+  "name": "Wuling Starlight 560",
+  "makers": [
+   "SAIC-GM-Wuling"
+  ],
+  "commons": "Wuling Starlight 560",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q226986",
+  "name": "Zotye 2008",
+  "makers": [
+   "Q11705500"
+  ],
+  "commons": "Zotye vehicles",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q163053",
+  "name": "\u0160koda Fabia",
+  "makers": [
+   "\u0160koda Auto"
+  ],
+  "commons": "\u0160koda Fabia",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q29584097",
+  "name": "\u0160koda Karoq",
+  "makers": [
+   "\u0160koda Auto"
+  ],
+  "commons": "\u0160koda Karoq",
+  "brands": [
+   "\u0160koda Auto"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q11832265",
+  "name": "\u0160koda Kodiaq",
+  "makers": [
+   "\u0160koda Auto"
+  ],
+  "commons": "\u0160koda Kodiaq",
+  "brands": [
+   "\u0160koda Auto"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q105044283",
+  "name": "\u0160koda Kushaq",
+  "makers": [
+   "\u0160koda Auto"
+  ],
+  "commons": "\u0160koda Kushaq",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q130223132",
+  "name": "\u0160koda Kylaq",
+  "makers": [
+   "\u0160koda Auto"
+  ],
+  "commons": "\u0160koda Kylaq",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q223696",
+  "name": "\u0160koda Octavia",
+  "makers": [
+   "\u0160koda Auto"
+  ],
+  "commons": "\u0160koda Octavia",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q392036",
+  "name": "\u0160koda Rapid (India)",
+  "makers": [
+   "\u0160koda Auto"
+  ],
+  "commons": "\u0160koda Rapid (2011)",
+  "brands": [
+   "\u0160koda Auto"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q109315466",
+  "name": "\u0160koda Slavia",
+  "makers": [
+   "\u0160koda Auto"
+  ],
+  "commons": "\u0160koda Slavia",
+  "brands": [
+   "\u0160koda Auto"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q392083",
+  "name": "\u0160koda Superb",
+  "makers": [
+   "\u0160koda Auto"
+  ],
+  "commons": "\u0160koda Superb",
+  "brands": [],
+  "made_in_india": false,
+  "india_priority": 1
+ },
+ {
+  "qid": "Q392105",
+  "name": "\u0160koda Yeti",
+  "makers": [
+   "\u0160koda Auto"
+  ],
+  "commons": "\u0160koda Yeti",
+  "brands": [
+   "\u0160koda"
+  ],
+  "made_in_india": false,
+  "india_priority": 1
+ }
+]

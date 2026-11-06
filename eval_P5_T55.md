@@ -186,6 +186,21 @@ Worked cases (figures in `experiments/2026-11-06_16-31-27/figures/`):
 4. **Missed detection in clutter:** a Lamborghini on a show stand behind a crowd; three small cars, none detected.
 5. **Rejected input:** 6 test images smaller than 64 px were refused by the input guard (since lowered to 32 px; the numbers above keep the original guard).
 
+## 10. Extension: Indian-market catalogue (E18)
+
+A second catalogue of car models sold or made in India, built from free-licensed Wikimedia Commons photos of models that Wikidata and Wikipedia link to the Indian market. Photos were cropped with the COCO detector and split 70/15/15 so that no photographer appears in two splits. Test split: **4,298 photos, 282 models**, read once by `scripts/eval_india.py`.
+
+| Model (INT8, single view) | Top-1 (%) | 95% CI | Top-5 (%) | Macro Top-1 (%) | Make Top-1 (%) | ECE after temperature (%) |
+|---|---|---|---|---|---|---|
+| TResNet-L, started from the Stanford Cars model (deployed) | 84.32 | 83.18–85.32 | 93.65 | 82.73 | 89.95 | 1.42 |
+| TResNet-L, started from ImageNet | 83.18 | 82.11–84.34 | 92.35 | 82.00 | 89.11 | 1.28 |
+
+Starting from the Stanford Cars model is right on 170 photos where the ImageNet start is wrong, and wrong on 125 where it is right (McNemar p = 0.01).
+
+**Why a second catalogue:** the Stanford Cars model names a specific model for 8.2% of these Indian photos and flags 91.3% as outside its catalogue. On the 3,043 photos whose make also exists in Stanford Cars, it names the make correctly 29.0% of the time, against 90.1% for the Indian model.
+
+Decision levels on the test split with thresholds fitted on validation: model named 72.4% of the time (correct 97.5%), make only 19.3%, not sure 3.8%, outside the catalogue 4.5%.
+
 ## 11. Extension: vehicle hunt match model (E19)
 
 Match probability between a target photo and a camera track, fitted on 815 Stanford Cars validation vehicles with simulated second-camera views and evaluated on a held-out half.

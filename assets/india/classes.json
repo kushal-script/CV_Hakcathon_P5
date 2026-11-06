@@ -1,0 +1,4453 @@
+[
+ {
+  "id": 0,
+  "qid": "Q758729",
+  "name": "Audi A4",
+  "makers": [
+   "Audi AG"
+  ],
+  "brands": [
+   "Audi"
+  ],
+  "commons": "Audi A4",
+  "n": 128,
+  "train": 88,
+  "val": 20,
+  "test": 20
+ },
+ {
+  "id": 1,
+  "qid": "Q758752",
+  "name": "Audi A5",
+  "makers": [
+   "Audi AG"
+  ],
+  "brands": [
+   "Audi"
+  ],
+  "commons": "Audi A5",
+  "n": 124,
+  "train": 86,
+  "val": 19,
+  "test": 19
+ },
+ {
+  "id": 2,
+  "qid": "Q758718",
+  "name": "Audi A6",
+  "makers": [
+   "Audi AG"
+  ],
+  "brands": [
+   "Audi"
+  ],
+  "commons": "Audi A6",
+  "n": 135,
+  "train": 90,
+  "val": 24,
+  "test": 21
+ },
+ {
+  "id": 3,
+  "qid": "Q758768",
+  "name": "Audi Q3",
+  "makers": [
+   "Audi AG"
+  ],
+  "brands": [
+   "Audi"
+  ],
+  "commons": "Audi Q3",
+  "n": 124,
+  "train": 85,
+  "val": 20,
+  "test": 19
+ },
+ {
+  "id": 4,
+  "qid": "Q758769",
+  "name": "Audi Q5",
+  "makers": [
+   "Audi AG"
+  ],
+  "brands": [
+   "Audi"
+  ],
+  "commons": "Audi Q5",
+  "n": 125,
+  "train": 86,
+  "val": 20,
+  "test": 19
+ },
+ {
+  "id": 5,
+  "qid": "Q118840",
+  "name": "Audi Q7",
+  "makers": [
+   "Audi AG"
+  ],
+  "brands": [
+   "Audi"
+  ],
+  "commons": "Audi Q7",
+  "n": 133,
+  "train": 93,
+  "val": 20,
+  "test": 20
+ },
+ {
+  "id": 6,
+  "qid": "Q16687488",
+  "name": "Audi Q8",
+  "makers": [
+   "Audi AG"
+  ],
+  "brands": [
+   "Audi"
+  ],
+  "commons": "Audi Q8",
+  "n": 127,
+  "train": 86,
+  "val": 21,
+  "test": 20
+ },
+ {
+  "id": 7,
+  "qid": "Q56669231",
+  "name": "Audi Q8 e-tron",
+  "makers": [
+   "Audi AG"
+  ],
+  "brands": [
+   "Audi"
+  ],
+  "commons": "Audi e-tron",
+  "n": 111,
+  "train": 76,
+  "val": 18,
+  "test": 17
+ },
+ {
+  "id": 8,
+  "qid": "Q60849683",
+  "name": "Audi e-tron GT",
+  "makers": [
+   "Audi AG"
+  ],
+  "brands": [
+   "Audi"
+  ],
+  "commons": "Audi e-tron GT",
+  "n": 140,
+  "train": 96,
+  "val": 22,
+  "test": 22
+ },
+ {
+  "id": 9,
+  "qid": "Q781028",
+  "name": "Austin 7",
+  "makers": [
+   "British Motor Corporation"
+  ],
+  "brands": [
+   "Q781156"
+  ],
+  "commons": "Austin 7",
+  "n": 85,
+  "train": 59,
+  "val": 13,
+  "test": 13
+ },
+ {
+  "id": 10,
+  "qid": "Q781033",
+  "name": "Austin A40",
+  "makers": [
+   "British Motor Corporation"
+  ],
+  "brands": [],
+  "commons": "Austin A40",
+  "n": 272,
+  "train": 189,
+  "val": 42,
+  "test": 41
+ },
+ {
+  "id": 11,
+  "qid": "Q466066",
+  "name": "BMW 3 Series",
+  "makers": [
+   "BMW"
+  ],
+  "brands": [
+   "Q796364"
+  ],
+  "commons": "BMW 3 Series",
+  "n": 118,
+  "train": 82,
+  "val": 18,
+  "test": 18
+ },
+ {
+  "id": 12,
+  "qid": "Q499497",
+  "name": "BMW 4 Series",
+  "makers": [
+   "BMW"
+  ],
+  "brands": [
+   "Q796364"
+  ],
+  "commons": "BMW 4 Series",
+  "n": 131,
+  "train": 89,
+  "val": 22,
+  "test": 20
+ },
+ {
+  "id": 13,
+  "qid": "Q501613",
+  "name": "BMW 5 Series",
+  "makers": [
+   "BMW"
+  ],
+  "brands": [
+   "Q796364"
+  ],
+  "commons": "BMW 5 Series",
+  "n": 138,
+  "train": 93,
+  "val": 24,
+  "test": 21
+ },
+ {
+  "id": 14,
+  "qid": "Q796427",
+  "name": "BMW 6 Series",
+  "makers": [
+   "BMW"
+  ],
+  "brands": [
+   "Q796364"
+  ],
+  "commons": "BMW 6 Series",
+  "n": 130,
+  "train": 90,
+  "val": 20,
+  "test": 20
+ },
+ {
+  "id": 15,
+  "qid": "Q503274",
+  "name": "BMW 7 Series",
+  "makers": [
+   "BMW"
+  ],
+  "brands": [
+   "Q796364"
+  ],
+  "commons": "BMW 7 Series",
+  "n": 77,
+  "train": 53,
+  "val": 12,
+  "test": 12
+ },
+ {
+  "id": 16,
+  "qid": "Q739844",
+  "name": "BMW 8 Series",
+  "makers": [
+   "BMW"
+  ],
+  "brands": [
+   "Q796364"
+  ],
+  "commons": "BMW 8 Series",
+  "n": 129,
+  "train": 89,
+  "val": 20,
+  "test": 20
+ },
+ {
+  "id": 17,
+  "qid": "Q746980",
+  "name": "BMW X1",
+  "makers": [
+   "BMW"
+  ],
+  "brands": [
+   "Q796364"
+  ],
+  "commons": "BMW X1",
+  "n": 75,
+  "train": 51,
+  "val": 12,
+  "test": 12
+ },
+ {
+  "id": 18,
+  "qid": "Q112222244",
+  "name": "BMW X1 (U11)",
+  "makers": [
+   "BMW"
+  ],
+  "brands": [
+   "BMW"
+  ],
+  "commons": "BMW U11",
+  "n": 76,
+  "train": 51,
+  "val": 12,
+  "test": 13
+ },
+ {
+  "id": 19,
+  "qid": "Q796780",
+  "name": "BMW X3",
+  "makers": [
+   "BMW"
+  ],
+  "brands": [
+   "Q796364"
+  ],
+  "commons": "BMW X3",
+  "n": 126,
+  "train": 87,
+  "val": 20,
+  "test": 19
+ },
+ {
+  "id": 20,
+  "qid": "Q4836084",
+  "name": "BMW X4",
+  "makers": [
+   "BMW"
+  ],
+  "brands": [
+   "Q796364"
+  ],
+  "commons": "BMW X4",
+  "n": 145,
+  "train": 101,
+  "val": 22,
+  "test": 22
+ },
+ {
+  "id": 21,
+  "qid": "Q796778",
+  "name": "BMW X5",
+  "makers": [
+   "BMW"
+  ],
+  "brands": [
+   "Q796364"
+  ],
+  "commons": "BMW X5",
+  "n": 122,
+  "train": 84,
+  "val": 19,
+  "test": 19
+ },
+ {
+  "id": 22,
+  "qid": "Q796781",
+  "name": "BMW X6",
+  "makers": [
+   "BMW"
+  ],
+  "brands": [
+   "Q796364"
+  ],
+  "commons": "BMW X6",
+  "n": 142,
+  "train": 98,
+  "val": 22,
+  "test": 22
+ },
+ {
+  "id": 23,
+  "qid": "Q12062564",
+  "name": "BMW X7",
+  "makers": [
+   "BMW"
+  ],
+  "brands": [
+   "Q796364"
+  ],
+  "commons": "BMW G07",
+  "n": 139,
+  "train": 91,
+  "val": 27,
+  "test": 21
+ },
+ {
+  "id": 24,
+  "qid": "Q109967114",
+  "name": "BMW XM",
+  "makers": [
+   "BMW"
+  ],
+  "brands": [
+   "BMW"
+  ],
+  "commons": "BMW XM",
+  "n": 98,
+  "train": 65,
+  "val": 17,
+  "test": 16
+ },
+ {
+  "id": 25,
+  "qid": "Q2332702",
+  "name": "BMW Z Models",
+  "makers": [
+   "BMW"
+  ],
+  "brands": [
+   "Q796364"
+  ],
+  "commons": "BMW Z",
+  "n": 126,
+  "train": 88,
+  "val": 19,
+  "test": 19
+ },
+ {
+  "id": 26,
+  "qid": "Q86663388",
+  "name": "BMW iX",
+  "makers": [
+   "BMW"
+  ],
+  "brands": [
+   "BMW"
+  ],
+  "commons": "BMW iX",
+  "n": 131,
+  "train": 89,
+  "val": 21,
+  "test": 21
+ },
+ {
+  "id": 27,
+  "qid": "Q108894190",
+  "name": "BYD Atto 3",
+  "makers": [
+   "BYD Auto"
+  ],
+  "brands": [],
+  "commons": "BYD Atto 3",
+  "n": 128,
+  "train": 87,
+  "val": 21,
+  "test": 20
+ },
+ {
+  "id": 28,
+  "qid": "Q120836291",
+  "name": "Baojun Yunduo",
+  "makers": [
+   "SAIC-GM-Wuling"
+  ],
+  "brands": [
+   "Baojun"
+  ],
+  "commons": "Baojun Yunduo",
+  "n": 16,
+  "train": 11,
+  "val": 2,
+  "test": 3
+ },
+ {
+  "id": 29,
+  "qid": "Q19606707",
+  "name": "Bentley Bentayga",
+  "makers": [
+   "Bentley"
+  ],
+  "brands": [
+   "Bentley"
+  ],
+  "commons": "Bentley Bentayga",
+  "n": 134,
+  "train": 90,
+  "val": 23,
+  "test": 21
+ },
+ {
+  "id": 30,
+  "qid": "Q497226",
+  "name": "Chevrolet Aveo",
+  "makers": [
+   "General Motors"
+  ],
+  "brands": [
+   "Chevrolet"
+  ],
+  "commons": "Chevrolet Aveo",
+  "n": 182,
+  "train": 125,
+  "val": 29,
+  "test": 28
+ },
+ {
+  "id": 31,
+  "qid": "Q482542",
+  "name": "Chevrolet Captiva",
+  "makers": [
+   "General Motors"
+  ],
+  "brands": [
+   "Chevrolet"
+  ],
+  "commons": "Chevrolet Captiva",
+  "n": 138,
+  "train": 96,
+  "val": 21,
+  "test": 21
+ },
+ {
+  "id": 32,
+  "qid": "Q494073",
+  "name": "Chevrolet Cruze",
+  "makers": [
+   "Chevrolet",
+   "General Motors"
+  ],
+  "brands": [
+   "Chevrolet"
+  ],
+  "commons": "Chevrolet Cruze",
+  "n": 112,
+  "train": 78,
+  "val": 17,
+  "test": 17
+ },
+ {
+  "id": 33,
+  "qid": "Q4036099",
+  "name": "Chevrolet Deluxe",
+  "makers": [
+   "General Motors"
+  ],
+  "brands": [
+   "Chevrolet"
+  ],
+  "commons": "Chevrolet Deluxe",
+  "n": 131,
+  "train": 91,
+  "val": 20,
+  "test": 20
+ },
+ {
+  "id": 34,
+  "qid": "Q610395",
+  "name": "Chevrolet Sail",
+  "makers": [
+   "SAIC General Motors"
+  ],
+  "brands": [
+   "Chevrolet"
+  ],
+  "commons": "Chevrolet Sail",
+  "n": 106,
+  "train": 69,
+  "val": 21,
+  "test": 16
+ },
+ {
+  "id": 35,
+  "qid": "Q14515874",
+  "name": "Chevrolet Spark",
+  "makers": [
+   "General Motors"
+  ],
+  "brands": [
+   "Chevrolet"
+  ],
+  "commons": "Chevrolet Spark",
+  "n": 134,
+  "train": 91,
+  "val": 22,
+  "test": 21
+ },
+ {
+  "id": 36,
+  "qid": "Q726411",
+  "name": "Citro\u00ebn C3",
+  "makers": [
+   "Citro\u00ebn",
+   "Peugeot"
+  ],
+  "brands": [
+   "Citro\u00ebn"
+  ],
+  "commons": "Citro\u00ebn C3",
+  "n": 82,
+  "train": 56,
+  "val": 13,
+  "test": 13
+ },
+ {
+  "id": 37,
+  "qid": "Q108760254",
+  "name": "Citro\u00ebn C3 (CC21)",
+  "makers": [
+   "Citro\u00ebn"
+  ],
+  "brands": [
+   "Citro\u00ebn"
+  ],
+  "commons": "Citro\u00ebn C3 (India and Latin America)",
+  "n": 17,
+  "train": 10,
+  "val": 4,
+  "test": 3
+ },
+ {
+  "id": 38,
+  "qid": "Q5122860",
+  "name": "Citro\u00ebn C3 Aircross",
+  "makers": [
+   "Citro\u00ebn"
+  ],
+  "brands": [
+   "Citro\u00ebn"
+  ],
+  "commons": "Citro\u00ebn C3 Aircross",
+  "n": 61,
+  "train": 40,
+  "val": 11,
+  "test": 10
+ },
+ {
+  "id": 39,
+  "qid": "Q29402168",
+  "name": "Citro\u00ebn C5 Aircross",
+  "makers": [
+   "Groupe PSA"
+  ],
+  "brands": [
+   "Citro\u00ebn"
+  ],
+  "commons": "Citro\u00ebn C5 Aircross",
+  "n": 130,
+  "train": 88,
+  "val": 22,
+  "test": 20
+ },
+ {
+  "id": 40,
+  "qid": "Q1156868",
+  "name": "Dacia Lodgy",
+  "makers": [
+   "Dacia"
+  ],
+  "brands": [
+   "Dacia"
+  ],
+  "commons": "Dacia Lodgy",
+  "n": 43,
+  "train": 29,
+  "val": 7,
+  "test": 7
+ },
+ {
+  "id": 41,
+  "qid": "Q668565",
+  "name": "Dacia Logan",
+  "makers": [
+   "Dacia"
+  ],
+  "brands": [
+   "Dacia"
+  ],
+  "commons": "Dacia Logan",
+  "n": 121,
+  "train": 83,
+  "val": 19,
+  "test": 19
+ },
+ {
+  "id": 42,
+  "qid": "Q493989",
+  "name": "Daewoo Lacetti",
+  "makers": [
+   "General Motors"
+  ],
+  "brands": [
+   "Chevrolet"
+  ],
+  "commons": "Daewoo Lacetti",
+  "n": 54,
+  "train": 35,
+  "val": 10,
+  "test": 9
+ },
+ {
+  "id": 43,
+  "qid": "Q1131572",
+  "name": "Daihatsu Terios",
+  "makers": [
+   "Daihatsu"
+  ],
+  "brands": [
+   "Daihatsu"
+  ],
+  "commons": "Daihatsu Terios",
+  "n": 123,
+  "train": 84,
+  "val": 20,
+  "test": 19
+ },
+ {
+  "id": 44,
+  "qid": "Q3489002",
+  "name": "Datsun 510",
+  "makers": [
+   "Datsun"
+  ],
+  "brands": [
+   "Datsun"
+  ],
+  "commons": "Datsun Bluebird (510)",
+  "n": 112,
+  "train": 77,
+  "val": 17,
+  "test": 18
+ },
+ {
+  "id": 45,
+  "qid": "Q13921088",
+  "name": "Datsun Go",
+  "makers": [
+   "Nissan"
+  ],
+  "brands": [
+   "Datsun"
+  ],
+  "commons": "Datsun GO",
+  "n": 22,
+  "train": 14,
+  "val": 4,
+  "test": 4
+ },
+ {
+  "id": 46,
+  "qid": "Q1172693",
+  "name": "Datsun Sports",
+  "makers": [
+   "Nissan"
+  ],
+  "brands": [
+   "Datsun"
+  ],
+  "commons": "Datsun Fairlady",
+  "n": 123,
+  "train": 85,
+  "val": 19,
+  "test": 19
+ },
+ {
+  "id": 47,
+  "qid": "Q18330788",
+  "name": "Datsun mi-DO",
+  "makers": [
+   "Datsun"
+  ],
+  "brands": [
+   "Datsun"
+  ],
+  "commons": "Datsun mi-Do",
+  "n": 20,
+  "train": 13,
+  "val": 4,
+  "test": 3
+ },
+ {
+  "id": 48,
+  "qid": "Q16687622",
+  "name": "Datsun on-Do",
+  "makers": [
+   "Datsun"
+  ],
+  "brands": [
+   "Datsun"
+  ],
+  "commons": "Datsun on-Do",
+  "n": 25,
+  "train": 16,
+  "val": 5,
+  "test": 4
+ },
+ {
+  "id": 49,
+  "qid": "Q1234241",
+  "name": "Dodge Kingsway",
+  "makers": [
+   "Dodge"
+  ],
+  "brands": [
+   "Dodge"
+  ],
+  "commons": "Dodge Kingsway",
+  "n": 67,
+  "train": 40,
+  "val": 14,
+  "test": 13
+ },
+ {
+  "id": 50,
+  "qid": "Q1410426",
+  "name": "Fiat 1100",
+  "makers": [
+   "Fiat"
+  ],
+  "brands": [
+   "Fiat"
+  ],
+  "commons": "Fiat 1100",
+  "n": 113,
+  "train": 79,
+  "val": 17,
+  "test": 17
+ },
+ {
+  "id": 51,
+  "qid": "Q494744",
+  "name": "Fiat 124",
+  "makers": [
+   "Fiat"
+  ],
+  "brands": [
+   "Fiat"
+  ],
+  "commons": "Fiat 124",
+  "n": 130,
+  "train": 90,
+  "val": 20,
+  "test": 20
+ },
+ {
+  "id": 52,
+  "qid": "Q927839",
+  "name": "Fiat 500",
+  "makers": [
+   "Fiat"
+  ],
+  "brands": [
+   "Fiat"
+  ],
+  "commons": "Fiat 500 (type 312)",
+  "n": 121,
+  "train": 83,
+  "val": 19,
+  "test": 19
+ },
+ {
+  "id": 53,
+  "qid": "Q636082",
+  "name": "Fiat 500 Topolino",
+  "makers": [
+   "Fiat"
+  ],
+  "brands": [
+   "Fiat"
+  ],
+  "commons": "Fiat Topolino",
+  "n": 124,
+  "train": 86,
+  "val": 19,
+  "test": 19
+ },
+ {
+  "id": 54,
+  "qid": "Q1132226",
+  "name": "Fiat Bravo",
+  "makers": [
+   "Fiat"
+  ],
+  "brands": [
+   "Fiat"
+  ],
+  "commons": "Fiat Bravo (type 198)",
+  "n": 113,
+  "train": 78,
+  "val": 18,
+  "test": 17
+ },
+ {
+  "id": 55,
+  "qid": "Q864676",
+  "name": "Fiat Linea",
+  "makers": [
+   "Fiat"
+  ],
+  "brands": [
+   "Fiat"
+  ],
+  "commons": "Fiat Linea",
+  "n": 78,
+  "train": 54,
+  "val": 12,
+  "test": 12
+ },
+ {
+  "id": 56,
+  "qid": "Q525756",
+  "name": "Fiat Palio",
+  "makers": [
+   "Fiat"
+  ],
+  "brands": [
+   "Fiat"
+  ],
+  "commons": "Fiat Palio",
+  "n": 124,
+  "train": 85,
+  "val": 20,
+  "test": 19
+ },
+ {
+  "id": 57,
+  "qid": "Q1410639",
+  "name": "Fiat Siena",
+  "makers": [
+   "Fiat"
+  ],
+  "brands": [
+   "Fiat"
+  ],
+  "commons": "Fiat Siena",
+  "n": 84,
+  "train": 57,
+  "val": 14,
+  "test": 13
+ },
+ {
+  "id": 58,
+  "qid": "Q741949",
+  "name": "Fiat Uno",
+  "makers": [
+   "Fiat"
+  ],
+  "brands": [
+   "Fiat"
+  ],
+  "commons": "Fiat Uno",
+  "n": 117,
+  "train": 80,
+  "val": 19,
+  "test": 18
+ },
+ {
+  "id": 59,
+  "qid": "Q338888",
+  "name": "Ford EcoSport",
+  "makers": [
+   "Ford do Brasil"
+  ],
+  "brands": [
+   "Ford"
+  ],
+  "commons": "Ford EcoSport",
+  "n": 127,
+  "train": 87,
+  "val": 20,
+  "test": 20
+ },
+ {
+  "id": 60,
+  "qid": "Q504644",
+  "name": "Ford Escort",
+  "makers": [
+   "Ford of Europe"
+  ],
+  "brands": [
+   "Ford"
+  ],
+  "commons": "Ford Escort (Europe)",
+  "n": 133,
+  "train": 93,
+  "val": 20,
+  "test": 20
+ },
+ {
+  "id": 61,
+  "qid": "Q3077075",
+  "name": "Ford Everest",
+  "makers": [
+   "Ford Motor Company"
+  ],
+  "brands": [
+   "Ford"
+  ],
+  "commons": "Ford Everest",
+  "n": 135,
+  "train": 88,
+  "val": 26,
+  "test": 21
+ },
+ {
+  "id": 62,
+  "qid": "Q3077171",
+  "name": "Ford Fiesta",
+  "makers": [
+   "Ford Motor Company"
+  ],
+  "brands": [
+   "Ford"
+  ],
+  "commons": "Ford Fiesta",
+  "n": 116,
+  "train": 80,
+  "val": 18,
+  "test": 18
+ },
+ {
+  "id": 63,
+  "qid": "Q3077085",
+  "name": "Ford Figo",
+  "makers": [
+   "Ford Motor Company"
+  ],
+  "brands": [
+   "Ford Motor Company"
+  ],
+  "commons": "Ford Figo",
+  "n": 24,
+  "train": 16,
+  "val": 4,
+  "test": 4
+ },
+ {
+  "id": 64,
+  "qid": "Q525076",
+  "name": "Ford Fusion Europe",
+  "makers": [
+   "Ford Germany"
+  ],
+  "brands": [
+   "Ford"
+  ],
+  "commons": "Ford Fusion (Europe)",
+  "n": 65,
+  "train": 45,
+  "val": 10,
+  "test": 10
+ },
+ {
+  "id": 65,
+  "qid": "Q1436869",
+  "name": "Ford Ikon",
+  "makers": [
+   "Ford Motor Company"
+  ],
+  "brands": [
+   "Ford"
+  ],
+  "commons": "Ford Ikon",
+  "n": 15,
+  "train": 9,
+  "val": 3,
+  "test": 3
+ },
+ {
+  "id": 66,
+  "qid": "Q18355800",
+  "name": "Ford Mondeo 2nd generation",
+  "makers": [
+   "Ford Motor Company"
+  ],
+  "brands": [],
+  "commons": "Ford Mondeo Mk III",
+  "n": 111,
+  "train": 77,
+  "val": 17,
+  "test": 17
+ },
+ {
+  "id": 67,
+  "qid": "Q5467907",
+  "name": "Ford Ranger T6",
+  "makers": [
+   "Ford Motor Company"
+  ],
+  "brands": [
+   "Ford"
+  ],
+  "commons": "Ford Ranger (T6)",
+  "n": 116,
+  "train": 80,
+  "val": 18,
+  "test": 18
+ },
+ {
+  "id": 68,
+  "qid": "Q1619367",
+  "name": "Hindustan Ambassador",
+  "makers": [
+   "Hindustan Motors"
+  ],
+  "brands": [],
+  "commons": "Hindustan Ambassador",
+  "n": 52,
+  "train": 36,
+  "val": 8,
+  "test": 8
+ },
+ {
+  "id": 69,
+  "qid": "Q463632",
+  "name": "Honda Accord",
+  "makers": [
+   "Honda"
+  ],
+  "brands": [
+   "Honda"
+  ],
+  "commons": "Honda Accord",
+  "n": 130,
+  "train": 90,
+  "val": 20,
+  "test": 20
+ },
+ {
+  "id": 70,
+  "qid": "Q11338295",
+  "name": "Honda Amaze",
+  "makers": [
+   "Honda"
+  ],
+  "brands": [
+   "Honda"
+  ],
+  "commons": "Honda Amaze",
+  "n": 24,
+  "train": 15,
+  "val": 5,
+  "test": 4
+ },
+ {
+  "id": 71,
+  "qid": "Q22752926",
+  "name": "Honda BR-V",
+  "makers": [
+   "Honda"
+  ],
+  "brands": [
+   "Honda"
+  ],
+  "commons": "Honda BR-V",
+  "n": 83,
+  "train": 62,
+  "val": 7,
+  "test": 14
+ },
+ {
+  "id": 72,
+  "qid": "Q3271160",
+  "name": "Honda Brio",
+  "makers": [
+   "Honda"
+  ],
+  "brands": [
+   "Honda"
+  ],
+  "commons": "Honda Brio",
+  "n": 106,
+  "train": 70,
+  "val": 20,
+  "test": 16
+ },
+ {
+  "id": 73,
+  "qid": "Q255461",
+  "name": "Honda CR-V",
+  "makers": [
+   "Honda"
+  ],
+  "brands": [
+   "Honda"
+  ],
+  "commons": "Honda CR-V",
+  "n": 122,
+  "train": 83,
+  "val": 20,
+  "test": 19
+ },
+ {
+  "id": 74,
+  "qid": "Q1162891",
+  "name": "Honda City",
+  "makers": [
+   "Honda"
+  ],
+  "brands": [
+   "Honda"
+  ],
+  "commons": "Honda City",
+  "n": 121,
+  "train": 83,
+  "val": 19,
+  "test": 19
+ },
+ {
+  "id": 75,
+  "qid": "Q216747",
+  "name": "Honda Civic",
+  "makers": [
+   "Honda"
+  ],
+  "brands": [
+   "Honda"
+  ],
+  "commons": "Honda Civic",
+  "n": 112,
+  "train": 78,
+  "val": 17,
+  "test": 17
+ },
+ {
+  "id": 76,
+  "qid": "Q1135125",
+  "name": "Honda Fit",
+  "makers": [
+   "Honda"
+  ],
+  "brands": [
+   "Honda"
+  ],
+  "commons": "Honda Fit",
+  "n": 121,
+  "train": 79,
+  "val": 23,
+  "test": 19
+ },
+ {
+  "id": 77,
+  "qid": "Q1626626",
+  "name": "Honda Mobilio",
+  "makers": [
+   "Honda"
+  ],
+  "brands": [
+   "Honda"
+  ],
+  "commons": "Honda Mobilio",
+  "n": 114,
+  "train": 78,
+  "val": 18,
+  "test": 18
+ },
+ {
+  "id": 78,
+  "qid": "Q28744342",
+  "name": "Honda WR-V",
+  "makers": [
+   "Honda"
+  ],
+  "brands": [
+   "Honda"
+  ],
+  "commons": "Honda WR-V",
+  "n": 47,
+  "train": 31,
+  "val": 8,
+  "test": 8
+ },
+ {
+  "id": 79,
+  "qid": "Q109546578",
+  "name": "Honda ZR-V",
+  "makers": [
+   "Honda"
+  ],
+  "brands": [
+   "Honda"
+  ],
+  "commons": "Honda ZR-V",
+  "n": 90,
+  "train": 61,
+  "val": 14,
+  "test": 15
+ },
+ {
+  "id": 80,
+  "qid": "Q482410",
+  "name": "Hyundai Accent",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "brands": [
+   "Hyundai"
+  ],
+  "commons": "Hyundai Accent",
+  "n": 105,
+  "train": 72,
+  "val": 17,
+  "test": 16
+ },
+ {
+  "id": 81,
+  "qid": "Q482530",
+  "name": "Hyundai Avante (Elantra)",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "brands": [
+   "Hyundai Motor Company"
+  ],
+  "commons": "Hyundai Elantra",
+  "n": 127,
+  "train": 86,
+  "val": 21,
+  "test": 20
+ },
+ {
+  "id": 82,
+  "qid": "Q102322338",
+  "name": "Hyundai Bayon",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "brands": [],
+  "commons": "Hyundai Bayon",
+  "n": 50,
+  "train": 32,
+  "val": 9,
+  "test": 9
+ },
+ {
+  "id": 83,
+  "qid": "Q18683502",
+  "name": "Hyundai Creta",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "brands": [
+   "Hyundai"
+  ],
+  "commons": "Hyundai Creta",
+  "n": 130,
+  "train": 88,
+  "val": 21,
+  "test": 21
+ },
+ {
+  "id": 84,
+  "qid": "Q488076",
+  "name": "Hyundai Eon",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "brands": [
+   "Hyundai Motor Company"
+  ],
+  "commons": "Hyundai Eon",
+  "n": 18,
+  "train": 10,
+  "val": 5,
+  "test": 3
+ },
+ {
+  "id": 85,
+  "qid": "Q482462",
+  "name": "Hyundai Getz",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "brands": [
+   "Hyundai Motor Company"
+  ],
+  "commons": "Hyundai Getz",
+  "n": 123,
+  "train": 84,
+  "val": 20,
+  "test": 19
+ },
+ {
+  "id": 86,
+  "qid": "Q99342695",
+  "name": "Hyundai Ioniq 5",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "brands": [
+   "Ioniq"
+  ],
+  "commons": "Hyundai Ioniq 5",
+  "n": 127,
+  "train": 85,
+  "val": 22,
+  "test": 20
+ },
+ {
+  "id": 87,
+  "qid": "Q30322680",
+  "name": "Hyundai Kona",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "brands": [
+   "Hyundai Motor Company"
+  ],
+  "commons": "Hyundai Kona",
+  "n": 134,
+  "train": 92,
+  "val": 21,
+  "test": 21
+ },
+ {
+  "id": 88,
+  "qid": "Q489852",
+  "name": "Hyundai Santa Fe",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "brands": [
+   "Hyundai Motor Company"
+  ],
+  "commons": "Hyundai Santa Fe",
+  "n": 123,
+  "train": 83,
+  "val": 21,
+  "test": 19
+ },
+ {
+  "id": 89,
+  "qid": "Q482458",
+  "name": "Hyundai Sonata",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "brands": [
+   "Hyundai Motor Company"
+  ],
+  "commons": "Hyundai Sonata",
+  "n": 135,
+  "train": 90,
+  "val": 24,
+  "test": 21
+ },
+ {
+  "id": 90,
+  "qid": "Q482697",
+  "name": "Hyundai Terracan",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "brands": [
+   "Hyundai Motor Company"
+  ],
+  "commons": "Hyundai Terracan",
+  "n": 62,
+  "train": 40,
+  "val": 12,
+  "test": 10
+ },
+ {
+  "id": 91,
+  "qid": "Q482430",
+  "name": "Hyundai Tucson",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "brands": [
+   "Hyundai Motor Company"
+  ],
+  "commons": "Hyundai Tucson",
+  "n": 127,
+  "train": 87,
+  "val": 20,
+  "test": 20
+ },
+ {
+  "id": 92,
+  "qid": "Q62381823",
+  "name": "Hyundai Venue",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "brands": [
+   "Hyundai Motor Company"
+  ],
+  "commons": "Hyundai Venue",
+  "n": 134,
+  "train": 87,
+  "val": 25,
+  "test": 22
+ },
+ {
+  "id": 93,
+  "qid": "Q494384",
+  "name": "Hyundai i10",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "brands": [
+   "Hyundai"
+  ],
+  "commons": "Hyundai i10",
+  "n": 132,
+  "train": 91,
+  "val": 21,
+  "test": 20
+ },
+ {
+  "id": 94,
+  "qid": "Q494379",
+  "name": "Hyundai i20",
+  "makers": [
+   "Hyundai Motor Company"
+  ],
+  "brands": [
+   "Hyundai Motor Company"
+  ],
+  "commons": "Hyundai i20",
+  "n": 118,
+  "train": 82,
+  "val": 18,
+  "test": 18
+ },
+ {
+  "id": 95,
+  "qid": "Q122776207",
+  "name": "IM LS6",
+  "makers": [
+   "IM Motors"
+  ],
+  "brands": [],
+  "commons": "IM LS6",
+  "n": 45,
+  "train": 30,
+  "val": 8,
+  "test": 7
+ },
+ {
+  "id": 96,
+  "qid": "Q1674944",
+  "name": "Isuzu D-Max",
+  "makers": [
+   "General Motors",
+   "Isuzu"
+  ],
+  "brands": [
+   "Isuzu"
+  ],
+  "commons": "Isuzu D-Max",
+  "n": 106,
+  "train": 72,
+  "val": 18,
+  "test": 16
+ },
+ {
+  "id": 97,
+  "qid": "Q18559560",
+  "name": "Isuzu MU-X",
+  "makers": [
+   "Isuzu"
+  ],
+  "brands": [
+   "Isuzu"
+  ],
+  "commons": "Isuzu MU-X",
+  "n": 139,
+  "train": 91,
+  "val": 26,
+  "test": 22
+ },
+ {
+  "id": 98,
+  "qid": "Q219029",
+  "name": "Isuzu Panther",
+  "makers": [
+   "Isuzu"
+  ],
+  "brands": [
+   "Isuzu"
+  ],
+  "commons": "Isuzu Panther",
+  "n": 53,
+  "train": 36,
+  "val": 9,
+  "test": 8
+ },
+ {
+  "id": 99,
+  "qid": "Q15939056",
+  "name": "Jaguar XE",
+  "makers": [
+   "Jaguar Land Rover"
+  ],
+  "brands": [
+   "Jaguar"
+  ],
+  "commons": "Jaguar XE",
+  "n": 119,
+  "train": 83,
+  "val": 18,
+  "test": 18
+ },
+ {
+  "id": 100,
+  "qid": "Q383827",
+  "name": "Jaguar XF series",
+  "makers": [
+   "Jaguar Cars",
+   "Jaguar Land Rover"
+  ],
+  "brands": [
+   "Jaguar"
+  ],
+  "commons": "Jaguar XF",
+  "n": 125,
+  "train": 86,
+  "val": 20,
+  "test": 19
+ },
+ {
+  "id": 101,
+  "qid": "Q1678526",
+  "name": "Jaguar XJ (X351)",
+  "makers": [
+   "Jaguar Land Rover"
+  ],
+  "brands": [
+   "Jaguar"
+  ],
+  "commons": "Jaguar XJ (X351)",
+  "n": 106,
+  "train": 73,
+  "val": 17,
+  "test": 16
+ },
+ {
+  "id": 102,
+  "qid": "Q1512553",
+  "name": "Jeep CJ",
+  "makers": [
+   "Willys"
+  ],
+  "brands": [
+   "Jeep"
+  ],
+  "commons": "Jeep CJ",
+  "n": 92,
+  "train": 64,
+  "val": 14,
+  "test": 14
+ },
+ {
+  "id": 103,
+  "qid": "Q108380558",
+  "name": "Jeep Commander",
+  "makers": [
+   "Jeep"
+  ],
+  "brands": [],
+  "commons": "Jeep Commander (2021)",
+  "n": 22,
+  "train": 14,
+  "val": 4,
+  "test": 4
+ },
+ {
+  "id": 104,
+  "qid": "Q1686208",
+  "name": "Jeep Compass",
+  "makers": [
+   "Jeep"
+  ],
+  "brands": [
+   "Jeep"
+  ],
+  "commons": "Jeep Compass",
+  "n": 132,
+  "train": 91,
+  "val": 21,
+  "test": 20
+ },
+ {
+  "id": 105,
+  "qid": "Q1129521",
+  "name": "Jeep Grand Cherokee",
+  "makers": [
+   "Stellantis North America"
+  ],
+  "brands": [
+   "Jeep"
+  ],
+  "commons": "Jeep Grand Cherokee",
+  "n": 66,
+  "train": 46,
+  "val": 10,
+  "test": 10
+ },
+ {
+  "id": 106,
+  "qid": "Q21233165",
+  "name": "Jeep Grand Cherokee",
+  "makers": [
+   "Stellantis"
+  ],
+  "brands": [],
+  "commons": "Jeep Grand Cherokee (WK2)",
+  "n": 73,
+  "train": 51,
+  "val": 11,
+  "test": 11
+ },
+ {
+  "id": 107,
+  "qid": "Q1353305",
+  "name": "Jeep Wrangler",
+  "makers": [
+   "Stellantis North America"
+  ],
+  "brands": [
+   "Jeep"
+  ],
+  "commons": "Jeep Wrangler",
+  "n": 43,
+  "train": 29,
+  "val": 7,
+  "test": 7
+ },
+ {
+  "id": 108,
+  "qid": "Q47036821",
+  "name": "Jeep Wrangler (JK)",
+  "makers": [
+   "DaimlerChrysler",
+   "Fiat Chrysler Automobiles"
+  ],
+  "brands": [
+   "Jeep"
+  ],
+  "commons": "Jeep Wrangler (JK)",
+  "n": 62,
+  "train": 42,
+  "val": 10,
+  "test": 10
+ },
+ {
+  "id": 109,
+  "qid": "Q47036822",
+  "name": "Jeep Wrangler (JL)",
+  "makers": [
+   "Fiat Chrysler Automobiles"
+  ],
+  "brands": [],
+  "commons": "Jeep Wrangler (JL)",
+  "n": 82,
+  "train": 56,
+  "val": 13,
+  "test": 13
+ },
+ {
+  "id": 110,
+  "qid": "Q488191",
+  "name": "Kia Carens",
+  "makers": [
+   "Kia"
+  ],
+  "brands": [
+   "Kia"
+  ],
+  "commons": "Kia Carens",
+  "n": 142,
+  "train": 96,
+  "val": 23,
+  "test": 23
+ },
+ {
+  "id": 111,
+  "qid": "Q488173",
+  "name": "Kia Carnival",
+  "makers": [
+   "Kia"
+  ],
+  "brands": [
+   "Kia"
+  ],
+  "commons": "Kia Carnival",
+  "n": 115,
+  "train": 79,
+  "val": 18,
+  "test": 18
+ },
+ {
+  "id": 112,
+  "qid": "Q105975708",
+  "name": "Kia EV6",
+  "makers": [
+   "Kia"
+  ],
+  "brands": [],
+  "commons": "Kia EV6",
+  "n": 138,
+  "train": 93,
+  "val": 23,
+  "test": 22
+ },
+ {
+  "id": 113,
+  "qid": "Q110114350",
+  "name": "Kia EV9",
+  "makers": [
+   "Kia"
+  ],
+  "brands": [],
+  "commons": "Kia EV9",
+  "n": 108,
+  "train": 66,
+  "val": 24,
+  "test": 18
+ },
+ {
+  "id": 114,
+  "qid": "Q65044174",
+  "name": "Kia Seltos",
+  "makers": [
+   "Kia"
+  ],
+  "brands": [],
+  "commons": "Kia Seltos",
+  "n": 134,
+  "train": 89,
+  "val": 23,
+  "test": 22
+ },
+ {
+  "id": 115,
+  "qid": "Q97613890",
+  "name": "Kia Sonet",
+  "makers": [
+   "Kia"
+  ],
+  "brands": [],
+  "commons": "Kia Sonet",
+  "n": 63,
+  "train": 40,
+  "val": 12,
+  "test": 11
+ },
+ {
+  "id": 116,
+  "qid": "Q489836",
+  "name": "Kia Sorento",
+  "makers": [
+   "Kia"
+  ],
+  "brands": [
+   "Kia"
+  ],
+  "commons": "Kia Sorento",
+  "n": 131,
+  "train": 89,
+  "val": 22,
+  "test": 20
+ },
+ {
+  "id": 117,
+  "qid": "Q1574740",
+  "name": "LADA Granta",
+  "makers": [
+   "AvtoVAZ"
+  ],
+  "brands": [
+   "Lada"
+  ],
+  "commons": "Lada Granta",
+  "n": 127,
+  "train": 83,
+  "val": 24,
+  "test": 20
+ },
+ {
+  "id": 118,
+  "qid": "Q126102024",
+  "name": "Lamborghini Temerario",
+  "makers": [
+   "Lamborghini"
+  ],
+  "brands": [],
+  "commons": "Lamborghini Temerario",
+  "n": 67,
+  "train": 40,
+  "val": 16,
+  "test": 11
+ },
+ {
+  "id": 119,
+  "qid": "Q3077088",
+  "name": "Lamborghini Urus",
+  "makers": [
+   "Lamborghini"
+  ],
+  "brands": [
+   "Lamborghini"
+  ],
+  "commons": "Lamborghini Urus",
+  "n": 141,
+  "train": 94,
+  "val": 24,
+  "test": 23
+ },
+ {
+  "id": 120,
+  "qid": "Q1140003",
+  "name": "Land Rover Discovery series",
+  "makers": [
+   "Jaguar Land Rover"
+  ],
+  "brands": [
+   "Land Rover"
+  ],
+  "commons": "Land Rover Discovery",
+  "n": 101,
+  "train": 69,
+  "val": 16,
+  "test": 16
+ },
+ {
+  "id": 121,
+  "qid": "Q577397",
+  "name": "Lexus ES",
+  "makers": [
+   "Toyota"
+  ],
+  "brands": [
+   "Lexus"
+  ],
+  "commons": "Lexus ES",
+  "n": 134,
+  "train": 90,
+  "val": 23,
+  "test": 21
+ },
+ {
+  "id": 122,
+  "qid": "Q22084860",
+  "name": "Lexus LC",
+  "makers": [
+   "Toyota"
+  ],
+  "brands": [
+   "Lexus"
+  ],
+  "commons": "Lexus LC",
+  "n": 82,
+  "train": 54,
+  "val": 15,
+  "test": 13
+ },
+ {
+  "id": 123,
+  "qid": "Q65147581",
+  "name": "Lexus LM",
+  "makers": [
+   "Toyota"
+  ],
+  "brands": [
+   "Lexus"
+  ],
+  "commons": "Lexus LM",
+  "n": 135,
+  "train": 73,
+  "val": 38,
+  "test": 24
+ },
+ {
+  "id": 124,
+  "qid": "Q1044847",
+  "name": "Lexus LS",
+  "makers": [
+   "Toyota"
+  ],
+  "brands": [
+   "Lexus"
+  ],
+  "commons": "Lexus LS",
+  "n": 126,
+  "train": 88,
+  "val": 19,
+  "test": 19
+ },
+ {
+  "id": 125,
+  "qid": "Q1509972",
+  "name": "Lexus LX",
+  "makers": [
+   "Toyota"
+  ],
+  "brands": [
+   "Lexus"
+  ],
+  "commons": "Lexus LX",
+  "n": 132,
+  "train": 91,
+  "val": 21,
+  "test": 20
+ },
+ {
+  "id": 126,
+  "qid": "Q16325434",
+  "name": "Lexus NX",
+  "makers": [
+   "Toyota"
+  ],
+  "brands": [
+   "Lexus"
+  ],
+  "commons": "Lexus NX",
+  "n": 112,
+  "train": 71,
+  "val": 24,
+  "test": 17
+ },
+ {
+  "id": 127,
+  "qid": "Q660273",
+  "name": "Lexus RX",
+  "makers": [
+   "Toyota"
+  ],
+  "brands": [
+   "Lexus"
+  ],
+  "commons": "Lexus RX",
+  "n": 126,
+  "train": 88,
+  "val": 19,
+  "test": 19
+ },
+ {
+  "id": 128,
+  "qid": "Q30635583",
+  "name": "MG ZS",
+  "makers": [
+   "MG Motor"
+  ],
+  "brands": [
+   "MG marque"
+  ],
+  "commons": "MG ZS (crossover)",
+  "n": 139,
+  "train": 94,
+  "val": 24,
+  "test": 21
+ },
+ {
+  "id": 129,
+  "qid": "Q2722862",
+  "name": "Mahindra Scorpio",
+  "makers": [
+   "Mahindra & Mahindra"
+  ],
+  "brands": [],
+  "commons": "Mahindra Scorpio",
+  "n": 78,
+  "train": 54,
+  "val": 12,
+  "test": 12
+ },
+ {
+  "id": 130,
+  "qid": "Q962700",
+  "name": "Mahindra Thar",
+  "makers": [
+   "Mahindra & Mahindra"
+  ],
+  "brands": [],
+  "commons": "Mahindra Thar",
+  "n": 24,
+  "train": 16,
+  "val": 4,
+  "test": 4
+ },
+ {
+  "id": 131,
+  "qid": "Q14153143",
+  "name": "Mahindra XUV500",
+  "makers": [
+   "Mahindra & Mahindra"
+  ],
+  "brands": [],
+  "commons": "Mahindra XUV500",
+  "n": 22,
+  "train": 14,
+  "val": 4,
+  "test": 4
+ },
+ {
+  "id": 132,
+  "qid": "Q12061442",
+  "name": "Mahindra e2o",
+  "makers": [
+   "Mahindra Electric"
+  ],
+  "brands": [],
+  "commons": "Mahindra e2o",
+  "n": 15,
+  "train": 8,
+  "val": 4,
+  "test": 3
+ },
+ {
+  "id": 133,
+  "qid": "Q1460363",
+  "name": "Maruti 800",
+  "makers": [
+   "Maruti Suzuki"
+  ],
+  "brands": [
+   "Maruti Suzuki"
+  ],
+  "commons": "Maruti 800",
+  "n": 44,
+  "train": 30,
+  "val": 7,
+  "test": 7
+ },
+ {
+  "id": 134,
+  "qid": "Q674982",
+  "name": "Maruti Gypsy",
+  "makers": [
+   "Maruti Suzuki"
+  ],
+  "brands": [],
+  "commons": "Maruti Gypsy",
+  "n": 22,
+  "train": 14,
+  "val": 4,
+  "test": 4
+ },
+ {
+  "id": 135,
+  "qid": "Q16040665",
+  "name": "Maruti Omni",
+  "makers": [
+   "Maruti Suzuki"
+  ],
+  "brands": [],
+  "commons": "Maruti Omni",
+  "n": 20,
+  "train": 14,
+  "val": 3,
+  "test": 3
+ },
+ {
+  "id": 136,
+  "qid": "Q96418903",
+  "name": "Maruti Suzuki Alto",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "brands": [],
+  "commons": "Maruti Suzuki Alto",
+  "n": 25,
+  "train": 17,
+  "val": 4,
+  "test": 4
+ },
+ {
+  "id": 137,
+  "qid": "Q87705301",
+  "name": "Maruti Suzuki Wagon R",
+  "makers": [
+   "Maruti Suzuki"
+  ],
+  "brands": [
+   "Maruti Suzuki"
+  ],
+  "commons": "Maruti Wagon R",
+  "n": 22,
+  "train": 14,
+  "val": 4,
+  "test": 4
+ },
+ {
+  "id": 138,
+  "qid": "Q572465",
+  "name": "Maruti Zen",
+  "makers": [
+   "Maruti Suzuki"
+  ],
+  "brands": [
+   "Maruti Suzuki"
+  ],
+  "commons": "Maruti Zen",
+  "n": 30,
+  "train": 19,
+  "val": 6,
+  "test": 5
+ },
+ {
+  "id": 139,
+  "qid": "Q6005400",
+  "name": "Maserati Ghibli III",
+  "makers": [
+   "Maserati"
+  ],
+  "brands": [
+   "Maserati"
+  ],
+  "commons": "Maserati Ghibli III",
+  "n": 139,
+  "train": 96,
+  "val": 22,
+  "test": 21
+ },
+ {
+  "id": 140,
+  "qid": "Q123038",
+  "name": "Maserati GranTurismo",
+  "makers": [
+   "Fiat",
+   "Maserati"
+  ],
+  "brands": [
+   "Maserati"
+  ],
+  "commons": "Maserati GranTurismo",
+  "n": 134,
+  "train": 92,
+  "val": 21,
+  "test": 21
+ },
+ {
+  "id": 141,
+  "qid": "Q100881867",
+  "name": "Maserati Grecale",
+  "makers": [
+   "Maserati"
+  ],
+  "brands": [
+   "Maserati"
+  ],
+  "commons": "Maserati Grecale",
+  "n": 68,
+  "train": 46,
+  "val": 11,
+  "test": 11
+ },
+ {
+  "id": 142,
+  "qid": "Q80862",
+  "name": "Maserati Levante",
+  "makers": [
+   "Fiat",
+   "Maserati"
+  ],
+  "brands": [
+   "Maserati"
+  ],
+  "commons": "Maserati Levante",
+  "n": 131,
+  "train": 91,
+  "val": 20,
+  "test": 20
+ },
+ {
+  "id": 143,
+  "qid": "Q85846574",
+  "name": "Maserati MC20",
+  "makers": [
+   "Maserati"
+  ],
+  "brands": [
+   "Maserati"
+  ],
+  "commons": "Maserati MC20",
+  "n": 134,
+  "train": 90,
+  "val": 22,
+  "test": 22
+ },
+ {
+  "id": 144,
+  "qid": "Q1132565",
+  "name": "Maserati Quattroporte",
+  "makers": [
+   "Fiat",
+   "Maserati"
+  ],
+  "brands": [
+   "Maserati"
+  ],
+  "commons": "Maserati Quattroporte",
+  "n": 130,
+  "train": 90,
+  "val": 20,
+  "test": 20
+ },
+ {
+  "id": 145,
+  "qid": "Q55089087",
+  "name": "Maxus D90",
+  "makers": [
+   "Maxus"
+  ],
+  "brands": [],
+  "commons": "Maxus D90",
+  "n": 20,
+  "train": 15,
+  "val": 2,
+  "test": 3
+ },
+ {
+  "id": 146,
+  "qid": "Q109653553",
+  "name": "Maxus G90",
+  "makers": [
+   "Maxus"
+  ],
+  "brands": [],
+  "commons": "Maxus Mifa 9",
+  "n": 19,
+  "train": 13,
+  "val": 3,
+  "test": 3
+ },
+ {
+  "id": 147,
+  "qid": "Q331694",
+  "name": "Mercedes-Benz C-Class",
+  "makers": [
+   "Mercedes-Benz Group"
+  ],
+  "brands": [
+   "Mercedes-Benz"
+  ],
+  "commons": "Mercedes-Benz C-Class",
+  "n": 132,
+  "train": 91,
+  "val": 21,
+  "test": 20
+ },
+ {
+  "id": 148,
+  "qid": "Q324127",
+  "name": "Mercedes-Benz E-Class",
+  "makers": [
+   "Mercedes-Benz"
+  ],
+  "brands": [
+   "Mercedes-Benz"
+  ],
+  "commons": "Mercedes-Benz E-Class",
+  "n": 131,
+  "train": 78,
+  "val": 28,
+  "test": 25
+ },
+ {
+  "id": 149,
+  "qid": "Q97120016",
+  "name": "Mercedes-Benz EQS",
+  "makers": [
+   "Mercedes-Benz Group"
+  ],
+  "brands": [
+   "Mercedes-Benz"
+  ],
+  "commons": "Mercedes-Benz EQS",
+  "n": 191,
+  "train": 126,
+  "val": 34,
+  "test": 31
+ },
+ {
+  "id": 150,
+  "qid": "Q659251",
+  "name": "Mercedes-Benz G-Class",
+  "makers": [
+   "Mercedes-Benz Group"
+  ],
+  "brands": [
+   "Mercedes-Benz"
+  ],
+  "commons": "Mercedes-Benz G-Class",
+  "n": 136,
+  "train": 94,
+  "val": 21,
+  "test": 21
+ },
+ {
+  "id": 151,
+  "qid": "Q1128405",
+  "name": "Mercedes-Benz GL-Class",
+  "makers": [
+   "Mercedes-Benz Group"
+  ],
+  "brands": [
+   "Mercedes-Benz"
+  ],
+  "commons": "Mercedes-Benz GL-Class",
+  "n": 128,
+  "train": 87,
+  "val": 21,
+  "test": 20
+ },
+ {
+  "id": 152,
+  "qid": "Q11338233",
+  "name": "Mercedes-Benz GLA",
+  "makers": [
+   "Mercedes-Benz",
+   "Mercedes-Benz Group"
+  ],
+  "brands": [
+   "Mercedes-Benz"
+  ],
+  "commons": "Mercedes-Benz GLA-Class",
+  "n": 137,
+  "train": 94,
+  "val": 22,
+  "test": 21
+ },
+ {
+  "id": 153,
+  "qid": "Q20634916",
+  "name": "Mercedes-Benz GLC",
+  "makers": [
+   "Mercedes-Benz Cars"
+  ],
+  "brands": [
+   "Mercedes-Benz"
+  ],
+  "commons": "Mercedes-Benz GLC-Class",
+  "n": 136,
+  "train": 93,
+  "val": 22,
+  "test": 21
+ },
+ {
+  "id": 154,
+  "qid": "Q24056154",
+  "name": "Mercedes-Benz GLE-Class",
+  "makers": [
+   "Mercedes-Benz Group"
+  ],
+  "brands": [
+   "Mercedes-Benz"
+  ],
+  "commons": "Mercedes-Benz GLE-Class",
+  "n": 143,
+  "train": 98,
+  "val": 23,
+  "test": 22
+ },
+ {
+  "id": 155,
+  "qid": "Q461469",
+  "name": "Mercedes-Benz S-Class",
+  "makers": [
+   "Mercedes-Benz Group"
+  ],
+  "brands": [
+   "Mercedes-Benz"
+  ],
+  "commons": "Mercedes-Benz S-Class",
+  "n": 135,
+  "train": 90,
+  "val": 24,
+  "test": 21
+ },
+ {
+  "id": 156,
+  "qid": "Q345168",
+  "name": "Mercedes-Benz Vito",
+  "makers": [
+   "Mercedes-Benz Vans"
+  ],
+  "brands": [
+   "Mercedes-Benz"
+  ],
+  "commons": "Mercedes-Benz Vito",
+  "n": 103,
+  "train": 71,
+  "val": 16,
+  "test": 16
+ },
+ {
+  "id": 157,
+  "qid": "Q977429",
+  "name": "Mercedes-Benz W210",
+  "makers": [
+   "Mercedes-Benz Group"
+  ],
+  "brands": [
+   "Mercedes-Benz"
+  ],
+  "commons": "Mercedes-Benz W210",
+  "n": 97,
+  "train": 67,
+  "val": 15,
+  "test": 15
+ },
+ {
+  "id": 158,
+  "qid": "Q1511429",
+  "name": "Mercedes-Benz type 124",
+  "makers": [
+   "Daimler-Benz AG"
+  ],
+  "brands": [
+   "Mercedes-Benz"
+  ],
+  "commons": "Mercedes-Benz W124",
+  "n": 100,
+  "train": 70,
+  "val": 15,
+  "test": 15
+ },
+ {
+  "id": 159,
+  "qid": "Q36024",
+  "name": "Mini",
+  "makers": [
+   "British Leyland",
+   "British Motor Corporation",
+   "Rover Group"
+  ],
+  "brands": [
+   "Mini"
+  ],
+  "commons": "Mini",
+  "n": 113,
+  "train": 75,
+  "val": 20,
+  "test": 18
+ },
+ {
+  "id": 160,
+  "qid": "Q1578941",
+  "name": "Mini Countryman",
+  "makers": [
+   "BMW"
+  ],
+  "brands": [
+   "Mini"
+  ],
+  "commons": "Mini Countryman",
+  "n": 105,
+  "train": 73,
+  "val": 16,
+  "test": 16
+ },
+ {
+  "id": 161,
+  "qid": "Q14552308",
+  "name": "Mitsubishi Delica",
+  "makers": [
+   "Mitsubishi Motors"
+  ],
+  "brands": [],
+  "commons": "Mitsubishi Delica",
+  "n": 110,
+  "train": 76,
+  "val": 17,
+  "test": 17
+ },
+ {
+  "id": 162,
+  "qid": "Q1548674",
+  "name": "Morris Minor",
+  "makers": [
+   "British Motor Corporation"
+  ],
+  "brands": [
+   "Morris Motors"
+  ],
+  "commons": "Morris Minor",
+  "n": 118,
+  "train": 82,
+  "val": 18,
+  "test": 18
+ },
+ {
+  "id": 163,
+  "qid": "Q19116097",
+  "name": "Morris Oxford series II",
+  "makers": [
+   "Morris Motors"
+  ],
+  "brands": [],
+  "commons": "Morris Oxford series II",
+  "n": 30,
+  "train": 20,
+  "val": 5,
+  "test": 5
+ },
+ {
+  "id": 164,
+  "qid": "Q19116072",
+  "name": "Morris Oxford series III",
+  "makers": [
+   "Morris Motors"
+  ],
+  "brands": [],
+  "commons": "Morris Oxford series III",
+  "n": 31,
+  "train": 21,
+  "val": 5,
+  "test": 5
+ },
+ {
+  "id": 165,
+  "qid": "Q1948539",
+  "name": "Morris Ten",
+  "makers": [
+   "British Motor Corporation"
+  ],
+  "brands": [
+   "Morris Motors"
+  ],
+  "commons": "Morris 10",
+  "n": 95,
+  "train": 64,
+  "val": 16,
+  "test": 15
+ },
+ {
+  "id": 166,
+  "qid": "Q936668",
+  "name": "Nissan 370Z",
+  "makers": [
+   "Nissan"
+  ],
+  "brands": [
+   "Nissan"
+  ],
+  "commons": "Nissan 370Z",
+  "n": 111,
+  "train": 77,
+  "val": 17,
+  "test": 17
+ },
+ {
+  "id": 167,
+  "qid": "Q1476157",
+  "name": "Nissan Cherry",
+  "makers": [
+   "Nissan"
+  ],
+  "brands": [
+   "Datsun"
+  ],
+  "commons": "Nissan Cherry",
+  "n": 60,
+  "train": 42,
+  "val": 9,
+  "test": 9
+ },
+ {
+  "id": 168,
+  "qid": "Q499109",
+  "name": "Nissan GT-R",
+  "makers": [
+   "Nissan"
+  ],
+  "brands": [
+   "Nissan"
+  ],
+  "commons": "Nissan GT-R",
+  "n": 59,
+  "train": 41,
+  "val": 9,
+  "test": 9
+ },
+ {
+  "id": 169,
+  "qid": "Q26186522",
+  "name": "Nissan Kicks",
+  "makers": [
+   "Nissan"
+  ],
+  "brands": [
+   "Nissan"
+  ],
+  "commons": "Nissan Kicks",
+  "n": 123,
+  "train": 84,
+  "val": 20,
+  "test": 19
+ },
+ {
+  "id": 170,
+  "qid": "Q97501874",
+  "name": "Nissan Magnite",
+  "makers": [
+   "Nissan"
+  ],
+  "brands": [
+   "Nissan"
+  ],
+  "commons": "Nissan Magnite",
+  "n": 21,
+  "train": 13,
+  "val": 4,
+  "test": 4
+ },
+ {
+  "id": 171,
+  "qid": "Q377287",
+  "name": "Nissan Maxima",
+  "makers": [
+   "Nissan"
+  ],
+  "brands": [
+   "Nissan"
+  ],
+  "commons": "Nissan Maxima",
+  "n": 128,
+  "train": 87,
+  "val": 21,
+  "test": 20
+ },
+ {
+  "id": 172,
+  "qid": "Q738470",
+  "name": "Nissan Micra",
+  "makers": [
+   "Nissan",
+   "Renault"
+  ],
+  "brands": [
+   "Nissan"
+  ],
+  "commons": "Nissan Micra",
+  "n": 134,
+  "train": 92,
+  "val": 21,
+  "test": 21
+ },
+ {
+  "id": 173,
+  "qid": "Q1394779",
+  "name": "Nissan NV200",
+  "makers": [
+   "Nissan"
+  ],
+  "brands": [
+   "Nissan"
+  ],
+  "commons": "Nissan NV200",
+  "n": 109,
+  "train": 75,
+  "val": 17,
+  "test": 17
+ },
+ {
+  "id": 174,
+  "qid": "Q1141487",
+  "name": "Nissan Patrol",
+  "makers": [
+   "Nissan"
+  ],
+  "brands": [
+   "Nissan"
+  ],
+  "commons": "Nissan Patrol",
+  "n": 113,
+  "train": 79,
+  "val": 17,
+  "test": 17
+ },
+ {
+  "id": 175,
+  "qid": "Q1993805",
+  "name": "Nissan Pixo",
+  "makers": [
+   "Nissan",
+   "Renault"
+  ],
+  "brands": [
+   "Nissan"
+  ],
+  "commons": "Nissan Pixo",
+  "n": 18,
+  "train": 11,
+  "val": 4,
+  "test": 3
+ },
+ {
+  "id": 176,
+  "qid": "Q2575681",
+  "name": "Nissan S30",
+  "makers": [
+   "Datsun",
+   "Nissan"
+  ],
+  "brands": [
+   "Datsun"
+  ],
+  "commons": "Datsun S30",
+  "n": 104,
+  "train": 72,
+  "val": 16,
+  "test": 16
+ },
+ {
+  "id": 177,
+  "qid": "Q719974",
+  "name": "Nissan Sentra",
+  "makers": [
+   "Nissan"
+  ],
+  "brands": [
+   "Nissan"
+  ],
+  "commons": "Nissan Sentra",
+  "n": 123,
+  "train": 85,
+  "val": 19,
+  "test": 19
+ },
+ {
+  "id": 178,
+  "qid": "Q643635",
+  "name": "Nissan Skyline",
+  "makers": [
+   "Nissan"
+  ],
+  "brands": [
+   "Nissan"
+  ],
+  "commons": "Nissan Skyline",
+  "n": 122,
+  "train": 84,
+  "val": 19,
+  "test": 19
+ },
+ {
+  "id": 179,
+  "qid": "Q1132451",
+  "name": "Nissan Sunny",
+  "makers": [
+   "Nissan"
+  ],
+  "brands": [
+   "Nissan"
+  ],
+  "commons": "Nissan Sunny",
+  "n": 131,
+  "train": 91,
+  "val": 20,
+  "test": 20
+ },
+ {
+  "id": 180,
+  "qid": "Q1068935",
+  "name": "Nissan Teana",
+  "makers": [
+   "Nissan"
+  ],
+  "brands": [
+   "Nissan"
+  ],
+  "commons": "Nissan Teana",
+  "n": 136,
+  "train": 92,
+  "val": 23,
+  "test": 21
+ },
+ {
+  "id": 181,
+  "qid": "Q375074",
+  "name": "Nissan Violet",
+  "makers": [
+   "Datsun"
+  ],
+  "brands": [
+   "Datsun"
+  ],
+  "commons": "Datsun Violet",
+  "n": 30,
+  "train": 19,
+  "val": 6,
+  "test": 5
+ },
+ {
+  "id": 182,
+  "qid": "Q1135638",
+  "name": "Nissan X-Trail",
+  "makers": [
+   "Nissan"
+  ],
+  "brands": [
+   "Nissan"
+  ],
+  "commons": "Nissan X-Trail",
+  "n": 107,
+  "train": 73,
+  "val": 17,
+  "test": 17
+ },
+ {
+  "id": 183,
+  "qid": "Q338545",
+  "name": "Nissan Z-car",
+  "makers": [
+   "Nissan"
+  ],
+  "brands": [
+   "Datsun"
+  ],
+  "commons": "Fairlady Z",
+  "n": 82,
+  "train": 56,
+  "val": 13,
+  "test": 13
+ },
+ {
+  "id": 184,
+  "qid": "Q1350",
+  "name": "Opel Astra",
+  "makers": [
+   "Opel"
+  ],
+  "brands": [
+   "Opel"
+  ],
+  "commons": "Opel Astra",
+  "n": 129,
+  "train": 89,
+  "val": 20,
+  "test": 20
+ },
+ {
+  "id": 185,
+  "qid": "Q376916",
+  "name": "Opel Corsa",
+  "makers": [
+   "Opel"
+  ],
+  "brands": [
+   "Opel"
+  ],
+  "commons": "Opel Corsa",
+  "n": 112,
+  "train": 78,
+  "val": 17,
+  "test": 17
+ },
+ {
+  "id": 186,
+  "qid": "Q1139986",
+  "name": "Peugeot 309",
+  "makers": [
+   "Peugeot"
+  ],
+  "brands": [
+   "Peugeot"
+  ],
+  "commons": "Peugeot 309",
+  "n": 128,
+  "train": 87,
+  "val": 21,
+  "test": 20
+ },
+ {
+  "id": 187,
+  "qid": "Q1652882",
+  "name": "Plymouth Belvedere",
+  "makers": [
+   "Plymouth"
+  ],
+  "brands": [
+   "Plymouth"
+  ],
+  "commons": "Plymouth Belvedere",
+  "n": 134,
+  "train": 92,
+  "val": 21,
+  "test": 21
+ },
+ {
+  "id": 188,
+  "qid": "Q830617",
+  "name": "Plymouth Savoy",
+  "makers": [
+   "Plymouth"
+  ],
+  "brands": [
+   "Plymouth"
+  ],
+  "commons": "Plymouth Savoy",
+  "n": 135,
+  "train": 93,
+  "val": 21,
+  "test": 21
+ },
+ {
+  "id": 189,
+  "qid": "Q219357",
+  "name": "Porsche 911",
+  "makers": [
+   "Porsche"
+  ],
+  "brands": [
+   "Porsche"
+  ],
+  "commons": "Porsche 911",
+  "n": 137,
+  "train": 95,
+  "val": 16,
+  "test": 26
+ },
+ {
+  "id": 190,
+  "qid": "Q337148",
+  "name": "Porsche Cayenne",
+  "makers": [
+   "Porsche"
+  ],
+  "brands": [
+   "Porsche"
+  ],
+  "commons": "Porsche Cayenne",
+  "n": 131,
+  "train": 90,
+  "val": 21,
+  "test": 20
+ },
+ {
+  "id": 191,
+  "qid": "Q2753440",
+  "name": "Porsche Macan",
+  "makers": [
+   "Porsche"
+  ],
+  "brands": [
+   "Porsche"
+  ],
+  "commons": "Porsche Macan",
+  "n": 134,
+  "train": 91,
+  "val": 22,
+  "test": 21
+ },
+ {
+  "id": 192,
+  "qid": "Q501349",
+  "name": "Porsche Panamera",
+  "makers": [
+   "Porsche"
+  ],
+  "brands": [
+   "Porsche"
+  ],
+  "commons": "Porsche Panamera",
+  "n": 123,
+  "train": 85,
+  "val": 19,
+  "test": 19
+ },
+ {
+  "id": 193,
+  "qid": "Q56307011",
+  "name": "Porsche Taycan",
+  "makers": [
+   "Porsche"
+  ],
+  "brands": [
+   "Porsche"
+  ],
+  "commons": "Porsche Taycan",
+  "n": 138,
+  "train": 94,
+  "val": 23,
+  "test": 21
+ },
+ {
+  "id": 194,
+  "qid": "Q3401649",
+  "name": "Premier Padmini",
+  "makers": [
+   "Premier Automobiles Limited"
+  ],
+  "brands": [],
+  "commons": "Premier Padmini",
+  "n": 15,
+  "train": 9,
+  "val": 3,
+  "test": 3
+ },
+ {
+  "id": 195,
+  "qid": "Q1165231",
+  "name": "Range Rover Sport",
+  "makers": [
+   "Jaguar Land Rover"
+  ],
+  "brands": [
+   "Land Rover"
+  ],
+  "commons": "Range Rover Sport",
+  "n": 78,
+  "train": 54,
+  "val": 12,
+  "test": 12
+ },
+ {
+  "id": 196,
+  "qid": "Q28843797",
+  "name": "Range Rover Velar",
+  "makers": [
+   "Jaguar Land Rover"
+  ],
+  "brands": [
+   "Land Rover"
+  ],
+  "commons": "Land Rover Range Rover Velar",
+  "n": 107,
+  "train": 70,
+  "val": 19,
+  "test": 18
+ },
+ {
+  "id": 197,
+  "qid": "Q1394749",
+  "name": "Reliant Kitten",
+  "makers": [
+   "Reliant"
+  ],
+  "brands": [],
+  "commons": "Reliant Kitten",
+  "n": 26,
+  "train": 18,
+  "val": 4,
+  "test": 4
+ },
+ {
+  "id": 198,
+  "qid": "Q1124536",
+  "name": "Renault 16",
+  "makers": [
+   "Renault"
+  ],
+  "brands": [
+   "Renault"
+  ],
+  "commons": "Renault 16",
+  "n": 126,
+  "train": 87,
+  "val": 20,
+  "test": 19
+ },
+ {
+  "id": 199,
+  "qid": "Q903839",
+  "name": "Renault Captur",
+  "makers": [
+   "Renault"
+  ],
+  "brands": [
+   "Renault"
+  ],
+  "commons": "Renault Captur",
+  "n": 117,
+  "train": 81,
+  "val": 18,
+  "test": 18
+ },
+ {
+  "id": 200,
+  "qid": "Q950506",
+  "name": "Renault Duster/Dacia Duster",
+  "makers": [
+   "Dacia",
+   "Nissan",
+   "Renault"
+  ],
+  "brands": [
+   "Dacia"
+  ],
+  "commons": "Dacia Duster",
+  "n": 123,
+  "train": 84,
+  "val": 20,
+  "test": 19
+ },
+ {
+  "id": 201,
+  "qid": "Q1050584",
+  "name": "Renault Fluence",
+  "makers": [
+   "Renault"
+  ],
+  "brands": [
+   "Renault"
+  ],
+  "commons": "Renault Fluence",
+  "n": 109,
+  "train": 74,
+  "val": 18,
+  "test": 17
+ },
+ {
+  "id": 202,
+  "qid": "Q867211",
+  "name": "Renault Koleos",
+  "makers": [
+   "Renault"
+  ],
+  "brands": [
+   "Renault"
+  ],
+  "commons": "Renault Koleos",
+  "n": 138,
+  "train": 96,
+  "val": 21,
+  "test": 21
+ },
+ {
+  "id": 203,
+  "qid": "Q19960305",
+  "name": "Renault Kwid",
+  "makers": [
+   "Renault"
+  ],
+  "brands": [
+   "Renault"
+  ],
+  "commons": "Renault Kwid",
+  "n": 42,
+  "train": 28,
+  "val": 7,
+  "test": 7
+ },
+ {
+  "id": 204,
+  "qid": "Q492037",
+  "name": "SEAT 124",
+  "makers": [
+   "Fiat"
+  ],
+  "brands": [
+   "SEAT"
+  ],
+  "commons": "SEAT 124",
+  "n": 100,
+  "train": 68,
+  "val": 17,
+  "test": 15
+ },
+ {
+  "id": 205,
+  "qid": "Q1141171",
+  "name": "SsangYong Rexton",
+  "makers": [
+   "KG Mobility"
+  ],
+  "brands": [],
+  "commons": "SsangYong Rexton",
+  "n": 138,
+  "train": 96,
+  "val": 21,
+  "test": 21
+ },
+ {
+  "id": 206,
+  "qid": "Q14544591",
+  "name": "Standard Atlas",
+  "makers": [
+   "Standard Motor Company"
+  ],
+  "brands": [],
+  "commons": "Standard vans",
+  "n": 16,
+  "train": 10,
+  "val": 3,
+  "test": 3
+ },
+ {
+  "id": 207,
+  "qid": "Q942382",
+  "name": "Standard Eight",
+  "makers": [
+   "Standard Motor Company"
+  ],
+  "brands": [
+   "Standard Motor Company"
+  ],
+  "commons": "Standard Eight",
+  "n": 73,
+  "train": 51,
+  "val": 11,
+  "test": 11
+ },
+ {
+  "id": 208,
+  "qid": "Q338701",
+  "name": "Standard Vanguard",
+  "makers": [
+   "Standard Motor Company"
+  ],
+  "brands": [
+   "Standard Motor Company"
+  ],
+  "commons": "Standard Vanguard",
+  "n": 123,
+  "train": 84,
+  "val": 20,
+  "test": 19
+ },
+ {
+  "id": 209,
+  "qid": "Q1324599",
+  "name": "Subaru Forester",
+  "makers": [
+   "Subaru"
+  ],
+  "brands": [
+   "Subaru"
+  ],
+  "commons": "Subaru Forester",
+  "n": 116,
+  "train": 79,
+  "val": 19,
+  "test": 18
+ },
+ {
+  "id": 210,
+  "qid": "Q922201",
+  "name": "Suzuki Alto",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Alto",
+  "n": 114,
+  "train": 78,
+  "val": 18,
+  "test": 18
+ },
+ {
+  "id": 211,
+  "qid": "Q23924645",
+  "name": "Suzuki Baleno",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Baleno (2015)",
+  "n": 85,
+  "train": 57,
+  "val": 14,
+  "test": 14
+ },
+ {
+  "id": 212,
+  "qid": "Q24907907",
+  "name": "Suzuki Brezza",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Brezza",
+  "n": 19,
+  "train": 12,
+  "val": 4,
+  "test": 3
+ },
+ {
+  "id": 213,
+  "qid": "Q16725870",
+  "name": "Suzuki Celerio",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Celerio",
+  "n": 82,
+  "train": 53,
+  "val": 15,
+  "test": 14
+ },
+ {
+  "id": 214,
+  "qid": "Q24906041",
+  "name": "Suzuki Ciaz",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Ciaz",
+  "n": 31,
+  "train": 20,
+  "val": 6,
+  "test": 5
+ },
+ {
+  "id": 215,
+  "qid": "Q2746511",
+  "name": "Suzuki Cultus",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Cultus",
+  "n": 43,
+  "train": 29,
+  "val": 7,
+  "test": 7
+ },
+ {
+  "id": 216,
+  "qid": "Q1502062",
+  "name": "Suzuki Cultus Crescent",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Baleno (1995)",
+  "n": 81,
+  "train": 54,
+  "val": 13,
+  "test": 14
+ },
+ {
+  "id": 217,
+  "qid": "Q4050439",
+  "name": "Suzuki Ertiga",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Ertiga",
+  "n": 117,
+  "train": 76,
+  "val": 21,
+  "test": 20
+ },
+ {
+  "id": 218,
+  "qid": "Q116180373",
+  "name": "Suzuki Fronx",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Fronx",
+  "n": 55,
+  "train": 35,
+  "val": 11,
+  "test": 9
+ },
+ {
+  "id": 219,
+  "qid": "Q112841757",
+  "name": "Suzuki Grand Vitara",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Grand Vitara (3rd generation)",
+  "n": 17,
+  "train": 11,
+  "val": 3,
+  "test": 3
+ },
+ {
+  "id": 220,
+  "qid": "Q932329",
+  "name": "Suzuki Ignis",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Ignis",
+  "n": 129,
+  "train": 89,
+  "val": 20,
+  "test": 20
+ },
+ {
+  "id": 221,
+  "qid": "Q1410131",
+  "name": "Suzuki Jimny",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Jimny",
+  "n": 132,
+  "train": 92,
+  "val": 20,
+  "test": 20
+ },
+ {
+  "id": 222,
+  "qid": "Q1783541",
+  "name": "Suzuki Kizashi",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Kizashi",
+  "n": 139,
+  "train": 95,
+  "val": 22,
+  "test": 22
+ },
+ {
+  "id": 223,
+  "qid": "Q1537625",
+  "name": "Suzuki MR Wagon",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki MR Wagon",
+  "n": 56,
+  "train": 36,
+  "val": 11,
+  "test": 9
+ },
+ {
+  "id": 224,
+  "qid": "Q70362516",
+  "name": "Suzuki S-Presso",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki S-Presso",
+  "n": 50,
+  "train": 29,
+  "val": 12,
+  "test": 9
+ },
+ {
+  "id": 225,
+  "qid": "Q751540",
+  "name": "Suzuki SX4",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki SX4",
+  "n": 126,
+  "train": 88,
+  "val": 19,
+  "test": 19
+ },
+ {
+  "id": 226,
+  "qid": "Q679435",
+  "name": "Suzuki Splash",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Splash",
+  "n": 63,
+  "train": 43,
+  "val": 10,
+  "test": 10
+ },
+ {
+  "id": 227,
+  "qid": "Q750262",
+  "name": "Suzuki Swift",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Swift",
+  "n": 130,
+  "train": 90,
+  "val": 20,
+  "test": 20
+ },
+ {
+  "id": 228,
+  "qid": "Q1130587",
+  "name": "Suzuki Vitara",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "brands": [
+   "Suzuki"
+  ],
+  "commons": "Suzuki Vitara",
+  "n": 109,
+  "train": 75,
+  "val": 17,
+  "test": 17
+ },
+ {
+  "id": 229,
+  "qid": "Q153108",
+  "name": "Suzuki Wagon R",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki Wagon R",
+  "n": 127,
+  "train": 87,
+  "val": 20,
+  "test": 20
+ },
+ {
+  "id": 230,
+  "qid": "Q1374737",
+  "name": "Suzuki XL-7",
+  "makers": [
+   "General Motors",
+   "Suzuki Motor Corporation"
+  ],
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki XL-7",
+  "n": 54,
+  "train": 34,
+  "val": 11,
+  "test": 9
+ },
+ {
+  "id": 231,
+  "qid": "Q130899798",
+  "name": "Suzuki e Vitara",
+  "makers": [
+   "Suzuki Motor Corporation"
+  ],
+  "brands": [
+   "Suzuki Motor Corporation"
+  ],
+  "commons": "Suzuki e Vitara",
+  "n": 26,
+  "train": 16,
+  "val": 6,
+  "test": 4
+ },
+ {
+  "id": 232,
+  "qid": "Q7687786",
+  "name": "Tata 407",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "brands": [],
+  "commons": "Tata trucks",
+  "n": 72,
+  "train": 50,
+  "val": 11,
+  "test": 11
+ },
+ {
+  "id": 233,
+  "qid": "Q65054324",
+  "name": "Tata Altroz",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "brands": [],
+  "commons": "Tata Altroz",
+  "n": 20,
+  "train": 13,
+  "val": 4,
+  "test": 3
+ },
+ {
+  "id": 234,
+  "qid": "Q1145323",
+  "name": "Tata Indica",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "brands": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata Indica",
+  "n": 66,
+  "train": 45,
+  "val": 11,
+  "test": 10
+ },
+ {
+  "id": 235,
+  "qid": "Q10860515",
+  "name": "Tata Indigo",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "brands": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata Indigo",
+  "n": 39,
+  "train": 27,
+  "val": 6,
+  "test": 6
+ },
+ {
+  "id": 236,
+  "qid": "Q152238",
+  "name": "Tata Nano",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "brands": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata Nano",
+  "n": 43,
+  "train": 29,
+  "val": 7,
+  "test": 7
+ },
+ {
+  "id": 237,
+  "qid": "Q44954468",
+  "name": "Tata Nexon",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "brands": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata Nexon",
+  "n": 15,
+  "train": 9,
+  "val": 3,
+  "test": 3
+ },
+ {
+  "id": 238,
+  "qid": "Q1110581",
+  "name": "Tata Safari",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "brands": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata Safari",
+  "n": 28,
+  "train": 18,
+  "val": 5,
+  "test": 5
+ },
+ {
+  "id": 239,
+  "qid": "Q1550231",
+  "name": "Tata Sumo",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "brands": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata Sumo",
+  "n": 24,
+  "train": 16,
+  "val": 4,
+  "test": 4
+ },
+ {
+  "id": 240,
+  "qid": "Q906268",
+  "name": "Tata TL",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "brands": [
+   "Tata Motors Limited"
+  ],
+  "commons": "Tata TL",
+  "n": 24,
+  "train": 16,
+  "val": 4,
+  "test": 4
+ },
+ {
+  "id": 241,
+  "qid": "Q15241332",
+  "name": "Tata Xenon",
+  "makers": [
+   "Tata Motors Limited"
+  ],
+  "brands": [],
+  "commons": "Tata Xenon",
+  "n": 27,
+  "train": 17,
+  "val": 5,
+  "test": 5
+ },
+ {
+  "id": 242,
+  "qid": "Q1582046",
+  "name": "Toyota Alphard",
+  "makers": [
+   "Toyota"
+  ],
+  "brands": [
+   "Toyota"
+  ],
+  "commons": "Toyota Alphard",
+  "n": 129,
+  "train": 88,
+  "val": 21,
+  "test": 20
+ },
+ {
+  "id": 243,
+  "qid": "Q500035",
+  "name": "Toyota Camry",
+  "makers": [
+   "Toyota"
+  ],
+  "brands": [
+   "Toyota"
+  ],
+  "commons": "Toyota Camry",
+  "n": 91,
+  "train": 63,
+  "val": 14,
+  "test": 14
+ },
+ {
+  "id": 244,
+  "qid": "Q125228953",
+  "name": "Toyota Camry (XV80)",
+  "makers": [
+   "Toyota"
+  ],
+  "brands": [
+   "Toyota"
+  ],
+  "commons": "Toyota Camry (XV80)",
+  "n": 96,
+  "train": 59,
+  "val": 22,
+  "test": 15
+ },
+ {
+  "id": 245,
+  "qid": "Q243543",
+  "name": "Toyota Corolla",
+  "makers": [
+   "FAW Toyota",
+   "Toyota"
+  ],
+  "brands": [
+   "Toyota"
+  ],
+  "commons": "Toyota Corolla",
+  "n": 119,
+  "train": 83,
+  "val": 18,
+  "test": 18
+ },
+ {
+  "id": 246,
+  "qid": "Q1725648",
+  "name": "Toyota Etios",
+  "makers": [
+   "Toyota"
+  ],
+  "brands": [
+   "Toyota"
+  ],
+  "commons": "Toyota Etios",
+  "n": 47,
+  "train": 31,
+  "val": 8,
+  "test": 8
+ },
+ {
+  "id": 247,
+  "qid": "Q1424419",
+  "name": "Toyota Fortuner",
+  "makers": [
+   "Toyota"
+  ],
+  "brands": [
+   "Toyota"
+  ],
+  "commons": "Toyota Fortuner",
+  "n": 103,
+  "train": 68,
+  "val": 18,
+  "test": 17
+ },
+ {
+  "id": 248,
+  "qid": "Q848607",
+  "name": "Toyota Hilux",
+  "makers": [
+   "Toyota"
+  ],
+  "brands": [
+   "Toyota"
+  ],
+  "commons": "Toyota HiLux",
+  "n": 118,
+  "train": 82,
+  "val": 18,
+  "test": 18
+ },
+ {
+  "id": 249,
+  "qid": "Q1402888",
+  "name": "Toyota Innova",
+  "makers": [
+   "Toyota"
+  ],
+  "brands": [
+   "Toyota"
+  ],
+  "commons": "Toyota Innova",
+  "n": 108,
+  "train": 77,
+  "val": 13,
+  "test": 18
+ },
+ {
+  "id": 250,
+  "qid": "Q2303949",
+  "name": "Toyota Kijang",
+  "makers": [
+   "Toyota"
+  ],
+  "brands": [
+   "Toyota"
+  ],
+  "commons": "Toyota Kijang",
+  "n": 94,
+  "train": 58,
+  "val": 21,
+  "test": 15
+ },
+ {
+  "id": 251,
+  "qid": "Q914069",
+  "name": "Toyota Land Cruiser",
+  "makers": [
+   "Toyota"
+  ],
+  "brands": [
+   "Toyota"
+  ],
+  "commons": "Toyota Land Cruiser",
+  "n": 92,
+  "train": 64,
+  "val": 14,
+  "test": 14
+ },
+ {
+  "id": 252,
+  "qid": "Q2594060",
+  "name": "Toyota Land Cruiser Prado",
+  "makers": [
+   "Toyota"
+  ],
+  "brands": [
+   "Toyota"
+  ],
+  "commons": "Toyota Land Cruiser Prado",
+  "n": 103,
+  "train": 71,
+  "val": 16,
+  "test": 16
+ },
+ {
+  "id": 253,
+  "qid": "Q213115",
+  "name": "Toyota Prius",
+  "makers": [
+   "Toyota"
+  ],
+  "brands": [
+   "Toyota"
+  ],
+  "commons": "Toyota Prius",
+  "n": 90,
+  "train": 62,
+  "val": 14,
+  "test": 14
+ },
+ {
+  "id": 254,
+  "qid": "Q1858584",
+  "name": "Triumph Herald",
+  "makers": [
+   "Triumph"
+  ],
+  "brands": [
+   "Triumph"
+  ],
+  "commons": "Triumph Herald",
+  "n": 119,
+  "train": 83,
+  "val": 18,
+  "test": 18
+ },
+ {
+  "id": 255,
+  "qid": "Q111784765",
+  "name": "VinFast VF 7",
+  "makers": [
+   "VinFast"
+  ],
+  "brands": [],
+  "commons": "VinFast VF 7",
+  "n": 21,
+  "train": 14,
+  "val": 3,
+  "test": 4
+ },
+ {
+  "id": 256,
+  "qid": "Q152946",
+  "name": "Volkswagen Beetle",
+  "makers": [
+   "Volkswagen Group"
+  ],
+  "brands": [
+   "Volkswagen"
+  ],
+  "commons": "Volkswagen Type 1",
+  "n": 24,
+  "train": 16,
+  "val": 4,
+  "test": 4
+ },
+ {
+  "id": 257,
+  "qid": "Q1968742",
+  "name": "Volkswagen Beetle",
+  "makers": [
+   "Volkswagen Group"
+  ],
+  "brands": [
+   "Volkswagen"
+  ],
+  "commons": "Volkswagen Beetle",
+  "n": 20,
+  "train": 14,
+  "val": 3,
+  "test": 3
+ },
+ {
+  "id": 258,
+  "qid": "Q697152",
+  "name": "Volkswagen Jetta",
+  "makers": [
+   "Volkswagen Group"
+  ],
+  "brands": [
+   "Volkswagen"
+  ],
+  "commons": "Volkswagen Jetta",
+  "n": 125,
+  "train": 87,
+  "val": 19,
+  "test": 19
+ },
+ {
+  "id": 259,
+  "qid": "Q216754",
+  "name": "Volkswagen Passat",
+  "makers": [
+   "Volkswagen Group"
+  ],
+  "brands": [
+   "Volkswagen"
+  ],
+  "commons": "Volkswagen Passat",
+  "n": 107,
+  "train": 73,
+  "val": 17,
+  "test": 17
+ },
+ {
+  "id": 260,
+  "qid": "Q15305561",
+  "name": "Volkswagen Passat B8",
+  "makers": [
+   "Volkswagen Group"
+  ],
+  "brands": [
+   "Volkswagen"
+  ],
+  "commons": "Volkswagen Passat B8",
+  "n": 106,
+  "train": 73,
+  "val": 17,
+  "test": 16
+ },
+ {
+  "id": 261,
+  "qid": "Q158736",
+  "name": "Volkswagen Phaeton",
+  "makers": [
+   "Volkswagen Group"
+  ],
+  "brands": [
+   "Volkswagen"
+  ],
+  "commons": "Volkswagen Phaeton",
+  "n": 137,
+  "train": 90,
+  "val": 25,
+  "test": 22
+ },
+ {
+  "id": 262,
+  "qid": "Q247819",
+  "name": "Volkswagen Polo",
+  "makers": [
+   "Volkswagen Group"
+  ],
+  "brands": [
+   "Volkswagen"
+  ],
+  "commons": "Volkswagen Polo",
+  "n": 76,
+  "train": 52,
+  "val": 12,
+  "test": 12
+ },
+ {
+  "id": 263,
+  "qid": "Q2063072",
+  "name": "Volkswagen Polo Mk5",
+  "makers": [
+   "Volkswagen Group"
+  ],
+  "brands": [
+   "Volkswagen"
+  ],
+  "commons": "Volkswagen Polo V",
+  "n": 56,
+  "train": 38,
+  "val": 9,
+  "test": 9
+ },
+ {
+  "id": 264,
+  "qid": "Q15966358",
+  "name": "Volkswagen T-Roc",
+  "makers": [
+   "Volkswagen"
+  ],
+  "brands": [
+   "Volkswagen"
+  ],
+  "commons": "Volkswagen T-Roc",
+  "n": 134,
+  "train": 85,
+  "val": 27,
+  "test": 22
+ },
+ {
+  "id": 265,
+  "qid": "Q782671",
+  "name": "Volkswagen Tiguan",
+  "makers": [
+   "Volkswagen Group"
+  ],
+  "brands": [
+   "Volkswagen"
+  ],
+  "commons": "Volkswagen Tiguan",
+  "n": 127,
+  "train": 86,
+  "val": 21,
+  "test": 20
+ },
+ {
+  "id": 266,
+  "qid": "Q208553",
+  "name": "Volkswagen Touareg",
+  "makers": [
+   "Volkswagen Group"
+  ],
+  "brands": [
+   "Volkswagen"
+  ],
+  "commons": "Volkswagen Touareg",
+  "n": 127,
+  "train": 87,
+  "val": 20,
+  "test": 20
+ },
+ {
+  "id": 267,
+  "qid": "Q32860581",
+  "name": "Volkswagen Vento (A05)",
+  "makers": [
+   "Volkswagen"
+  ],
+  "brands": [],
+  "commons": "Volkswagen Polo V Sedan",
+  "n": 48,
+  "train": 32,
+  "val": 8,
+  "test": 8
+ },
+ {
+  "id": 268,
+  "qid": "Q43706733",
+  "name": "Volkswagen Virtus",
+  "makers": [
+   "Volkswagen"
+  ],
+  "brands": [
+   "Volkswagen"
+  ],
+  "commons": "Volkswagen Virtus",
+  "n": 32,
+  "train": 21,
+  "val": 5,
+  "test": 6
+ },
+ {
+  "id": 269,
+  "qid": "Q20916608",
+  "name": "Volvo S90",
+  "makers": [
+   "Volvo Cars"
+  ],
+  "brands": [
+   "Volvo Cars"
+  ],
+  "commons": "Volvo S90 (SPA)",
+  "n": 127,
+  "train": 86,
+  "val": 21,
+  "test": 20
+ },
+ {
+  "id": 270,
+  "qid": "Q28127228",
+  "name": "Volvo XC40",
+  "makers": [
+   "Volvo Cars"
+  ],
+  "brands": [
+   "Volvo Cars"
+  ],
+  "commons": "Volvo XC40",
+  "n": 130,
+  "train": 90,
+  "val": 20,
+  "test": 20
+ },
+ {
+  "id": 271,
+  "qid": "Q933275",
+  "name": "Volvo XC90",
+  "makers": [
+   "Volvo Cars"
+  ],
+  "brands": [
+   "Volvo Cars"
+  ],
+  "commons": "Volvo XC90",
+  "n": 121,
+  "train": 82,
+  "val": 20,
+  "test": 19
+ },
+ {
+  "id": 272,
+  "qid": "Q495075",
+  "name": "Willys MB",
+  "makers": [
+   "Ford Motor Company",
+   "Willys"
+  ],
+  "brands": [],
+  "commons": "Willys MB / Ford GPW",
+  "n": 86,
+  "train": 60,
+  "val": 13,
+  "test": 13
+ },
+ {
+  "id": 273,
+  "qid": "Q112210974",
+  "name": "Wuling Air EV",
+  "makers": [
+   "SAIC-GM-Wuling"
+  ],
+  "brands": [
+   "Wuling Motors"
+  ],
+  "commons": "Wuling Air EV",
+  "n": 34,
+  "train": 22,
+  "val": 6,
+  "test": 6
+ },
+ {
+  "id": 274,
+  "qid": "Q16974650",
+  "name": "Wuling Hongguang",
+  "makers": [
+   "SAIC-GM-Wuling"
+  ],
+  "brands": [
+   "Wuling Motors"
+  ],
+  "commons": "Wuling Hongguang",
+  "n": 141,
+  "train": 95,
+  "val": 24,
+  "test": 22
+ },
+ {
+  "id": 275,
+  "qid": "Q226986",
+  "name": "Zotye 2008",
+  "makers": [
+   "Q11705500"
+  ],
+  "brands": [],
+  "commons": "Zotye vehicles",
+  "n": 133,
+  "train": 83,
+  "val": 28,
+  "test": 22
+ },
+ {
+  "id": 276,
+  "qid": "Q163053",
+  "name": "\u0160koda Fabia",
+  "makers": [
+   "\u0160koda Auto"
+  ],
+  "brands": [],
+  "commons": "\u0160koda Fabia",
+  "n": 120,
+  "train": 84,
+  "val": 18,
+  "test": 18
+ },
+ {
+  "id": 277,
+  "qid": "Q29584097",
+  "name": "\u0160koda Karoq",
+  "makers": [
+   "\u0160koda Auto"
+  ],
+  "brands": [
+   "\u0160koda Auto"
+  ],
+  "commons": "\u0160koda Karoq",
+  "n": 101,
+  "train": 69,
+  "val": 16,
+  "test": 16
+ },
+ {
+  "id": 278,
+  "qid": "Q11832265",
+  "name": "\u0160koda Kodiaq",
+  "makers": [
+   "\u0160koda Auto"
+  ],
+  "brands": [
+   "\u0160koda Auto"
+  ],
+  "commons": "\u0160koda Kodiaq",
+  "n": 136,
+  "train": 93,
+  "val": 22,
+  "test": 21
+ },
+ {
+  "id": 279,
+  "qid": "Q223696",
+  "name": "\u0160koda Octavia",
+  "makers": [
+   "\u0160koda Auto"
+  ],
+  "brands": [],
+  "commons": "\u0160koda Octavia",
+  "n": 108,
+  "train": 74,
+  "val": 17,
+  "test": 17
+ },
+ {
+  "id": 280,
+  "qid": "Q392083",
+  "name": "\u0160koda Superb",
+  "makers": [
+   "\u0160koda Auto"
+  ],
+  "brands": [],
+  "commons": "\u0160koda Superb",
+  "n": 114,
+  "train": 78,
+  "val": 18,
+  "test": 18
+ },
+ {
+  "id": 281,
+  "qid": "Q392105",
+  "name": "\u0160koda Yeti",
+  "makers": [
+   "\u0160koda Auto"
+  ],
+  "brands": [
+   "\u0160koda"
+  ],
+  "commons": "\u0160koda Yeti",
+  "n": 113,
+  "train": 78,
+  "val": 18,
+  "test": 17
+ }
+]

@@ -1,0 +1,130 @@
+{
+ "split": "test (photographer-disjoint)",
+ "n": 4298,
+ "classes": 282,
+ "deployed": "e18v3_india_e05init",
+ "e18v3_india_e05init": {
+  "n": 4298,
+  "classes_in_test": 282,
+  "deployed": "INT8 ONNX, single view",
+  "top1": 0.8431828757561657,
+  "top5": 0.9364820846905537,
+  "make_top1": 0.8994881340158213,
+  "top1_ci95": [
+   0.8317822242903676,
+   0.8531875290832945
+  ],
+  "macro_top1": 0.827308547672607,
+  "fp32_top1": 0.8478362028850628,
+  "fp32_flip_tta_top1": 0.847603536528618,
+  "ece": 0.014188211664328654,
+  "mce": 0.12756125935736826,
+  "aurc": 0.027469595023443365,
+  "accuracy_at_coverage": {
+   "0.5": 0.9906933457422057,
+   "0.8": 0.9537521815008726,
+   "0.9": 0.9092554291623578,
+   "1.0": 0.842484876686831
+  },
+  "levels": {
+   "class": 3110,
+   "make": 829,
+   "abstain": 164,
+   "ood_make": 24,
+   "ood": 171
+  },
+  "level_accuracy": {
+   "class": 0.9745980707395498,
+   "make": 0.7925211097708083,
+   "ood_make": 0.5833333333333334
+  }
+ },
+ "e18v3_india_imagenet": {
+  "n": 4298,
+  "classes_in_test": 282,
+  "deployed": "INT8 ONNX, single view",
+  "top1": 0.8317822242903676,
+  "top5": 0.9234527687296417,
+  "make_top1": 0.8911121451838064,
+  "top1_ci95": [
+   0.821073755234993,
+   0.8434155421126105
+  ],
+  "macro_top1": 0.8200447866402653,
+  "fp32_top1": 0.8364355514192647,
+  "fp32_flip_tta_top1": 0.8380642159143787,
+  "ece": 0.012844994023664139,
+  "mce": 0.08635656018646398,
+  "aurc": 0.0338709897853884,
+  "accuracy_at_coverage": {
+   "0.5": 0.9879013494648674,
+   "0.8": 0.9421175101803374,
+   "0.9": 0.8983971044467425,
+   "1.0": 0.8320148906468124
+  },
+  "levels": {
+   "class": 2790,
+   "make": 1080,
+   "abstain": 224,
+   "ood": 176,
+   "ood_make": 28
+  },
+  "level_accuracy": {
+   "class": 0.9763440860215054,
+   "make": 0.8490740740740741,
+   "ood_make": 0.6428571428571429
+  }
+ },
+ "mcnemar": {
+  "arms": [
+   "e18v3_india_e05init",
+   "e18v3_india_imagenet"
+  ],
+  "a_only": 170,
+  "b_only": 125,
+  "p_value": 0.01029276245261742
+ },
+ "us_catalogue_on_india_test": {
+  "n": 4298,
+  "us_decision_levels": {
+   "class": 352,
+   "ood_make": 3909,
+   "family": 19,
+   "ood": 16,
+   "make": 2
+  },
+  "us_answers_a_model": 0.08189855746859004,
+  "us_flags_out_of_catalogue": 0.9132154490460679,
+  "images_with_brand_in_us_catalogue": 3043,
+  "us_make_top1_on_shared_brands": 0.289516924088071,
+  "india_make_top1_on_shared_brands": 0.9010844561288203
+ },
+ "val": {
+  "e18v3_india_e05init": {
+   "fp32_top1": 0.8448544120915759,
+   "int8_top1": 0.8437430540120027,
+   "temperature": 0.6698539323924164,
+   "ece_before": 0.20060543534284855,
+   "ece_after": 0.021288231652785653,
+   "thresholds": {
+    "tau_hi": 0.8800000000000001,
+    "tau_fam": 0.8800000000000001,
+    "tau_make": 0.39,
+    "tau_ood": -4.2444233894348145
+   }
+  },
+  "e18v3_india_imagenet": {
+   "fp32_top1": 0.828406312513892,
+   "int8_top1": 0.8266281395865748,
+   "temperature": 0.6675869805918462,
+   "ece_before": 0.21893014759322119,
+   "ece_after": 0.018357771706928226,
+   "thresholds": {
+    "tau_hi": 0.92,
+    "tau_fam": 0.92,
+    "tau_make": 0.42,
+    "tau_ood": -3.037158966064453
+   }
+  }
+ }
+}
