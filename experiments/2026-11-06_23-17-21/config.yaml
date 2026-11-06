@@ -1,0 +1,56 @@
+experiment:
+  id: "2026-11-06_23-17-21"
+  title: "E20: Bengaluru travel-time calibration from Uber Movement 2019 and observed journeys"
+  type: "calibration"
+
+data:
+  travel_times: https://www.qgistutorials.com/downloads/bangalore-wards-2019-3-OnlyWeekdays-HourlyAggregate.csv
+  wards: https://www.qgistutorials.com/downloads/bangalore_wards.json
+  source: Uber Movement, Bangalore, 2019 Q3, weekdays, hour of day (discontinued, archived copy)
+  field: geometric_mean_travel_time
+  licence: CC BY-NC (Uber Movement data terms)
+  wards_count: 198
+
+free_flow:
+  engine: OSRM table, driving profile
+  url: https://router.project-osrm.org
+  between: area-weighted ward centroids
+  block: 50
+  pause_s: 1.5
+
+filters:
+  min_road_distance_m: 3000
+  ratio_range: [0.5, 8.0]
+  same_ward_rows: dropped
+
+holdout:
+  unit: unordered ward pair
+  share: 0.2
+  assignment: first 8 hex digits of sha1("min-max" ward index) modulo 1000 below 200
+
+prior_model:
+  cells: hour of day (24) by road distance band
+  bands_m: [3000, 6000, 12000]
+  band_meaning: under 6 km, 6 to 12 km, 12 km and over
+  statistics: median, 10th and 90th percentile of log(observed / free-flow)
+  missing_cell: nearest distance band at the same hour
+  fit_probability: lognormal, sigma = (ln p90 - ln p10) / (2 * 1.2816), sigma floor 0.05
+
+local_correction:
+  residual: log(observed / free-flow) - cell median
+  offset: sum(residuals) / (n + shrink)
+  shrink_pseudo_journeys: 10
+  ratio_range: [0.5, 8.0]
+  min_journeys_for_holdout: 20
+  holdout: newest 20% by departure time
+
+journeys:
+  sightings: consecutive sightings of the same vehicle at two different cameras, free-flow from the fastest OSRM route
+  dashcam_windows: {min_m: 1000, target_m: 3000, max_gap_s: 900, max_per_track: 15}
+  import: {max_rows: 2000, seconds: [1, 21600], default_timezone: IST, routing_pause_s: 1.0, max_file_mb: 2}
+  region: both ends inside assets/bengaluru/boundary.geojson
+
+route_scoring:
+  infeasible_penalty: 0.05
+  slack_decay_s: 1800
+  gap_margin_s: 60

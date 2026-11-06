@@ -54,6 +54,28 @@ The audit log (Division, then Audit log) shows every sign-in, failure, password 
 
 For a demonstration outside Bengaluru, recreate the container with `-e P5_DEVICE_GEOFENCE=off`. Everything else stays restricted.
 
+## Travel times
+
+Drive times between sightings come from the Bengaluru profile in `assets/bengaluru/traffic_prior.json` (E20), corrected by journeys observed in the city. The model refits by itself after every case update, dashcam upload, import or deletion. Division administrators see it under Division, then Traffic.
+
+Journeys from any other source (number-plate camera pairs, patrol logs, fleet GPS) can be imported as a CSV file of at most 2 MB and 2,000 rows:
+
+```csv
+from_lat,from_lon,to_lat,to_lon,depart,seconds,note
+12.9763,77.5929,12.9352,77.6245,2026-11-04T18:05:00,1500,Cubbon Park to Koramangala
+```
+
+| Column | Meaning |
+|---|---|
+| `from_lat`, `from_lon`, `to_lat`, `to_lon` | Start and end in decimal degrees. Both must be inside the Bengaluru boundary |
+| `depart` | Departure time in ISO 8601. Without a time zone it is read as IST |
+| `seconds` | Measured travel time, between 1 second and 6 hours |
+| `note` | Optional label shown in the journeys table |
+
+Rows that fail a check are skipped, and the console says which rows and why. Each accepted row is routed with OSRM for its free-flow time, one per second, then the model refits. Journeys with a travel time below half or above eight times the free-flow time are kept in the table but not used. An imported or observed journey can be deleted from the journeys table, and the model refits without it.
+
+To rebuild the 2019 profile from the source data, run `python3 scripts/build_traffic_prior.py` and rebuild the image.
+
 ## Updating the software
 
 ```bash

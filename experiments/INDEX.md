@@ -13,3 +13,5 @@
 | [2026-11-06_15-40-59](2026-11-06_15-40-59/README.md) | E17: I-JEPA ViT-H/14 linear probe and fine-tune | deep | Kushal | done | val | 65.40 probe, 92.64 fine-tune | JarvisLabs A100 run r_70bef59c |
 | [2026-11-06_16-31-27](2026-11-06_16-31-27/README.md) | E15: final test evaluation of the deployed system (single run) | failure-analysis | Kushal | done | test | **94.69** deployed | local; reads test labels via scripts/eval_test.py only |
 | [2026-11-06_19-13-27](2026-11-06_19-13-27/README.md) | E19: vehicle hunt match model from simulated second camera views | calibration | Kushal | done | val | AUC 0.981, TPR 89.7% at 5% FPR | local CPU |
+| [2026-11-06_21-09-55](2026-11-06_21-09-55/README.md) | E18: Indian-market catalogue, 282 models from free-licensed photos | deep | Kushal | done | test | **84.32** (ImageNet start 83.18) | JarvisLabs 2x A100 |
+| [2026-11-06_23-17-21](2026-11-06_23-17-21/README.md) | E20: Bengaluru travel-time calibration from Uber Movement 2019 and observed journeys | calibration | Kushal | done | held-out ward pairs | median error 52.5% → 15.2%, 80% range holds 80.0% | local CPU, public OSRM table |

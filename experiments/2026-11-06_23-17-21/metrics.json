@@ -1,0 +1,192 @@
+{
+ "split": "held out 20% of unordered ward pairs (Uber Movement Bangalore 2019 Q3 weekdays)",
+ "generated": "2026-11-06T17:47:21+00:00",
+ "wards": 198,
+ "rows_kept": 785670,
+ "rows_skipped": 32592,
+ "rows_fit": 630003,
+ "rows_fit_by_band": {
+  "3 to 6 km": 72606,
+  "6 to 12 km": 221153,
+  "12 km and over": 336244
+ },
+ "test_rows": 155667,
+ "free_flow": {
+  "median_abs_pct_error": 0.524565891956592,
+  "mae_s": 1175.9046490906871
+ },
+ "calibrated": {
+  "median_abs_pct_error": 0.15160055523392027,
+  "mae_s": 402.8614802633804
+ },
+ "interval_80_coverage": 0.7998483943289201,
+ "hourly": {
+  "0": {
+   "median_ratio": 1.3579,
+   "p10_ratio": 0.9831,
+   "p90_ratio": 1.7433,
+   "n": 24631
+  },
+  "1": {
+   "median_ratio": 1.2872,
+   "p10_ratio": 0.9216,
+   "p90_ratio": 1.6943,
+   "n": 21364
+  },
+  "2": {
+   "median_ratio": 1.229,
+   "p10_ratio": 0.8733,
+   "p90_ratio": 1.6486,
+   "n": 18036
+  },
+  "3": {
+   "median_ratio": 1.2642,
+   "p10_ratio": 0.8861,
+   "p90_ratio": 1.7395,
+   "n": 18090
+  },
+  "4": {
+   "median_ratio": 1.3358,
+   "p10_ratio": 0.9378,
+   "p90_ratio": 1.8221,
+   "n": 20910
+  },
+  "5": {
+   "median_ratio": 1.378,
+   "p10_ratio": 0.9872,
+   "p90_ratio": 1.8235,
+   "n": 22959
+  },
+  "6": {
+   "median_ratio": 1.5394,
+   "p10_ratio": 1.0967,
+   "p90_ratio": 1.9773,
+   "n": 25857
+  },
+  "7": {
+   "median_ratio": 2.0066,
+   "p10_ratio": 1.3941,
+   "p90_ratio": 2.5687,
+   "n": 27430
+  },
+  "8": {
+   "median_ratio": 2.4243,
+   "p10_ratio": 1.6731,
+   "p90_ratio": 3.1401,
+   "n": 27690
+  },
+  "9": {
+   "median_ratio": 2.6405,
+   "p10_ratio": 1.7666,
+   "p90_ratio": 3.4463,
+   "n": 27886
+  },
+  "10": {
+   "median_ratio": 2.5893,
+   "p10_ratio": 1.7123,
+   "p90_ratio": 3.3737,
+   "n": 28114
+  },
+  "11": {
+   "median_ratio": 2.5089,
+   "p10_ratio": 1.6717,
+   "p90_ratio": 3.2226,
+   "n": 28442
+  },
+  "12": {
+   "median_ratio": 2.4127,
+   "p10_ratio": 1.6133,
+   "p90_ratio": 3.0964,
+   "n": 28338
+  },
+  "13": {
+   "median_ratio": 2.2941,
+   "p10_ratio": 1.5419,
+   "p90_ratio": 2.9371,
+   "n": 28229
+  },
+  "14": {
+   "median_ratio": 2.3016,
+   "p10_ratio": 1.5348,
+   "p90_ratio": 2.9549,
+   "n": 28342
+  },
+  "15": {
+   "median_ratio": 2.4497,
+   "p10_ratio": 1.6206,
+   "p90_ratio": 3.1519,
+   "n": 28570
+  },
+  "16": {
+   "median_ratio": 2.6175,
+   "p10_ratio": 1.7496,
+   "p90_ratio": 3.3673,
+   "n": 28863
+  },
+  "17": {
+   "median_ratio": 2.8065,
+   "p10_ratio": 1.8547,
+   "p90_ratio": 3.6551,
+   "n": 28806
+  },
+  "18": {
+   "median_ratio": 3.0529,
+   "p10_ratio": 2.035,
+   "p90_ratio": 3.8767,
+   "n": 28572
+  },
+  "19": {
+   "median_ratio": 2.8879,
+   "p10_ratio": 1.974,
+   "p90_ratio": 3.6003,
+   "n": 28332
+  },
+  "20": {
+   "median_ratio": 2.4858,
+   "p10_ratio": 1.7108,
+   "p90_ratio": 3.1048,
+   "n": 27977
+  },
+  "21": {
+   "median_ratio": 2.128,
+   "p10_ratio": 1.4919,
+   "p90_ratio": 2.6401,
+   "n": 28023
+  },
+  "22": {
+   "median_ratio": 1.7983,
+   "p10_ratio": 1.2984,
+   "p90_ratio": 2.2123,
+   "n": 27854
+  },
+  "23": {
+   "median_ratio": 1.5299,
+   "p10_ratio": 1.1237,
+   "p90_ratio": 1.9044,
+   "n": 26688
+  }
+ },
+ "peak_hour": "18",
+ "median_ratio_at_18_by_band": {
+  "3 to 6 km": 2.702,
+  "6 to 12 km": 3.121,
+  "12 km and over": 3.075
+ },
+ "local_correction": {
+  "journeys": 0,
+  "holdout": null,
+  "status": "pending: the console reports the held out comparison once 20 observed journeys exist"
+ },
+ "dev_case_check": {
+  "segment": "MG Road junction 18:00 to Indiranagar 100 Feet Road 18:25",
+  "gap_min": 25.0,
+  "free_flow_min": 6.3,
+  "typical_min": [
+   8.4,
+   16.9,
+   23.0
+  ],
+  "reason_before": "19 min unaccounted (possible stop)",
+  "reason_after": "8 min more than the typical 17 min (possible stop)"
+ }
+}

@@ -26,11 +26,13 @@ The recognition system is the core of **Vahana Drishti**, a web console designed
 | Feature | What it does | Where |
 |---|---|---|
 | Identify | Upload a photo: vehicle, make, model and year with calibrated confidence, every classical and deep intermediate step, and the classical, deep and hybrid answers side by side | `src/p5/pipeline.py` |
+| Indian-market catalogue | A second classifier for 282 car models sold or made in India, trained on 27,382 free-licensed Wikimedia Commons photos. On a test split of 4,298 photos whose photographers appear in no other split it reaches 84.32% top-1 and 89.95% make accuracy. On the 3,043 of those photos whose make is also in Stanford Cars, the Stanford Cars model names the make correctly 29.0% of the time. Both catalogues run on every vehicle, and the more specific and more confident answer is shown with the other one beside it | `src/p5/catalogue.py`, E18 |
 | Locate a photo | Exact coordinates from EXIF GPS when present, otherwise reads signboards and road names (RapidOCR) and geocodes them inside Bengaluru with OpenStreetMap (Photon), clustering agreeing candidates | `src/p5/geo/` |
 | Video analysis | Detects and tracks every vehicle (Kalman filter with two-stage Hungarian matching), names make and model per track, colour, direction of travel and wrong-way alerts. Signboards and shop names read from key frames describe the surroundings and suggest where the camera is | `src/p5/video/` |
 | Route from video | Dashcam GPS (GPX, CSV, NMEA or the MP4 location atom) is snapped to the road network with OSRM map matching and drawn on the map | `src/p5/geo/route.py` |
 | Vehicle hunt | Upload a photo of the wanted car and the feeds of several cameras: every track is scored with a calibrated match probability and the sightings are placed on the map in time order | `src/p5/investigate/hunt.py`, E19 |
 | Blind-spot reasoning | Free-text notes from officers ("seen near Brigade Road heading to Indiranagar, may stop for fuel, avoided Silk Board") are parsed into places, roles, times and activities. Candidate routes between sightings and onward are ranked by consistency with the notes, with travel-time feasibility and cameras that did not see the car. Reachable areas are drawn as isochrones | `src/p5/investigate/hints.py`, `routes.py` |
+| Traffic-calibrated drive times | Free-flow drive times are scaled by a Bengaluru profile by hour of day and distance, fitted on 630,003 Uber Movement 2019 trips. On 155,667 trips between held-out wards the median error falls from 52.5% to 15.2% and the stated range holds 80.0% of trips. Each route shows its usual time range and the chance that it fits the gap between sightings. Sightings of the same car, dashcam GPS and imported journeys then correct the profile towards current traffic, with a held-out check once 20 exist | `src/p5/geo/traffic.py`, E20 |
 | Map | MapLibre with OpenFreeMap streets, Sentinel-2 cloudless satellite imagery and extruded 3D buildings from OpenStreetMap | `web/` |
 
 Every tunable value is in a config file, and [docs/PARAMETERS.md](docs/PARAMETERS.md) states whether it was fitted on validation data, is an operational constant, or is a documented assumption.
@@ -134,15 +136,25 @@ GPU jobs are plain scripts launched on a JarvisLabs A100 (`scripts/remote/*.sh`)
 | Calibration (E13) | `python3 scripts/calibrate.py --logits <INT8 val logits> --out runs/e13_calibration` |
 | Package models | `python3 scripts/package_models.py --classifier <export_int8> --detector <detector.onnx> --classical <classical_global.npz> --thresholds <thresholds.yaml>` |
 | Test evaluation (E15) | `python3 scripts/eval_test.py ...` (the only script that reads test labels; calls are logged) |
+| Indian-market dataset (E18) | `python3 scripts/build_india_dataset.py --min-images 15 --min-holdout 2` |
+| Indian-market classifier (E18) | `PREFIX=e18v3 bash scripts/remote/india_train_arms.sh`, then `scripts/calibrate.py` on each arm's INT8 val logits with `--assets assets/india` |
+| Indian test evaluation (E18) | `python3 scripts/eval_india.py --runs <arms> --thresholds <thresholds.yaml per arm> --us-models models --out runs/e18_test --tag ...` (logged in `experiments/test_log.csv`) |
+| Package the Indian catalogue | `python3 scripts/package_catalogue.py --export <export_int8> --thresholds <thresholds.yaml> --taxonomy assets/india/taxonomy --report runs/e18_test/test_report.json --out models/india` |
+| Travel-time profile (E20) | `python3 scripts/build_traffic_prior.py` |
 | Evaluation file | `python3 scripts/make_tables.py --team T55 --usns 1RUA24CSE0216,1RUA24CSE0228,1RUA24CSE0229,1RUA24CSE0275,1RUA24CSE0244` |
 
 ## Dataset
 
 Stanford Cars (Krause et al., 2013): 16,185 images, 196 classes, 8,144 train and 8,041 test, one bounding box per image. The official host is offline; we use the torchvision-layout Kaggle mirror [`rickyyyyyyy/torchvision-stanford-cars`](https://www.kaggle.com/datasets/rickyyyyyyy/torchvision-stanford-cars), which includes test labels. Extract to `data/stanford_cars/`. The `data/` folder is git-ignored.
 
+Indian-market catalogue (E18): 27,382 photos of 282 car models from Wikimedia Commons, each under a free licence (mostly CC BY-SA and CC BY, also CC0, public domain, GFDL and the Free Art Licence). `assets/india/split.csv` lists the licence, author and source page of every photo. The photos are not in the repository; `scripts/build_india_dataset.py` downloads them again. The list of models comes from Wikidata (CC0) and from Wikipedia articles on the Indian automotive industry.
+
+Travel times: Uber Movement, Bangalore wards, 2019 Q3 weekday hourly aggregate. Data retrieved from Uber Movement, (c) 2019 Uber Technologies, Inc., https://movement.uber.com, under the Creative Commons Attribution Non-Commercial licence. Uber Movement has been discontinued, so `scripts/build_traffic_prior.py` reads the archived copy published with the QGIS tutorials. Road network, buildings, places and routing: OpenStreetMap contributors (ODbL) through OSRM, Photon and OpenFreeMap.
+
 ## Limitations
 
-- Stanford Cars covers mostly US-market cars up to 2012; newer models and many regional makes are outside the catalogue and can only receive a make-level or "not a known model" answer.
+- Stanford Cars covers mostly US-market cars up to 2012. The Indian-market catalogue (E18) adds 282 models, but 59 candidate models have fewer than 15 usable free photos on Commons and are not in it, among them the Tata Punch, Tiago and Harrier, the Mahindra XUV700 and XUV300 and the Hyundai Exter. Such cars can only receive a make-level or "not a known model" answer.
+- The Indian catalogue was trained and tested on enthusiast photos, mostly in daylight. Accuracy on night-time traffic camera crops has not been measured and is expected to be lower.
 - Low light at high severity, strong blur and car regions under ~60 px remain weak points (see the robustness table).
 - The out-of-catalogue threshold was set on in-distribution validation data only.
 - The system identifies vehicle models only; it does not read number plates or identify people.

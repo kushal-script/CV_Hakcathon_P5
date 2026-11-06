@@ -17,13 +17,14 @@ flowchart LR
         GW --- GDB[("gateway.db (SQLite)<br/>divisions, stations, users,<br/>sessions, audit")]
         GW -->|"/api on 127.0.0.1:8001<br/>+ HMAC-signed identity"| API["app/server.py (FastAPI)"]
         API --- VDB[("vahana.db (SQLite)<br/>events, detections, case index")]
-        API --> ADM["division admin API<br/>overview, records, cases, stations, export"]
+        API --> ADM["division admin API<br/>overview, records, cases, stations, traffic, export"]
         API --> PIPE["p5.pipeline.Pipeline<br/>detector, classical branch, decision"]
-        PIPE --> CAT["p5.catalogue<br/>US: Stanford Cars 196 models<br/>India: Indian market models"]
+        PIPE --> CAT["p5.catalogue<br/>US: Stanford Cars 196 models<br/>India: 282 Indian-market models (E18)"]
         API --> VID["p5.video.analyse.VideoAnalyser<br/>p5.video.tracker.Tracker"]
         API --> CASE["p5.investigate.service.CaseStore"]
         CASE --> HUNT["p5.investigate.hunt<br/>calibrated match model (E19)"]
         CASE --> RT["p5.investigate.hints, routes<br/>note parsing, route hypotheses"]
+        RT --> TT["p5.geo.traffic<br/>hourly Bengaluru drive times (E20)<br/>corrected by observed journeys"]
         API --> GEO["p5.geo.exif, locate, geocode, route"]
     end
     GEO -->|"geocoding"| PH["Photon (OpenStreetMap)"]
@@ -34,12 +35,12 @@ flowchart LR
 | Component | Responsibility | Key interfaces |
 |---|---|---|
 | `gateway/src/` | Only public entry point. `auth.rs`: sign-in with device geofence, lockout, server-side sessions, password changes. `admin.rs`: division administrators manage station accounts and read the audit log. `web.rs`: serves the sign-in page publicly and the console only to signed-in users. `proxy.rs`: forwards `/api/*` with an HMAC-signed identity. `cli.rs`: provisions accounts from the station register | `/login`, `/auth/login`, `/auth/password`, `/auth/logout`, `/auth/me`, `/auth/admin/*`, `/api/*` |
-| `p5.identity`, `p5.store`, `p5.region` | Verify the gateway's signed identity, record every prediction as a scoped event with per-vehicle detections, and hold the Bengaluru boundary and station register | `verify`, `Store.record`, `Store.events`, `Store.overview`, `region.inside` |
-| `app/server.py` | JSON API, upload validation, background jobs | `/api/predict`, `/api/locate`, `/api/video`, `/api/cases/*`, `/api/jobs/*`, `/api/meta`, `/api/health` |
+| `p5.identity`, `p5.store`, `p5.region` | Verify the gateway's signed identity, record every prediction as a scoped event with per-vehicle detections, store observed journeys, and hold the Bengaluru boundary and station register | `verify`, `Store.record`, `Store.events`, `Store.overview`, `Store.add_journeys`, `region.inside` |
+| `app/server.py` | JSON API, upload validation, background jobs | `/api/predict`, `/api/locate`, `/api/video`, `/api/cases/*`, `/api/jobs/*`, `/api/admin/*` (including `/api/admin/traffic`), `/api/meta`, `/api/health` |
 | `p5.catalogue` | Runs every catalogue's classifier on the same crops. Each catalogue has its own temperature, thresholds and OOD gate. The more specific answer wins, then the more confident one | `Catalogue.load`, `primary` |
 | `p5.video` | Detection every 1/8 s, two-stage IoU tracking, per-track best crops, make and model, colour, direction and wrong-way check | `VideoAnalyser.run(path, VideoOptions)` |
-| `p5.investigate` | Cases with a target photo and camera feeds, hunt scoring, note parsing, route hypotheses | `CaseStore`, `hunt.rank`, `hints.parse_places`, `routes.infer`, `routes.osrm_routes`, `routes.isochrone` |
-| `p5.geo` | EXIF GPS, OCR plus geocoding, GPS track parsing and map matching | `locate`, `parse_track`, `map_match`, `mp4_location` |
+| `p5.investigate` | Cases with a target photo and camera feeds, hunt scoring, note parsing, route hypotheses, and journeys observed between sightings or along dashcam tracks | `CaseStore`, `hunt.rank`, `hints.parse_places`, `routes.infer`, `routes.osrm_routes`, `routes.isochrone`, `journeys.from_sightings`, `journeys.from_track` |
+| `p5.geo` | EXIF GPS, OCR plus geocoding, GPS track parsing and map matching, and drive times by hour of day with a learned local correction | `locate`, `parse_track`, `map_match`, `mp4_location`, `TrafficModel.predict`, `TrafficModel.prob_within` |
 
 Every tunable value is in `configs/` or in the calibrated files under `models/`. See `docs/PARAMETERS.md`.
 

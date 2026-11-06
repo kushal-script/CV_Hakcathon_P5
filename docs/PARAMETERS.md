@@ -74,20 +74,39 @@ There is no ground-truth dataset of routes taken through camera blind spots in B
 | `via_bonus: 1.6`, `avoid_penalty: 0.2` | Multipliers for passing a place the note says the vehicle went through or avoided |
 | `camera_on_route_m: 40`, `camera_time_margin_s: 120` | A camera lies on a route if within 40 m. It "should have seen" the vehicle within ±2 minutes of the expected passing time |
 | `missed_camera_penalty: 0.35` | Multiplier when a camera on the route did not record the vehicle |
-| `infeasible_tolerance: 0.25`, `infeasible_penalty: 0.05` | A route needing 25% (plus 60 s) more time than the gap between sightings is treated as infeasible |
-| `slack_decay_s: 1800`, `slower_route_decay_s: 300` | Exponential preference for routes that use the time gap and for routes not slower than the fastest alternative |
+| `infeasible_penalty: 0.05` | Floor on the multiplier from the probability that a route fits the gap between sightings (see Travel times below). A route that almost certainly cannot fit keeps 5% of its score instead of vanishing, so a wrong clock on one camera cannot erase the true route |
+| `infeasible_tolerance: 0.25` | Used only when no travel-time profile is installed: a route needing 25% (plus 60 s) more than its free-flow time is treated as infeasible |
+| `slack_decay_s: 1800`, `slower_route_decay_s: 300` | Exponential preference for routes that use the time gap and for routes not slower than the fastest alternative. Slack is measured against the typical drive time for that hour, not the free-flow time |
 | `activity_stop_weight: 0.6` | Weight for a destination inferred from an activity in the note (for example "fuel") |
 | `max_targets`, `max_hypotheses`, `isochrone_minutes` | Display limits |
+
+## Travel times (`assets/bengaluru/traffic_prior.json`, `src/p5/geo/traffic.py`)
+
+Drive times start from OSRM's free-flow estimate and are scaled to Bengaluru traffic. E20 has the method and the held-out numbers.
+
+| Value | Kind | Source |
+|---|---|---|
+| Hourly slowdown cells (median, 10th and 90th percentile of observed / free-flow) | Fitted | `scripts/build_traffic_prior.py` on Uber Movement Bangalore 2019 Q3 weekday travel times between 198 wards, against OSRM free-flow times between the ward centroids. 630,003 trips fit, 155,667 trips on held-out ward pairs evaluate: median error 52.5% → 15.2%, and 80.0% of trips fall inside the stated 10 to 90% range |
+| Distance bands 3 to 6, 6 to 12 and 12 km and over | Assumption | Coarse enough that every hour has thousands of trips per band. A missing cell falls back to the nearest band at the same hour |
+| Minimum distance 3 km, ratio range 0.5 to 8 | Assumption | Short ward pairs are dominated by travel inside the wards, and ratios outside the range are routing or data errors. The same ratio range filters observed journeys |
+| Weekend trips | Assumption | Use the weekday profile, because only the weekday hourly file is used. The route explanation says so |
+| Shrinkage of 10 pseudo-journeys | Assumption | Local correction = Σ residuals / (n + 10): ten observed journeys move the profile halfway to their mean, so the first few cannot overrule 630,003 trips |
+| Local check after 20 journeys, newest 20% held out | Assumption | Smallest count at which a held-out comparison (2019 profile with and without the correction) has more than a handful of trips. It is time ordered so the check always predicts later journeys from earlier ones |
+| Dashcam windows: 1 km minimum, 3 km target, 900 s maximum, 15 per track | Assumption | Long enough for the timing to be meaningful, short enough that one long stop does not dominate, and capped so one long video cannot outweigh many cases |
+| Import: 2,000 rows, 1 s to 6 h, both ends inside Bengaluru, 1 s between routing calls | Operational | File size limit, plausibility checks and a polite rate for the public OSRM server |
 
 ## Indian-market dataset (`scripts/build_india_dataset.py`)
 
 | Value | Kind | Source |
 |---|---|---|
 | Candidate models | Data | Wikidata car models made in, originating from, or made by a manufacturer based in India, plus models linked from the Wikipedia articles on the Indian automotive industry and on each manufacturer's Indian arm |
-| `--per-class 300`, `--width 960` | Operational | Download budget under the Wikimedia rate limits. 960 px is a standard thumbnail size |
+| `--per-class 300`, `--width 960` | Operational | Listing budget: up to 300 photos listed per model, as links to 960 px thumbnails, a standard Commons size |
+| `--take 150`, `--fetch-width 500`, `--store-side 800` | Operational | Download budget under the Commons per-address rate limit (HTTP 429): at most 150 photos per model, fetched as 500 px thumbnails. Some photos were fetched at 960 px before the fetch size was lowered, and stored photos are at most 800 px |
+| `--clean-side 500` | Assumption | Every photo is scaled to at most 500 px before detection and cropping, so the download size cannot identify a class |
 | `--min-det 0.5`, `--min-box-frac 0.18` | Assumption | The photo must show one dominant car: a COCO car or truck detection at ≥ 0.5 covering ≥ 18% of the frame, and no second vehicle at least half its size |
-| `--min-car-share 0.5` | Assumption | Drops classes that the detector mostly sees as trucks (commercial vehicles) |
-| `--min-images 40`, `--holdout 0.15`, `--min-holdout 6` | Assumption | Smallest class kept, and photographer-disjoint 70/15/15 splits with at least 6 validation and test images per class |
+| `--min-car-share 0` | Assumption | Off. A rule that dropped classes the detector mostly labels as trucks also removed boxy cars such as the Mahindra Scorpio and Thar, and the Wikidata type already limits candidates to cars |
+| `--min-images 15`, `--holdout 0.15`, `--min-holdout 2` | Assumption | Passed for the shipped catalogue (the script defaults are 40 and 6). Smallest class kept, and photographer-disjoint 70/15/15 splits with at least 2 validation and 2 test images per class. Lower than the defaults so that models with few free photos stay in the catalogue, at the cost of test accuracy for those models resting on few images (E18) |
+| Holdout cap `2 × --holdout` | Assumption | Validation and test each take at most 30% of a class, so one large photographer group cannot fill a holdout split and push the class out |
 | `--merge-overlap 0.5` | Assumption | A class is merged into another when at least half of its listed photos also appear under the other (sub-category) |
 
 ## Access control (gateway environment)
