@@ -1,0 +1,600 @@
+const CFG = window.P5_CONFIG || {};
+const API = (CFG.apiBase || "").replace(/\/$/, "");
+const ROUTE_COLOURS = ["#2f5a43", "#a5662a", "#9b3a26", "#6b6b2f", "#6e4b3a", "#57534e", "#8a7a55", "#3d3a35"];
+const LEVEL = {
+  class: ["Model identified", "good"], family: ["Model family, year uncertain", "caution"], make: ["Make only", "caution"],
+  abstain: ["Not certain", "caution"], ood_make: ["Make only, model outside the catalogue", "alert"],
+  ood: ["Not one of the 196 known models", "alert"], no_vehicle: ["No vehicle found", "alert"],
+};
+
+function h(tag, props = {}, ...kids) {
+  const el = document.createElement(tag);
+  for (const [k, v] of Object.entries(props || {})) {
+    if (v === undefined || v === null || v === false) continue;
+    if (k === "class") el.className = v;
+    else if (k === "text") el.textContent = v;
+    else if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
+    else if (k === "style") Object.assign(el.style, v);
+    else el.setAttribute(k, v === true ? "" : String(v));
+  }
+  for (const kid of kids.flat()) {
+    if (kid === null || kid === undefined || kid === false) continue;
+    el.append(kid instanceof Node ? kid : document.createTextNode(String(kid)));
+  }
+  return el;
+}
+const $ = (s) => document.querySelector(s);
+const pct = (v, d = 1) => (v === null || v === undefined ? "–" : `${(100 * v).toFixed(d)}%`);
+const clock = (s) => { if (s == null) return "–"; const m = Math.floor(s / 60); return `${m}:${String(Math.floor(s % 60)).padStart(2, "0")}`; };
+const jpg = (b64) => (b64 ? `data:image/jpeg;base64,${b64}` : "");
+const fmtTime = (epoch) => (epoch == null ? "–" : new Date(epoch * 1000).toLocaleString([], { dateStyle: "medium", timeStyle: "short" }));
+
+function notice(msg, ms = 3200) {
+  const n = $("#notice");
+  n.textContent = msg; n.hidden = false;
+  clearTimeout(notice.t); notice.t = setTimeout(() => (n.hidden = true), ms);
+}
+
+class AuthError extends Error {}
+async function api(path, { method = "GET", form, json } = {}) {
+  const opts = { method, credentials: "same-origin", headers: {} };
+  if (form) opts.body = form;
+  if (json) { opts.body = JSON.stringify(json); opts.headers["Content-Type"] = "application/json"; }
+  const res = await fetch(API + path, opts);
+  if (res.status === 401) { showLogin(); throw new AuthError("Please sign in."); }
+  const type = res.headers.get("content-type") || "";
+  const data = type.includes("json") ? await res.json() : await res.text();
+  if (!res.ok) throw new Error((data && data.detail) || (typeof data === "string" && data) || `Request failed (${res.status})`);
+  return data;
+}
+
+function showLogin() { $("#login").hidden = false; }
+$("#login-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  $("#login-error").textContent = "";
+  try {
+    const res = await fetch(API + "/auth/login", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username: fd.get("username"), password: fd.get("password") }) });
+    if (!res.ok) throw new Error(res.status === 429 ? "Too many attempts. Wait a minute and try again." : "Incorrect username or password.");
+    $("#login").hidden = true; e.target.reset(); $("#logout").hidden = false; boot();
+  } catch (err) { $("#login-error").textContent = err.message; }
+});
+$("#logout").addEventListener("click", async () => {
+  await fetch(API + "/auth/logout", { method: "POST", credentials: "same-origin" }).catch(() => {});
+  location.reload();
+});
+
+async function health() {
+  const el = $("#health");
+  try {
+    const r = await api("/api/health");
+    el.textContent = r.status === "ok" ? "Service online" : "Starting"; el.className = `health ${r.status === "ok" ? "ok" : ""}`;
+  } catch (e) { if (!(e instanceof AuthError)) { el.textContent = "Service unreachable"; el.className = "health down"; } }
+}
+
+const NEUTRAL_WATER = { light: "#d6d2c8", dark: "#2a2925" };
+function isBluish(c) {
+  const m = /^#([0-9a-f]{6})$/i.exec(c) || /^#([0-9a-f]{3})$/i.exec(c);
+  let r, g, b;
+  if (m) {
+    const hex = m[1].length === 3 ? m[1].split("").map((x) => x + x).join("") : m[1];
+    [r, g, b] = [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16));
+  } else {
+    const rgb = /rgba?\(([^)]+)\)/i.exec(c);
+    if (rgb) [r, g, b] = rgb[1].split(",").map((x) => parseFloat(x));
+    else {
+      const hsl = /hsla?\(\s*([\d.]+)[ ,]+([\d.]+)%[ ,]+([\d.]+)%/i.exec(c);
+      if (!hsl) return false;
+      const hue = parseFloat(hsl[1]), sat = parseFloat(hsl[2]);
+      return hue >= 175 && hue <= 265 && sat > 12;
+    }
+  }
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  if (max - min < 18) return false;
+  let hue;
+  if (max === r) hue = ((g - b) / (max - min)) % 6; else if (max === g) hue = (b - r) / (max - min) + 2; else hue = (r - g) / (max - min) + 4;
+  hue = (hue * 60 + 360) % 360;
+  return hue >= 175 && hue <= 265;
+}
+function neutralise(colour) {
+  if (typeof colour !== "string" || !isBluish(colour)) return colour;
+  return NEUTRAL_WATER.light;
+}
+function stripBlue(style) {
+  for (const layer of style.layers || []) {
+    for (const group of ["paint", "layout"]) {
+      const p = layer[group];
+      if (!p) continue;
+      for (const key of Object.keys(p)) {
+        if (!/color/.test(key)) continue;
+        const v = p[key];
+        if (typeof v === "string") p[key] = neutralise(v);
+        else if (v && Array.isArray(v.stops)) v.stops = v.stops.map(([z, c]) => [z, neutralise(c)]);
+        else if (Array.isArray(v)) p[key] = JSON.parse(JSON.stringify(v), (k, x) => neutralise(x));
+      }
+    }
+    if (/water/.test(layer.id) && layer.paint) {
+      if ("fill-color" in layer.paint) layer.paint["fill-color"] = NEUTRAL_WATER.light;
+      if ("line-color" in layer.paint) layer.paint["line-color"] = NEUTRAL_WATER.light;
+    }
+  }
+  return style;
+}
+
+const map = { m: null, ready: null, picking: null, data: {}, loaded: false };
+function circle(lat, lon, radius, n = 48) {
+  const pts = [];
+  for (let i = 0; i <= n; i++) {
+    const a = (i / n) * 2 * Math.PI;
+    pts.push([lon + (radius / (111320 * Math.cos((lat * Math.PI) / 180))) * Math.cos(a), lat + (radius / 110540) * Math.sin(a)]);
+  }
+  return pts;
+}
+const fc = (features = []) => ({ type: "FeatureCollection", features });
+function setLayer(name, data) {
+  map.data[name] = data;
+  const s = map.loaded && map.m.getSource(name);
+  if (s) s.setData(data);
+}
+function clearLayers(...names) { names.forEach((n) => setLayer(n, fc())); }
+function fit(coords, maxZoom = 15) {
+  if (!coords.length || !map.m) return;
+  const b = coords.reduce((acc, c) => acc.extend(c), new maplibregl.LngLatBounds(coords[0], coords[0]));
+  map.m.fitBounds(b, { padding: 70, maxZoom, duration: 600 });
+}
+function setKey(items) {
+  const key = $("#map-key");
+  key.replaceChildren(...items.map(([kind, colour, label]) => h("div", { class: "k" }, h("span", { class: kind, style: { background: colour } }), label)));
+  key.hidden = !items.length;
+}
+
+async function initMap() {
+  let style;
+  try {
+    style = stripBlue(await (await fetch(CFG.mapStyle || "https://tiles.openfreemap.org/styles/positron")).json());
+  } catch {
+    style = { version: 8, sources: {}, layers: [{ id: "bg", type: "background", paint: { "background-color": "#ece9e2" } }] };
+  }
+  style.sources.satellite = { type: "raster", tiles: ["https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2021_3857/default/g/{z}/{y}/{x}.jpg"],
+    tileSize: 256, maxzoom: 15, attribution: "Sentinel-2 cloudless 2021 by EOX IT Services GmbH (contains modified Copernicus Sentinel data)" };
+  style.layers.splice(1, 0, { id: "satellite", type: "raster", source: "satellite", layout: { visibility: "none" } });
+  map.m = new maplibregl.Map({ container: "map", style, center: CFG.center || [77.5946, 12.9716], zoom: CFG.zoom || 11.6, maxPitch: 70, attributionControl: { compact: true } });
+  map.m.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), "top-right");
+  map.ready = new Promise((res) => map.m.on("load", res));
+  await map.ready;
+  const add = (id, type, paint, filter, layout) => map.m.addLayer({ id, type, source: id.split(":")[0], paint, ...(filter ? { filter } : {}), ...(layout ? { layout } : {}) });
+  for (const s of ["iso", "routes", "gps", "areas", "points"]) map.m.addSource(s, { type: "geojson", data: fc() });
+  add("iso", "fill", { "fill-color": ["get", "colour"], "fill-opacity": ["get", "opacity"] });
+  add("iso:line", "line", { "line-color": ["get", "colour"], "line-width": 1, "line-opacity": 0.6 });
+  add("gps", "line", { "line-color": "#57534e", "line-width": 2, "line-dasharray": [1, 2] });
+  add("routes", "line", { "line-color": ["get", "colour"], "line-width": ["get", "width"], "line-opacity": ["get", "opacity"] }, ["!", ["get", "dashed"]], { "line-cap": "round", "line-join": "round" });
+  add("routes:dash", "line", { "line-color": ["get", "colour"], "line-width": ["get", "width"], "line-opacity": ["get", "opacity"], "line-dasharray": [2, 1.5] }, ["get", "dashed"], { "line-cap": "round" });
+  add("areas", "fill", { "fill-color": ["get", "colour"], "fill-opacity": 0.12 });
+  add("areas:line", "line", { "line-color": ["get", "colour"], "line-width": 1.2 });
+  add("points", "circle", { "circle-radius": ["get", "r"], "circle-color": ["get", "colour"], "circle-stroke-color": "#fbfaf7", "circle-stroke-width": 2 });
+  map.m.addLayer({ id: "points:label", type: "symbol", source: "points", layout: { "text-field": ["get", "label"], "text-size": 12, "text-offset": [0, 1.3], "text-anchor": "top", "text-optional": true },
+    paint: { "text-color": "#1d1c1a", "text-halo-color": "#fbfaf7", "text-halo-width": 1.5 } });
+  map.loaded = true;
+  for (const [name, data] of Object.entries(map.data)) { const src = map.m.getSource(name); if (src) src.setData(data); }
+  map.m.on("click", "points", (e) => {
+    const p = e.features[0].properties;
+    new maplibregl.Popup({ closeButton: false }).setLngLat(e.lngLat).setDOMContent(h("div", {}, h("strong", { text: p.title || p.label }), p.detail ? h("div", { class: "muted", text: p.detail }) : null)).addTo(map.m);
+  });
+  map.m.on("mouseenter", "points", () => (map.m.getCanvas().style.cursor = "pointer"));
+  map.m.on("mouseleave", "points", () => (map.m.getCanvas().style.cursor = map.picking ? "crosshair" : ""));
+  map.m.on("click", (e) => {
+    if (!map.picking) return;
+    const cb = map.picking; map.picking = null; $("#map-banner").hidden = true; map.m.getCanvas().style.cursor = "";
+    cb(e.lngLat.lat, e.lngLat.lng);
+  });
+  if (map.m.getSource("openmaptiles")) {
+    map.m.addLayer({ id: "buildings-3d", type: "fill-extrusion", source: "openmaptiles", "source-layer": "building", minzoom: 13,
+      filter: ["!=", ["get", "hide_3d"], true], layout: { visibility: "none" },
+      paint: { "fill-extrusion-color": ["interpolate", ["linear"], ["coalesce", ["get", "render_height"], 6], 0, "#e4e0d7", 40, "#cdc7bb", 120, "#b5ad9e"],
+        "fill-extrusion-height": ["coalesce", ["get", "render_height"], 6], "fill-extrusion-base": ["coalesce", ["get", "render_min_height"], 0],
+        "fill-extrusion-opacity": 0.9, "fill-extrusion-vertical-gradient": true } }, "iso");
+  }
+  document.querySelectorAll(".map-switch button[data-base]").forEach((b) => b.addEventListener("click", () => {
+    document.querySelectorAll(".map-switch button[data-base]").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    map.m.setLayoutProperty("satellite", "visibility", b.dataset.base === "satellite" ? "visible" : "none");
+  }));
+  const t3 = $("#toggle-3d");
+  t3.addEventListener("click", () => {
+    const on = t3.getAttribute("aria-pressed") !== "true";
+    t3.setAttribute("aria-pressed", String(on));
+    if (map.m.getLayer("buildings-3d")) map.m.setLayoutProperty("buildings-3d", "visibility", on ? "visible" : "none");
+    map.m.easeTo({ pitch: on ? 58 : 0, bearing: on ? -17 : 0, zoom: on ? Math.max(map.m.getZoom(), 15.2) : map.m.getZoom(), duration: 900 });
+  });
+}
+function pickOnMap(message) {
+  return new Promise((resolve) => {
+    map.picking = (lat, lon) => resolve({ lat, lon });
+    const banner = $("#map-banner"); banner.textContent = message; banner.hidden = false;
+    map.m.getCanvas().style.cursor = "crosshair";
+  });
+}
+
+function uploader(label, onFile) {
+  const input = label.querySelector("input");
+  input.addEventListener("change", () => { if (input.files[0]) onFile(input.files[0]); input.value = ""; });
+  label.addEventListener("dragover", (e) => { e.preventDefault(); label.classList.add("over"); });
+  label.addEventListener("dragleave", () => label.classList.remove("over"));
+  label.addEventListener("drop", (e) => { e.preventDefault(); label.classList.remove("over"); if (e.dataTransfer.files[0]) onFile(e.dataTransfer.files[0]); });
+}
+const busy = (text) => h("div", { class: "busy", text });
+const problem = (text) => h("div", { class: "problem", role: "alert", text });
+const section = (title, ...kids) => h("div", { class: "section" }, h("h2", { text: title }), ...kids);
+
+function verdictBlock(d, colour) {
+  const [lvl, tone] = LEVEL[d.level] || [d.level, ""];
+  return h("div", {},
+    h("span", { class: `tag ${tone}`, text: lvl }),
+    h("div", { class: "verdict", text: d.label }),
+    h("div", { class: "verdict-meta" },
+      d.level !== "no_vehicle" ? h("span", { text: `Confidence ${pct(d.confidence)}` }) : null,
+      colour ? h("span", { text: `Colour ${colour}` }) : null,
+      d.make && d.level !== "class" ? h("span", { text: `Make ${d.make}` }) : null,
+      d.catalogue_title ? h("span", { text: d.catalogue_title }) : null),
+    d.level !== "no_vehicle" ? h("div", { class: "meter" }, h("i", { style: { width: pct(d.confidence) } })) : null,
+    d.note ? h("p", { class: "note", text: d.note }) : null);
+}
+
+const identify = { file: null };
+async function runIdentify(file) {
+  identify.file = file;
+  const out = $("#identify-out");
+  out.replaceChildren(busy("Analysing the photo"));
+  clearLayers("areas", "points");
+  const fd = new FormData(); fd.append("file", file); fd.append("classify_anyway", $("#classify-anyway").checked ? "true" : "false");
+  try {
+    const r = await api("/api/predict", { method: "POST", form: fd });
+    renderIdentify(r);
+  } catch (e) { out.replaceChildren(problem(e.message)); }
+}
+function renderIdentify(r) {
+  const out = $("#identify-out");
+  const v = r.vehicles[0];
+  const kids = [];
+  if (!v) {
+    kids.push(h("div", { class: "section" }, verdictBlock({ level: "no_vehicle", label: "No vehicle found in this photo" }),
+      h("p", { class: "note", text: "Try a clearer photo, or enable classification without detection above." })));
+  } else {
+    kids.push(h("div", { class: "section" }, verdictBlock(v.decision)));
+    kids.push(h("figure", { class: "figure", style: { marginTop: "16px" } }, h("img", { src: jpg(r.panels.annotated), alt: "Photo with detected vehicle" }),
+      r.vehicles.length > 1 ? h("figcaption", { text: `${r.vehicles.length} vehicles detected; the most prominent is identified.` }) : null));
+    kids.push(section("Closest matches", h("ol", { class: "ranked" }, v.decision.top5.map(([name, p]) => h("li", {}, h("span", { text: name }), h("span", { class: "val", text: pct(p) }))))));
+    const others = Object.values(v.markets || {}).filter((m) => m.catalogue !== v.decision.catalogue);
+    if (others.length) {
+      kids.push(section("Other catalogue", h("table", { class: "table" },
+        h("thead", {}, h("tr", {}, h("th", { text: "Catalogue" }), h("th", { text: "Answer" }), h("th", { class: "num", text: "Conf." }))),
+        h("tbody", {}, others.map((m) => h("tr", {}, h("td", { text: m.catalogue_title }),
+          h("td", {}, h("div", { text: m.label }), h("div", { class: "muted", style: { fontSize: "12px" }, text: (LEVEL[m.level] || [m.level])[0] })),
+          h("td", { class: "num", text: pct(m.confidence) }))))),
+        h("p", { class: "note", text: "Each catalogue has its own classifier, calibration and out-of-catalogue check. The answer shown above is the more specific and more confident of the two." })));
+    }
+    const figs = [["enhanced", "Quality-adjusted input"], ["grabcut", "Vehicle region (GrabCut)"], ["edges", "Edges (Canny)"], ["cam", "Where the model looked"],
+      ["colour_histogram", "Colour profile (HSV)"], ["saliency_roi", "Classical region of interest"]].filter(([k]) => r.panels[k]);
+    kids.push(section("How the decision was reached",
+      r.enhancement.length ? h("p", { class: "note", text: `Image quality: ${r.quality.flags.join(", ") || "normal"}. Applied ${r.enhancement.join(", ")}.` }) : null,
+      h("div", { class: "gallery", style: { marginTop: "10px" } }, figs.map(([k, cap]) => h("figure", { class: "figure" }, h("img", { src: jpg(r.panels[k]), alt: cap }), h("figcaption", { text: cap })))),
+      v.geometry ? h("dl", { class: "facts", style: { marginTop: "14px" } }, h("dt", { text: "Viewpoint" }), h("dd", { text: v.geometry.viewpoint.replaceAll("_", " ") }),
+        h("dt", { text: "Aspect ratio" }), h("dd", { text: v.geometry.aspect.toFixed(2) }), h("dt", { text: "Symmetry" }), h("dd", { text: v.geometry.symmetry.toFixed(2) })) : null));
+    if (r.comparison) {
+      const rows = [["Classical only", r.comparison.classical_only], ["Classical on detected region", r.comparison.classical_on_detector_crop],
+        ["Deep network", r.comparison.deep], ["Hybrid (deployed)", r.comparison.hybrid]].filter(([, x]) => x);
+      kids.push(section("Classical, deep and hybrid on this photo",
+        h("table", { class: "table" }, h("thead", {}, h("tr", {}, h("th", { text: "Approach" }), h("th", { text: "Answer" }), h("th", { class: "num", text: "Conf." }))),
+          h("tbody", {}, rows.map(([n, x]) => h("tr", {}, h("td", { text: n }), h("td", { text: x.label }), h("td", { class: "num", text: pct(x.confidence) })))))));
+    }
+  }
+  const locateBtn = h("button", { class: "button", type: "button", text: "Find where this photo was taken", onclick: () => runLocate(locateBtn) });
+  kids.push(section("Location", h("p", { class: "note", text: "Uses photo GPS data when present, otherwise reads signboards and road names and looks them up on OpenStreetMap." }),
+    h("div", { class: "actions", style: { marginTop: "10px" } }, locateBtn), h("div", { id: "locate-out" })));
+  kids.push(h("p", { class: "disclaimer", text: `Processed in ${(r.timings_ms.total / 1000).toFixed(2)} s.` }));
+  out.replaceChildren(...kids);
+}
+async function runLocate(btn) {
+  const out = $("#locate-out");
+  btn.disabled = true; out.replaceChildren(busy("Reading the scene"));
+  const fd = new FormData(); fd.append("file", identify.file);
+  try {
+    const r = await api("/api/locate", { method: "POST", form: fd });
+    renderLocate(r, out);
+  } catch (e) { out.replaceChildren(problem(e.message)); }
+  btn.disabled = false;
+}
+function renderLocate(r, out) {
+  const cands = r.candidates || [];
+  const texts = (r.ocr || []).map((o) => o.text);
+  if (!cands.length) {
+    out.replaceChildren(h("p", { class: "note", text: texts.length ? `Read “${texts.join("”, “")}” but could not match it to a place in Bengaluru.` : "No location data or readable place names in this photo." }));
+    clearLayers("areas", "points");
+    return;
+  }
+  const areas = [], points = [];
+  cands.forEach((c, i) => {
+    const colour = i === 0 ? "#2f5a43" : "#a5662a";
+    areas.push({ type: "Feature", properties: { colour }, geometry: { type: "Polygon", coordinates: [circle(c.lat, c.lon, c.radius_m)] } });
+    points.push({ type: "Feature", properties: { colour, r: i === 0 ? 7 : 5, label: i === 0 ? c.label : "", title: c.label, detail: `${pct(c.confidence)} · ±${Math.round(c.radius_m)} m · ${c.source.replace("_", " ")}` },
+      geometry: { type: "Point", coordinates: [c.lon, c.lat] } });
+  });
+  setLayer("areas", fc(areas)); setLayer("points", fc(points));
+  fit(cands.slice(0, 3).map((c) => [c.lon, c.lat]), 15);
+  setKey([["dot", "#2f5a43", "Most likely location"], ["dot", "#a5662a", "Other candidates"]]);
+  out.replaceChildren(
+    texts.length ? h("p", { class: "note", text: `Text read in the photo: ${texts.slice(0, 8).join(" · ")}` }) : null,
+    h("ul", { class: "rows" }, cands.map((c) => h("li", { class: "clickable", style: { gridTemplateColumns: "1fr auto" }, onclick: () => map.m.flyTo({ center: [c.lon, c.lat], zoom: 16 }) },
+      h("div", {}, h("div", { class: "title", text: c.label }), h("div", { class: "sub", text: `${c.lat.toFixed(5)}, ${c.lon.toFixed(5)} · within ${Math.round(c.radius_m)} m · ${c.source === "exif" ? "photo GPS" : "signboard text"}` })),
+      h("span", { class: "score", text: pct(c.confidence, 0) })))));
+}
+
+const inv = { id: null, data: null, poll: null };
+async function loadCases(selectId) {
+  const sel = $("#case-select");
+  const list = await api("/api/cases");
+  sel.replaceChildren(h("option", { value: "", text: list.length ? "Select a case" : "No cases yet" }), ...list.map((c) => h("option", { value: c.id, text: `${c.name}${c.target ? " · " + c.target : ""}` })));
+  if (selectId) sel.value = selectId;
+  if (sel.value) openCase(sel.value); else renderCase(null);
+}
+$("#case-select").addEventListener("change", (e) => (e.target.value ? openCase(e.target.value) : renderCase(null)));
+$("#case-new").addEventListener("click", async () => {
+  const fd = new FormData(); fd.append("name", `Case ${new Date().toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}`);
+  const c = await api("/api/cases", { method: "POST", form: fd });
+  await loadCases(c.id);
+});
+async function openCase(id) {
+  inv.id = id;
+  try { inv.data = await api(`/api/cases/${id}`); renderCase(inv.data); drawCase(inv.data); } catch (e) { $("#case-out").replaceChildren(problem(e.message)); }
+}
+function renderCase(c) {
+  const out = $("#case-out");
+  if (!c) { out.replaceChildren(h("p", { class: "note", style: { marginTop: "16px" }, text: "Create a case to start. Add a photo of the vehicle you are looking for, then add camera footage." })); clearLayers("points", "routes", "iso", "areas", "gps"); setKey([]); return; }
+  const target = c.target;
+  const tgt = section("Vehicle of interest",
+    target ? h("ul", { class: "rows" }, h("li", {}, h("img", { src: jpg(target.thumbnail), alt: "" }), h("div", {}, h("div", { class: "title", text: target.label }), h("div", { class: "sub", text: `${(LEVEL[target.decision.level] || [""])[0]} · ${pct(target.decision.confidence)}` })), h("span"))) : null,
+    h("label", { class: "upload", style: { marginTop: "10px" } }, h("input", { type: "file", accept: "image/*,.heic,.heif", hidden: true }),
+      h("span", { class: "upload-title", text: target ? "Replace the photo" : "Add a photo of the vehicle" }), h("span", { class: "upload-sub", text: "Used to search every camera feed in this case" })));
+  uploader(tgt.querySelector(".upload"), async (file) => {
+    const fd = new FormData(); fd.append("file", file);
+    tgt.append(busy("Profiling the vehicle"));
+    try { inv.data = await api(`/api/cases/${c.id}/target`, { method: "POST", form: fd }); renderCase(inv.data); drawCase(inv.data); } catch (e) { tgt.append(problem(e.message)); }
+  });
+
+  const cams = section("Camera feeds",
+    c.cameras.length ? h("ul", { class: "rows" }, c.cameras.map((cam) => cameraRow(c, cam))) : h("p", { class: "note", text: "No footage yet." }),
+    cameraForm(c));
+
+  const sightings = c.target ? section("Where it was seen",
+    c.sightings.length ? h("ul", { class: "rows" }, c.sightings.slice(0, 12).map((s) => h("li", { class: "clickable", onclick: () => openCamera(c, s.camera_id, s.t_video) },
+      h("img", { src: jpg(s.thumbnail), alt: "" }),
+      h("div", {}, h("div", { class: "title", text: s.camera_name }), h("div", { class: "sub", text: `${s.t_abs ? fmtTime(s.t_abs) : "at " + clock(s.t_video)} · ${s.label} · heading ${s.direction}` }),
+        h("div", { class: "sub", text: `appearance ${pct(s.appearance, 0)} · model ${pct(s.model_overlap, 0)} · colour ${s.colour === 1 ? "same" : s.colour > 0 ? "similar" : "different"}` })),
+      h("span", { class: "score", text: pct(s.score, 0) }))))
+      : h("p", { class: "note", text: c.cameras.some((x) => x.status === "done") ? "No matching vehicle in the analysed footage." : "Sightings appear here once footage is analysed." })) : null;
+
+  const notes = h("label", { class: "field" }, "What else is known", h("textarea", { id: "case-notes", placeholder: "e.g. Last seen near Brigade Road around 9:30 pm, possibly heading towards Indiranagar via Old Airport Road. May have stopped for fuel." }),
+    h("span", { class: "hint", text: "Places, times, directions and stops in the note are used to rank possible routes through areas without cameras." }));
+  const reconstruct = h("button", { class: "button primary", type: "button", text: "Reconstruct route", onclick: () => runReason(c, reconstruct) });
+  const routes = section("Route reconstruction", notes, h("div", { class: "actions" }, reconstruct), h("div", { id: "route-out" }));
+  out.replaceChildren(tgt, cams, sightings, routes);
+  if (c.routes) renderRoutes(c.routes);
+}
+function cameraRow(c, cam) {
+  const status = cam.status === "done" ? `${cam.analysis.counts.total} vehicles · ${clock(cam.analysis.meta.analysed_s)} analysed` : cam.status === "error" ? `Failed: ${cam.error || "unknown error"}` : "Analysing";
+  const where = cam.lat != null ? `${cam.lat.toFixed(4)}, ${cam.lon.toFixed(4)} (${cam.location_source})` : "Location not set";
+  const sug = cam.suggested_location && cam.lat == null ? h("button", { class: "link", type: "button", text: `Use suggested location: ${cam.suggested_location.label}`, onclick: (e) => { e.stopPropagation(); updateCamera(c, cam, cam.suggested_location.lat, cam.suggested_location.lon); } }) : null;
+  const setLoc = h("button", { class: "link", type: "button", text: cam.lat == null ? "Set on map" : "Move", onclick: async (e) => { e.stopPropagation(); const p = await pickOnMap(`Click the location of “${cam.name}”`); updateCamera(c, cam, p.lat, p.lon); } });
+  return h("li", { class: cam.status === "done" ? "clickable" : "", onclick: () => cam.status === "done" && openCamera(c, cam.id, 0) },
+    cam.analysis && cam.analysis.keyframe ? h("img", { src: jpg(cam.analysis.keyframe), alt: "" }) : h("span"),
+    h("div", {}, h("div", { class: "title", text: cam.name }), h("div", { class: "sub", text: status }), h("div", { class: "sub", text: `${where}${cam.start_time ? " · starts " + fmtTime(cam.start_epoch) : ""}` }),
+      cam.environment && cam.environment.texts.length ? h("div", { class: "sub", text: `Signs read: ${cam.environment.texts.slice(0, 5).join(" · ")}` }) : null,
+      h("div", { class: "actions" }, setLoc, sug), cam.status !== "done" && cam.status !== "error" ? h("div", { class: "progress" }, h("i", { id: `prog-${cam.id}`, style: { width: "4%" } })) : null),
+    h("span", { class: "score", text: cam.analysis && cam.analysis.alerts.length ? `${cam.analysis.alerts.length} alert${cam.analysis.alerts.length > 1 ? "s" : ""}` : "" }));
+}
+async function updateCamera(c, cam, lat, lon) {
+  const fd = new FormData(); fd.append("lat", lat); fd.append("lon", lon);
+  inv.data = await api(`/api/cases/${c.id}/cameras/${cam.id}`, { method: "PATCH", form: fd }); renderCase(inv.data); drawCase(inv.data);
+}
+function cameraForm(c) {
+  const state = { lat: null, lon: null };
+  const where = h("span", { class: "hint", text: "Optional. Set it now or after upload." });
+  const name = h("input", { type: "text", placeholder: "e.g. MG Road junction, north side", maxlength: 80 });
+  const start = h("input", { type: "datetime-local", step: 1 });
+  const dir = h("select", {}, h("option", { value: "", text: "Not set" }), h("option", { value: "1,0", text: "Left to right" }), h("option", { value: "-1,0", text: "Right to left" }),
+    h("option", { value: "0,-1", text: "Away from the camera" }), h("option", { value: "0,1", text: "Towards the camera" }));
+  const gps = h("input", { type: "file", accept: ".gpx,.csv,.nmea,.txt" });
+  const video = h("input", { type: "file", accept: "video/*", required: true });
+  const pick = h("button", { class: "button small", type: "button", text: "Pick on map", onclick: async () => { const p = await pickOnMap("Click where the camera is"); state.lat = p.lat; state.lon = p.lon; where.textContent = `${p.lat.toFixed(5)}, ${p.lon.toFixed(5)}`; } });
+  const submit = h("button", { class: "button primary", type: "submit", text: "Add footage" });
+  const form = h("form", { style: { marginTop: "16px" } },
+    h("label", { class: "field" }, "Video", video),
+    h("label", { class: "field" }, "Camera name", name),
+    h("div", { class: "field" }, "Camera location", h("div", { class: "actions", style: { marginTop: "5px" } }, pick, where)),
+    h("div", { class: "split" }, h("label", { class: "field" }, "Recording started", start), h("label", { class: "field" }, "Permitted direction", dir)),
+    h("label", { class: "field" }, "GPS track (dashcam, optional)", gps),
+    h("div", { class: "actions" }, submit));
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!video.files[0]) { notice("Choose a video first."); return; }
+    const fd = new FormData();
+    fd.append("file", video.files[0]); if (name.value) fd.append("name", name.value);
+    if (state.lat != null) { fd.append("lat", state.lat); fd.append("lon", state.lon); }
+    if (start.value) fd.append("start_time", start.value); if (dir.value) fd.append("allowed_direction", dir.value);
+    if (gps.files[0]) fd.append("gps", gps.files[0]);
+    submit.disabled = true; submit.textContent = "Uploading";
+    try {
+      const r = await api(`/api/cases/${c.id}/cameras`, { method: "POST", form: fd });
+      notice("Footage uploaded. Analysis has started.");
+      await openCase(c.id); watchJob(c.id, r.job_id, r.camera_id);
+    } catch (err) { notice(err.message); submit.disabled = false; submit.textContent = "Add footage"; }
+  });
+  return form;
+}
+function watchJob(cid, jobId, camId) {
+  const tick = async () => {
+    try {
+      const j = await api(`/api/jobs/${jobId}`);
+      const bar = document.getElementById(`prog-${camId}`); if (bar) bar.style.width = `${Math.max(4, j.progress * 100)}%`;
+      if (j.status === "done" || j.status === "error") { if (inv.id === cid) openCase(cid); if (j.status === "error") notice(`Analysis failed: ${j.error}`); return; }
+    } catch { return; }
+    setTimeout(tick, 1500);
+  };
+  tick();
+}
+function drawCase(c) {
+  const pts = [];
+  c.cameras.filter((x) => x.lat != null).forEach((x) => pts.push({ type: "Feature", properties: { colour: "#3d3a35", r: 6, label: x.name, title: x.name, detail: x.status === "done" ? `${x.analysis.counts.total} vehicles` : "Analysing" }, geometry: { type: "Point", coordinates: [x.lon, x.lat] } }));
+  const seen = new Set();
+  c.sightings.filter((s) => s.lat != null && s.score >= 0.5).forEach((s) => {
+    if (seen.has(s.camera_id)) return; seen.add(s.camera_id);
+    pts.push({ type: "Feature", properties: { colour: "#2f5a43", r: 9, label: "", title: `Seen at ${s.camera_name}`, detail: `${s.t_abs ? fmtTime(s.t_abs) : clock(s.t_video)} · match ${pct(s.score, 0)}` }, geometry: { type: "Point", coordinates: [s.lon, s.lat] } });
+  });
+  setLayer("points", fc(pts));
+  const gps = c.cameras.filter((x) => x.route && x.route.matched).map((x) => ({ type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: x.route.geometry } }));
+  setLayer("gps", fc(gps));
+  clearLayers("areas");
+  if (pts.length) fit(pts.map((f) => f.geometry.coordinates), 15);
+  setKey([["dot", "#3d3a35", "Camera"], ["dot", "#2f5a43", "Vehicle seen"], ...(gps.length ? [["sw", "#57534e", "Dashcam route"]] : [])]);
+}
+async function runReason(c, btn) {
+  const out = $("#route-out");
+  btn.disabled = true; out.replaceChildren(busy("Reconstructing possible routes"));
+  const fd = new FormData(); fd.append("text", $("#case-notes").value || "");
+  try { renderRoutes(await api(`/api/cases/${c.id}/reason`, { method: "POST", form: fd })); } catch (e) { out.replaceChildren(problem(e.message)); }
+  btn.disabled = false;
+}
+function renderRoutes(r) {
+  const out = $("#route-out");
+  if (!out) return;
+  const feats = [], kids = [], keys = [];
+  const hints = r.hints || {};
+  const understood = [...(hints.places || []).filter((p) => p.label).map((p) => `${p.role}: ${p.label}`), ...(hints.times || []).map((t) => `time: ${t.qualifier} ${t.text.replace(/^(after|before|around|about|by|at|since|till|until)\s+/i, "")}`),
+    ...(hints.activities || []).map((a) => `stop: ${a.name}`), ...(hints.direction ? [`heading ${hints.direction.word}`] : [])];
+  if (understood.length) kids.push(h("p", { class: "note", text: `Understood from the note: ${understood.join(" · ")}` }));
+  (r.segments || []).forEach((seg) => {
+    kids.push(h("h2", { style: { marginTop: "18px" }, text: `Between ${seg.from} and ${seg.to}` }));
+    seg.routes.forEach((rt, i) => {
+      const colour = ROUTE_COLOURS[i % ROUTE_COLOURS.length];
+      feats.push({ type: "Feature", properties: { colour, width: i === 0 ? 5 : 3, opacity: 0.35 + 0.6 * rt.probability, dashed: false }, geometry: { type: "LineString", coordinates: rt.geometry } });
+      kids.push(hypothesis(rt, colour, `${(rt.distance_m / 1000).toFixed(1)} km · ${(rt.duration_s / 60).toFixed(0)} min${seg.gap_s ? ` · ${(seg.gap_s / 60).toFixed(0)} min between sightings` : ""}`));
+    });
+  });
+  if ((r.onward || []).length) {
+    kids.push(h("h2", { style: { marginTop: "18px" }, text: "After the last sighting" }));
+    r.onward.forEach((rt, i) => {
+      const colour = ROUTE_COLOURS[(i + 1) % ROUTE_COLOURS.length];
+      feats.push({ type: "Feature", properties: { colour, width: i === 0 ? 4 : 2.5, opacity: 0.3 + 0.65 * rt.probability, dashed: true }, geometry: { type: "LineString", coordinates: rt.geometry } });
+      kids.push(hypothesis(rt, colour, `to ${rt.destination} · ${(rt.distance_m / 1000).toFixed(1)} km · ${(rt.duration_s / 60).toFixed(0)} min${rt.eta_epoch ? " · arrives about " + fmtTime(rt.eta_epoch) : ""}`));
+    });
+  }
+  setLayer("routes", fc(feats));
+  const iso = (r.reachable && r.reachable.features) || [];
+  const shades = ["#a5662a", "#b88a4a", "#cdb58a"];
+  setLayer("iso", fc(iso.map((f, i) => ({ ...f, properties: { colour: shades[i % 3], opacity: 0.1 } }))));
+  if (iso.length) keys.push(["sw", "#b88a4a", "Reachable in 5, 10, 15 min"]);
+  if (!kids.length) kids.push(h("p", { class: "note", text: "Add footage with matched sightings, or describe what is known, to reconstruct a route." }));
+  kids.push(h("p", { class: "disclaimer", text: (r.assumptions || []).join(" ") }));
+  out.replaceChildren(...kids);
+  setKey([["dot", "#3d3a35", "Camera"], ["dot", "#2f5a43", "Vehicle seen"], ["sw", "#2f5a43", "Route between sightings"], ["sw", "#a5662a", "Possible onward route"], ...keys]);
+  const all = feats.flatMap((f) => f.geometry.coordinates);
+  if (all.length) fit(all, 15);
+}
+function hypothesis(rt, colour, meta) {
+  return h("div", { class: "hypothesis", onclick: () => fit(rt.geometry, 16) },
+    h("div", { class: "h-head" }, h("span", { class: "h-title" }, h("span", { class: "h-swatch", style: { background: colour } }), (rt.roads || []).slice(0, 3).join(" → ") || "Unnamed roads"),
+      h("span", { class: "h-prob", text: pct(rt.probability, 0) })),
+    h("div", { class: "sub muted", style: { fontSize: "12px" }, text: meta }),
+    (rt.reasons || []).length ? h("ul", { class: "h-reasons" }, rt.reasons.map((x) => h("li", { text: x }))) : null);
+}
+
+function overlay(video, canvas, analysis, focusTrack) {
+  const ctx = canvas.getContext("2d");
+  const [fw, fh] = analysis.meta.frame_size;
+  const draw = () => {
+    const rect = video.getBoundingClientRect();
+    canvas.width = rect.width * devicePixelRatio; canvas.height = rect.height * devicePixelRatio;
+    ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+    ctx.clearRect(0, 0, rect.width, rect.height);
+    const s = Math.min(rect.width / fw, rect.height / fh), ox = (rect.width - fw * s) / 2, oy = (rect.height - fh * s) / 2;
+    const t = video.currentTime;
+    for (const tr of analysis.tracks) {
+      if (t < tr.first_t - 0.2 || t > tr.last_t + 0.2) continue;
+      let box = null;
+      for (const b of tr.boxes) { if (b[0] <= t + 0.07) box = b; else break; }
+      if (!box || t - box[0] > 0.6) continue;
+      const [, x1, y1, x2, y2] = box;
+      const colour = tr.wrong_way ? "#d98a74" : focusTrack === tr.id ? "#7fae8f" : "#f3f1ec";
+      ctx.strokeStyle = colour; ctx.lineWidth = focusTrack === tr.id ? 3 : 2;
+      ctx.strokeRect(ox + x1 * s, oy + y1 * s, (x2 - x1) * s, (y2 - y1) * s);
+      const label = `${tr.id} · ${tr.label}${tr.wrong_way ? " · wrong way" : ""}`;
+      ctx.font = "600 12px Inter, system-ui, sans-serif";
+      const w = ctx.measureText(label).width + 10;
+      ctx.fillStyle = "rgba(20,19,17,0.78)"; ctx.fillRect(ox + x1 * s, Math.max(0, oy + y1 * s - 20), w, 18);
+      ctx.fillStyle = colour; ctx.fillText(label, ox + x1 * s + 5, Math.max(13, oy + y1 * s - 7));
+    }
+    if (!video.isConnected) return;
+    requestAnimationFrame(draw);
+  };
+  requestAnimationFrame(draw);
+}
+function vehicleTable(analysis, video) {
+  return h("table", { class: "table" },
+    h("thead", {}, h("tr", {}, h("th", { text: "#" }), h("th", { text: "Vehicle" }), h("th", { text: "Moving" }), h("th", { class: "num", text: "Seen" }))),
+    h("tbody", {}, analysis.tracks.map((tr) => h("tr", { class: "clickable", onclick: () => { video.currentTime = tr.first_t; video.play(); } },
+      h("td", { class: "mono", text: tr.id }),
+      h("td", {}, h("div", { text: tr.label }), tr.decision ? h("div", { class: "muted", style: { fontSize: "12px" }, text: `${(LEVEL[tr.decision.level] || [""])[0]} · ${pct(tr.decision.confidence, 0)}` }) : h("div", { class: "muted", style: { fontSize: "12px" }, text: tr.class })),
+      h("td", {}, tr.wrong_way ? h("span", { class: "tag alert", text: "Wrong way" }) : h("span", { text: tr.direction.compass })),
+      h("td", { class: "num", text: `${clock(tr.first_t)}–${clock(tr.last_t)}` })))));
+}
+function analysisView(analysis, src, startAt = 0) {
+  const video = h("video", { src, controls: true, playsinline: true, preload: "metadata" });
+  const canvas = h("canvas");
+  video.addEventListener("loadedmetadata", () => { if (startAt) video.currentTime = startAt; });
+  overlay(video, canvas, analysis);
+  const c = analysis.counts;
+  const stats = h("div", { class: "stats" }, Object.entries(c.by_class).map(([k, n]) => h("div", { class: "stat" }, h("div", { class: "n", text: n }), h("div", { class: "l", text: `${k}${n === 1 ? "" : "s"}` }))),
+    h("div", { class: "stat" }, h("div", { class: "n", text: analysis.alerts.length }), h("div", { class: "l", text: "wrong-way alerts" })));
+  return h("div", {}, h("div", { class: "player" }, video, canvas), section("Summary", stats), section("Vehicles", vehicleTable(analysis, video)));
+}
+function openCamera(c, camId, t) {
+  const cam = c.cameras.find((x) => x.id === camId);
+  if (!cam || !cam.analysis) return;
+  $("#sheet-title").textContent = cam.name;
+  $("#sheet-body").replaceChildren(analysisView(cam.analysis, `${API}/api/cases/${c.id}/cameras/${cam.id}/video`, t));
+  $("#sheet").showModal();
+}
+$("#sheet-close").addEventListener("click", () => { $("#sheet").close(); $("#sheet-body").replaceChildren(); });
+
+async function runVideo(file) {
+  const out = $("#video-out");
+  const url = URL.createObjectURL(file);
+  out.replaceChildren(busy("Analysing the video. Longer clips take a few minutes."));
+  const fd = new FormData(); fd.append("file", file);
+  const dir = $("#video-direction").value; if (dir) fd.append("allowed_direction", dir);
+  try {
+    const r = await api("/api/video", { method: "POST", form: fd });
+    out.replaceChildren(h("div", { class: "section" }, analysisView(r, url)));
+  } catch (e) { out.replaceChildren(problem(e.message)); }
+}
+
+document.querySelectorAll(".segmented button").forEach((b) => b.addEventListener("click", () => {
+  document.querySelectorAll(".segmented button").forEach((x) => x.setAttribute("aria-selected", String(x === b)));
+  document.querySelectorAll(".view").forEach((v) => (v.hidden = v.id !== `view-${b.dataset.view}`));
+  clearLayers("points", "routes", "iso", "areas", "gps"); setKey([]);
+  if (b.dataset.view === "investigate") loadCases(inv.id).catch((e) => !(e instanceof AuthError) && notice(e.message));
+}));
+
+let booted = false;
+async function boot() {
+  await health();
+  if (booted) return;
+  booted = true;
+  setInterval(health, 30000);
+  const me = await fetch(API + "/auth/me", { credentials: "same-origin" }).catch(() => null);
+  if (me && me.ok) $("#logout").hidden = false;
+}
+uploader($("#up-identify"), runIdentify);
+uploader($("#up-video"), runVideo);
+initMap().catch((e) => notice(`Map failed to load: ${e.message}`));
+boot();

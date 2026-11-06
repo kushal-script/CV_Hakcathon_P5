@@ -11,7 +11,9 @@ def class_activation_map(features: np.ndarray, fc_weight: np.ndarray, class_id: 
     return cv2.resize(cam.astype(np.float32), size, interpolation=cv2.INTER_CUBIC)
 
 
-def overlay(rgb: np.ndarray, cam: np.ndarray, alpha: float = 0.45) -> np.ndarray:
-    heat = cv2.applyColorMap((np.clip(cam, 0, 1) * 255).astype(np.uint8), cv2.COLORMAP_JET)
-    heat = cv2.cvtColor(heat, cv2.COLOR_BGR2RGB)
-    return (rgb.astype(np.float32) * (1 - alpha) + heat.astype(np.float32) * alpha).astype(np.uint8)
+def overlay(rgb: np.ndarray, cam: np.ndarray, strength: float = 0.75) -> np.ndarray:
+    c = np.clip(cam, 0, 1)
+    heat = cv2.cvtColor(cv2.applyColorMap((c * 255).astype(np.uint8), cv2.COLORMAP_HOT), cv2.COLOR_BGR2RGB).astype(np.float32)
+    base = rgb.astype(np.float32) * (0.55 + 0.45 * (1 - c[..., None]))
+    a = (strength * c)[..., None]
+    return np.clip(base * (1 - a) + heat * a, 0, 255).astype(np.uint8)

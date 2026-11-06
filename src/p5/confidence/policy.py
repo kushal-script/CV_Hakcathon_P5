@@ -79,6 +79,6 @@ def decide(z_deep: np.ndarray, tax: Taxonomy, th: Thresholds, z_fused: np.ndarra
     if in_catalogue:
         return Decision("abstain", "Not sure which model this is", float(p[top]), top, top5, dmake, score)
     if make_p >= th.tau_make:
-        return Decision("ood_make", f"Possibly a {dmake}, but not one of the 196 known models", make_p, top, top5,
+        return Decision("ood_make", f"Possibly a {dmake}, but not one of the {len(tax.names)} known models", make_p, top, top5,
                         dmake, score)
-    return Decision("ood", "Not one of the 196 known models", float(p[top]), top, top5, None, score)
+    return Decision("ood", f"Not one of the {len(tax.names)} known models", float(p[top]), top, top5, None, score)

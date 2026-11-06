@@ -5,6 +5,7 @@ import re
 import urllib.parse
 import urllib.request
 
+from p5.config import section
 from p5.geo.geocode import BENGALURU_BBOX, PHOTON_URL, USER_AGENT, photon
 from p5.geo.locate import similarity
 
@@ -78,7 +79,7 @@ def parse_places(text: str) -> list[dict]:
 def geocode_places(places: list[dict]) -> list[dict]:
     out = []
     for p in places:
-        hits = [h for h in photon(p["text"], 5) if similarity(p["text"], h["name"]) >= 0.6]
+        hits = [h for h in photon(p["text"], 5) if similarity(p["text"], h["name"]) >= section("geocoding")["min_similarity"]]
         if hits:
             h = hits[0]
             out.append({**p, "lat": h["lat"], "lon": h["lon"], "label": h["name"] + (f", {h['area']}" if h.get("area") else ""),

@@ -6,15 +6,12 @@ import numpy as np
 
 from p5 import render
 from p5.classical.colour import vehicle_colour
+from p5.config import hunt_model, section
 from p5.confidence.policy import decide
 from p5.confidence.temperature import softmax_t
 from p5.detection.select import select_boxes
 from p5.io import load_image
 from p5.video.analyse import embedding
-
-COLOUR_GROUPS = [{"white", "silver"}, {"silver", "grey"}, {"grey", "black"}, {"red", "maroon"}, {"orange", "brown"},
-                 {"orange", "yellow"}, {"blue", "purple"}]
-WEIGHTS = {"appearance": 0.55, "model": 0.30, "colour": 0.15}
 
 
 def colour_match(a: str | None, b: str | None) -> float:
@@ -22,7 +19,7 @@ def colour_match(a: str | None, b: str | None) -> float:
         return 0.5
     if a == b:
         return 1.0
-    return 0.5 if any(a in g and b in g for g in COLOUR_GROUPS) else 0.0
+    return 0.5 if any(a in g and b in g for g in section("hunt")["colour_groups"]) else 0.0
 
 
 def target_profile(pipeline, data: bytes) -> dict:
@@ -46,18 +43,24 @@ def target_profile(pipeline, data: bytes) -> dict:
     }
 
 
+def features(target: dict, track: dict) -> dict:
+    return {"appearance": float(np.dot(target["embedding"], track["embedding"])),
+            "model": float(np.sqrt(np.asarray(target["probs"]) * np.asarray(track["probs"])).sum()),
+            "colour": colour_match(target["colour"]["name"], (track.get("colour") or {}).get("name"))}
+
+
 def score(target: dict, track: dict) -> dict | None:
     if not track.get("embedding") or not track.get("probs"):
         return None
-    app = float(np.dot(target["embedding"], track["embedding"]))
-    app = float(np.clip((app - 0.35) / 0.45, 0.0, 1.0))
-    model = float(np.sqrt(np.asarray(target["probs"]) * np.asarray(track["probs"])).sum())
-    col = colour_match(target["colour"]["name"], (track.get("colour") or {}).get("name"))
-    total = WEIGHTS["appearance"] * app + WEIGHTS["model"] * model + WEIGHTS["colour"] * col
-    return {"score": round(total, 4), "appearance": round(app, 4), "model_overlap": round(model, 4), "colour": col}
+    f = features(target, track)
+    m = hunt_model()
+    z = m["bias"] + sum(m["weights"][k] * f[k] for k in m["features"])
+    return {"score": round(float(1 / (1 + np.exp(-z))), 4), "appearance": round(f["appearance"], 4),
+            "model_overlap": round(f["model"], 4), "colour": f["colour"]}
 
 
-def rank(target: dict, cameras: list[dict], min_score: float = 0.35) -> list[dict]:
+def rank(target: dict, cameras: list[dict], min_score: float | None = None) -> list[dict]:
+    min_score = hunt_model()["threshold"] if min_score is None else min_score
     sightings = []
     for cam in cameras:
         for tr in (cam.get("analysis") or {}).get("tracks", []):

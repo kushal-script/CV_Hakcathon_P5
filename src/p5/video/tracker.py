@@ -5,6 +5,7 @@ from dataclasses import dataclass, field
 import numpy as np
 from scipy.optimize import linear_sum_assignment
 
+from p5.config import section
 from p5.detection.detector import Detection
 
 
@@ -79,7 +80,8 @@ def iou_matrix(a: list, b: list) -> np.ndarray:
     return inter / (area(A)[:, None] + area(B)[None, :] - inter + 1e-9)
 
 
-def suppress_nested(dets: list[Detection], frac: float = 0.7) -> list[Detection]:
+def suppress_nested(dets: list[Detection], frac: float | None = None) -> list[Detection]:
+    frac = section("video")["nested_box_fraction"] if frac is None else frac
     keep: list[Detection] = []
     for d in sorted(dets, key=lambda d: -(d.box[2] - d.box[0]) * (d.box[3] - d.box[1])):
         x1, y1, x2, y2 = d.box
@@ -107,8 +109,12 @@ def assign(tracks: list[Track], dets: list[Detection], thr: float) -> tuple[list
 
 
 class Tracker:
-    def __init__(self, high: float = 0.45, low: float = 0.15, iou: float = 0.25, max_age: int = 15, min_hits: int = 3):
-        self.high, self.low, self.iou, self.max_age, self.min_hits = high, low, iou, max_age, min_hits
+    def __init__(self, fps: float = 8.0, min_hits: int | None = None):
+        cfg = section("tracker")
+        self.high, self.low, self.iou = cfg["high_score"], cfg["low_score"], cfg["match_iou"]
+        self.max_age = max(1, int(round(cfg["max_age_seconds"] * fps)))
+        self.min_hits = cfg["min_hits"] if min_hits is None else min_hits
+        self.dup_iou = cfg["duplicate_iou"]
         self.tracks: list[Track] = []
         self.finished: list[Track] = []
         self.next_id = 1
@@ -137,7 +143,7 @@ class Tracker:
         boxes_now = [t.box for t in self.tracks]
         for j in un_d:
             d = high[j]
-            if boxes_now and iou_matrix([d.box], boxes_now).max() > 0.5:
+            if boxes_now and iou_matrix([d.box], boxes_now).max() > self.dup_iou:
                 continue
             t = Track(self.next_id, Kalman(d.box), {d.cls: d.score}, [(frame, d.box, d.score)])
             boxes_now.append(d.box)

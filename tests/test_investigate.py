@@ -1,5 +1,7 @@
 import numpy as np
 
+from p5.config import hunt_model
+
 from p5.classical.colour import vehicle_colour
 from p5.detection.detector import Detection
 from p5.geo.route import parse_track, position_at
@@ -49,7 +51,7 @@ def test_score_prefers_identical_track():
     target = {"embedding": e.tolist(), "probs": [1.0, 0.0], "colour": {"name": "blue"}}
     same = {"embedding": e.tolist(), "probs": [1.0, 0.0], "colour": {"name": "blue"}}
     other = {"embedding": np.roll(e, 1).tolist(), "probs": [0.0, 1.0], "colour": {"name": "red"}}
-    assert score(target, same)["score"] > 0.99 > score(target, other)["score"]
+    assert score(target, same)["score"] >= hunt_model()["threshold"] > score(target, other)["score"]
 
 
 def test_track_parsing_and_interpolation():

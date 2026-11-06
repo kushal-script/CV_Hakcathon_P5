@@ -6,5 +6,9 @@ runs
 experiments
 docs
 tests
+scripts
+assets
+gateway/target
+web/_dev
 *.pdf
 **/__pycache__

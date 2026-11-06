@@ -11,6 +11,7 @@ import yaml
 from PIL import Image
 
 from p5 import render
+from p5.catalogue import Catalogue, primary, tagged
 from p5.classical.features import extract, hsv_hist
 from p5.classical.preprocess import enhance
 from p5.classical.quality import analyse
@@ -39,6 +40,8 @@ class AppConfig:
     enhance: bool = True
     comparison: bool = True
     keep_logits: bool = False
+    india: bool = False
+    prefer: str = "india"
 
     @classmethod
     def load(cls, path: Path) -> "AppConfig":
@@ -54,6 +57,7 @@ class VehicleResult:
     decision: dict
     classical: dict | None = None
     geometry: dict | None = None
+    markets: dict | None = None
 
 
 @dataclass
@@ -74,6 +78,10 @@ class PipelineResult:
         return asdict(self)
 
 
+US_TITLE = "US market, Stanford Cars ({n} models)"
+INDIA_TITLE = "Indian market ({n} models)"
+
+
 def top1(scores: np.ndarray, tax: Taxonomy) -> dict:
     p = np.exp(scores - scores.max())
     p = p / p.sum()
@@ -91,6 +99,22 @@ class Pipeline:
         self.classifier = Classifier(m / "classifier.onnx", m / "classifier_meta.json", cfg.threads, cfg.serve_size)
         self.fc_weight = np.load(m / "head.npz")["fc_weight"]
         self.classical = ClassicalModel.load(m / "classical_global.npz") if (m / "classical_global.npz").exists() else None
+        self.base = Catalogue("us", US_TITLE.format(n=len(self.tax.names)), self.tax, self.th, self.classifier, self.fc_weight)
+        self.extra = [Catalogue.load("india", INDIA_TITLE, m / "india", cfg.threads, cfg.serve_size)] \
+            if cfg.india and (m / "india" / "classifier.onnx").exists() else []
+
+    @property
+    def catalogues(self) -> list[Catalogue]:
+        return [self.base, *self.extra]
+
+    def market_decisions(self, crops, logits, work_img, boxes) -> list[list]:
+        out = [[(self.base, logits[k], None)] for k in range(len(boxes))]
+        for cat in self.extra:
+            cc = crops if cat.same_input(self.base) else [cat.classifier.prepare(work_img, b) for b in boxes]
+            z, f = cat.classifier.run(cc, self.cfg.flip_tta)
+            for k in range(len(boxes)):
+                out[k].append((cat, z[k], f[k]))
+        return out
 
     @classmethod
     def from_config(cls, path: Path) -> "Pipeline":
@@ -153,9 +177,13 @@ class Pipeline:
         logits, feats = self.classifier.run(crops, self.cfg.flip_tta)
         tick("classify")
 
+        per_market = self.market_decisions(crops, logits, work_img, boxes) if self.extra else None
+        if self.extra:
+            tick("classify_markets")
         primary_roi = None
         vehicles = []
         cls_out = None
+        cam_source = None
         for k, (box, score) in enumerate(zip(boxes, scores)):
             z_fused = None
             classical, geo_d = None, None
@@ -170,7 +198,17 @@ class Pipeline:
             d: Decision = decide(logits[k], self.tax, self.th, z_fused, detected=True)
             if sel.status == "weak" and k == 0:
                 d.note = (d.note + " Possible vehicle: low detector confidence.").strip()
-            vehicles.append(VehicleResult([round(v, 1) for v in box], round(score, 4), asdict(d), classical, geo_d))
+            if per_market:
+                ds = [d] + [decide(z, cat.tax, cat.th, detected=True) for cat, z, _ in per_market[k][1:]]
+                cats = [c for c, _, _ in per_market[k]]
+                pick = primary(ds, next((i for i, c in enumerate(cats) if c.key == self.cfg.prefer), 0))
+                markets = {c.key: tagged(x, c) for c, x in zip(cats, ds)}
+                chosen = markets[cats[pick].key]
+                if k == 0:
+                    cam_source = per_market[k][pick]
+                vehicles.append(VehicleResult([round(v, 1) for v in box], round(score, 4), chosen, classical, geo_d, markets))
+                continue
+            vehicles.append(VehicleResult([round(v, 1) for v in box], round(score, 4), tagged(d, self.base), classical, geo_d))
         tick("refine_classical")
         result.vehicles = vehicles
 
@@ -186,7 +224,11 @@ class Pipeline:
         result.comparison = comparison
         tick("comparison")
         if self.cfg.panels:
-            cam = class_activation_map(feats[0], self.fc_weight, int(logits[0].argmax()), crops[0].shape[1::-1])
+            if cam_source is not None and cam_source[2] is not None:
+                cat, z, f = cam_source
+                cam = class_activation_map(f, cat.fc_weight, int(z.argmax()), crops[0].shape[1::-1])
+            else:
+                cam = class_activation_map(feats[0], self.fc_weight, int(logits[0].argmax()), crops[0].shape[1::-1])
             result.panels = self.panels(rgb, enh.rgb, work, enh.applied, vehicles, primary_roi, sroi, overlay(crops[0], cam))
             tick("panels")
         t["total"] = round((time.perf_counter() - start) * 1000, 1)
@@ -198,7 +240,7 @@ class Pipeline:
         annotated = work.copy()
         for k, v in enumerate(vehicles):
             d = v.decision
-            colour = render.COLOURS["secondary"] if k else render.COLOURS.get(d["level"], (46, 160, 67))
+            colour = render.COLOURS["secondary"] if k else render.COLOURS.get(d["level"], render.COLOURS["class"])
             render.draw_box(annotated, v.box, f"{d['label']} {d['confidence']:.0%}", colour)
         out["annotated"] = render.jpeg(annotated, 1024)
         if applied:

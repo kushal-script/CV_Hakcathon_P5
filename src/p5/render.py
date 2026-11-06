@@ -3,8 +3,8 @@ from __future__ import annotations
 import cv2
 import numpy as np
 
-COLOURS = {"class": (46, 160, 67), "family": (46, 160, 67), "make": (219, 154, 4), "abstain": (219, 154, 4),
-           "ood_make": (207, 34, 46), "ood": (207, 34, 46), "secondary": (110, 118, 129)}
+COLOURS = {"class": (47, 90, 67), "family": (47, 90, 67), "make": (154, 106, 20), "abstain": (154, 106, 20),
+           "ood_make": (155, 58, 38), "ood": (155, 58, 38), "secondary": (87, 83, 78)}
 
 
 def draw_box(rgb: np.ndarray, box, text: str, colour, below: bool = False) -> None:
@@ -30,7 +30,7 @@ def jpeg(rgb: np.ndarray, max_side: int = 512, quality: int = 85) -> bytes:
     return buf.tobytes() if ok else b""
 
 
-def mask_overlay(rgb: np.ndarray, mask: np.ndarray, contour, colour=(46, 160, 67)) -> np.ndarray:
+def mask_overlay(rgb: np.ndarray, mask: np.ndarray, contour, colour=(47, 90, 67)) -> np.ndarray:
     out = rgb.copy()
     tint = np.zeros_like(rgb)
     tint[mask > 0] = colour
@@ -44,19 +44,26 @@ def edges_panel(edges: np.ndarray) -> np.ndarray:
     return cv2.cvtColor(255 - edges, cv2.COLOR_GRAY2RGB)
 
 
-def hsv_hist_panel(hist: np.ndarray, width: int = 512, height: int = 160) -> np.ndarray:
-    canvas = np.full((height, width, 3), 255, np.uint8)
+HUE_LABELS = ("red", "yellow", "green", "teal", "cyan", "blue", "violet", "magenta", "neutral")
+
+
+def hsv_hist_panel(hist: np.ndarray, width: int = 512, height: int = 170) -> np.ndarray:
+    paper, ink, faint = (251, 250, 247), (29, 28, 26), (201, 196, 184)
+    canvas = np.full((height, width, 3), paper, np.uint8)
     h = hist.reshape(8, 4, 4)
-    n = h.size
-    bar = width / n
-    top = max(float(h.max()), 1e-6)
-    k = 0
-    for hi in range(8):
-        for si in range(4):
-            for vi in range(4):
-                hsv = np.uint8([[[int((hi + 0.5) * 180 / 8), int((si + 0.5) * 256 / 4), int((vi + 0.5) * 256 / 4)]]])
-                colour = tuple(int(c) for c in cv2.cvtColor(hsv, cv2.COLOR_HSV2RGB)[0, 0])
-                bh = int((h[hi, si, vi] / top) * (height - 10))
-                cv2.rectangle(canvas, (int(k * bar), height - bh), (int((k + 1) * bar) - 1, height), colour, -1)
-                k += 1
+    chroma = h[:, 1:, 1:].sum(axis=(1, 2))
+    grey = h[:, 0, :].sum() + h[:, :, 0].sum() - h[:, 0, 0].sum()
+    bars = list(chroma) + [grey]
+    top = max(max(bars), 1e-6)
+    plot_h, base = height - 34, height - 26
+    n = len(bars)
+    bw = width / n
+    for i, v in enumerate(bars):
+        bh = int(v / top * plot_h)
+        x0, x1 = int(i * bw + 6), int((i + 1) * bw - 6)
+        cv2.rectangle(canvas, (x0, base - bh), (x1, base), ink if i < 8 else faint, -1)
+    cv2.line(canvas, (0, base), (width, base), faint, 1)
+    for i, name in enumerate(HUE_LABELS[:n]):
+        size = cv2.getTextSize(name, cv2.FONT_HERSHEY_SIMPLEX, 0.38, 1)[0]
+        cv2.putText(canvas, name, (int(i * bw + (bw - size[0]) / 2), height - 9), cv2.FONT_HERSHEY_SIMPLEX, 0.38, (123, 119, 110), 1, cv2.LINE_AA)
     return canvas

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vahana Drishti</title>
+  <meta name="description" content="Vehicle identification, camera feed search and route reconstruction on open maps.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+  <link rel="stylesheet" href="styles.css?v=4">
+</head>
+<body>
+  <div class="login" id="login" hidden>
+    <form class="login-form" id="login-form" autocomplete="on">
+      <div class="wordmark">Vahana Drishti</div>
+      <p class="muted">Sign in to continue</p>
+      <label>Username<input name="username" autocomplete="username" required></label>
+      <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+      <button class="button primary" type="submit">Sign in</button>
+      <p class="form-error" id="login-error" role="alert"></p>
+    </form>
+  </div>
+
+  <header class="header">
+    <div class="wordmark">Vahana Drishti</div>
+    <nav class="segmented" role="tablist" aria-label="Workspace">
+      <button role="tab" aria-selected="true" data-view="identify">Identify</button>
+      <button role="tab" aria-selected="false" data-view="investigate">Investigate</button>
+      <button role="tab" aria-selected="false" data-view="video">Video</button>
+    </nav>
+    <div class="header-meta">
+      <span class="health" id="health">Connecting</span>
+      <button class="link" id="logout" hidden>Sign out</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="side" id="side">
+      <section class="view" id="view-identify" aria-labelledby="h-identify">
+        <h1 id="h-identify">Identify a vehicle</h1>
+        <p class="lede">Detects the vehicle, names its make, model and year, and shows how the decision was reached.</p>
+        <label class="upload" id="up-identify">
+          <input type="file" accept="image/*,.heic,.heif" hidden>
+          <span class="upload-title">Choose a photo</span>
+          <span class="upload-sub">or drop it here · JPG, PNG, WebP, HEIC</span>
+        </label>
+        <label class="toggle"><input type="checkbox" id="classify-anyway"><span>Classify even when no vehicle is found</span></label>
+        <div id="identify-out"></div>
+      </section>
+
+      <section class="view" id="view-investigate" hidden aria-labelledby="h-investigate">
+        <h1 id="h-investigate">Investigate</h1>
+        <p class="lede">Find where a vehicle appears across camera feeds and reconstruct the route it may have taken.</p>
+        <div class="case-bar">
+          <select id="case-select" aria-label="Case"></select>
+          <button class="button" id="case-new" type="button">New case</button>
+        </div>
+        <div id="case-out"></div>
+      </section>
+
+      <section class="view" id="view-video" hidden aria-labelledby="h-video">
+        <h1 id="h-video">Analyse a video</h1>
+        <p class="lede">Tracks every vehicle, identifies cars, reads travel direction and flags wrong-way movement.</p>
+        <label class="field">Permitted direction of traffic
+          <select id="video-direction">
+            <option value="">Not set</option>
+            <option value="1,0">Left to right</option>
+            <option value="-1,0">Right to left</option>
+            <option value="0,-1">Away from the camera</option>
+            <option value="0,1">Towards the camera</option>
+          </select>
+        </label>
+        <label class="upload" id="up-video">
+          <input type="file" accept="video/*" hidden>
+          <span class="upload-title">Choose a video</span>
+          <span class="upload-sub">or drop it here · MP4, MOV, AVI · first three minutes analysed</span>
+        </label>
+        <div id="video-out"></div>
+      </section>
+    </aside>
+
+    <section class="map-area">
+      <div id="map" aria-label="Map"></div>
+      <div class="map-tools">
+        <div class="map-switch" role="group" aria-label="Base map">
+          <button type="button" aria-pressed="true" data-base="streets">Streets</button>
+          <button type="button" aria-pressed="false" data-base="satellite">Satellite</button>
+        </div>
+        <div class="map-switch" role="group" aria-label="Buildings">
+          <button type="button" aria-pressed="false" id="toggle-3d">3D buildings</button>
+        </div>
+      </div>
+      <div class="map-banner" id="map-banner" hidden></div>
+      <div class="map-key" id="map-key" hidden></div>
+    </section>
+  </main>
+
+  <dialog class="sheet" id="sheet">
+    <div class="sheet-head">
+      <h2 id="sheet-title"></h2>
+      <button class="link" type="button" id="sheet-close">Close</button>
+    </div>
+    <div id="sheet-body"></div>
+  </dialog>
+  <div class="notice" id="notice" role="status" hidden></div>
+
+  <script src="config.js?v=4"></script>
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js" integrity="" crossorigin="anonymous"></script>
+  <script type="module" src="app.js?v=4"></script>
+</body>
+</html>

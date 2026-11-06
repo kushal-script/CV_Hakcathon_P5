@@ -6,3 +6,5 @@ max_side: 1600
 max_extra_vehicles: 2
 threads: 2
 panels: true
+india: true
+prefer: india

@@ -12,9 +12,11 @@ from PIL import Image
 
 from p5 import render
 from p5.classical.colour import vehicle_colour
+from p5.catalogue import primary
 from p5.classification.classifier import Classifier
 from p5.confidence.policy import Thresholds, decide
 from p5.confidence.temperature import softmax_t
+from p5.config import section
 from p5.detection.detector import Detector
 from p5.taxonomy import Taxonomy
 from p5.video.tracker import Track, Tracker, suppress_nested
@@ -25,13 +27,13 @@ FINE_GRAINED = {2, 7}
 
 @dataclass
 class VideoOptions:
-    target_fps: float = 8.0
-    max_side: int = 1280
-    max_seconds: float = 180.0
     allowed_direction: tuple[float, float] | None = None
-    wrong_way_cos: float = -0.3
-    min_travel_frac: float = 0.08
-    best_crops: int = 3
+    target_fps: float = field(default_factory=lambda: section("video")["target_fps"])
+    max_side: int = field(default_factory=lambda: section("video")["max_side"])
+    max_seconds: float = field(default_factory=lambda: section("video")["max_seconds"])
+    wrong_way_cos: float = field(default_factory=lambda: section("video")["wrong_way_cos"])
+    min_travel_frac: float = field(default_factory=lambda: section("video")["min_travel_fraction"])
+    best_crops: int = field(default_factory=lambda: section("video")["best_crops"])
 
 
 @dataclass
@@ -60,8 +62,10 @@ def jpeg_b64(rgb: np.ndarray, side: int = 160) -> str:
 
 
 class VideoAnalyser:
-    def __init__(self, coco_detector: Detector, classifier: Classifier, tax: Taxonomy, th: Thresholds):
+    def __init__(self, coco_detector: Detector, classifier: Classifier, tax: Taxonomy, th: Thresholds,
+                 extra: list | None = None, prefer: str = "india", base_title: str = "US market"):
         self.det, self.clf, self.tax, self.th = coco_detector, classifier, tax, th
+        self.extra, self.prefer, self.base_title = list(extra or []), prefer, base_title
 
     def run(self, path: str, opts: VideoOptions | None = None, progress: Callable[[float], None] | None = None) -> dict:
         opts = opts or VideoOptions()
@@ -74,7 +78,8 @@ class VideoAnalyser:
         stride = max(1, round(fps / opts.target_fps))
         limit = int(min(total or 10**9, opts.max_seconds * fps))
         scale = min(1.0, opts.max_side / max(width, height, 1))
-        tracker = Tracker(max_age=max(5, int(2 * opts.target_fps)))
+        tracker = Tracker(fps=opts.target_fps)
+        vcfg = section("video")
         crops: dict[int, _Crops] = {}
         keyframe = None
         keyframes: list[np.ndarray] = []
@@ -91,16 +96,16 @@ class VideoAnalyser:
                 rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
                 if scale < 1.0:
                     rgb = cv2.resize(rgb, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA)
-                dets = suppress_nested(self.det(rgb, conf=0.15, classes=set(COCO_VEHICLES)))
+                dets = suppress_nested(self.det(rgb, conf=vcfg["detection_conf"], classes=set(COCO_VEHICLES)))
                 active = tracker.update(dets, idx)
                 for t in active:
                     if t.cls not in FINE_GRAINED:
                         continue
                     x1, y1, x2, y2 = t.history[-1][1]
                     area = (x2 - x1) * (y2 - y1) / (rgb.shape[0] * rgb.shape[1])
-                    if area < 0.004:
+                    if area < vcfg["min_crop_area_fraction"]:
                         continue
-                    pad = 0.10
+                    pad = vcfg["crop_padding"]
                     bw, bh = x2 - x1, y2 - y1
                     c = rgb[int(max(0, y1 - pad * bh)):int(min(rgb.shape[0], y2 + pad * bh)),
                             int(max(0, x1 - pad * bw)):int(min(rgb.shape[1], x2 + pad * bw))]
@@ -138,7 +143,7 @@ class VideoAnalyser:
 
     def _summarise(self, t: Track, crops: _Crops | None, fps: float, frame_hw, opts: VideoOptions) -> dict | None:
         hist = t.history
-        if len(hist) < 4:
+        if len(hist) < section("video")["min_track_detections"]:
             return None
         cx = lambda b: ((b[0] + b[2]) / 2, (b[1] + b[3]) / 2)
         (x0, y0), (x1, y1) = cx(hist[0][1]), cx(hist[-1][1])
@@ -165,18 +170,33 @@ class VideoAnalyser:
             out["thumbnail"] = jpeg_b64(best)
             out["colour"] = vehicle_colour(best)
             logits, embs = [], []
+            extra_logits = [[] for _ in self.extra]
             for _, c in crops.items:
                 crop = np.asarray(Image.fromarray(c).resize((self.clf.size, self.clf.size), Image.BILINEAR))
                 z, f = self.clf.run([crop])
                 logits.append(z[0])
                 embs.append(embedding(f[0]))
+                for k, cat in enumerate(self.extra):
+                    cc = crop if cat.classifier.size == self.clf.size else \
+                        np.asarray(Image.fromarray(c).resize((cat.classifier.size, cat.classifier.size), Image.BILINEAR))
+                    extra_logits[k].append(cat.classifier.run([cc])[0][0])
             mean_logits = np.mean(logits, axis=0)
             e = np.mean(embs, axis=0)
             out["embedding"] = (e / (np.linalg.norm(e) + 1e-9)).astype(np.float32).tolist()
             out["probs"] = softmax_t(mean_logits, self.th.t_d).astype(np.float32).tolist()
-            d = decide(mean_logits, self.tax, self.th)
-            out["decision"] = {"level": d.level, "label": d.label, "confidence": d.confidence, "make": d.make,
-                               "top5": d.top5[:3], "note": d.note}
+            brief = lambda d, key, title: {"level": d.level, "label": d.label, "confidence": d.confidence, "make": d.make,
+                                           "top5": d.top5[:3], "note": d.note, "catalogue": key, "catalogue_title": title}
+            ds = [decide(mean_logits, self.tax, self.th)]
+            keys, titles = ["us"], [self.base_title]
+            for k, cat in enumerate(self.extra):
+                ds.append(decide(np.mean(extra_logits[k], axis=0), cat.tax, cat.th))
+                keys.append(cat.key)
+                titles.append(cat.title)
+            pick = primary(ds, keys.index(self.prefer) if self.prefer in keys else 0)
+            d = ds[pick]
+            out["decision"] = brief(d, keys[pick], titles[pick])
+            if self.extra:
+                out["markets"] = {k: brief(x, k, t) for k, x, t in zip(keys, ds, titles)}
             colour = out["colour"]["name"]
             out["label"] = f"{colour} {d.label}" if d.level in ("class", "family", "make") else f"{colour} {out['class']}"
         return out

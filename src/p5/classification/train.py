@@ -21,7 +21,7 @@ from p5.taxonomy import Taxonomy
 
 def parse_args(argv=None) -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Fine-tune a backbone on Stanford Cars crops")
-    p.add_argument("--cache", type=Path, required=True)
+    p.add_argument("--cache", type=Path, default=None)
     p.add_argument("--assets", type=Path, required=True)
     p.add_argument("--out", type=Path, required=True)
     p.add_argument("--backbone", default="tresnet_l.miil_in1k_448")
@@ -42,6 +42,9 @@ def parse_args(argv=None) -> argparse.Namespace:
     p.add_argument("--compile", action="store_true")
     p.add_argument("--device", default="auto")
     p.add_argument("--llrd", type=float, default=1.0)
+    p.add_argument("--split-csv", type=Path, default=None)
+    p.add_argument("--crops", type=Path, default=None)
+    p.add_argument("--init", type=Path, default=None)
     return p.parse_args(argv)
 
 
@@ -124,19 +127,33 @@ def main(argv=None) -> int:
     args.out.mkdir(parents=True, exist_ok=True)
 
     tax = Taxonomy.load(args.assets / "taxonomy")
-    index = pd.read_csv(args.cache / "index_train.csv")
-    val_ids = set(read_ids(args.assets / "splits" / "val_ids.txt"))
-    tr_df, va_df = index[~index.id.isin(val_ids)], index[index.id.isin(val_ids)]
-    assert_disjoint(tr_df.id, va_df.id)
+    if args.split_csv:
+        index = pd.read_csv(args.split_csv)
+        index = index[index.split != "test"].reset_index(drop=True)
+        index["id"] = np.arange(len(index))
+        tr_df, va_df = index[index.split == "train"], index[index.split == "val"]
+        assert_disjoint(tr_df.file, va_df.file)
+    else:
+        index = pd.read_csv(args.cache / "index_train.csv")
+        val_ids = set(read_ids(args.assets / "splits" / "val_ids.txt"))
+        tr_df, va_df = index[~index.id.isin(val_ids)], index[index.id.isin(val_ids)]
+        assert_disjoint(tr_df.id, va_df.id)
     if args.limit:
         tr_df, va_df = tr_df.sample(min(args.limit, len(tr_df)), random_state=0), va_df.head(max(32, args.limit // 8))
 
     model = build(args.backbone, len(tax.names), pretrained=True)
+    if args.init:
+        src = torch.load(args.init, map_location="cpu", weights_only=False)["model"]
+        head = {k for k in model.state_dict() if k.startswith("head.fc.") or k.startswith("fc.") or k.startswith("head.")}
+        body = {k: v for k, v in src.items() if k not in head and k in model.state_dict() and v.shape == model.state_dict()[k].shape}
+        missing = model.load_state_dict(body, strict=False).missing_keys
+        print(json.dumps({"init": str(args.init), "loaded": len(body), "fresh": missing}), flush=True)
     cfg = data_config(model)
     mean, std = list(cfg["mean"]), list(cfg["std"])
     model = model.to(device).to(memory_format=torch.channels_last)
 
-    common = dict(crop_dir=args.cache / "crops" / "train", full_dir=args.cache / "full" / "train", size=args.size,
+    crop_dir = args.crops if args.crops else args.cache / "crops" / "train"
+    common = dict(crop_dir=crop_dir, full_dir=args.cache / "full" / "train" if args.cache else None, size=args.size,
                   mean=mean, std=std, use_full=args.full_image)
     train_ds = CropDataset(tr_df, train=True, aug=not args.no_aug, seed=args.seed, **common)
     val_ds = CropDataset(va_df, train=False, **common)

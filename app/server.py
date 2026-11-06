@@ -15,6 +15,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from p5.classification.classifier import Classifier
+from p5.config import section
 from p5.detection.detector import Detector
 from p5.geo.locate import locate
 from p5.io import InputError, load_image
@@ -43,9 +44,10 @@ def load() -> None:
     pipe = Pipeline.from_config(CONFIG)
     models = pipe.cfg.models
     coco = models / "detector_coco.onnx"
-    analyser = VideoAnalyser(Detector(coco if coco.exists() else models / "detector.onnx", threads=pipe.cfg.threads, iou=0.5),
+    analyser = VideoAnalyser(Detector(coco if coco.exists() else models / "detector.onnx", threads=pipe.cfg.threads,
+                                      iou=section("video")["nms_iou"]),
                              Classifier(models / "classifier.onnx", models / "classifier_meta.json", pipe.cfg.threads),
-                             pipe.tax, pipe.th)
+                             pipe.tax, pipe.th, pipe.extra, pipe.cfg.prefer, pipe.base.title)
     try:
         from rapidocr import RapidOCR
         ocr = RapidOCR()
@@ -82,6 +84,20 @@ async def save_upload(file: UploadFile, limit: int) -> Path:
     return tmp
 
 
+def is_video(path: Path) -> bool:
+    with path.open("rb") as fh:
+        head = fh.read(16)
+    return head[4:8] == b"ftyp" or (head[:4] == b"RIFF" and head[8:12] == b"AVI ") or head[:4] == b"\x1a\x45\xdf\xa3"
+
+
+async def save_video(file: UploadFile, limit: int) -> Path:
+    tmp = await save_upload(file, limit)
+    if not is_video(tmp):
+        tmp.unlink(missing_ok=True)
+        raise HTTPException(415, "This file is not a supported video. Please upload an MP4, MOV, AVI, MKV or WebM file.")
+    return tmp
+
+
 def parse_direction(value: str | None) -> tuple[float, float] | None:
     if not value:
         return None
@@ -106,6 +122,7 @@ def meta() -> dict:
     pipe = state["pipeline"]
     report = pipe.cfg.models / "report.json"
     return {"classes": len(pipe.tax.names), "makes": pipe.tax.display_makes,
+            "catalogues": [{"key": c.key, "title": c.title, "classes": len(c.tax.names)} for c in pipe.catalogues],
             "report": json.loads(report.read_text()) if report.exists() else None}
 
 
@@ -134,7 +151,7 @@ async def locate_photo(file: UploadFile = File(...)) -> dict:
 
 @app.post("/api/video")
 async def analyse_video(file: UploadFile = File(...), allowed_direction: str | None = Form(None)) -> dict:
-    tmp = await save_upload(file, MAX_VIDEO)
+    tmp = await save_video(file, MAX_VIDEO)
     try:
         res = await run_in_threadpool(state["analyser"].run, str(tmp), VideoOptions(allowed_direction=parse_direction(allowed_direction)))
     except ValueError as e:
@@ -181,8 +198,14 @@ async def set_target(cid: str, file: UploadFile = File(...)) -> dict:
 async def add_camera(cid: str, file: UploadFile = File(...), name: str | None = Form(None), lat: float | None = Form(None),
                      lon: float | None = Form(None), start_time: str | None = Form(None),
                      allowed_direction: str | None = Form(None), gps: UploadFile | None = File(None)) -> dict:
-    tmp = await save_upload(file, MAX_VIDEO)
-    track = (await gps.read(), gps.filename or "track.gpx") if gps is not None else None
+    tmp = await save_video(file, MAX_VIDEO)
+    track = None
+    if gps is not None:
+        raw = await gps.read(5 * 2**20 + 1)
+        if len(raw) > 5 * 2**20:
+            tmp.unlink(missing_ok=True)
+            raise HTTPException(413, "GPS track is larger than 5 MB.")
+        track = (raw, gps.filename or "track.gpx")
     try:
         return cases().add_camera(cid, tmp, file.filename or "video.mp4", name, lat, lon, start_time,
                                   parse_direction(allowed_direction), track)
@@ -217,7 +240,7 @@ def job(job_id: str) -> dict:
 
 
 @app.post("/api/cases/{cid}/reason")
-async def reason(cid: str, text: str = Form(""), min_score: float = Form(0.5)) -> dict:
+async def reason(cid: str, text: str = Form(""), min_score: float | None = Form(None)) -> dict:
     try:
         return await run_in_threadpool(cases().reason, cid, text, min_score)
     except KeyError:

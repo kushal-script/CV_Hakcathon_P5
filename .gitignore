@@ -42,3 +42,6 @@ experiments/*/artifacts/*
 
 # Hackathon brief (organiser document)
 /Computer Vision Hackathon 2026.pdf
+
+/gateway/target/
+/web/_dev/

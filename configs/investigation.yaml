@@ -1,0 +1,61 @@
+video:
+  target_fps: 8.0
+  max_side: 1280
+  max_seconds: 180.0
+  detection_conf: 0.15
+  nms_iou: 0.5
+  nested_box_fraction: 0.7
+  min_track_detections: 4
+  min_crop_area_fraction: 0.004
+  crop_padding: 0.10
+  best_crops: 3
+  wrong_way_cos: -0.3
+  min_travel_fraction: 0.08
+
+tracker:
+  high_score: 0.45
+  low_score: 0.15
+  match_iou: 0.25
+  max_age_seconds: 2.0
+  min_hits: 3
+  duplicate_iou: 0.5
+
+hunt:
+  model: hunt_model.json
+  colour_groups:
+    - [white, silver]
+    - [silver, grey]
+    - [grey, black]
+    - [red, maroon]
+    - [orange, brown]
+    - [orange, yellow]
+    - [blue, purple]
+
+routes:
+  near_place_m: 300
+  camera_on_route_m: 40
+  camera_time_margin_s: 120
+  via_bonus: 1.6
+  avoid_penalty: 0.2
+  missed_camera_penalty: 0.35
+  infeasible_penalty: 0.05
+  infeasible_tolerance: 0.25
+  slack_decay_s: 1800
+  slower_route_decay_s: 300
+  activity_stop_weight: 0.6
+  max_targets: 6
+  max_hypotheses: 8
+  isochrone_minutes: [5, 10, 15]
+
+geocoding:
+  bbox: [77.37, 12.83, 77.88, 13.15]
+  centre: [12.9716, 77.5946]
+  min_similarity: 0.55
+  cluster_radius_m: 400
+  min_request_interval_s: 0.35
+
+services:
+  photon_url: https://photon.komoot.io/api/
+  osrm_url: https://router.project-osrm.org
+  valhalla_url: https://valhalla1.openstreetmap.de
+  user_agent: vahana-drishti/0.2

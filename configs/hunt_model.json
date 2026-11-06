@@ -1,0 +1,37 @@
+{
+ "features": [
+  "appearance",
+  "model",
+  "colour"
+ ],
+ "weights": {
+  "appearance": 6.9092842909804855,
+  "model": 0.945379637461221,
+  "colour": 1.1641264529118633
+ },
+ "bias": -7.106908906952751,
+ "threshold": 0.5163106088331555,
+ "source": "scripts/calibrate_hunt.py",
+ "seed": 7,
+ "n_vehicles": 815,
+ "report": {
+  "pairs_fit": 1978,
+  "pairs_eval": 1989,
+  "fpr_target": 0.05,
+  "auc_eval": 0.9807595713807344,
+  "auc_eval_appearance_only": 0.9821780704691744,
+  "tpr_eval_at_threshold": 0.8970588235294118,
+  "fpr_eval_at_threshold": 0.05060088551549652,
+  "fpr_eval_by_kind": {
+   "other model": 0.0,
+   "same model, other vehicle": 0.22408963585434175
+  },
+  "colour_agreement_same_vehicle": 0.6715686274509803,
+  "tpr_eval_at_fpr": {
+   "0.01": 0.5857843137254902,
+   "0.05": 0.8970588235294118,
+   "0.1": 0.9632352941176471
+  },
+  "auc_eval_without_colour": 0.9811083826319902
+ }
+}

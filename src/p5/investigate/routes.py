@@ -2,16 +2,15 @@ from __future__ import annotations
 
 import json
 import math
-import os
 import urllib.parse
 import urllib.request
 
+from p5.config import section
 from p5.geo.geocode import USER_AGENT, haversine_m
 from p5.geo.route import OSRM_URL
 from p5.investigate.hints import nearby_pois
 
-VALHALLA_URL = os.environ.get("P5_VALHALLA_URL", "https://valhalla1.openstreetmap.de")
-NEAR_M, CAMERA_M = 300.0, 40.0
+VALHALLA_URL = section("services")["valhalla_url"]
 
 
 def _get(url: str) -> dict | None:
@@ -40,7 +39,8 @@ def osrm_routes(points: list[tuple[float, float]], alternatives: bool = True) ->
     return out
 
 
-def isochrone(lat: float, lon: float, minutes=(5, 10, 15)) -> dict | None:
+def isochrone(lat: float, lon: float, minutes=None) -> dict | None:
+    minutes = minutes or section("routes")["isochrone_minutes"]
     q = {"locations": [{"lat": lat, "lon": lon}], "costing": "auto", "contours": [{"time": m} for m in minutes], "polygons": True}
     return _get(f"{VALHALLA_URL}/isochrone?json={urllib.parse.quote(json.dumps(q))}")
 
@@ -73,17 +73,18 @@ def initial_bearing(line: list[list[float]], within_m: float = 600.0) -> float |
 
 
 def _score(route: dict, hints: dict, cameras: list[dict], seen_ids: set, t_start: float | None, gap_s: float | None) -> tuple[float, list[str]]:
+    cfg = section("routes")
     score, reasons = 1.0, []
     line = route["geometry"]
     for p in hints.get("places", []):
         if p.get("lat") is None:
             continue
         d = dist_to_line_m((p["lat"], p["lon"]), line)
-        if p["role"] == "via" and d <= NEAR_M:
-            score *= 1.6
+        if p["role"] == "via" and d <= cfg["near_place_m"]:
+            score *= cfg["via_bonus"]
             reasons.append(f"passes {p['label']} (hint)")
-        if p["role"] == "avoid" and d <= NEAR_M:
-            score *= 0.2
+        if p["role"] == "avoid" and d <= cfg["near_place_m"]:
+            score *= cfg["avoid_penalty"]
             reasons.append(f"passes {p['label']}, which the note says was avoided")
     if hints.get("direction"):
         b = initial_bearing(line)
@@ -93,24 +94,25 @@ def _score(route: dict, hints: dict, cameras: list[dict], seen_ids: set, t_start
             reasons.append(f"initial heading {b:.0f}° vs hinted {hints['direction']['word']}")
     if gap_s is not None:
         slack = gap_s - route["duration_s"]
-        if slack < -0.25 * route["duration_s"] - 60:
-            score *= 0.05
+        if slack < -cfg["infeasible_tolerance"] * route["duration_s"] - 60:
+            score *= cfg["infeasible_penalty"]
             reasons.append(f"needs {route['duration_s'] / 60:.1f} min but only {gap_s / 60:.1f} min elapsed")
         else:
-            score *= math.exp(-max(0.0, slack) / 1800.0)
+            score *= math.exp(-max(0.0, slack) / cfg["slack_decay_s"])
             if slack > 300:
                 reasons.append(f"{slack / 60:.0f} min unaccounted (possible stop)")
     if t_start is not None:
         for cam in cameras:
             if cam["id"] in seen_ids or cam.get("lat") is None or cam.get("start_epoch") is None:
                 continue
-            if dist_to_line_m((cam["lat"], cam["lon"]), line) > CAMERA_M:
+            if dist_to_line_m((cam["lat"], cam["lon"]), line) > cfg["camera_on_route_m"]:
                 continue
             frac = haversine_m((line[0][1], line[0][0]), (cam["lat"], cam["lon"])) / max(route["distance_m"], 1.0)
             eta = t_start + frac * route["duration_s"]
             end = cam["start_epoch"] + (cam.get("duration_s") or 0)
-            if cam["start_epoch"] - 120 <= eta <= end + 120:
-                score *= 0.35
+            margin = cfg["camera_time_margin_s"]
+            if cam["start_epoch"] - margin <= eta <= end + margin:
+                score *= cfg["missed_camera_penalty"]
                 reasons.append(f"camera '{cam.get('name')}' on this route was recording and did not see the vehicle")
     return score, reasons
 
@@ -131,7 +133,7 @@ def _prefer_fast(routes: list[dict], key: str = "destination") -> None:
         best[r.get(key)] = min(best.get(r.get(key), float("inf")), r["duration_s"])
     for r in routes:
         extra = r["duration_s"] - best[r.get(key)]
-        r["score"] *= math.exp(-extra / 300.0)
+        r["score"] *= math.exp(-extra / section("routes")["slower_route_decay_s"])
         if extra > 60:
             r["reasons"].append(f"{extra / 60:.1f} min slower than the fastest route to the same place")
 
@@ -161,11 +163,11 @@ def infer(sightings: list[dict], hints: dict, cameras: list[dict]) -> dict:
         origin = (last["lat"], last["lon"])
         targets = [p for p in hints.get("places", []) if p["role"] == "destination" and p.get("lat") is not None]
         vias = [p for p in hints.get("places", []) if p["role"] == "via" and p.get("lat") is not None
-                and haversine_m(origin, (p["lat"], p["lon"])) > 150]
+                and haversine_m(origin, (p["lat"], p["lon"])) > section("routes")["near_place_m"] / 2]
         for act in hints.get("activities", []):
             for poi in nearby_pois(act["osm_tag"], *origin, limit=2):
                 targets.append({"text": act["name"], "label": f"{poi['label']} ({act['name']})", "lat": poi["lat"], "lon": poi["lon"], "role": "stop"})
-        for tgt in targets[:6]:
+        for tgt in targets[:section("routes")["max_targets"]]:
             cands = osrm_routes([origin, (tgt["lat"], tgt["lon"])])
             for via in vias[:1]:
                 cands += osrm_routes([origin, (via["lat"], via["lon"]), (tgt["lat"], tgt["lon"])], alternatives=False)
@@ -174,13 +176,13 @@ def infer(sightings: list[dict], hints: dict, cameras: list[dict]) -> dict:
                 r["destination"] = tgt["label"]
                 r["destination_role"] = tgt["role"]
                 if tgt["role"] == "stop":
-                    r["score"] *= 0.6
+                    r["score"] *= section("routes")["activity_stop_weight"]
                     r["reasons"].append("possible stop inferred from an activity in the note")
                 if last.get("t_abs") is not None:
                     r["eta_epoch"] = last["t_abs"] + r["duration_s"]
             onward.extend(cands)
         _prefer_fast(onward)
-        onward = _normalise(onward)[:8]
+        onward = _normalise(onward)[:section("routes")["max_hypotheses"]]
         reach = isochrone(*origin)
     else:
         reach = None

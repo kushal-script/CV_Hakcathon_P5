@@ -58,7 +58,8 @@ class CropDataset(Dataset):
         if self.use_full:
             img = Image.open(self.full_dir / f"{iid:05d}.jpg").convert("RGB")
             return img.resize((self.size, self.size), Image.BILINEAR)
-        img = Image.open(self.crop_dir / f"{iid:05d}.jpg").convert("RGB")
+        name = r["file"] if "file" in r else f"{iid:05d}.jpg"
+        img = Image.open(self.crop_dir / name).convert("RGB")
         box = (r["bx1"], r["by1"], r["bx2"], r["by2"])
         if self.train and rng is not None:
             box = jitter_box(box, self.jitter[0], self.jitter[1], rng)

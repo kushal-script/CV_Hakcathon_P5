@@ -6,6 +6,7 @@ from difflib import SequenceMatcher
 
 import numpy as np
 
+from p5.config import section
 from p5.geo.exif import read_exif
 from p5.geo.geocode import haversine_m, photon
 
@@ -82,7 +83,8 @@ def similarity(q: str, name: str | None) -> float:
     return SequenceMatcher(None, q, n).ratio()
 
 
-def cluster(points: list[dict], radius_m: float = 400.0) -> list[dict]:
+def cluster(points: list[dict], radius_m: float | None = None) -> list[dict]:
+    radius_m = section("geocoding")["cluster_radius_m"] if radius_m is None else radius_m
     clusters: list[dict] = []
     for p in sorted(points, key=lambda p: -p["score"]):
         for c in clusters:
@@ -117,7 +119,7 @@ def locate(data: bytes, rgb: np.ndarray, ocr_engine=None, vpr=None, top_k: int =
         for q, src in queries(ev):
             for hit in photon(q):
                 sim = similarity(q, hit["name"])
-                if sim < 0.55:
+                if sim < section("geocoding")["min_similarity"]:
                     continue
                 conf = float(np.mean([e.ocr_conf for e in src]))
                 spec = min(1.0, len(q) / 14)

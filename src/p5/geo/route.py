@@ -9,9 +9,10 @@ import urllib.request
 import xml.etree.ElementTree as ET
 from datetime import datetime
 
+from p5.config import section
 from p5.geo.geocode import USER_AGENT, haversine_m
 
-OSRM_URL = os.environ.get("P5_OSRM_URL", "https://router.project-osrm.org")
+OSRM_URL = section("services")["osrm_url"]
 
 
 def _iso(t: str | None) -> float | None:

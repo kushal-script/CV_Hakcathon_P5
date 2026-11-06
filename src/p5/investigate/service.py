@@ -11,6 +11,7 @@ from pathlib import Path
 
 import numpy as np
 
+from p5.config import hunt_model, section
 from p5.geo.locate import cluster, ocr_evidence, queries, similarity
 from p5.geo.geocode import photon
 from p5.geo.route import map_match, mp4_location, parse_track, position_at
@@ -37,7 +38,7 @@ def environment(frames: list[np.ndarray], ocr) -> dict:
     for q, src in queries(ev, 8):
         for hit in photon(q):
             sim = similarity(q, hit["name"])
-            if sim >= 0.55:
+            if sim >= section("geocoding")["min_similarity"]:
                 points.append({**hit, "score": float(np.mean([e.ocr_conf for e in src])) * sim / (1 + 0.5 * hit["rank"]),
                                "query": q, "evidence_key": q})
     cands = []
@@ -199,7 +200,8 @@ class CaseStore:
         cam = next(c for c in case["cameras"] if c["id"] == cam_id)
         return self._path(cid) / "cameras" / cam["file"]
 
-    def reason(self, cid: str, text: str, min_score: float = 0.5) -> dict:
+    def reason(self, cid: str, text: str, min_score: float | None = None) -> dict:
+        min_score = hunt_model()["threshold"] if min_score is None else min_score
         hints = parse_hints(text) if text.strip() else {"places": [], "times": [], "activities": [], "direction": None, "text": ""}
         with self.lock:
             case = self._load(cid)
