@@ -60,6 +60,8 @@ Every tunable value is in a config file, and [docs/PARAMETERS.md](docs/PARAMETER
 | [eval_P5_TeamID.md](eval_P5_TeamID.md) | Comparative evaluation in the required metric order, ablation and failure-case analysis |
 | [docs/IMPLEMENTATION_NOTES.md](docs/IMPLEMENTATION_NOTES.md) | What was built and every deviation from the plan |
 | [docs/PARAMETERS.md](docs/PARAMETERS.md) | Every configurable value and where it comes from |
+| [docs/OPERATIONS.md](docs/OPERATIONS.md) | Deployment, accounts, settings, updates and backups |
+| [assets/bengaluru/SOURCES.md](assets/bengaluru/SOURCES.md) | Where the police station register and the city boundary come from |
 | [docs/FINAL_APPROACH.md](docs/FINAL_APPROACH.md) | Execution plan: requirement coverage, components, experiments, timeline, risks, viva prep |
 | [docs/architecture.md](docs/architecture.md) | Architecture diagrams, module responsibilities and interfaces |
 | [docs/LITERATURE_SURVEY.md](docs/LITERATURE_SURVEY.md) | Literature survey (178 references) |
