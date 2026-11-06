@@ -307,7 +307,7 @@ Ablation and failure-case sections follow (E10–E16, E21). There are at least 3
 
 ## 7. Deployment plan
 
-**Host options** (the decision is the user's, see Open Questions):
+**Host options** (the decision is the team's, see Open Questions):
 
 | Option | Facts | Risk |
 |---|---|---|
@@ -387,7 +387,7 @@ Also watched: YOLO26 tooling bugs (→ YOLO11s), AGPL objections (→ RF-DETR), 
 5. Free Kaggle T4 GPUs are available to ≥ 3 members. The local Mac is CPU-only (classical work and app testing).
 6. AGPL-3.0 licensing of the repo is acceptable.
 
-**Open questions for the user**
+**Open questions for the team**
 1. **Host:** does any member have HF PRO, or will the team pay for it? Is any HF account ≥ 30 days old (for ZeroGPU)? Is a non-HF host acceptable?
 2. Are web-scale pretrained models (CLIP/SigLIP/DINOv2) permitted, and should the headline be the contamination-safe ImageNet-only model even if it is ~1 pt lower?
 3. Which rubric weights are real: 15 per criterion as in the text, or 25/20 as in the table's "Max" column? How is the "average of performance metrics" computed across Top-1, IoU and mAP?

@@ -1,0 +1,10 @@
+.git
+.venv
+data
+cache
+runs
+experiments
+docs
+tests
+*.pdf
+**/__pycache__

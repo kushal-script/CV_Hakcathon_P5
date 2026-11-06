@@ -1,0 +1,47 @@
+[jl] Installing from requirements-train.txt
+Resolved 101 packages in 477ms
+Downloading tokenizers (3.2MiB)
+Downloading transformers (12.2MiB)
+ Downloaded tokenizers
+ Downloaded transformers
+Prepared 9 packages in 459ms
+Installed 9 packages in 3.07s
+ + annotated-doc==0.0.5
+ + markdown-it-py==4.2.0
+ + mdurl==0.1.2
+ + regex==2026.9.29
+ + rich==15.0.0
+ + shellingham==1.5.4
+ + tokenizers==0.23.3
+ + transformers==5.20.2
+ + typer==0.28.0
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/517 [00:00<?, ?it/s]Loading weights: 100%|██████████| 517/517 [00:00<00:00, 6765.22it/s]
+{"wd": 0.0001, "val_top1": 0.6588957055214724}
+{"wd": 0.01, "val_top1": 0.6552147239263804}
+{"wd": 0.1, "val_top1": 0.6588957055214724}
+{"wd": 0.5, "val_top1": 0.6380368098159509}
+{"final_probe": {"backbone": "hf-ijepa:facebook/ijepa_vith14_1k", "size": 224, "feature_dim": 1280, "wd_grid_val_top1": {"0.0001": 0.6588957055214724, "0.01": 0.6552147239263804, "0.1": 0.6588957055214724, "0.5": 0.6380368098159509}, "best_wd": 0.0001, "val_gt": {"top1": 0.6539877300613497, "top5": 0.8699386503067484, "make_top1": 0.7693251533742331, "family_top1": 0.6650306748466258, "year_twin_confusion": 0.14754098360655737, "rebadge_twin_confusion": 0.15}, "val_pred": {"top1": 0.6466257668711657, "top5": 0.8638036809815951, "make_top1": 0.7644171779141105, "family_top1": 0.6576687116564417, "year_twin_confusion": 0.14754098360655737, "rebadge_twin_confusion": 0.18333333333333332}}}
+probe done
+Loading weights:   0%|          | 0/517 [00:00<?, ?it/s]Loading weights: 100%|██████████| 517/517 [00:00<00:00, 6893.42it/s]
+{"epoch": 1, "train_loss": 4.556295843624132, "train_acc": 0.09115720524017468, "lr": 4.6862402361500903e-07, "sec": 157.1, "img_s": 46.6}
+{"epoch": 2, "train_loss": 2.3467810409037826, "train_acc": 0.5519923580786026, "lr": 4.628080791914866e-07, "sec": 160.0, "img_s": 45.8}
+{"epoch": 3, "train_loss": 1.4979870569237455, "train_acc": 0.83610807860262, "lr": 4.456518816595837e-07, "sec": 167.9, "img_s": 43.6, "val_top1": 0.8576687116564418, "val_top5": 0.9693251533742331}
+{"epoch": 4, "train_loss": 1.285788218006817, "train_acc": 0.9010644104803494, "lr": 4.180157144015921e-07, "sec": 154.8, "img_s": 47.3}
+{"epoch": 5, "train_loss": 1.1556942973074433, "train_acc": 0.9387281659388647, "lr": 3.8128537024241197e-07, "sec": 127.9, "img_s": 57.3}
+{"epoch": 6, "train_loss": 1.0918940784629256, "train_acc": 0.954967248908297, "lr": 3.3730266201074504e-07, "sec": 127.7, "img_s": 57.4, "val_top1": 0.9030674846625767, "val_top5": 0.9815950920245399}
+{"epoch": 7, "train_loss": 1.0147471477371115, "train_acc": 0.9754366812227074, "lr": 2.882730663531225e-07, "sec": 127.7, "img_s": 57.4}
+{"epoch": 8, "train_loss": 0.9811222368452747, "train_acc": 0.9817139737991266, "lr": 2.3665513192557955e-07, "sec": 127.5, "img_s": 57.5}
+{"epoch": 9, "train_loss": 0.9613531991904479, "train_acc": 0.9849890829694323, "lr": 1.850371974980366e-07, "sec": 127.6, "img_s": 57.4, "val_top1": 0.9276073619631902, "val_top5": 0.9803680981595092}
+{"epoch": 10, "train_loss": 0.9418383774278466, "train_acc": 0.9889465065502183, "lr": 1.3600760184041406e-07, "sec": 127.7, "img_s": 57.4}
+{"epoch": 11, "train_loss": 0.9255710030747293, "train_acc": 0.9905840611353712, "lr": 9.202489360874717e-08, "sec": 127.7, "img_s": 57.4}
+{"epoch": 12, "train_loss": 0.9183717208658243, "train_acc": 0.9919486899563319, "lr": 5.5294549449567076e-08, "sec": 127.9, "img_s": 57.3, "val_top1": 0.9312883435582822, "val_top5": 0.9803680981595092}
+{"epoch": 13, "train_loss": 0.9066972456644716, "train_acc": 0.9942685589519651, "lr": 2.765838219157543e-08, "sec": 138.6, "img_s": 52.9}
+{"epoch": 14, "train_loss": 0.9015109185048066, "train_acc": 0.9949508733624454, "lr": 1.050218465967251e-08, "sec": 207.0, "img_s": 35.4}
+{"epoch": 15, "train_loss": 0.9016754996828638, "train_acc": 0.9944050218340611, "lr": 4.686240236150089e-09, "sec": 212.4, "img_s": 34.5, "val_top1": 0.9263803680981595, "val_top5": 0.9815950920245399}
+{"final": {"split": "val", "n": 815, "single": {"top1": 0.9263803680981595, "top5": 0.9815950920245399, "make_top1": 0.9766871165644172, "family_top1": 0.9325153374233128, "year_twin_confusion": 0.08196721311475409, "rebadge_twin_confusion": 0.06666666666666667}, "flip_tta": {"top1": 0.9300613496932515, "top5": 0.9828220858895705, "make_top1": 0.9803680981595092, "family_top1": 0.9361963190184049, "year_twin_confusion": 0.08196721311475409, "rebadge_twin_confusion": 0.06666666666666667}}}
+{"split": "val", "input": "gt", "n": 815}
+{"split": "val", "input": "pred", "n": 815}
+{"split": "test", "input": "gt", "n": 8041}
+{"split": "test", "input": "pred", "n": 8041}
+job done: e17_ijepa_vith14

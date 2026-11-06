@@ -1,6 +1,6 @@
 # Data & downloads (Stanford Cars is ~2 GB — never commit)
-data/
-cache/
+/data/
+/cache/
 *.zip
 *.tgz
 *.mat
@@ -11,9 +11,9 @@ cache/
 *.onnx
 *.ckpt
 *.safetensors
-runs/
-weights/
-checkpoints/
+/runs/
+/weights/
+/checkpoints/
 
 # Python
 __pycache__/
@@ -36,3 +36,9 @@ kaggle.json
 # Experiment outputs too large for git (checkpoints, ONNX, predictions)
 experiments/*/artifacts/*
 !experiments/*/artifacts/.gitkeep
+
+# Packaged model artefacts (published as release assets, not committed)
+/models/
+
+# Hackathon brief (organiser document)
+/Computer Vision Hackathon 2026.pdf

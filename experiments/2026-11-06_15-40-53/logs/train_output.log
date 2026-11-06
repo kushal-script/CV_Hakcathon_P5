@@ -1,0 +1,156 @@
+[jl] Installing from requirements-train.txt
+Checked 16 packages in 11ms
+ok   train_count: 8144 (expected 8144)
+ok   test_count: 8041 (expected 8041)
+ok   classes: 196 (expected 196)
+ok   train_classes: 196 (expected 196)
+ok   first_class: AM General Hummer SUV 2000 (expected AM General Hummer SUV 2000)
+ok   makes: 49 (expected 49)
+ok   display_makes: 47 (expected 47)
+ok   families: 189 (expected 189)
+ok   year_twin_22_23: True (expected True)
+ok   year_twin_41_42: True (expected True)
+ok   year_twin_82_83: True (expected True)
+ok   year_twin_93_94: True (expected True)
+ok   year_twin_112_113: True (expected True)
+ok   year_twin_125_126: True (expected True)
+ok   year_twin_189_190: True (expected True)
+split: {'train': 7329, 'val': 815, 'val_classes': 196}
+name, memory.total [MiB]
+NVIDIA A100-PCIE-40GB, 40960 MiB
+prepare done
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+{"epoch": 1, "train_loss": 4.8314455951515, "train_acc": 0.06990131578947369, "lr": 0.00010065789473684211, "sec": 35.7, "img_s": 204.1}
+{"epoch": 2, "train_loss": 2.3791738528954354, "train_acc": 0.5788103070175439, "lr": 0.0002, "sec": 19.8, "img_s": 367.7}
+{"epoch": 3, "train_loss": 1.464123702362964, "train_acc": 0.8656798245614035, "lr": 0.00019710871083389217, "sec": 24.0, "img_s": 304.2}
+{"epoch": 4, "train_loss": 1.2111251707139767, "train_acc": 0.9396929824561403, "lr": 0.0001886028745524944, "sec": 23.9, "img_s": 304.9}
+{"epoch": 5, "train_loss": 1.1116347995243574, "train_acc": 0.9638157894736842, "lr": 0.00017497681944302458, "sec": 23.2, "img_s": 314.6, "val_top1": 0.8920245398773006, "val_top5": 0.9779141104294479}
+{"epoch": 6, "train_loss": 1.0574172927360785, "train_acc": 0.9750548245614035, "lr": 0.00015702244229975, "sec": 23.4, "img_s": 311.9}
+{"epoch": 7, "train_loss": 1.0305608475678845, "train_acc": 0.9798519736842105, "lr": 0.00013578318626073229, "sec": 23.2, "img_s": 314.3}
+{"epoch": 8, "train_loss": 0.9955267721885129, "train_acc": 0.9869791666666666, "lr": 0.00011249339968540464, "sec": 24.0, "img_s": 304.1}
+{"epoch": 9, "train_loss": 0.9736706869382608, "train_acc": 0.9906798245614035, "lr": 8.850660031459537e-05, "sec": 20.5, "img_s": 356.0}
+{"epoch": 10, "train_loss": 0.9589104154392293, "train_acc": 0.9920504385964912, "lr": 6.521681373926771e-05, "sec": 25.2, "img_s": 289.9, "val_top1": 0.9226993865030675, "val_top5": 0.9815950920245399}
+{"epoch": 11, "train_loss": 0.9458285111345743, "train_acc": 0.993421052631579, "lr": 4.397755770025001e-05, "sec": 24.0, "img_s": 303.8}
+{"epoch": 12, "train_loss": 0.9352140924648235, "train_acc": 0.9957510964912281, "lr": 2.6023180556975436e-05, "sec": 21.1, "img_s": 345.3}
+{"epoch": 13, "train_loss": 0.9280007446282789, "train_acc": 0.9961622807017544, "lr": 1.2397125447505626e-05, "sec": 24.2, "img_s": 301.9}
+{"epoch": 14, "train_loss": 0.9255176974754584, "train_acc": 0.9958881578947368, "lr": 3.891289166107825e-06, "sec": 22.8, "img_s": 319.3}
+{"epoch": 15, "train_loss": 0.9244295252781165, "train_acc": 0.9960252192982456, "lr": 1e-06, "sec": 23.6, "img_s": 309.1, "val_top1": 0.9325153374233128, "val_top5": 0.9815950920245399}
+{"final": {"split": "val", "n": 815, "single": {"top1": 0.9325153374233128, "top5": 0.9815950920245399, "make_top1": 0.9840490797546012, "family_top1": 0.9374233128834356, "year_twin_confusion": 0.06557377049180328, "rebadge_twin_confusion": 0.1}, "flip_tta": {"top1": 0.9288343558282208, "top5": 0.9828220858895705, "make_top1": 0.9828220858895705, "family_top1": 0.9337423312883436, "year_twin_confusion": 0.06557377049180328, "rebadge_twin_confusion": 0.11666666666666667}}}
+ablation done: e09_control_crops
+{"epoch": 1, "train_loss": 4.836908969439958, "train_acc": 0.06811951754385964, "lr": 0.00010065789473684211, "sec": 35.6, "img_s": 205.1}
+{"epoch": 2, "train_loss": 2.4660070248340307, "train_acc": 0.5589364035087719, "lr": 0.0002, "sec": 21.4, "img_s": 340.8}
+{"epoch": 3, "train_loss": 1.5458430083174455, "train_acc": 0.8453947368421053, "lr": 0.00019710871083389217, "sec": 23.7, "img_s": 308.2}
+{"epoch": 4, "train_loss": 1.2675508637177317, "train_acc": 0.9302357456140351, "lr": 0.0001886028745524944, "sec": 23.8, "img_s": 306.5}
+{"epoch": 5, "train_loss": 1.155659783827631, "train_acc": 0.9558662280701754, "lr": 0.00017497681944302458, "sec": 19.9, "img_s": 366.5, "val_top1": 0.8711656441717791, "val_top5": 0.9791411042944785}
+{"epoch": 6, "train_loss": 1.0858281054779102, "train_acc": 0.9710800438596491, "lr": 0.00015702244229975, "sec": 24.2, "img_s": 301.3}
+{"epoch": 7, "train_loss": 1.0514384108154398, "train_acc": 0.9768366228070176, "lr": 0.00013578318626073229, "sec": 21.7, "img_s": 336.6}
+{"epoch": 8, "train_loss": 1.0289087570027302, "train_acc": 0.9814967105263158, "lr": 0.00011249339968540464, "sec": 17.4, "img_s": 418.2}
+{"epoch": 9, "train_loss": 1.0018503826699758, "train_acc": 0.9860197368421053, "lr": 8.850660031459537e-05, "sec": 18.3, "img_s": 397.7}
+{"epoch": 10, "train_loss": 0.9788544323099287, "train_acc": 0.9895833333333334, "lr": 6.521681373926771e-05, "sec": 18.8, "img_s": 387.7, "val_top1": 0.90920245398773, "val_top5": 0.9815950920245399}
+{"epoch": 11, "train_loss": 0.9630254358053207, "train_acc": 0.9908168859649122, "lr": 4.397755770025001e-05, "sec": 18.4, "img_s": 396.9}
+{"epoch": 12, "train_loss": 0.9573872501128599, "train_acc": 0.9919133771929824, "lr": 2.6023180556975436e-05, "sec": 18.9, "img_s": 386.8}
+{"epoch": 13, "train_loss": 0.9458219122729803, "train_acc": 0.9949287280701754, "lr": 1.2397125447505626e-05, "sec": 18.7, "img_s": 390.4}
+{"epoch": 14, "train_loss": 0.9377488917426059, "train_acc": 0.9947916666666666, "lr": 3.891289166107825e-06, "sec": 18.7, "img_s": 391.1}
+{"epoch": 15, "train_loss": 0.9383337682015017, "train_acc": 0.9954769736842105, "lr": 1e-06, "sec": 18.8, "img_s": 389.1, "val_top1": 0.9104294478527607, "val_top5": 0.9828220858895705}
+{"final": {"split": "val", "n": 815, "single": {"top1": 0.9104294478527607, "top5": 0.9828220858895705, "make_top1": 0.9680981595092024, "family_top1": 0.9153374233128835, "year_twin_confusion": 0.06557377049180328, "rebadge_twin_confusion": 0.13333333333333333}, "flip_tta": {"top1": 0.912883435582822, "top5": 0.9840490797546012, "make_top1": 0.9680981595092024, "family_top1": 0.9165644171779141, "year_twin_confusion": 0.04918032786885246, "rebadge_twin_confusion": 0.13333333333333333}}}
+ablation done: e09_full_image
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+{"epoch": 1, "train_loss": 4.699374405961287, "train_acc": 0.09498355263157894, "lr": 0.00010065789473684211, "sec": 25.6, "img_s": 285.5}
+{"epoch": 2, "train_loss": 2.062204873875568, "train_acc": 0.6768092105263158, "lr": 0.0002, "sec": 13.9, "img_s": 523.8}
+{"epoch": 3, "train_loss": 1.24612032426031, "train_acc": 0.9322916666666666, "lr": 0.00019710871083389217, "sec": 14.0, "img_s": 520.7}
+{"epoch": 4, "train_loss": 1.0392973101452778, "train_acc": 0.9824561403508771, "lr": 0.0001886028745524944, "sec": 14.3, "img_s": 510.0}
+{"epoch": 5, "train_loss": 0.9723846779057854, "train_acc": 0.9897203947368421, "lr": 0.00017497681944302458, "sec": 14.2, "img_s": 512.4, "val_top1": 0.894478527607362, "val_top5": 0.9779141104294479}
+{"epoch": 6, "train_loss": 0.9375157599386416, "train_acc": 0.9943804824561403, "lr": 0.00015702244229975, "sec": 19.2, "img_s": 380.5}
+{"epoch": 7, "train_loss": 0.9189773915629638, "train_acc": 0.9962993421052632, "lr": 0.00013578318626073229, "sec": 23.8, "img_s": 306.9}
+{"epoch": 8, "train_loss": 0.9071580661754859, "train_acc": 0.9971217105263158, "lr": 0.00011249339968540464, "sec": 24.3, "img_s": 300.3}
+{"epoch": 9, "train_loss": 0.8964662198957644, "train_acc": 0.9980811403508771, "lr": 8.850660031459537e-05, "sec": 30.4, "img_s": 239.9}
+{"epoch": 10, "train_loss": 0.8912890286822068, "train_acc": 0.9975328947368421, "lr": 6.521681373926771e-05, "sec": 28.2, "img_s": 259.0, "val_top1": 0.9226993865030675, "val_top5": 0.9852760736196319}
+{"epoch": 11, "train_loss": 0.8855398399265189, "train_acc": 0.9983552631578947, "lr": 4.397755770025001e-05, "sec": 15.3, "img_s": 476.6}
+{"epoch": 12, "train_loss": 0.8814052206120992, "train_acc": 0.9990405701754386, "lr": 2.6023180556975436e-05, "sec": 19.8, "img_s": 369.1}
+{"epoch": 13, "train_loss": 0.8794016924343611, "train_acc": 0.9991776315789473, "lr": 1.2397125447505626e-05, "sec": 39.3, "img_s": 185.8}
+{"epoch": 14, "train_loss": 0.8788773342967033, "train_acc": 0.998766447368421, "lr": 3.891289166107825e-06, "sec": 38.1, "img_s": 191.3}
+{"epoch": 15, "train_loss": 0.877983322661174, "train_acc": 0.9993146929824561, "lr": 1e-06, "sec": 36.7, "img_s": 199.0, "val_top1": 0.9239263803680982, "val_top5": 0.9840490797546012}
+{"final": {"split": "val", "n": 815, "single": {"top1": 0.9239263803680982, "top5": 0.9840490797546012, "make_top1": 0.9791411042944785, "family_top1": 0.9288343558282208, "year_twin_confusion": 0.06557377049180328, "rebadge_twin_confusion": 0.11666666666666667}, "flip_tta": {"top1": 0.9226993865030675, "top5": 0.9852760736196319, "make_top1": 0.9779141104294479, "family_top1": 0.9276073619631902, "year_twin_confusion": 0.06557377049180328, "rebadge_twin_confusion": 0.1}}}
+ablation done: e10_no_aug
+/home/p5/src/p5/classification/export.py:38: DeprecationWarning: You are using the legacy TorchScript-based ONNX export. Starting in PyTorch 2.9, the new torch.export-based ONNX exporter has become the default. Learn more about the new export logic: https://docs.pytorch.org/docs/stable/onnx_export.html. For exporting control flow: https://pytorch.org/tutorials/beginner/onnx/export_control_flow_model_to_onnx_tutorial.html
+  torch.onnx.export(wrapped, x, onnx_path, input_names=["input"], output_names=["logits", "features"],
+/home/p5/.venv/lib/python3.10/site-packages/torch/onnx/_internal/torchscript_exporter/jit_utils.py:308: UserWarning: Constant folding - Only steps=1 can be constant folded for opset >= 10 onnx::Slice op. Constant folding not applied. (Triggered internally at /__w/pytorch/pytorch/torch/csrc/jit/passes/onnx/constant_fold.cpp:178.)
+  _C._jit_pass_onnx_node_shape_type_inference(node, params_dict, opset_version)
+/home/p5/.venv/lib/python3.10/site-packages/torch/onnx/_internal/torchscript_exporter/utils.py:712: UserWarning: Constant folding - Only steps=1 can be constant folded for opset >= 10 onnx::Slice op. Constant folding not applied. (Triggered internally at /__w/pytorch/pytorch/torch/csrc/jit/passes/onnx/constant_fold.cpp:178.)
+  _C._jit_pass_onnx_graph_shape_type_inference(
+/home/p5/.venv/lib/python3.10/site-packages/torch/onnx/_internal/torchscript_exporter/utils.py:1185: UserWarning: Constant folding - Only steps=1 can be constant folded for opset >= 10 onnx::Slice op. Constant folding not applied. (Triggered internally at /__w/pytorch/pytorch/torch/csrc/jit/passes/onnx/constant_fold.cpp:178.)
+  _C._jit_pass_onnx_graph_shape_type_inference(
+[1;31m2026-11-06 09:02:25.548460620 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6781, index: 0, mask: {32, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.548678032 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6783, index: 2, mask: {33, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.548774445 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6785, index: 4, mask: {34, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.549678040 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6789, index: 8, mask: {36, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.549688179 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6795, index: 14, mask: {39, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.549776486 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6799, index: 18, mask: {41, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.549851058 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6787, index: 6, mask: {35, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.549979021 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6801, index: 20, mask: {42, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.556155618 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6791, index: 10, mask: {37, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.556200363 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6793, index: 12, mask: {38, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.565143498 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6797, index: 16, mask: {40, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.566059957 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6807, index: 26, mask: {45, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.567344404 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6832, index: 51, mask: {26, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.567355906 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6825, index: 44, mask: {54, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.568167054 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6821, index: 40, mask: {52, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.568184698 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6811, index: 30, mask: {47, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.568171763 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6805, index: 24, mask: {44, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.568185459 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6829, index: 48, mask: {56, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.570133415 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6831, index: 50, mask: {57, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.568188175 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6816, index: 35, mask: {18, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.573132915 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6828, index: 47, mask: {24, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.568167085 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6815, index: 34, mask: {49, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.576136112 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6814, index: 33, mask: {17, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.576173644 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6817, index: 36, mask: {50, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.568207050 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6824, index: 43, mask: {22, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.571136498 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6809, index: 28, mask: {46, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.580151420 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6819, index: 38, mask: {51, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.583150930 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6812, index: 31, mask: {16, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.586155680 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6803, index: 22, mask: {43, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.592152306 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6823, index: 42, mask: {53, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.594817422 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6827, index: 46, mask: {55, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.598158070 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6830, index: 49, mask: {25, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.601163912 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6818, index: 37, mask: {19, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.609152827 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6820, index: 39, mask: {20, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.613153838 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6834, index: 53, mask: {27, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.616150302 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6837, index: 56, mask: {60, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.619185771 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6833, index: 52, mask: {58, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.622183117 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6840, index: 59, mask: {30, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.625183188 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6841, index: 60, mask: {62, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.627921673 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6839, index: 58, mask: {61, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.631187719 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6838, index: 57, mask: {29, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.633965349 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6843, index: 62, mask: {63, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.637200316 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6835, index: 54, mask: {59, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.637234721 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6822, index: 41, mask: {21, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.637204123 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6813, index: 32, mask: {48, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.640141105 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6836, index: 55, mask: {28, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.643142969 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6842, index: 61, mask: {31, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+[1;31m2026-11-06 09:02:25.645546399 [E:onnxruntime:Default, env.cc:226 ThreadMain] pthread_setaffinity_np failed for thread: 6826, index: 45, mask: {23, }, error code: 22 error msg: Invalid argument. Specify the number of threads explicitly so the affinity is not set.[m
+{
+ "backbone": "tresnet_m.miil_in21k_ft_in1k",
+ "size": 368,
+ "pad": 0.1,
+ "mean": [
+  0.0,
+  0.0,
+  0.0
+ ],
+ "std": [
+  1.0,
+  1.0,
+  1.0
+ ],
+ "interpolation": "bilinear",
+ "feature_dim": 2048,
+ "feature_hw": [
+  12,
+  12
+ ],
+ "num_classes": 196,
+ "precision": "fp32",
+ "parity_max_abs_diff": 5.245208740234375e-06,
+ "sha256": "31500aac94b7d499f170b08452f653224e05f139ff7404c5e6b41c08b54ff3b5"
+}
+job done: ablations

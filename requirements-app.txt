@@ -1,0 +1,11 @@
+numpy
+scipy
+pillow
+pillow-heif
+pyyaml
+opencv-contrib-python-headless
+scikit-image
+onnxruntime
+fastapi
+uvicorn[standard]
+python-multipart

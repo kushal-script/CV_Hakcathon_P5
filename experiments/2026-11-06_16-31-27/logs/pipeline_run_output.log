@@ -1,0 +1,13 @@
+[jl] Installing from requirements-train.txt
+Checked 17 packages in 19ms
+1000/8041
+2000/8041
+3000/8041
+4000/8041
+5000/8041
+6000/8041
+7000/8041
+8000/8041
+wrote /home/work/runs/e15_pipeline/test_pipeline.jsonl (8041 images)
+wrote /home/work/runs/e15_pipeline/coco_neg_test_pipeline.jsonl (100 images)
+job done: pipeline

@@ -1,0 +1,17 @@
+numpy
+scipy
+pillow
+pandas
+pyarrow
+pyyaml
+opencv-contrib-python-headless
+scikit-learn
+scikit-image
+torch
+torchvision
+timm
+onnx
+onnxruntime
+ultralytics
+pytest
+transformers

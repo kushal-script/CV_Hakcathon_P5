@@ -1,0 +1,36 @@
+[jl] Installing from requirements-train.txt
+Checked 16 packages in 60ms
+ok   train_count: 8144 (expected 8144)
+ok   test_count: 8041 (expected 8041)
+ok   classes: 196 (expected 196)
+ok   train_classes: 196 (expected 196)
+ok   first_class: AM General Hummer SUV 2000 (expected AM General Hummer SUV 2000)
+ok   makes: 49 (expected 49)
+ok   display_makes: 47 (expected 47)
+ok   families: 189 (expected 189)
+ok   year_twin_22_23: True (expected True)
+ok   year_twin_41_42: True (expected True)
+ok   year_twin_82_83: True (expected True)
+ok   year_twin_93_94: True (expected True)
+ok   year_twin_112_113: True (expected True)
+ok   year_twin_125_126: True (expected True)
+ok   year_twin_189_190: True (expected True)
+split: {'train': 7329, 'val': 815, 'val_classes': 196}
+train: 8144 crops cached
+test: 8041 crops cached
+name, memory.total [MiB]
+NVIDIA A100-PCIE-40GB, 40960 MiB
+prepare done
+cuda True 2.14.1+cu130
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+{"epoch": 1, "train_loss": 4.197541706426695, "train_acc": 0.17999454148471616, "lr": 0.00010043668122270742, "sec": 42.7, "img_s": 171.7}
+{"epoch": 2, "train_loss": 2.0756366945250067, "train_acc": 0.6520196506550219, "lr": 0.0002, "sec": 27.0, "img_s": 270.9}
+{"epoch": 3, "train_loss": 1.5331908953762472, "train_acc": 0.8281932314410481, "lr": 0.00019966015705416364, "sec": 27.1, "img_s": 270.8}
+{"epoch": 4, "train_loss": 1.278743590850497, "train_acc": 0.9072052401746725, "lr": 0.00019864294968857088, "sec": 27.2, "img_s": 269.1}
+{"epoch": 5, "train_loss": 1.1590046487000312, "train_acc": 0.943504366812227, "lr": 0.00019695532646096337, "sec": 27.1, "img_s": 270.3, "val_top1": 0.8871165644171779, "val_top5": 0.9766871165644172}
+{"epoch": 6, "train_loss": 1.1276553603759498, "train_acc": 0.951146288209607, "lr": 0.00019460881554921315, "sec": 27.3, "img_s": 268.7}
+{"epoch": 7, "train_loss": 1.1010256719381009, "train_acc": 0.957014192139738, "lr": 0.00019161944600217822, "sec": 29.6, "img_s": 247.4}
+{"epoch": 8, "train_loss": 1.0803269676245977, "train_acc": 0.9619268558951966, "lr": 0.00018800763824504565, "sec": 33.4, "img_s": 219.2}
+{"epoch": 9, "train_loss": 1.070914581613249, "train_acc": 0.9645196506550219, "lr": 0.0001837980645871216, "sec": 33.2, "img_s": 220.7}
+{"epoch": 10, "train_loss": 1.0286872183912186, "train_acc": 0.9739355895196506, "lr": 0.0001790194806849412, "sec": 32.4, "img_s": 226.4, "val_top1": 0.9042944785276074, "val_top5": 0.9840490797546012}
+{"epoch": 11, "train_loss": 1.0057881849301433, "train_acc": 0.9821233624454149, "lr": 0.00017370452911197662, "sec": 35.3, "img_s": 207.8}

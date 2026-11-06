@@ -1,0 +1,43 @@
+{
+ "experiment_id": "2026-11-06_13-51-36",
+ "split": "val",
+ "classification": {
+  "top1": 0.9533742331288344,
+  "top5": 0.9901840490797545,
+  "make_top1": 0.9901840490797545,
+  "family_top1": 0.9582822085889571,
+  "year_twin_top1": null,
+  "year_twin_confusion": 0.06557377049180328,
+  "rebadge_twin_confusion": 0.08333333333333333,
+  "flip_tta_top1": 0.9570552147239264
+ },
+ "localization": {
+  "mean_iou": null,
+  "iou_ge_0_5": null,
+  "iou_ge_0_75": null
+ },
+ "detection": {
+  "map_50": null,
+  "map_50_95": null,
+  "class_aware_map_50": null
+ },
+ "efficiency": {
+  "model_size_mb": null,
+  "params_m": null,
+  "latency_cpu_p50_ms": null,
+  "latency_cpu_p95_ms": null,
+  "precision": null
+ },
+ "robustness": {},
+ "confidence": {
+  "ece_before": 0.11382563448756751,
+  "ece_after": 0.018462344144750977,
+  "temperature": 0.7532437268868313,
+  "threshold": null,
+  "accuracy_at_threshold": null,
+  "coverage_at_threshold": null,
+  "ood_auroc": null,
+  "aurc": 0.020031397472841248
+ },
+ "input": "gt"
+}

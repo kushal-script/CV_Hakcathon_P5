@@ -1,0 +1,39 @@
+{
+ "cache": "/home/work/cache",
+ "assets": "/home/p5/assets",
+ "out": "/home/work/runs/e17_ijepa_vith14/finetune",
+ "backbone": "hf-ijepa:facebook/ijepa_vith14_1k",
+ "size": 280,
+ "epochs": 15,
+ "batch": 32,
+ "lr": 0.0001,
+ "head_lr": 0.001,
+ "wd": 0.05,
+ "warmup": 1.0,
+ "smoothing": 0.1,
+ "workers": 12,
+ "seed": 42,
+ "no_aug": false,
+ "full_image": false,
+ "eval_every": 3,
+ "limit": 0,
+ "compile": false,
+ "device": "cuda",
+ "llrd": 0.85,
+ "mean": [
+  0.5,
+  0.5,
+  0.5
+ ],
+ "std": [
+  0.5,
+  0.5,
+  0.5
+ ],
+ "interpolation": "bicubic",
+ "num_classes": 196,
+ "train_n": 7329,
+ "val_n": 815,
+ "amp": "torch.bfloat16",
+ "torch": "2.14.1+cu130"
+}

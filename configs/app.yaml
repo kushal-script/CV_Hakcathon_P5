@@ -1,0 +1,8 @@
+models: ../models
+serve_size: null
+flip_tta: false
+fusion: false
+max_side: 1600
+max_extra_vehicles: 2
+threads: 2
+panels: true

@@ -1,0 +1,16 @@
+{"C": 0.005, "val_top1": 0.1521472392638037}
+{"C": 0.02, "val_top1": 0.14478527607361963}
+{"C": 0.05, "val_top1": 0.12515337423312883}
+{"C": 0.2, "val_top1": 0.10429447852760736}
+{"hsv": {"without": 0.13496932515337423, "only": 0.03558282208588957}}
+{"moments": {"without": 0.15337423312883436, "only": 0.024539877300613498}}
+{"lbp": {"without": 0.1558282208588957, "only": 0.03803680981595092}}
+{"hog": {"without": 0.09325153374233129, "only": 0.13374233128834356}}
+{"edges": {"without": 0.13987730061349693, "only": 0.033128834355828224}}
+{"geometry": {"without": 0.147239263803681, "only": 0.0196319018404908}}
+{"top1": 0.1521472392638037, "top5": 0.3411042944785276, "make_top1": 0.23680981595092024, "family_top1": 0.15828220858895706, "year_twin_confusion": 0.08196721311475409, "rebadge_twin_confusion": 0.08333333333333333}
+.venv/bin/python scripts/train_classical.py --workers 8 2>&1  458.56s user 3.97s system 89% cpu 8:37.72 total
+grep -E '^\{'  0.33s user 0.73s system 0% cpu 8:37.72 total
+tail -14  0.00s user 0.00s system 0% cpu 8:37.72 total
+
+[exited with code 0]

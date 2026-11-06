@@ -1,4 +1,4 @@
-# Agent report: surveys, practitioner sources, and Stanford Cars benchmark pitfalls
+# Research report: surveys, practitioner sources, and Stanford Cars benchmark pitfalls
 
 **How it was verified.** Numbers marked "verified" were read from the paper's own text: I downloaded the PDF, ran pdftotext, and checked the tables. Numbers taken only from abstracts, search snippets or READMEs are marked "(unverified)" or "abstract only".
 

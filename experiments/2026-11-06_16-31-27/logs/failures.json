@@ -1,0 +1,284 @@
+{
+ "n_wrong_top1": 430,
+ "categories": {
+  "different make": 70,
+  "same make, different model": 256,
+  "rebadged twin": 39,
+  "same model, different year": 38,
+  "no vehicle or rejected input": 27
+ },
+ "top_confusions": [
+  {
+   "true": "Chevrolet Express Van 2007",
+   "predicted": "Chevrolet Express Cargo Van 2007",
+   "count": 13,
+   "same_family": false,
+   "same_display_make": true
+  },
+  {
+   "true": "Audi TTS Coupe 2012",
+   "predicted": "Audi TT Hatchback 2011",
+   "count": 13,
+   "same_family": false,
+   "same_display_make": true
+  },
+  {
+   "true": "Audi S5 Coupe 2012",
+   "predicted": "Audi A5 Coupe 2012",
+   "count": 11,
+   "same_family": false,
+   "same_display_make": true
+  },
+  {
+   "true": "Dodge Caliber Wagon 2007",
+   "predicted": "Dodge Caliber Wagon 2012",
+   "count": 11,
+   "same_family": true,
+   "same_display_make": true
+  },
+  {
+   "true": "Audi V8 Sedan 1994",
+   "predicted": "Audi 100 Sedan 1994",
+   "count": 11,
+   "same_family": false,
+   "same_display_make": true
+  },
+  {
+   "true": "Dodge Caliber Wagon 2012",
+   "predicted": "Dodge Caliber Wagon 2007",
+   "count": 10,
+   "same_family": true,
+   "same_display_make": true
+  },
+  {
+   "true": "Dodge Sprinter Cargo Van 2009",
+   "predicted": "Mercedes-Benz Sprinter Van 2012",
+   "count": 8,
+   "same_family": false,
+   "same_display_make": false
+  },
+  {
+   "true": "BMW 6 Series Convertible 2007",
+   "predicted": "BMW M6 Convertible 2010",
+   "count": 8,
+   "same_family": false,
+   "same_display_make": true
+  },
+  {
+   "true": "Audi TT Hatchback 2011",
+   "predicted": "Audi TTS Coupe 2012",
+   "count": 8,
+   "same_family": false,
+   "same_display_make": true
+  },
+  {
+   "true": "Bentley Continental GT Coupe 2012",
+   "predicted": "Bentley Continental GT Coupe 2007",
+   "count": 7,
+   "same_family": true,
+   "same_display_make": true
+  },
+  {
+   "true": "Spyker C8 Coupe 2009",
+   "predicted": "Spyker C8 Convertible 2009",
+   "count": 6,
+   "same_family": false,
+   "same_display_make": true
+  },
+  {
+   "true": "Bentley Continental GT Coupe 2007",
+   "predicted": "Bentley Continental GT Coupe 2012",
+   "count": 6,
+   "same_family": true,
+   "same_display_make": true
+  },
+  {
+   "true": "Chevrolet Express Cargo Van 2007",
+   "predicted": "Chevrolet Express Van 2007",
+   "count": 6,
+   "same_family": false,
+   "same_display_make": true
+  },
+  {
+   "true": "Chevrolet Express Van 2007",
+   "predicted": "GMC Savana Van 2012",
+   "count": 6,
+   "same_family": false,
+   "same_display_make": false
+  },
+  {
+   "true": "Chevrolet Silverado 1500 Regular Cab 2012",
+   "predicted": "Chevrolet Silverado 2500HD Regular Cab 2012",
+   "count": 5,
+   "same_family": false,
+   "same_display_make": true
+  },
+  {
+   "true": "Audi A5 Coupe 2012",
+   "predicted": "Audi S5 Coupe 2012",
+   "count": 5,
+   "same_family": false,
+   "same_display_make": true
+  },
+  {
+   "true": "HUMMER H2 SUT Crew Cab 2009",
+   "predicted": "HUMMER H3T Crew Cab 2010",
+   "count": 5,
+   "same_family": false,
+   "same_display_make": true
+  },
+  {
+   "true": "Chevrolet Silverado 2500HD Regular Cab 2012",
+   "predicted": "Chevrolet Silverado 1500 Regular Cab 2012",
+   "count": 5,
+   "same_family": false,
+   "same_display_make": true
+  },
+  {
+   "true": "GMC Savana Van 2012",
+   "predicted": "Chevrolet Express Cargo Van 2007",
+   "count": 5,
+   "same_family": false,
+   "same_display_make": false
+  },
+  {
+   "true": "Bugatti Veyron 16.4 Coupe 2009",
+   "predicted": "Bugatti Veyron 16.4 Convertible 2009",
+   "count": 5,
+   "same_family": false,
+   "same_display_make": true
+  }
+ ],
+ "examples": {
+  "same_make": [
+   {
+    "id": 3231,
+    "truth": "Audi TT RS Coupe 2012",
+    "level": "class",
+    "prediction": "Audi TT Hatchback 2011",
+    "confidence": 0.9979084730148315,
+    "figure": "same_make_03231.jpg"
+   },
+   {
+    "id": 3009,
+    "truth": "BMW 6 Series Convertible 2007",
+    "level": "class",
+    "prediction": "BMW M6 Convertible 2010",
+    "confidence": 0.9971000552177429,
+    "figure": "same_make_03009.jpg"
+   },
+   {
+    "id": 6005,
+    "truth": "BMW 6 Series Convertible 2007",
+    "level": "class",
+    "prediction": "BMW M6 Convertible 2010",
+    "confidence": 0.9958356618881226,
+    "figure": "same_make_06005.jpg"
+   }
+  ],
+  "year_twin": [
+   {
+    "id": 2012,
+    "truth": "Bentley Continental GT Coupe 2012",
+    "level": "class",
+    "prediction": "Bentley Continental GT Coupe 2007",
+    "confidence": 0.9961310625076294,
+    "figure": "year_twin_02012.jpg"
+   },
+   {
+    "id": 2449,
+    "truth": "Bentley Continental GT Coupe 2012",
+    "level": "class",
+    "prediction": "Bentley Continental GT Coupe 2007",
+    "confidence": 0.9954541921615601,
+    "figure": "year_twin_02449.jpg"
+   },
+   {
+    "id": 4160,
+    "truth": "Dodge Caliber Wagon 2007",
+    "level": "class",
+    "prediction": "Dodge Caliber Wagon 2012",
+    "confidence": 0.9952322840690613,
+    "figure": "year_twin_04160.jpg"
+   }
+  ],
+  "rebadge_twin": [
+   {
+    "id": 5725,
+    "truth": "Chevrolet Express Cargo Van 2007",
+    "level": "class",
+    "prediction": "Chevrolet Express Van 2007",
+    "confidence": 0.9955885410308838,
+    "figure": "rebadge_twin_05725.jpg"
+   },
+   {
+    "id": 7699,
+    "truth": "Chevrolet Express Cargo Van 2007",
+    "level": "class",
+    "prediction": "Chevrolet Express Van 2007",
+    "confidence": 0.9954501986503601,
+    "figure": "rebadge_twin_07699.jpg"
+   },
+   {
+    "id": 4813,
+    "truth": "Chevrolet Express Van 2007",
+    "level": "class",
+    "prediction": "Chevrolet Express Cargo Van 2007",
+    "confidence": 0.9912949204444885,
+    "figure": "rebadge_twin_04813.jpg"
+   }
+  ],
+  "confident_cross_make": [
+   {
+    "id": 6227,
+    "truth": "HUMMER H3T Crew Cab 2010",
+    "level": "class",
+    "prediction": "GMC Canyon Extended Cab 2012",
+    "confidence": 0.9584107398986816,
+    "figure": "confident_cross_make_06227.jpg"
+   },
+   {
+    "id": 1332,
+    "truth": "Jeep Compass SUV 2012",
+    "level": "class",
+    "prediction": "Isuzu Ascender SUV 2008",
+    "confidence": 0.9177454113960266,
+    "figure": "confident_cross_make_01332.jpg"
+   },
+   {
+    "id": 414,
+    "truth": "HUMMER H3T Crew Cab 2010",
+    "level": "class",
+    "prediction": "GMC Canyon Extended Cab 2012",
+    "confidence": 0.9154218435287476,
+    "figure": "confident_cross_make_00414.jpg"
+   }
+  ],
+  "no_detection": [
+   {
+    "id": 353,
+    "truth": "Aston Martin V8 Vantage Convertible 2012",
+    "level": "no_vehicle",
+    "prediction": null,
+    "confidence": null,
+    "figure": "no_detection_00353.jpg"
+   },
+   {
+    "id": 760,
+    "truth": "Lamborghini Aventador Coupe 2012",
+    "level": "no_vehicle",
+    "prediction": null,
+    "confidence": null,
+    "figure": "no_detection_00760.jpg"
+   },
+   {
+    "id": 801,
+    "truth": "Lamborghini Reventon Coupe 2008",
+    "level": "no_vehicle",
+    "prediction": null,
+    "confidence": null,
+    "figure": "no_detection_00801.jpg"
+   }
+  ]
+ }
+}

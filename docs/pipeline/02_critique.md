@@ -1,6 +1,6 @@
 # 02 — Critique of `01_synthesis.md` (stage 3: research → synthesise → **critique** → revise → final)
 
-*Written 2026-11-06 by a reviewer who did not write the proposal. It is red-teamed from two viewpoints: a sceptical senior CV researcher, and a hackathon judge applying the P5 rubric. Section references such as "§3.2" or "E07" point to `01_synthesis.md`.*
+*Written 2026-11-06 by a reviewer who did not write the proposal. It is reviewed critically from two viewpoints: a sceptical senior CV researcher, and a hackathon judge applying the P5 rubric. Section references such as "§3.2" or "E07" point to `01_synthesis.md`.*
 
 **Facts I re-checked for this critique** (each tagged **[V]** where it is used below):
 - **TResNet paper** (arXiv 2003.13630, read from the PDF):
@@ -127,7 +127,7 @@ Several demo paths (no car, multiple cars, Indian-market modern cars, phone uplo
 
 ---
 
-## (e) Questions for the user that block decisions
+## (e) Questions for the team that block decisions
 
 1. **Host and money.** Will a member pay $9 for HF PRO today, or is another host already available? This blocks C1 and the H6 MVP.
 2. **Duration, team size, time already used, and Team ID/USNs.** The whole plan assumes 30 h and 4 people. Is the deadline fixed? Late submission costs −5 points per 15 minutes.

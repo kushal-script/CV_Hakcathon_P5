@@ -1,0 +1,10 @@
+{
+  "experiment_id": "2026-11-06_15-40-54",
+  "split": null,
+  "classification": {"top1": null, "top5": null, "make_top1": null, "year_twin_top1": null},
+  "localization": {"mean_iou": null, "iou_ge_0_5": null, "iou_ge_0_75": null},
+  "detection": {"map_50": null, "map_50_95": null, "class_aware_map_50": null},
+  "efficiency": {"model_size_mb": null, "params_m": null, "latency_cpu_p50_ms": null, "latency_cpu_p95_ms": null, "precision": null},
+  "robustness": {},
+  "confidence": {"ece_before": null, "ece_after": null, "temperature": null, "threshold": null, "accuracy_at_threshold": null, "coverage_at_threshold": null, "ood_auroc": null}
+}
