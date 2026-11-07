@@ -23,6 +23,8 @@ Full tables, ablations and failure cases: [eval_P5_T55.md](eval_P5_T55.md). Per-
 
 The recognition system is the core of **Vahana Drishti**, a web console designed around the needs of the Bengaluru Traffic Police. Everything runs on open data and open-source maps (no Google services).
 
+**Live console: [https://vahanadrishti.in](https://vahanadrishti.in)** (also at `www.vahanadrishti.in`). It is open to station and division accounts only, and sign-in needs the browser to share a location inside Bengaluru.
+
 | Feature | What it does | Where |
 |---|---|---|
 | Identify | Upload a photo: vehicle, make, model and year with calibrated confidence, every classical and deep intermediate step, and the classical, deep and hybrid answers side by side | `src/p5/pipeline.py` |

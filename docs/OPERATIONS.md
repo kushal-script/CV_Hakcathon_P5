@@ -140,7 +140,7 @@ sudo docker start vahana
 
 ## The public address
 
-The permanent address is a Cloudflare named tunnel on a domain in the team's Cloudflare account. `vahana-named-tunnel.service` runs it. To set it up on a new host, as the `ubuntu` user:
+The console is served at `https://www.vahanadrishti.in` and `https://vahanadrishti.in` through the Cloudflare named tunnel `vahana-drishti` in the team's Cloudflare account. `vahana-named-tunnel.service` runs it with `/home/ubuntu/deploy/cloudflared/config.yml`, and the tunnel's credentials are in `/home/ubuntu/.cloudflared/`, readable only by `ubuntu`. To set it up on a new host, as the `ubuntu` user:
 
 ```bash
 cloudflared tunnel login                        # prints a link: open it and approve the domain in Cloudflare
@@ -159,6 +159,8 @@ sudo install -m 644 deploy/host/vahana-named-tunnel.service /etc/systemd/system/
 sudo systemctl daemon-reload && sudo systemctl enable --now vahana-named-tunnel
 ```
 
-In the Cloudflare dashboard, turn on Always Use HTTPS (SSL/TLS, then Edge Certificates) so that a plain `http://` link is redirected to HTTPS.
+If Cloudflare imported an address (A or AAAA) record for the host from the previous DNS provider, delete it in the dashboard first: `route dns --overwrite-dns` only replaces CNAME records.
+
+Behind the tunnel (`P5_TRUST_PROXY=true` with `P5_COOKIE_SECURE=true`) the gateway answers a plain `http://` request with a permanent redirect to the same address over HTTPS, because sign-in cookies are only sent over HTTPS.
 
 `vahana-tunnel.service` also runs a quick tunnel as a fallback. Its address is random, changes whenever the service restarts, and some Indian networks refuse to resolve `trycloudflare.com` names, so give people the permanent address. The watchdog writes the current quick tunnel address to `/home/ubuntu/deploy/public_url`.
