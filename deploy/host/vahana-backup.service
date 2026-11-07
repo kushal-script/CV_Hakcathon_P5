@@ -1,0 +1,7 @@
+[Unit]
+Description=Back up the Vahana Drishti databases and case files
+
+[Service]
+Type=oneshot
+User=ubuntu
+ExecStart=/home/ubuntu/app/deploy/host/vahana-backup.sh

@@ -9,7 +9,9 @@ How the console is deployed, how accounts work, and what to do when something ne
 | Container `vahana` | Host VM, bound to `127.0.0.1:8080` | Rust gateway on 8080 in front of the Python service on 127.0.0.1:8001 inside the container |
 | `/app/state` | Host folder mounted into the container | `gateway.db`: divisions, stations, accounts, sessions, audit log |
 | `/app/data` | Host folder mounted into the container | `vahana.db` (records and case index) and `cases/` (case files and uploaded footage) |
-| HTTPS | A Cloudflare tunnel service on the host | Forwards the public address to `127.0.0.1:8080`. The container is never exposed directly |
+| HTTPS | Cloudflare tunnel services on the host | Forward the public address to `127.0.0.1:8080`. The container is never exposed directly and the host opens no web ports |
+| Backups | `vahana-backup.timer` on the host | Every 6 hours into `/home/ubuntu/backups`, see Backups |
+| Watchdog | `vahana-watchdog.timer` on the host | Every minute. Restarts the container when its health check keeps failing and checks every public address |
 
 The container runs as a non-root user on a read-only filesystem with every Linux capability dropped. Only the two mounted folders and a temporary `/tmp` are writable.
 
@@ -19,10 +21,17 @@ The container runs as a non-root user on a read-only filesystem with every Linux
 docker build -t vahana-drishti .
 docker run -d --name vahana --restart unless-stopped -p 127.0.0.1:8080:8080 \
   -e P5_COOKIE_SECURE=true -e P5_TRUST_PROXY=true -e P5_DEVICE_GEOFENCE=required -e P5_ALLOWED_COUNTRIES=IN \
+  -e P5_MAX_VIDEO_MB=90 -e P5_MAX_BODY_MB=95 \
   -v "$PWD/state:/app/state" -v "$PWD/data:/app/data" \
-  --read-only --tmpfs /tmp:rw,size=1g --cap-drop ALL --security-opt no-new-privileges:true vahana-drishti
+  --read-only --tmpfs /tmp:rw,size=1g --cap-drop ALL --security-opt no-new-privileges:true --memory 24g --pids-limit 512 \
+  --log-opt max-size=20m --log-opt max-file=5 vahana-drishti
 docker exec vahana vahana-gateway provision --stations /app/assets/bengaluru/police_stations.json --credentials /app/state/credentials.csv
+sudo install -m 644 deploy/host/*.service deploy/host/*.timer /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now vahana-backup.timer vahana-watchdog.timer
 ```
+
+The upload limits stay under the 100 MB request limit of Cloudflare's free plan, so an oversized video gets the console's own message instead of an error page from Cloudflare. Container logs are rotated at 5 files of 20 MB.
 
 `provision` creates the five divisions, one account per police station (its ID is the station ID, for example `ps-cubbon-park` for the law-and-order station or `tps-cubbon-park` for the traffic station) and one administrator per division (`admin-central`, `admin-north`, `admin-south`, `admin-east`, `admin-west`). It writes every one-time password to a new file readable only by its owner and refuses to overwrite an existing file. Copy that file to a safe place, hand each station its own line through a trusted channel, and delete the copy on the server.
 
@@ -51,6 +60,8 @@ The audit log (Division, then Audit log) shows every sign-in, failure, password 
 | `P5_IDLE_MINUTES`, `P5_SESSION_HOURS` | 60, 12 | Session idle and absolute lifetimes |
 | `P5_LOCKOUT_AFTER`, `P5_LOCKOUT_MINUTES` | 5, 15 | Account lockout |
 | `P5_LOGIN_PER_MINUTE`, `P5_API_PER_MINUTE` | 6, 240 | Per-address rate limits |
+| `P5_MAX_UPLOAD_MB` | 15 | Largest photo |
+| `P5_MAX_VIDEO_MB`, `P5_MAX_BODY_MB` | 300, 300 | Largest video, and largest request the gateway accepts. Use 90 and 95 behind Cloudflare's free plan |
 
 For a demonstration outside Bengaluru, recreate the container with `-e P5_DEVICE_GEOFENCE=off`. Everything else stays restricted.
 
@@ -101,15 +112,53 @@ Sessions are stored in `gateway.db`, so signed-in users stay signed in across an
 
 ## Backups
 
-Both databases use SQLite in WAL mode. Copy them consistently with the SQLite backup command (the `sqlite3` package) while the container runs:
+`vahana-backup.timer` runs `deploy/host/vahana-backup.sh` every 6 hours (00:00, 06:00, 12:00 and 18:00 UTC). Each run writes `/home/ubuntu/backups/<UTC time>/` with:
+
+* `gateway.db` (accounts, sessions, audit log) and `vahana.db` (records and cases). They are copied with SQLite's online backup while the container runs, then checked with `pragma integrity_check`. A failed check fails the run, and the failure shows in `journalctl -u vahana-backup`.
+* `cases/` with the case files and footage. Files that did not change are hard links to the previous backup, so they take no extra space.
+
+The newest 28 backups (7 days) are kept. Run one now with `sudo systemctl start vahana-backup`. The backups sit on the same disk as the data, so copy them off the server from time to time:
 
 ```bash
-sqlite3 state/gateway.db ".backup state-backup.db"
-sqlite3 data/vahana.db ".backup data-backup.db"
+rsync -a host:/home/ubuntu/backups/ ./vahana-backups/
 ```
 
-Also copy `data/cases/` for case files and footage.
+To restore a backup:
+
+```bash
+B=/home/ubuntu/backups/<UTC time>
+sudo docker stop vahana
+cp "$B/gateway.db" /home/ubuntu/deploy/state/gateway.db && rm -f /home/ubuntu/deploy/state/gateway.db-wal /home/ubuntu/deploy/state/gateway.db-shm
+cp "$B/vahana.db" /home/ubuntu/deploy/data/vahana.db && rm -f /home/ubuntu/deploy/data/vahana.db-wal /home/ubuntu/deploy/data/vahana.db-shm
+rsync -a --delete "$B/cases/" /home/ubuntu/deploy/data/cases/
+sudo docker start vahana
+```
+
+## Watchdog
+
+`vahana-watchdog.timer` runs `deploy/host/vahana-watchdog.sh` every minute. After 3 failed health checks in a row on `127.0.0.1:8080` it restarts the container. It also requests `/api/health` on every public address and records the current quick tunnel address in `/home/ubuntu/deploy/public_url`. Read its findings with `journalctl -u vahana-watchdog`.
 
 ## The public address
 
-The tunnel service prints its address to its log on start. A quick tunnel gets a new address whenever it restarts. For a permanent address, create a named tunnel in a Cloudflare account with a domain and point it at `http://127.0.0.1:8080`.
+The permanent address is a Cloudflare named tunnel on a domain in the team's Cloudflare account. `vahana-named-tunnel.service` runs it. To set it up on a new host, as the `ubuntu` user:
+
+```bash
+cloudflared tunnel login                        # prints a link: open it and approve the domain in Cloudflare
+cloudflared tunnel create vahana-drishti        # writes ~/.cloudflared/<tunnel id>.json
+cloudflared tunnel route dns vahana-drishti <host>
+mkdir -p /home/ubuntu/deploy/cloudflared
+cat > /home/ubuntu/deploy/cloudflared/config.yml <<EOF
+tunnel: <tunnel id>
+credentials-file: /home/ubuntu/.cloudflared/<tunnel id>.json
+ingress:
+  - hostname: <host>
+    service: http://127.0.0.1:8080
+  - service: http_status:404
+EOF
+sudo install -m 644 deploy/host/vahana-named-tunnel.service /etc/systemd/system/
+sudo systemctl daemon-reload && sudo systemctl enable --now vahana-named-tunnel
+```
+
+In the Cloudflare dashboard, turn on Always Use HTTPS (SSL/TLS, then Edge Certificates) so that a plain `http://` link is redirected to HTTPS.
+
+`vahana-tunnel.service` also runs a quick tunnel as a fallback. Its address is random, changes whenever the service restarts, and some Indian networks refuse to resolve `trycloudflare.com` names, so give people the permanent address. The watchdog writes the current quick tunnel address to `/home/ubuntu/deploy/public_url`.

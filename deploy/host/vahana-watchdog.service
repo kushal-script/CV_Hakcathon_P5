@@ -1,0 +1,7 @@
+[Unit]
+Description=Check Vahana Drishti and restart its container when the health check keeps failing
+After=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/home/ubuntu/app/deploy/host/vahana-watchdog.sh
