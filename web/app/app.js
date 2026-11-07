@@ -270,15 +270,29 @@ const busy = (text, sub) => h("div", { class: "busy", role: "status" }, h("span"
 const problem = (text) => h("div", { class: "problem", role: "alert", text });
 const section = (title, ...kids) => h("div", { class: "section" }, h("h2", { text: title }), ...kids);
 
+function vehicleFacts(d) {
+  if (d.model == null) return null;
+  const sure = d.level === "class" || d.level === "family";
+  const outside = d.level === "ood_make";
+  const year = outside ? "Not determined" : d.years && d.years.length ? d.years.join(" or ") : d.year ? String(d.year) : "Not separated in this catalogue";
+  const model = sure ? d.model : outside ? "Not one of the known models" : `${d.model} (closest match, not confirmed)`;
+  const conf = sure ? pct(d.confidence) : d.level === "make" ? `${pct(d.confidence)} for the make, ${pct(d.candidate_confidence)} for this model`
+    : outside ? `${pct(d.confidence)} for the make` : `${pct(d.candidate_confidence)} for this model`;
+  const rows = [["Make", d.make || "Not determined"], ["Model", model], ["Year", year], ["Confidence", conf]];
+  return h("dl", { class: "facts", style: { margin: "10px 0 8px" } }, rows.flatMap(([k, v]) => [h("dt", { text: k }), h("dd", { text: v })]));
+}
+
 function verdictBlock(d, colour) {
   const [lvl, tone] = LEVEL[d.level] || [d.level, ""];
+  const facts = vehicleFacts(d);
   return h("div", {},
     h("span", { class: `tag ${tone}`, text: lvl }),
     h("div", { class: "verdict", text: d.label }),
+    facts,
     h("div", { class: "verdict-meta" },
-      d.level !== "no_vehicle" ? h("span", { text: `Confidence ${pct(d.confidence)}` }) : null,
+      !facts && d.level !== "no_vehicle" ? h("span", { text: `Confidence ${pct(d.confidence)}` }) : null,
       colour ? h("span", { text: `Colour ${colour}` }) : null,
-      d.make && d.level !== "class" ? h("span", { text: `Make ${d.make}` }) : null,
+      !facts && d.make && d.level !== "class" ? h("span", { text: `Make ${d.make}` }) : null,
       d.catalogue_title ? h("span", { text: d.catalogue_title }) : null),
     d.level !== "no_vehicle" ? h("div", { class: "meter" }, h("i", { style: { width: pct(d.confidence) } })) : null,
     d.note ? h("p", { class: "note", text: d.note }) : null);

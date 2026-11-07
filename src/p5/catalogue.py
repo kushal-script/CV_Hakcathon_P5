@@ -41,4 +41,14 @@ def primary(decisions: list[Decision], prefer: int = 0) -> int:
 
 
 def tagged(d: Decision, cat: Catalogue) -> dict:
-    return {**asdict(d), "catalogue": cat.key, "catalogue_title": cat.title}
+    out = {**asdict(d), "catalogue": cat.key, "catalogue_title": cat.title}
+    i = d.class_id
+    if i is not None and d.level not in ("ood", "no_vehicle"):
+        tax = cat.tax
+        out["model"] = tax.model_of[i]
+        out["year"] = tax.year_of[i] or None
+        out["candidate_confidence"] = d.top5[0][1] if d.top5 else d.confidence
+        if d.level == "family":
+            fam = tax.family_of[i]
+            out["years"] = sorted({y for j, y in enumerate(tax.year_of) if tax.family_of[j] == fam and y})
+    return out
