@@ -37,6 +37,7 @@ Computer Vision Hackathon 2026 · Team T55<br>
 [![Architecture](https://img.shields.io/badge/architecture-eadcbc?style=for-the-badge)](docs/architecture.md)
 [![Evaluation](https://img.shields.io/badge/evaluation-eadcbc?style=for-the-badge)](eval_P5_T55.md)
 [![Operations](https://img.shields.io/badge/operations-eadcbc?style=for-the-badge)](docs/OPERATIONS.md)
+[![Project docs](https://img.shields.io/badge/project%20docs-eadcbc?style=for-the-badge)](PROJECT_DOCS.md)
 [![Contributing](https://img.shields.io/badge/contributing-eadcbc?style=for-the-badge)](CONTRIBUTING.md)
 
 </div>
@@ -77,6 +78,26 @@ Demo passwords cannot be changed, and the two demo stations are not real police 
 <p align="center"><img src="docs/report/architecture.png" alt="Vahana Drishti system architecture: access and service, recognition pipeline, investigation modules and offline training" width="100%"></p>
 
 The four layers of the deployed system. Module responsibilities, interfaces and the full deployment diagram are in [docs/architecture.md](docs/architecture.md), and the design choices behind them in [docs/DESIGN.md](docs/DESIGN.md).
+
+### How a request is served
+
+The simpler view of the same system, from the officer's browser to the models:
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#fbf7ef", "primaryTextColor": "#241c13", "primaryBorderColor": "#5c4a2c", "lineColor": "#877a66", "secondaryColor": "#eadcbc", "tertiaryColor": "#f3ecdf", "clusterBkg": "#f3ecdf", "clusterBorder": "#b8995f", "edgeLabelBackground": "#f3ecdf", "fontFamily": "Georgia, serif"}}}%%
+flowchart TB
+    U["Officer's browser"] -->|"HTTPS"| CF["Cloudflare<br/>TLS, named tunnel"]
+    CF -->|"outbound tunnel,<br/>no open web ports"| GW
+    subgraph VM["JarvisLabs CPU VM · Docker container"]
+        GW["Rust gateway<br/>accounts, sessions, limits, CSP"] -->|"HMAC-signed identity"| API["FastAPI service<br/>loopback only"]
+        GW --- GDB[("gateway.db<br/>accounts, audit")]
+        API --- VDB[("vahana.db<br/>records, cases")]
+        API --> REC["Recognition<br/>detector, two catalogues,<br/>classical CV, OCR"]
+        API --> INV["Investigation<br/>photo location, video,<br/>cases, routes"]
+    end
+```
+
+Network architecture, database design, user flows and the project's agile documents are in [PROJECT_DOCS.md](PROJECT_DOCS.md).
 
 ## Results (Stanford Cars test, n = 8,041)
 
@@ -151,6 +172,7 @@ Every tunable value is in a config file, and [docs/PARAMETERS.md](docs/PARAMETER
 | [docs/LITERATURE_SURVEY.md](docs/LITERATURE_SURVEY.md) | Literature survey (178 references) |
 | [docs/research/](docs/research/), [docs/pipeline/](docs/pipeline/) | Research reports and the synthesis, critique and revision of the approach |
 | [experiments/](experiments/) | One timestamped folder per experiment with config, logs, metrics and write-up |
+| [PROJECT_DOCS.md](PROJECT_DOCS.md) | Network architecture, database design, user flow diagrams, and the agile documents: vision, personas, user stories, iteration log, definition of done, risks and retrospective |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Principles, setup, tests, code style, commit messages and the pull request checklist |
 | [NOTICE.md](NOTICE.md) | Copyright, what the licence covers, and the terms of third-party data and services |
 
@@ -243,13 +265,27 @@ GPU jobs are plain scripts launched on a JarvisLabs A100 (`scripts/remote/*.sh`)
 
 </details>
 
-## Dataset
+## Datasets
 
-Stanford Cars (Krause et al., 2013): 16,185 images, 196 classes, 8,144 train and 8,041 test, one bounding box per image. The official host is offline; we use the torchvision-layout Kaggle mirror [`rickyyyyyyy/torchvision-stanford-cars`](https://www.kaggle.com/datasets/rickyyyyyyy/torchvision-stanford-cars), which includes test labels. Extract to `data/stanford_cars/`. The `data/` folder is git-ignored.
+| Dataset | Size | How we got it | What it is used for |
+| :--- | :--- | :--- | :--- |
+| **Stanford Cars** (Krause et al., 2013) | 16,185 images of 196 classes with one box each: 8,144 for training (7,329 to train and 815 held out for validation) and 8,041 for testing | The torchvision-layout Kaggle mirror [`rickyyyyyyy/torchvision-stanford-cars`](https://www.kaggle.com/datasets/rickyyyyyyy/torchvision-stanford-cars), which includes test labels, because the official host is offline. Extract to `data/stanford_cars/` | Training, validating and testing the detector and the main 196-class classifier. Only `scripts/eval_test.py` reads the test labels, and every read is logged |
+| **Indian-market cars** (E18), collected by us | **27,382 photos of 282 car models** sold or made in India: 18,585 for training, 4,499 for validation and 4,298 for testing, split so that no photographer appears in two splits | Scraped automatically from Wikimedia Commons by `scripts/build_india_dataset.py`. The list of models comes from Wikidata and from Wikipedia articles on the Indian car industry, the photos are found through the Commons API, at most 150 per model are downloaded as 500 px thumbnails, and only free licences are kept (mostly CC BY-SA and CC BY, also CC0, public domain, GFDL and the Free Art Licence). Of 33,647 photos checked, 27,822 passed the cleaning (the COCO detector must find one car or truck covering at least 18% of the frame, and near-duplicates are removed), and 27,382 of them belong to the 282 models with enough photos | The second classifier for cars on Indian roads: 84.32% top-1 on its own test split. `assets/india/split.csv` lists the licence, author and source page of every photo. The photos are not stored in the repository, and the script downloads them again |
+| **COCO** (Lin et al., 2014) | 700 val2017 images with no car, bus, truck or motorcycle: 500 for training, 100 for development and 100 held out for testing | Listed in `assets/splits/coco_neg_*.txt` | Teaching the detector to stay silent on empty scenes and testing the "no vehicle" answer (99 of 100 correct) |
+| **Uber Movement, Bangalore** | 2019 Q3 weekday hourly travel times between wards: 630,003 trips to fit the profile and 155,667 trips between held-out wards to test it | The archived copy published with the QGIS tutorials, read by `scripts/build_traffic_prior.py`, because Uber Movement has been discontinued. (c) 2019 Uber Technologies, Inc., Creative Commons Attribution Non-Commercial | The Bengaluru drive-time profile by hour of day and distance (E20) |
+| **OpenStreetMap, Bengaluru** | 405,925 road edges (780,055 directed, 53,814 km of road), 144,027 named places, the city boundary and the Karnataka sign-in area | The Geofabrik southern India extract, the Overpass API and Nominatim (`scripts/build_road_graph.py`, `build_place_index.py`, `build_signin_area.py`) | Maps, routing, photo location from signboards, footage location and the sign-in area |
+| **KITTI raw** (Geiger et al., 2013) | 15 drives, using only the grey left camera and the GPS and IMU files | Fetched with HTTP range requests by `scripts/videoloc/kitti_fetch.py` | Testing footage location against real GPS (E21): 27 of 27 candidate routes within 50 m |
+| **Simulated Bengaluru drives** (E21), generated by us | 30 drives in a first round and 20 new drives in the final round, plus wrong-area tests on 20 drives searched 4 to 8 km away from where they were driven | `scripts/videoloc/simulate_bengaluru.py` on the Bengaluru road graph (see below) | Testing footage location inside Bengaluru: in the final round 10 of 20 drives got a candidate route and all 10 were correct, and searched in the wrong area 3 of 20 still gave a wrong one |
+| **Bengaluru police station register** | 184 stations in five divisions | Official Bengaluru City Police, Bengaluru Traffic Police and Karnataka State Police pages, with positions from OpenStreetMap ([SOURCES.md](assets/bengaluru/SOURCES.md)) | Station accounts, the map and division scoping |
+| **Demo stations** | 2 stations | Written by us in `assets/bengaluru/demo_accounts.json` | The shared evaluator accounts |
 
-Indian-market catalogue (E18): 27,382 photos of 282 car models from Wikimedia Commons, each under a free licence (mostly CC BY-SA and CC BY, also CC0, public domain, GFDL and the Free Art Licence). `assets/india/split.csv` lists the licence, author and source page of every photo. The photos are not in the repository; `scripts/build_india_dataset.py` downloads them again. The list of models comes from Wikidata (CC0) and from Wikipedia articles on the Indian automotive industry.
+The licence and attribution of every source are in [NOTICE.md](NOTICE.md).
 
-Travel times: Uber Movement, Bangalore wards, 2019 Q3 weekday hourly aggregate. Data retrieved from Uber Movement, (c) 2019 Uber Technologies, Inc., https://movement.uber.com, under the Creative Commons Attribution Non-Commercial licence. Uber Movement has been discontinued, so `scripts/build_traffic_prior.py` reads the archived copy published with the QGIS tutorials. Road network, buildings, places and routing: OpenStreetMap contributors (ODbL) through OSRM, Photon and OpenFreeMap.
+### Simulation inside Bengaluru: following a car's route from video
+
+When a moving camera's footage has no GPS, the console works out where it was filmed by simulation. It measures the camera's turns, stops and speed from the frames, then lets 150,000 to 400,000 simulated vehicles (one per metre of road in a search area of up to 3 km) drive Bengaluru's real OpenStreetMap roads, respecting one-way streets. Each simulated vehicle turns at junctions by chance and is kept or dropped according to how well its path matches the measured motion. Six independent searches run, two challenge searches look for the best alternative away from the winner, and four decoy searches run in random parts of the city. A candidate route is shown only when it is at least 99 times more likely than every alternative and every decoy, and the investigator must confirm it before it is used (`src/p5/geo/videoloc/`).
+
+To test this where no recorded drive with GPS was available, `scripts/videoloc/simulate_bengaluru.py` generates drives on the same road graph: shortest-path routes between random places, KITTI speed profiles, headings that follow the road with an 8 to 20 m turning arc, and turn and speed errors copied frame by frame from real KITTI videos. The full method and results are in the E21 record under `experiments/`.
 
 ## Limitations
 

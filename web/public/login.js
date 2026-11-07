@@ -72,7 +72,8 @@ function welcome(user) {
   art?.classList.add("go");
   const station = user.station ? user.station.name : user.display_name;
   $("#welcome-name").textContent = station;
-  $("#welcome-sub").textContent = `${user.division.name} Division` + (user.role === "division_admin" ? " · Division administrator" : "");
+  const admin = user.role === "division_admin" ? (user.demo ? " · Demo administrator, read only" : " · Division administrator") : "";
+  $("#welcome-sub").textContent = (user.all_divisions ? "All divisions" : `${user.division.name} Division`) + admin;
   const barrier = $("#barrier");
   barrier.hidden = false;
   setTimeout(() => barrier.classList.add("open"), 280);
