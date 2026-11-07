@@ -171,8 +171,14 @@ async fn main() {
         idle_ttl: env_or("P5_IDLE_MINUTES", "60").parse::<i64>().unwrap_or(60) * 60,
         absolute_ttl: env_or("P5_SESSION_HOURS", "12").parse::<i64>().unwrap_or(12) * 3600,
         trust_proxy: env_or("P5_TRUST_PROXY", "false") == "true",
-        api_limit: Limiter::new(env_or("P5_API_PER_MINUTE", "240").parse().unwrap_or(240.0), 60.0),
-        login_limit: Limiter::new(env_or("P5_LOGIN_PER_MINUTE", "6").parse().unwrap_or(6.0), 6.0),
+        api_limit: {
+            let per_minute: f64 = env_or("P5_API_PER_MINUTE", "240").parse().unwrap_or(240.0);
+            Limiter::new(per_minute, (per_minute / 4.0).max(60.0))
+        },
+        login_limit: {
+            let per_minute: f64 = env_or("P5_LOGIN_PER_MINUTE", "6").parse().unwrap_or(6.0);
+            Limiter::new(per_minute, per_minute.max(1.0))
+        },
         device_required: env_or("P5_DEVICE_GEOFENCE", "required") == "required",
         require_password_change: env_or("P5_REQUIRE_PASSWORD_CHANGE", "false") == "true",
         geofence,

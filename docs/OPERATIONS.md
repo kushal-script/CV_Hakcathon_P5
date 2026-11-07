@@ -21,7 +21,8 @@ The container runs as a non-root user on a read-only filesystem with every Linux
 docker build -t vahana-drishti .
 docker run -d --name vahana --restart unless-stopped -p 127.0.0.1:8080:8080 \
   -e P5_COOKIE_SECURE=true -e P5_TRUST_PROXY=true -e P5_DEVICE_GEOFENCE=required -e P5_ALLOWED_COUNTRIES=IN \
-  -e P5_MAX_VIDEO_MB=90 -e P5_MAX_BODY_MB=95 \
+  -e P5_MAX_VIDEO_MB=90 -e P5_MAX_BODY_MB=95 -e P5_BOUNDARY=/app/assets/bengaluru/signin_area.geojson \
+  -e P5_LOGIN_PER_MINUTE=30 -e P5_API_PER_MINUTE=1200 \
   -v "$PWD/state:/app/state" -v "$PWD/data:/app/data" \
   --read-only --tmpfs /tmp:rw,size=1g --cap-drop ALL --security-opt no-new-privileges:true --memory 24g --pids-limit 512 \
   --log-opt max-size=20m --log-opt max-file=5 vahana-drishti
@@ -53,18 +54,19 @@ The audit log (Division, then Audit log) shows every sign-in, failure, password 
 
 | Variable | Default | Effect |
 |---|---|---|
-| `P5_DEVICE_GEOFENCE` | `required` | `required`: sign-in needs a device location inside the Bengaluru boundary (with `P5_GEOFENCE_MARGIN_M`, default 2000). `off`: no location check |
+| `P5_DEVICE_GEOFENCE` | `required` | `required`: sign-in needs a device location inside the sign-in area (with `P5_GEOFENCE_MARGIN_M`, default 2000). `off`: no location check |
+| `P5_BOUNDARY` | `assets/bengaluru/boundary.geojson` | The sign-in area. The live server uses `assets/bengaluru/signin_area.geojson`, Karnataka and Maharashtra from OpenStreetMap, rebuilt with `python3 scripts/build_signin_area.py Karnataka Maharashtra`. The console's map, stations and camera checks always use the Bengaluru boundary in `P5_REGION_DIR` |
 | `P5_ALLOWED_COUNTRIES` | `IN` | Countries allowed by Cloudflare's country header when `P5_TRUST_PROXY=true`. Empty turns it off |
 | `P5_TRUST_PROXY` | `false` | Set `true` behind the tunnel so the real client address and country are used |
 | `P5_COOKIE_SECURE` | `true` | Keep `true` whenever the site is served over HTTPS |
 | `P5_REQUIRE_PASSWORD_CHANGE` | `false` | `true`: an account still on its one-time password must choose a new password before it can use the console. `false`: the one-time password signs in directly |
 | `P5_IDLE_MINUTES`, `P5_SESSION_HOURS` | 60, 12 | Session idle and absolute lifetimes |
 | `P5_LOCKOUT_AFTER`, `P5_LOCKOUT_MINUTES` | 5, 15 | Account lockout |
-| `P5_LOGIN_PER_MINUTE`, `P5_API_PER_MINUTE` | 6, 240 | Per-address rate limits |
+| `P5_LOGIN_PER_MINUTE`, `P5_API_PER_MINUTE` | 6, 240 | Per-address rate limits. A burst of up to the sign-in limit, or a quarter of the API limit (at least 60), is allowed at once. The live server uses 30 and 1200 because evaluators in one room share one public address |
 | `P5_MAX_UPLOAD_MB` | 15 | Largest photo |
 | `P5_MAX_VIDEO_MB`, `P5_MAX_BODY_MB` | 300, 300 | Largest video, and largest request the gateway accepts. Use 90 and 95 behind Cloudflare's free plan |
 
-For a demonstration outside Bengaluru, recreate the container with `-e P5_DEVICE_GEOFENCE=off`. Everything else stays restricted.
+To allow sign-in from anywhere in India, recreate the container with `-e P5_DEVICE_GEOFENCE=off`. Everything else stays restricted.
 
 ## Travel times
 

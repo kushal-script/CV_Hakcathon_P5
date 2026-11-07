@@ -445,7 +445,7 @@ async function audit(more = false) {
     const r = await C.api(`/auth/admin/audit?limit=100${before ? `&before=${before}` : ""}`);
     st.audit.push(...r.audit);
     const OUT = { ok: ["Success", "ok"], bad_password: ["Wrong password", "bad"], unknown_user: ["Unknown ID", "bad"], locked: ["Locked", "bad"], locked_now: ["Locked now", "bad"],
-      disabled: ["Disabled account", "bad"], outside_bengaluru: ["Outside Bengaluru", "bad"], no_location: ["No location", "warn"], bad_current: ["Wrong current password", "bad"] };
+      disabled: ["Disabled account", "bad"], outside_bengaluru: ["Outside Bengaluru", "bad"], outside_area: ["Outside the sign-in area", "bad"], no_location: ["No location", "warn"], bad_current: ["Wrong current password", "bad"] };
     body.replaceChildren(C.h("p", { class: "note", style: { margin: "0 0 14px" }, text: "Security events for accounts in this division: sign-ins, failures, password changes and account actions." }),
       C.h("div", { class: "tablewrap" }, C.h("table", { class: "dtable" },
         C.h("thead", {}, C.h("tr", {}, ["When", "Account", "Action", "Target", "Outcome", "Network", "Detail"].map((x) => C.h("th", { text: x })))),

@@ -7,6 +7,7 @@ const next = (() => {
 })();
 let policy = { device_location_required: false };
 let account = null;
+const area = () => policy.boundary || "Bengaluru";
 
 if (art) {
   art.querySelectorAll(".draw").forEach((el) => el.setAttribute("pathLength", "1"));
@@ -128,15 +129,15 @@ $("#login-form").addEventListener("submit", async (e) => {
   if (!username || !password) return fail("Enter your station or division ID and password.");
   let where = null;
   if (policy.device_location_required) {
-    busy(true, "Confirming you are in Bengaluru", "ಸ್ಥಳ ಪರಿಶೀಲನೆ");
+    busy(true, `Confirming you are in ${area()}`, "ಸ್ಥಳ ಪರಿಶೀಲನೆ");
     setLocation("wait", "finding your location");
     where = await position();
     if (!where) {
       busy(false);
       setLocation("bad", "not shared");
-      return fail("Allow location access in your browser so we can confirm you are signing in from within Bengaluru.");
+      return fail(`Allow location access in your browser so we can confirm you are signing in from within ${area()}.`);
     }
-    setLocation("ok", "shared, checked against the city boundary");
+    setLocation("ok", "shared, checked against the sign-in area");
   }
   busy(true);
   try {
@@ -146,7 +147,7 @@ $("#login-form").addEventListener("submit", async (e) => {
     welcome(r.user);
   } catch (err) {
     busy(false);
-    if (err.status === 403 && /Bengaluru/.test(err.message)) setLocation("bad", "outside Bengaluru");
+    if (err.status === 403 && /only allowed from within/.test(err.message)) setLocation("bad", `outside ${area()}`);
     fail(err.message);
   }
 });
@@ -172,6 +173,7 @@ fetch("/auth/policy", { credentials: "same-origin" })
     if (!p) return;
     policy = p;
     if (!p.device_location_required) setLocation("ok", "not required in this deployment");
+    else setLocation("", `checked when you sign in, ${area()} only`);
   })
   .catch(() => {});
 

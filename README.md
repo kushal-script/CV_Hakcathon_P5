@@ -23,7 +23,7 @@ Full tables, ablations and failure cases: [eval_P5_T55.md](eval_P5_T55.md). Per-
 
 The recognition system is the core of **Vahana Drishti**, a web console designed around the needs of the Bengaluru Traffic Police. Everything runs on open data and open-source maps (no Google services).
 
-**Live console: [https://vahanadrishti.in](https://vahanadrishti.in)** (also at `www.vahanadrishti.in`). It is open to station and division accounts only, and sign-in needs the browser to share a location inside Bengaluru.
+**Live console: [https://vahanadrishti.in](https://vahanadrishti.in)** (also at `www.vahanadrishti.in`). It is open to station and division accounts only, and sign-in needs the browser to share a location inside Karnataka or Maharashtra.
 
 | Feature | What it does | Where |
 |---|---|---|
@@ -44,7 +44,7 @@ Every tunable value is in a config file, and [docs/PARAMETERS.md](docs/PARAMETER
 
 * **One account per police station**, created from the station register in `assets/bengaluru/police_stations.json`. Stations sit in five divisions: Central, North, South, East and West.
 * **One administrator per division.** An administrator sees every record, case and account of the stations in the division. The admin can correct or delete records, open, close, reassign and delete cases, reset station passwords, disable or unlock accounts, read the security audit log, and see charts of everything the system predicted. A station sees only its own records and cases.
-* **Bengaluru only.** Sign-in requires the device to report a location inside the Bengaluru boundary (with a 2 km margin). The gateway refuses requests that Cloudflare marks as coming from outside India. Camera locations must fall inside the city, and the map cannot leave it.
+* **A Bengaluru console with a regional sign-in.** Sign-in requires the device to report a location inside the sign-in area, currently Karnataka and Maharashtra (OpenStreetMap state boundaries built by `scripts/build_signin_area.py`, with a 2 km margin). The gateway refuses requests that Cloudflare marks as coming from outside India. The console itself covers Bengaluru: camera locations must fall inside the city, and the map cannot leave it.
 * **Nothing is visible before sign-in.** The gateway serves only the sign-in page and its assets to anonymous visitors. The console's HTML and scripts, and every API call, require a valid session.
 
 ### Security

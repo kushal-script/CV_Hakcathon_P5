@@ -265,16 +265,16 @@ pub async fn login(State(state): State<Shared>, ConnectInfo(addr): ConnectInfo<S
                 None => false,
             };
             if !verdict {
-                let outcome = if body.location.is_some() { "outside_bengaluru" } else { "no_location" };
+                let outcome = if body.location.is_some() { "outside_area" } else { "no_location" };
+                let msg = if body.location.is_some() {
+                    format!("Sign-in is only allowed from within {}. Your device reports a location outside it.", fence.name)
+                } else {
+                    format!("Allow location access so we can confirm you are signing in from within {}.", fence.name)
+                };
                 let (ip2, cc2, det) = (ip.clone(), cc.clone(), where_detail.clone());
                 let (id, name, div) = (acc.id, acc.username.clone(), acc.division_id.clone());
                 let _ = state.db.run(move |c| audit(c, Some(id), Some(&name), Some(&div), "login", None, &ip2, cc2.as_deref(), outcome, det.as_deref())).await;
-                let msg = if body.location.is_some() {
-                    "Sign-in is only allowed from within Bengaluru. Your device reports a location outside the city."
-                } else {
-                    "Allow location access so we can confirm you are signing in from within Bengaluru."
-                };
-                return error(StatusCode::FORBIDDEN, msg);
+                return error(StatusCode::FORBIDDEN, &msg);
             }
         }
     }

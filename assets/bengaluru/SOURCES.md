@@ -81,3 +81,7 @@ The first feature of `boundary.geojson` is the Bengaluru Urban district polygon,
 * "Govindrajpura" (BCP spelling) is linked to "Govindapura PS" (KSP) only through the abbreviation table.
 * The North division table on the BCP page skips row numbers 14 to 19, and the Kannada version of the page still shows 8 divisions; the English page and the Overview agree on 11.
 * Fields beyond the requested schema: `aliases`, `coord_note`, `inside_boundary`, `division_note` (inferred division only) and, at the top level, `coordinate_rule`, `division_centroids`, `official_structure`, `not_included`.
+
+## Sign-in area
+
+`signin_area.geojson` is the area a device must be in to sign in. It holds the Karnataka (relation 2019939) and Maharashtra (relation 1950884) state boundaries from OpenStreetMap contributors (ODbL), retrieved through Nominatim on 7 November 2026 and simplified by 0.005° (about 0.5 km), well inside the gateway's 2 km margin. Rebuild with `python3 scripts/build_signin_area.py Karnataka Maharashtra`. The console's own map, stations and camera checks still use `boundary.geojson`.

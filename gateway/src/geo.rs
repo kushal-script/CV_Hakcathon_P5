@@ -71,8 +71,9 @@ impl Geofence {
             return Err(format!("{path}: no polygon found"));
         }
         let name = value
-            .pointer("/features/0/properties/name")
+            .get("name")
             .and_then(Value::as_str)
+            .or_else(|| value.pointer("/features/0/properties/name").and_then(Value::as_str))
             .unwrap_or("Bengaluru")
             .to_string();
         Ok(Geofence { polygons, name })
