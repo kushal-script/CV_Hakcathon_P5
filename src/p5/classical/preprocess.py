@@ -31,17 +31,18 @@ def denoise(rgb: np.ndarray, sigma: float, scale: float = 0.8) -> np.ndarray:
     return cv2.fastNlMeansDenoisingColored(rgb, None, h, h, 7, 21)
 
 
-def enhance(rgb: np.ndarray, q: Quality, clip: float = 2.0, tile: int = 8, nlm_scale: float = 0.8) -> Enhanced:
+def enhance(rgb: np.ndarray, q: Quality, clip: float = 2.0, tile: int = 8, nlm_scale: float = 0.8,
+            noisy: float = 0.035, gamma_target: float = 0.45) -> Enhanced:
     from p5.classical.quality import noise_sigma
     out, applied = rgb, []
     if "cast" in q.flags:
         out, applied = gray_world(out), applied + ["white_balance"]
     if "dark" in q.flags:
-        out, applied = auto_gamma(out), applied + ["gamma"]
+        out, applied = auto_gamma(out, gamma_target), applied + ["gamma"]
     sigma = q.noise_sigma
     if applied and "dark" in q.flags:
         sigma = noise_sigma(cv2.cvtColor(out, cv2.COLOR_RGB2GRAY)) / 255.0
-    if "noisy" in q.flags or sigma > 0.035:
+    if "noisy" in q.flags or sigma > noisy:
         out, applied = denoise(out, sigma, nlm_scale), applied + ["denoise"]
     if "dark" in q.flags or "low_contrast" in q.flags:
         out, applied = clahe_l(out, clip if "dark" not in q.flags else clip * 0.75, tile), applied + ["clahe"]

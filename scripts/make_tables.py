@@ -19,7 +19,7 @@ def pct(v, digits: int = 2) -> str:
 
 
 def main() -> int:
-    p = argparse.ArgumentParser(description="Build eval_P5_<TeamID>.md from the logged experiment outputs")
+    p = argparse.ArgumentParser(description="Build the evaluation tables used in eval_P5_<TeamID>.md from the logged experiment outputs")
     p.add_argument("--team", default="TeamID")
     p.add_argument("--usns", default="USN1,USN2,USN3,USN4")
     p.add_argument("--out", type=Path, default=None)
@@ -216,7 +216,8 @@ def main() -> int:
               f"| {r['auc_eval']:.3f} | {pp(r['tpr_eval_at_fpr']['0.01'])} | {pp(r['tpr_eval_at_fpr']['0.05'])} | {pp(r['tpr_eval_at_fpr']['0.1'])} | "
               f"{pp(r['fpr_eval_by_kind']['same model, other vehicle'])} |", ""]
 
-    out = args.out or ROOT / f"eval_P5_{args.team}.md"
+    out = args.out or ROOT / "runs" / f"eval_tables_P5_{args.team}.md"
+    out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text("\n".join(L) + "\n")
     print(f"wrote {out}")
     return 0

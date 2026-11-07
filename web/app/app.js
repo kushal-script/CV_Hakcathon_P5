@@ -387,7 +387,10 @@ function renderIdentify(r) {
         ["Deep network", r.comparison.deep], ["Hybrid (deployed)", r.comparison.hybrid]].filter(([, x]) => x);
       kids.push(section("Classical, deep and hybrid on this photo",
         h("table", { class: "table" }, h("thead", {}, h("tr", {}, h("th", { text: "Approach" }), h("th", { text: "Answer" }), h("th", { class: "num", text: "Conf." }))),
-          h("tbody", {}, rows.map(([n, x]) => h("tr", {}, h("td", { text: n }), h("td", { text: x.label }), h("td", { class: "num", text: pct(x.confidence) })))))));
+          h("tbody", {}, rows.map(([n, x]) => h("tr", {}, h("td", { text: n }), h("td", { text: x.label }), h("td", { class: "num", text: pct(x.confidence) }))))),
+        h("p", { class: "note", text: r.comparison.final_catalogue
+          ? `All four rows use the Stanford Cars catalogue (196 models). The answer at the top comes from the ${r.comparison.final_catalogue} catalogue, which gave the more specific and more confident answer for this photo.`
+          : "All four rows use the Stanford Cars catalogue (196 models)." })));
     }
   }
   const where = whereTaken(r.location);
@@ -821,7 +824,7 @@ const consoleState = { mod: null };
 async function showConsole(on) {
   $("#layout").hidden = on; $("#console").hidden = !on;
   if (!on) { map.m && map.m.resize(); return; }
-  if (!consoleState.mod) consoleState.mod = await import("./admin.js?v=11");
+  if (!consoleState.mod) consoleState.mod = await import("./admin.js?v=12");
   consoleState.mod.mount($("#console"), { api, h, busy, problem, notice, session, AuthError, KIND, LEVEL, pct, jpg, when });
 }
 
@@ -858,7 +861,7 @@ async function boot() {
   const isAdmin = u.role === "division_admin";
   $("#station-name").textContent = u.station ? u.station.name : u.display_name;
   $("#station-meta").replaceChildren(document.createTextNode(`${u.division.name} Division`), h("span", { class: "kn", text: ({ central: "ಕೇಂದ್ರ", north: "ಉತ್ತರ", south: "ದಕ್ಷಿಣ", east: "ಪೂರ್ವ", west: "ಪಶ್ಚಿಮ" })[u.division.id] || "" }),
-    isAdmin ? h("span", { class: "role", text: "Division admin" }) : null);
+    ...(isAdmin ? [h("span", { class: "role", text: "Division admin" })] : []));
   $("#who-name").textContent = u.station ? u.station.name : u.display_name;
   $("#who-id").textContent = `${u.username} · ${u.division.name} Division`;
   $("#tab-division").hidden = !isAdmin;

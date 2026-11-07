@@ -8,3 +8,15 @@ threads: 2
 panels: true
 india: true
 prefer: india
+quality:
+  dark: 0.30
+  low_contrast: 0.12
+  cast: 0.12
+  noisy: 0.035
+  blurry: 60.0
+enhancement:
+  clip: 2.0
+  tile: 8
+  nlm_scale: 0.8
+  noisy: 0.035
+  gamma_target: 0.45

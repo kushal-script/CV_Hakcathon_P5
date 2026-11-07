@@ -362,7 +362,7 @@ class PipelineResult:
 
 **Rules.**
 - A `Decision` with level `no_vehicle` always has `class_id = family_id = make_group = None` and an empty `top5`.
-- `forced=True` exists only on the "classify anyway" path and always carries the banner "Forced classification — unreliable".
+- The "classify anyway" path (no detector box, the saliency and GrabCut box is classified with a detection score of 0) always carries the note "Forced classification: no vehicle was detected, so this answer is unreliable."
 
 ---
 

@@ -23,7 +23,7 @@ Three principles shape every part of it:
 | Detect the vehicle | Fine-tuned YOLO26s detector for photos, and a COCO detector for video | §2 IoU: mean 0.949, 99.03% at IoU ≥ 0.5. §3 mAP@0.5 0.976, mAP@0.5:0.95 0.926 |
 | Identify make, model and year | Fine-tuned TResNet-L classifier, INT8, on the detector crop | §1 Top-1 94.69%, Top-5 98.94%, make 98.37% |
 | Calibrated confidence | Temperature scaling, a decision policy with model, family, make, not-sure and outside-catalogue levels, thresholds fitted on validation | §6 ECE 10.4% to 1.1% |
-| Classical computer vision | Quality analysis, quality-gated enhancement, GrabCut region refinement, Canny edges and contours, colour, texture and geometry features with an SVM, fused with the deep scores | §5 and §7 |
+| Classical computer vision | Quality analysis, quality-gated enhancement, GrabCut region refinement, Canny edges and contours, colour, texture and geometry features with an SVM, compared with the deep model. Score fusion was tested (E12) and left off | §5 and §7 |
 | Robustness | Quality problems corrected, keeping the original photo unless the correction makes the detection more confident | §5 noise, speckle and contrast corruptions |
 | Efficiency | ONNX INT8 classifier of 52.9 MB, CPU inference | §4 p50 0.59 s, p95 1.10 s end to end on 2 threads of an Apple M3 |
 | Ablation and failure analysis | One change at a time with significance tests, and the 430 wrong test images grouped by cause | §8 and §9 |
@@ -38,7 +38,7 @@ A browser talks only to Cloudflare, which carries the traffic through an outboun
 2. **Quality analysis and enhancement.** Darkness, low contrast, colour cast, noise and blur are measured. The flagged problems are corrected, and the detector then runs on both the corrected and the original photo. The original is kept unless the corrected one gives a more confident detection.
 3. **Detection.** The most prominent vehicle is selected. Several vehicles are reported, and a photo with none says so.
 4. **Classification in two catalogues.** The US catalogue covers the 196 Stanford Cars models with their years. The Indian catalogue covers 282 models sold or made in India, built from free-licensed Wikimedia Commons photos (Top-1 84.32%, and when it names a model it is right 97.5% of the time). Each catalogue has its own calibration and out-of-catalogue check. The more specific, then more confident, answer is shown, with the other beside it.
-5. **Hybrid fusion.** Classical features are fused with the deep scores where they help, as measured in the ablation.
+5. **Classical and deep together.** The classical branch decides how the photo is cleaned before detection, and supplies the region, edge, colour and feature panels and the comparison rows. Adding the SVM's scores to the deep scores (late fusion) was tested in E12, gained 0.12 points on validation with p = 1.00, and is switched off (`fusion: false`, `beta = 0`).
 6. **Decision.** Make, model and year are shown as separate fields. When the model is uncertain, the closest match is shown and marked as not confirmed. The year is exact for the US catalogue, a pair of years when two model years cannot be told apart, and for the Indian catalogue, whose photos carry no model year, the years the model was made from Wikipedia or Wikidata (253 of 282 models). Otherwise it reads unknown.
 7. **Explanation.** Results show the annotated photo, the quality-adjusted input, the GrabCut region, Canny edges, the class activation map, the colour profile and the classical, deep and hybrid answers side by side.
 

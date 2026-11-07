@@ -238,7 +238,7 @@ GPU jobs are plain scripts launched on a JarvisLabs A100 (`scripts/remote/*.sh`)
 | Travel-time profile (E20) | `python3 scripts/build_traffic_prior.py` |
 | Road graph and place names (E21) | `python3 scripts/build_road_graph.py` and `python3 scripts/build_place_index.py` (Geofabrik southern India extract, needs `pip install osmium shapely`) |
 | Footage location evaluation (E21) | `scripts/videoloc/kitti_fetch.py`, `kitti_motion.py`, `evaluate_clips.py`, `simulate_bengaluru.py`, `summarize.py`, run as described in the E21 record |
-| Evaluation file | `python3 scripts/make_tables.py --team T55 --usns 1RUA24CSE0216,1RUA24CSE0228,1RUA24CSE0229,1RUA24CSE0275,1RUA24CSE0244` |
+| Evaluation tables | `python3 scripts/make_tables.py --team T55 --usns 1RUA24CSE0216,1RUA24CSE0228,1RUA24CSE0229,1RUA24CSE0275,1RUA24CSE0244` writes the tables of `eval_P5_T55.md` §3.1 to `runs/eval_tables_P5_T55.md` |
 
 </details>
 

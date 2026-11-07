@@ -26,6 +26,8 @@ Each value below is one of three kinds:
 | `flip_tta: false` | Fitted | E05: flip TTA gains +0.37 points on validation (3 of 815 images) for twice the classifier time |
 | `fusion: false` | Fitted | See `beta` |
 | `india: true`, `prefer: india` | Operational | Deployment for Bengaluru: the Indian catalogue wins ties between equally specific, equally confident answers |
+| `quality: dark 0.30, low_contrast 0.12, cast 0.12, noisy 0.035, blurry 60` | Assumption | Hand-set limits on mean luma, RMS contrast, colour cast ratio, noise sigma (Immerkaer) and Laplacian variance, measured on a copy at most 512 px wide. They were not fitted: E12 compared enhancement variants with these flags held fixed. Blur is only reported, never corrected |
+| `enhancement: clip 2.0, tile 8, nlm_scale 0.8, noisy 0.035, gamma_target 0.45` | Assumption | Hand-set CLAHE clip limit (×0.75 for dark images) and tile grid, Non-Local Means strength (h = noise sigma × 255 × 0.8, kept between 3 and 30), the noise level that triggers denoising after gamma, and the mean brightness that auto-gamma aims for (gamma kept between 0.3 and 1.0). Whether the enhanced or the original photo is used is decided per photo by the detector's confidence (E12, E14) |
 
 ## Vehicle hunt (`configs/hunt_model.json`)
 

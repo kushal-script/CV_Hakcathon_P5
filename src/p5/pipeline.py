@@ -42,6 +42,8 @@ class AppConfig:
     keep_logits: bool = False
     india: bool = False
     prefer: str = "india"
+    quality: dict | None = None
+    enhancement: dict | None = None
 
     @classmethod
     def load(cls, path: Path) -> "AppConfig":
@@ -137,13 +139,14 @@ class Pipeline:
             return PipelineResult(rid, "error", error=str(e))
         tick("io")
         rgb = img.rgb
-        q = analyse(rgb)
+        q = analyse(rgb, self.cfg.quality)
         tick("quality")
         if q.flags and max(rgb.shape[:2]) > 1024:
             s = 1024 / max(rgb.shape[:2])
             img.image = img.image.resize((round(img.image.width * s), round(img.image.height * s)), Image.LANCZOS)
             rgb = np.asarray(img.image)
-        enh = enhance(rgb, q) if self.cfg.enhance else enhance(rgb, type(q)(**{**asdict(q), "flags": []}))
+        knobs = self.cfg.enhancement or {}
+        enh = enhance(rgb, q, **knobs) if self.cfg.enhance else enhance(rgb, type(q)(**{**asdict(q), "flags": []}), **knobs)
         tick("enhance")
         conf = min(self.th.tau_lo, 0.05)
         dets = self.detector(enh.rgb, conf=conf)
@@ -196,10 +199,16 @@ class Pipeline:
                 if self.cfg.fusion and self.th.beta > 0:
                     z_fused = fuse(logits[k], self.classical.proba(vec[None])[0], self.th.beta)
             d: Decision = decide(logits[k], self.tax, self.th, z_fused, detected=True)
+            warn = []
             if sel.status == "weak" and k == 0:
-                d.note = (d.note + " Possible vehicle: low detector confidence.").strip()
+                warn.append("Possible vehicle: low detector confidence.")
+            if sroi is not None and k == 0:
+                warn.append("Forced classification: no vehicle was detected, so this answer is unreliable.")
+            d.note = " ".join([d.note, *warn]).strip()
             if per_market:
                 ds = [d] + [decide(z, cat.tax, cat.th, detected=True) for cat, z, _ in per_market[k][1:]]
+                for x in ds[1:]:
+                    x.note = " ".join([x.note, *warn]).strip()
                 cats = [c for c, _, _ in per_market[k]]
                 pick = primary(ds, next((i for i, c in enumerate(cats) if c.key == self.cfg.prefer), 0))
                 markets = {c.key: tagged(x, c) for c, x in zip(cats, ds)}
@@ -214,7 +223,10 @@ class Pipeline:
 
         if self.cfg.keep_logits:
             result.primary_logits = [round(float(v), 5) for v in logits[0]]
-        comparison = {"deep": top1(logits[0] / self.th.t_d, self.tax), "hybrid": vehicles[0].decision}
+        lead = vehicles[0]
+        hybrid = lead.markets[self.base.key] if lead.markets else lead.decision
+        comparison = {"deep": top1(logits[0] / self.th.t_d, self.tax), "hybrid": hybrid,
+                      "final_catalogue": lead.decision.get("catalogue_title") if lead.decision.get("catalogue") != self.base.key else None}
         if self.classical is not None and self.cfg.comparison:
             comparison["classical_on_detector_crop"] = vehicles[0].classical
             sroi = sroi or classical_roi(work)
