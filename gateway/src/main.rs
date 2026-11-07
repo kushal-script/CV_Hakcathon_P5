@@ -62,8 +62,11 @@ async fn security_headers(State(state): State<Shared>, req: Request, next: Next)
     h.insert(HeaderName::from_static("permissions-policy"), HeaderValue::from_static("camera=(), microphone=(), geolocation=(self), payment=()"));
     h.insert(HeaderName::from_static("cross-origin-opener-policy"), HeaderValue::from_static("same-origin"));
     h.insert(HeaderName::from_static("cross-origin-resource-policy"), HeaderValue::from_static("same-origin"));
-    if !h.contains_key(header::CACHE_CONTROL) {
-        h.insert(header::CACHE_CONTROL, HeaderValue::from_static("no-cache"));
+    let cache = h.get(header::CACHE_CONTROL).and_then(|v| v.to_str().ok()).unwrap_or("no-cache").to_string();
+    if !cache.contains("no-transform") {
+        if let Ok(v) = HeaderValue::from_str(&format!("{cache}, no-transform")) {
+            h.insert(header::CACHE_CONTROL, v);
+        }
     }
     if state.secure_cookie {
         h.insert(header::STRICT_TRANSPORT_SECURITY, HeaderValue::from_static("max-age=31536000; includeSubDomains"));
