@@ -798,7 +798,7 @@ const consoleState = { mod: null };
 async function showConsole(on) {
   $("#layout").hidden = on; $("#console").hidden = !on;
   if (!on) { map.m && map.m.resize(); return; }
-  if (!consoleState.mod) consoleState.mod = await import("./admin.js?v=6");
+  if (!consoleState.mod) consoleState.mod = await import("./admin.js?v=7");
   consoleState.mod.mount($("#console"), { api, h, busy, problem, notice, session, AuthError, KIND, LEVEL, pct, jpg, when });
 }
 

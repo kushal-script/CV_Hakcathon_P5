@@ -113,6 +113,8 @@ docker run ...   # the same command as above; the mounted folders keep all accou
 
 Sessions are stored in `gateway.db`, so signed-in users stay signed in across an update.
 
+Cloudflare tells browsers to keep scripts and stylesheets for 4 hours (its default Browser Cache TTL), whatever the gateway sends. When a `.js` or `.css` file changes, raise the `?v=` number on every reference in `web/public/login.html`, `web/app/index.html` and the `admin.js` import in `web/app/app.js`, so browsers fetch the new files at once. The pages themselves are sent with `no-store` and are never kept. Setting Browser Cache TTL to Respect Existing Headers (Caching, then Configuration in the Cloudflare dashboard) removes the need.
+
 ## Backups
 
 `vahana-backup.timer` runs `deploy/host/vahana-backup.sh` every 6 hours (00:00, 06:00, 12:00 and 18:00 UTC). Each run writes `/home/ubuntu/backups/<UTC time>/` with:
