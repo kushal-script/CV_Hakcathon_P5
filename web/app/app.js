@@ -274,12 +274,51 @@ function vehicleFacts(d) {
   if (d.model == null) return null;
   const sure = d.level === "class" || d.level === "family";
   const outside = d.level === "ood_make";
-  const year = outside ? "Not determined" : d.years && d.years.length ? d.years.join(" or ") : d.year ? String(d.year) : "Not separated in this catalogue";
+  const year = outside ? ["Unknown"] : d.years && d.years.length ? [d.years.join(" or ")]
+    : d.year ? [sure ? String(d.year) : `${d.year} (closest match, not confirmed)`]
+    : ["Unknown", "Photos in this catalogue are not labelled by model year, so the year cannot be read from the photo."];
   const model = sure ? d.model : outside ? "Not one of the known models" : `${d.model} (closest match, not confirmed)`;
   const conf = sure ? pct(d.confidence) : d.level === "make" ? `${pct(d.confidence)} for the make, ${pct(d.candidate_confidence)} for this model`
     : outside ? `${pct(d.confidence)} for the make` : `${pct(d.candidate_confidence)} for this model`;
-  const rows = [["Make", d.make || "Not determined"], ["Model", model], ["Year", year], ["Confidence", conf]];
-  return h("dl", { class: "facts", style: { margin: "10px 0 8px" } }, rows.flatMap(([k, v]) => [h("dt", { text: k }), h("dd", { text: v })]));
+  return facts([["Make", d.make || "Unknown"], ["Model", model], ["Year", ...year], ["Confidence", conf]], { margin: "10px 0 8px" });
+}
+
+function facts(rows, style) {
+  return h("dl", { class: "facts", style: style || {} }, rows.flatMap(([k, v, note]) => [h("dt", { text: k }),
+    h("dd", {}, v, note ? h("div", { class: "muted", style: { fontSize: "12px" }, text: note }) : null)]));
+}
+
+function whereTaken(loc) {
+  if (!loc) return { node: null, pins: [] };
+  const pins = [];
+  const kids = [];
+  const when = loc.taken_at ? [["Taken", loc.taken_at.replace("T", " "), loc.time_zone_recorded ? "Camera clock" : "Camera clock, time zone not recorded"]] : [];
+  const cam = loc.camera ? [["Camera", loc.camera]] : [];
+  if (loc.status === "gps") {
+    const g = loc.gps;
+    const rows = [["Source", "GPS recorded in the photo"], ["Coordinates", `${g.lat.toFixed(6)}, ${g.lon.toFixed(6)}`]];
+    if (g.inside_bengaluru != null) rows.push(["Area", g.inside_bengaluru ? "Inside Bengaluru" : "Outside Bengaluru"]);
+    if (g.accuracy_m != null) rows.push(["GPS accuracy", `${Math.round(g.accuracy_m)} m`, "As recorded by the camera"]);
+    kids.push(facts([...rows, ...when, ...cam]),
+      h("p", { class: "note", text: "Read from the photo's own metadata, not estimated. Metadata can be removed or edited after a photo is taken." }));
+    pins.push({ lat: g.lat, lon: g.lon, label: "Photo GPS", detail: "GPS recorded in the photo", best: true });
+  } else if (loc.status === "clues") {
+    kids.push(h("p", {}, h("strong", { text: "Not recorded in the photo. " }), "It has no GPS data. Text in it matches these named places in Bengaluru:"));
+    kids.push(h("ul", { class: "rows" }, loc.clues.filter((c) => c.places).map((c) => h("li", { style: { gridTemplateColumns: "1fr" } },
+      h("div", {}, h("div", { class: "title", text: `“${c.text}” matches ${c.name}` }),
+        h("div", { class: "sub", text: `${c.places_in_city} place${c.places_in_city === 1 ? "" : "s"} in Bengaluru with this name: ` +
+          c.places.map((p) => `${p.kinds.join(", ")} at ${p.lat.toFixed(5)}, ${p.lon.toFixed(5)}${p.extent_m >= 50 ? `, spanning about ${p.extent_m} m` : ""}`).join("; ") }))))));
+    loc.clues.filter((c) => c.places).forEach((c) => c.places.forEach((p) => pins.push({ lat: p.lat, lon: p.lon, extent: p.extent_m, label: c.name, detail: `Named in the photo: “${c.text}”` })));
+    const common = loc.clues.filter((c) => !c.places);
+    if (common.length) kids.push(h("p", { class: "note", text: `Also read, but shared by many places in the city: ${common.map((c) => `“${c.text}” (${c.places_in_city})`).join(", ")}.` }));
+    if (when.length || cam.length) kids.push(facts([...when, ...cam], { marginTop: "10px" }));
+    kids.push(h("p", { class: "note", text: "These are clues, not a confirmed location: the match is on the name alone, and a sign can name a place some distance away." }));
+  } else {
+    kids.push(h("p", {}, h("strong", { text: "Not known. " }), loc.reason || ""));
+    if (loc.texts && loc.texts.length) kids.push(h("p", { class: "note", text: `Text read in the photo: ${loc.texts.slice(0, 8).join(" · ")}` }));
+    if (when.length || cam.length) kids.push(facts([...when, ...cam], { marginTop: "10px" }));
+  }
+  return { node: section("Where the photo was taken", ...kids), pins };
 }
 
 function verdictBlock(d, colour) {
@@ -346,45 +385,21 @@ function renderIdentify(r) {
           h("tbody", {}, rows.map(([n, x]) => h("tr", {}, h("td", { text: n }), h("td", { text: x.label }), h("td", { class: "num", text: pct(x.confidence) })))))));
     }
   }
-  const locateBtn = h("button", { class: "button", type: "button", text: "Find where this photo was taken", onclick: () => runLocate(locateBtn) });
-  kids.push(section("Location", h("p", { class: "note", text: "Uses photo GPS data when present, otherwise reads signboards and road names and looks them up on OpenStreetMap." }),
-    h("div", { class: "actions", style: { marginTop: "10px" } }, locateBtn), h("div", { id: "locate-out" })));
+  const where = whereTaken(r.location);
+  if (where.node) kids.push(where.node);
   kids.push(h("p", { class: "disclaimer", text: `Processed in ${(r.timings_ms.total / 1000).toFixed(2)} s.` }));
   out.replaceChildren(...kids);
+  showPins(where.pins);
 }
-async function runLocate(btn) {
-  const out = $("#locate-out");
-  btn.disabled = true; out.replaceChildren(busy("Reading the scene"));
-  const fd = new FormData(); fd.append("file", identify.file);
-  try {
-    const r = await api("/api/locate", { method: "POST", form: fd });
-    renderLocate(r, out);
-  } catch (e) { out.replaceChildren(problem(e.message)); }
-  btn.disabled = false;
-}
-function renderLocate(r, out) {
-  const cands = r.candidates || [];
-  const texts = (r.ocr || []).map((o) => o.text);
-  if (!cands.length) {
-    out.replaceChildren(h("p", { class: "note", text: texts.length ? `Read “${texts.join("”, “")}” but could not match it to a place in Bengaluru.` : "No location data or readable place names in this photo." }));
-    clearLayers("areas", "points");
-    return;
-  }
-  const areas = [], points = [];
-  cands.forEach((c, i) => {
-    const colour = i === 0 ? PIN.best : PIN.other;
-    areas.push({ type: "Feature", properties: { colour }, geometry: { type: "Polygon", coordinates: [circle(c.lat, c.lon, c.radius_m)] } });
-    points.push({ type: "Feature", properties: { colour, r: i === 0 ? 7 : 5, label: i === 0 ? c.label : "", title: c.label, detail: `${pct(c.confidence)} · ±${Math.round(c.radius_m)} m · ${c.source.replace("_", " ")}` },
-      geometry: { type: "Point", coordinates: [c.lon, c.lat] } });
-  });
-  setLayer("areas", fc(areas)); setLayer("points", fc(points));
-  fit(cands.slice(0, 3).map((c) => [c.lon, c.lat]), 15);
-  setKey([["dot", PIN.best, "Most likely location"], ["dot", PIN.other, "Other candidates"]]);
-  out.replaceChildren(
-    texts.length ? h("p", { class: "note", text: `Text read in the photo: ${texts.slice(0, 8).join(" · ")}` }) : null,
-    h("ul", { class: "rows" }, cands.map((c) => h("li", { class: "clickable", style: { gridTemplateColumns: "1fr auto" }, onclick: () => map.m.flyTo({ center: [c.lon, c.lat], zoom: 16 }) },
-      h("div", {}, h("div", { class: "title", text: c.label }), h("div", { class: "sub", text: `${c.lat.toFixed(5)}, ${c.lon.toFixed(5)} · within ${Math.round(c.radius_m)} m · ${c.source === "exif" ? "photo GPS" : "signboard text"}` })),
-      h("span", { class: "score", text: pct(c.confidence, 0) })))));
+function showPins(pins) {
+  clearLayers("areas", "points");
+  if (!pins.length) return;
+  setLayer("areas", fc(pins.filter((p) => p.extent >= 50).map((p) => ({ type: "Feature", properties: { colour: PIN.other },
+    geometry: { type: "Polygon", coordinates: [circle(p.lat, p.lon, p.extent)] } }))));
+  setLayer("points", fc(pins.map((p) => ({ type: "Feature", properties: { colour: p.best ? PIN.best : PIN.other, r: p.best ? 7 : 5, label: p.label, title: p.label, detail: p.detail },
+    geometry: { type: "Point", coordinates: [p.lon, p.lat] } }))));
+  fit(pins.map((p) => [p.lon, p.lat]), 16);
+  setKey(pins.some((p) => p.best) ? [["dot", PIN.best, "GPS recorded in the photo"]] : [["dot", PIN.other, "Place named in the photo"]]);
 }
 
 const inv = { id: null, data: null, poll: null };
@@ -798,7 +813,7 @@ const consoleState = { mod: null };
 async function showConsole(on) {
   $("#layout").hidden = on; $("#console").hidden = !on;
   if (!on) { map.m && map.m.resize(); return; }
-  if (!consoleState.mod) consoleState.mod = await import("./admin.js?v=7");
+  if (!consoleState.mod) consoleState.mod = await import("./admin.js?v=8");
   consoleState.mod.mount($("#console"), { api, h, busy, problem, notice, session, AuthError, KIND, LEVEL, pct, jpg, when });
 }
 

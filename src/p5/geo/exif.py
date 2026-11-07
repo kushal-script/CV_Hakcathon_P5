@@ -40,13 +40,20 @@ def read_exif(data: bytes) -> dict:
                 out["altitude_m"] = float(gps.get(6))
             except (TypeError, ValueError):
                 pass
+        if gps.get(31) is not None:
+            try:
+                out["accuracy_m"] = float(gps.get(31))
+            except (TypeError, ValueError):
+                pass
     sub = exif.get_ifd(EXIF_IFD) if exif else {}
     stamp = sub.get(36867) or exif.get(306) if exif else None
     if stamp:
+        offset = str(sub.get(36881) or "").strip("\x00 ")
         try:
-            out["taken_at"] = datetime.strptime(str(stamp), "%Y:%m:%d %H:%M:%S").isoformat()
+            out["taken_at"] = datetime.strptime(str(stamp).strip("\x00 "), "%Y:%m:%d %H:%M:%S").isoformat() + offset
         except ValueError:
             out["taken_at"] = str(stamp)
+        out["time_zone_recorded"] = bool(offset)
     for tag, name in ((271, "camera_make"), (272, "camera_model")):
         if exif and exif.get(tag):
             out[name] = str(exif.get(tag)).strip("\x00 ")

@@ -23,7 +23,8 @@ from p5.classification.classifier import Classifier
 from p5.config import section
 from p5.detection.detector import Detector
 from p5.geo.exif import read_exif
-from p5.geo.locate import locate
+from p5.geo.videoloc.signs import load_places
+from p5.geo.where import where_taken
 from p5.geo.traffic import TrafficModel
 from p5.identity import Identity, secret, verify
 from p5.investigate.journeys import fastest, parse_import
@@ -178,6 +179,17 @@ def photo_location(data: bytes) -> tuple[float | None, float | None]:
     return (lat, lon) if lat is not None and inside(lat, lon) else (None, None)
 
 
+def photo_where(data: bytes) -> dict:
+    places_file = REGION_DIR / "places.json.gz"
+    try:
+        places = load_places(places_file) if places_file.exists() else None
+        return where_taken(data, lambda: load_image(data, 1600).rgb, state.get("ocr"), places, inside)
+    except Exception:
+        log.exception("photo location failed")
+        return {"status": "unknown", "reason": "The location could not be read from this photo.", "gps": None, "texts": [], "clues": [],
+                "taken_at": None, "camera": None}
+
+
 @app.get("/api/health")
 def health() -> dict:
     return {"status": "ok" if state else "loading"}
@@ -213,6 +225,7 @@ async def predict(file: UploadFile = File(...), classify_anyway: bool = Form(Fal
     if result.error:
         raise HTTPException(422, result.error)
     out = result.to_dict()
+    out["location"] = await run_in_threadpool(photo_where, data)
     lat, lon = photo_location(data)
     dets = [{"source": "photo", "label": v["decision"]["label"], "make": v["decision"].get("make"), "level": v["decision"]["level"],
              "confidence": v["decision"]["confidence"], "catalogue": v["decision"].get("catalogue"), "vehicle_class": "car"}
@@ -224,7 +237,7 @@ async def predict(file: UploadFile = File(...), classify_anyway: bool = Form(Fal
         {"vehicles": [{"box": v["box"], "decision": {k: v["decision"].get(k) for k in ("level", "label", "confidence", "make", "catalogue", "top5")}}
                       for v in out["vehicles"]],
          "quality": (out.get("quality") or {}).get("flags"), "enhancement": out.get("enhancement"), "image_size": out.get("image_size"),
-         "ms": out["timings_ms"].get("total")},
+         "ms": out["timings_ms"].get("total"), "location": out["location"]["status"]},
         lat=lat, lon=lon, thumb=thumbnail((out.get("panels") or {}).get("annotated")), detections=dets)
     return out
 
@@ -233,16 +246,14 @@ async def predict(file: UploadFile = File(...), classify_anyway: bool = Form(Fal
 async def locate_photo(file: UploadFile = File(...), ident: Identity = Depends(identity)) -> dict:
     data = await read_upload(file, MAX_IMAGE)
     try:
-        img = load_image(data, 1600)
+        load_image(data, 64)
     except InputError as e:
         raise HTTPException(422, str(e))
-    res = await run_in_threadpool(locate, data, img.rgb, state.get("ocr"))
-    for c in res.get("candidates", []):
-        c["inside_bengaluru"] = inside(c.get("lat"), c.get("lon"))
-    best = next((c for c in res.get("candidates", []) if c.get("inside_bengaluru")), None)
-    store().record(ident, "locate", f"Located near {best.get('label') or 'a candidate'} ({best.get('confidence', 0):.0%})" if best else "Location not found",
-                   {"methods": res.get("methods"), "candidates": len(res.get("candidates", []))},
-                   lat=best.get("lat") if best else None, lon=best.get("lon") if best else None)
+    res = await run_in_threadpool(photo_where, data)
+    gps = res.get("gps") or {}
+    summary = {"gps": "Location from the photo's GPS data", "clues": "Signboard text matches named places", "unknown": "Location not known"}[res["status"]]
+    store().record(ident, "locate", summary, {"status": res["status"], "clues": len(res.get("clues", []))},
+                   lat=gps.get("lat") if gps.get("inside_bengaluru") else None, lon=gps.get("lon") if gps.get("inside_bengaluru") else None)
     return res
 
 

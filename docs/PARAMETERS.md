@@ -55,6 +55,18 @@ The match score is a logistic model, P(same vehicle), over three features: appea
 | `high_score: 0.45`, `low_score: 0.15`, `match_iou: 0.25` | Assumption | Two-stage association in the style of ByteTrack. No labelled traffic-camera tracking set was available to tune them |
 | `max_age_seconds: 2.0`, `min_hits: 3`, `duplicate_iou: 0.5` | Assumption | Track lifetime and confirmation rules |
 
+## Where a photo was taken (`src/p5/geo/where.py`)
+
+| Value | Kind | Source |
+|---|---|---|
+| GPS position, accuracy, camera time and time zone, camera model | Measured | Read from the photo's EXIF data, never estimated. Shown only when the photo carries them |
+| OCR text kept at a recognition score of 0.6 or more | Operational | The same rule as signboards read from video |
+| Words on one row are joined into a line when they overlap vertically by half a text height and are less than 1.5 text heights apart | Operational | OCR often returns the words of one sign separately. Without joining, the word "BRIGADE" of a "BRIGADE ROAD" sign matched an unrelated place named "Brigade" |
+| A name matches only when a run of up to 6 words in a line equals an OpenStreetMap name exactly after lower-casing, and is not a generic word such as "road" | Operational | Exact matches only, so nothing is invented from a near miss |
+| Entries with the same name within 218 m of each other form one place | Fitted on the map data | 99th percentile of the distance from each named road piece to the nearest piece with the same name, over 87,759 pieces in the Bengaluru index (median 11 m). One road is stored as many pieces, so "Brigade Road" has 78 entries but is one place |
+| A name shared by more than 3 distinct places is reported with its count only | Operational | The same limit as the video signboard check |
+| Year shown as unknown for the Indian catalogue | Data | Its photos are not labelled by model year. Wikidata records a production start for only 17 of the 282 models, too few to show |
+
 ## Geolocation (`investigation.yaml: geocoding`)
 
 | Value | Kind | Source |
