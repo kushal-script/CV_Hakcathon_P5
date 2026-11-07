@@ -187,6 +187,8 @@ async function initMap() {
   style.sources.satellite = { type: "raster", tiles: ["https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2021_3857/default/g/{z}/{y}/{x}.jpg"],
     tileSize: 256, maxzoom: 15, attribution: "Sentinel-2 cloudless 2021 by EOX IT Services GmbH (contains modified Copernicus Sentinel data)" };
   style.layers.splice(1, 0, { id: "satellite", type: "raster", source: "satellite", layout: { visibility: "none" } });
+  const font = style.layers.map((l) => l.layout && l.layout["text-font"]).find(Boolean);
+  const labelFont = font ? { "text-font": font } : {};
   const bb = session.region && session.region.bbox;
   const bounds = bb ? [[bb[0] - 0.08, bb[1] - 0.06], [bb[2] + 0.08, bb[3] + 0.06]] : null;
   const own = session.user && session.user.station;
@@ -207,10 +209,10 @@ async function initMap() {
   add("areas:line", "line", { "line-color": ["get", "colour"], "line-width": 1.2 });
   add("stations", "circle", { "circle-radius": ["case", ["get", "own"], 7, 4.5], "circle-color": ["case", ["get", "own"], "#a8382a", "#5c4a2c"],
     "circle-stroke-color": "#fbf7ef", "circle-stroke-width": 1.5, "circle-opacity": 0.9 });
-  map.m.addLayer({ id: "stations:label", type: "symbol", source: "stations", minzoom: 12.5, layout: { "text-field": ["get", "short"], "text-size": 11, "text-offset": [0, 1.1], "text-anchor": "top", "text-optional": true },
+  map.m.addLayer({ id: "stations:label", type: "symbol", source: "stations", minzoom: 12.5, layout: { ...labelFont, "text-field": ["get", "short"], "text-size": 11, "text-offset": [0, 1.1], "text-anchor": "top", "text-optional": true },
     paint: { "text-color": "#4d4234", "text-halo-color": "#fbf7ef", "text-halo-width": 1.4 } });
   add("points", "circle", { "circle-radius": ["get", "r"], "circle-color": ["get", "colour"], "circle-stroke-color": "#fbf7ef", "circle-stroke-width": 2 });
-  map.m.addLayer({ id: "points:label", type: "symbol", source: "points", layout: { "text-field": ["get", "label"], "text-size": 12, "text-offset": [0, 1.3], "text-anchor": "top", "text-optional": true },
+  map.m.addLayer({ id: "points:label", type: "symbol", source: "points", layout: { ...labelFont, "text-field": ["get", "label"], "text-size": 12, "text-offset": [0, 1.3], "text-anchor": "top", "text-optional": true },
     paint: { "text-color": "#241c13", "text-halo-color": "#fbf7ef", "text-halo-width": 1.5 } });
   map.loaded = true;
   for (const [name, data] of Object.entries(map.data)) { const src = map.m.getSource(name); if (src) src.setData(data); }
