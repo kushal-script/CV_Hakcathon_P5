@@ -2,6 +2,18 @@
 
 Computer Vision Hackathon 2026, Problem Statement P5, Team T55 (1RUA24CSE0216, 1RUA24CSE0228, 1RUA24CSE0229, 1RUA24CSE0275, 1RUA24CSE0244). The system detects a vehicle in an uploaded image, identifies its make, model and year among the 196 Stanford Cars classes, and gives a calibrated confidence with every answer. Classical computer vision (quality analysis, quality-gated enhancement, GrabCut ROI refinement, Canny edges and contours, colour/texture/geometry features) works alongside deep learning (a fine-tuned YOLO26s detector and a fine-tuned TResNet-L classifier). A decision policy answers at the model, family or make level, flags cars outside the catalogue, and reports "no vehicle" when there is none.
 
+## Deliverables
+
+| Deliverable | Where |
+|---|---|
+| Live hosted application | **https://vahanadrishti.in** (station and division accounts, sign-in from Karnataka or Maharashtra) |
+| Complete source code | This repository. See [Repository layout](#repository-layout) |
+| System architecture diagram | [docs/architecture.md](docs/architecture.md) |
+| Design document | [docs/DESIGN.md](docs/DESIGN.md) |
+| Comparative evaluation results | [eval_P5_T55.md](eval_P5_T55.md) |
+| Ablation study | [eval_P5_T55.md §8](eval_P5_T55.md#8-ablation-study) |
+| Failure-case analysis | [eval_P5_T55.md §9](eval_P5_T55.md#9-failure-case-analysis) |
+
 ## Results (Stanford Cars test, n = 8,041)
 
 | Metric | Value |
@@ -63,6 +75,7 @@ Every tunable value is in a config file, and [docs/PARAMETERS.md](docs/PARAMETER
 | Document | Contents |
 |---|---|
 | [eval_P5_T55.md](eval_P5_T55.md) | Comparative evaluation in the required metric order, ablation and failure-case analysis |
+| [docs/DESIGN.md](docs/DESIGN.md) | Design document of the system as built: requirements, recognition, console, security, deployment, trade-offs |
 | [docs/IMPLEMENTATION_NOTES.md](docs/IMPLEMENTATION_NOTES.md) | What was built and every deviation from the plan |
 | [docs/PARAMETERS.md](docs/PARAMETERS.md) | Every configurable value and where it comes from |
 | [docs/OPERATIONS.md](docs/OPERATIONS.md) | Deployment, accounts, settings, updates and backups |

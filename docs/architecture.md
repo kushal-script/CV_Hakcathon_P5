@@ -6,27 +6,35 @@
 
 ## 0. As built (deployment and product extensions)
 
-Sections 1 to 10 are the design contract written before implementation. They still describe the recognition pipeline accurately. Three things changed when it was built. The Gradio app was replaced by a JSON API behind a Rust gateway with a custom web console. The GPU work ran on JarvisLabs instead of Kaggle. And the system grew into an investigation console for traffic police. The deployed system looks like this:
+Sections 1 to 10 are the design contract written before implementation. They still describe the recognition pipeline accurately. Three things changed when it was built. The Gradio app was replaced by a JSON API behind a Rust gateway with a custom web console. The GPU work ran on JarvisLabs instead of Kaggle. And the system grew into an investigation console for traffic police. The deployed system, live at https://vahanadrishti.in, looks like this:
 
 ```mermaid
 flowchart LR
-    B["Browser: web console<br/>web/index.html, app.js, styles.css"] -->|"HTTPS"| GW
+    B["Browser: web console<br/>web/app, web/public"] -->|"HTTPS vahanadrishti.in"| CF["Cloudflare<br/>DNS, TLS certificate,<br/>named tunnel vahana-drishti"]
     B -->|"map tiles"| T["OpenFreeMap vector tiles<br/>EOX Sentinel-2 cloudless"]
-    subgraph C["Container (non-root, read-only filesystem)"]
-        GW["gateway (Rust, axum)<br/>station and division accounts, Argon2id,<br/>server-side sessions, lockout, geofence,<br/>CSRF checks, rate limits, CSP, static files"]
-        GW --- GDB[("gateway.db (SQLite)<br/>divisions, stations, users,<br/>sessions, audit")]
-        GW -->|"/api on 127.0.0.1:8001<br/>+ HMAC-signed identity"| API["app/server.py (FastAPI)"]
-        API --- VDB[("vahana.db (SQLite)<br/>events, detections, case index")]
-        API --> ADM["division admin API<br/>overview, records, cases, stations, traffic, export"]
-        API --> PIPE["p5.pipeline.Pipeline<br/>detector, classical branch, decision"]
-        PIPE --> CAT["p5.catalogue<br/>US: Stanford Cars 196 models<br/>India: 282 Indian-market models (E18)"]
-        API --> VID["p5.video.analyse.VideoAnalyser<br/>p5.video.tracker.Tracker"]
-        API --> CASE["p5.investigate.service.CaseStore"]
-        CASE --> HUNT["p5.investigate.hunt<br/>calibrated match model (E19)"]
-        CASE --> RT["p5.investigate.hints, routes<br/>note parsing, route hypotheses"]
-        RT --> TT["p5.geo.traffic<br/>hourly Bengaluru drive times (E20)<br/>corrected by observed journeys"]
-        API --> GEO["p5.geo.exif, locate, geocode, route"]
-        CASE --> VL["p5.geo.videoloc<br/>camera motion, particle filter on the road graph,<br/>challenge and decoy searches, signboards"]
+    GH["GitHub Actions: keep-server-running<br/>every 10 minutes"] -.->|"resumes the VM through<br/>the JarvisLabs API if paused"| CD
+    subgraph VM["JarvisLabs CPU VM, 8 vCPU, 32 GB, Chennai"]
+        CF -->|"outbound tunnel,<br/>no open web ports"| CD["cloudflared<br/>vahana-named-tunnel.service"]
+        CD -->|"127.0.0.1:8080"| GW
+        BK["vahana-backup.timer<br/>every 6 h, SQLite online backup,<br/>integrity check, 7 days kept"]
+        WD["vahana-watchdog.timer<br/>every minute, restarts the container<br/>after 3 failed health checks"]
+        subgraph C["Docker container (non-root, read-only filesystem)"]
+            GW["gateway (Rust, axum)<br/>station and division accounts, Argon2id,<br/>server-side sessions, lockout per network,<br/>sign-in area Karnataka and Maharashtra,<br/>CSRF checks, rate limits, CSP, HTTPS redirect"]
+            GW --- GDB[("gateway.db (SQLite)<br/>divisions, stations, users,<br/>sessions, audit")]
+            GW -->|"/api on 127.0.0.1:8001<br/>+ HMAC-signed identity"| API["app/server.py (FastAPI)"]
+            API --- VDB[("vahana.db (SQLite)<br/>events, detections, case index")]
+            API --> ADM["division admin API<br/>overview, records, cases, stations, traffic, export"]
+            API --> PIPE["p5.pipeline.Pipeline<br/>detector, classical branch, decision"]
+            PIPE --> CAT["p5.catalogue<br/>US: Stanford Cars 196 models<br/>India: 282 Indian-market models (E18)<br/>with production years from Wikipedia"]
+            API --> WH["p5.geo.where<br/>photo location: EXIF GPS, exact signboard names<br/>against 144,027 OSM places, heat map"]
+            API --> VID["p5.video.analyse.VideoAnalyser<br/>p5.video.tracker.Tracker"]
+            API --> CASE["p5.investigate.service.CaseStore"]
+            CASE --> HUNT["p5.investigate.hunt<br/>calibrated match model (E19)"]
+            CASE --> RT["p5.investigate.hints, routes<br/>note parsing, route hypotheses"]
+            RT --> TT["p5.geo.traffic<br/>hourly Bengaluru drive times (E20)<br/>corrected by observed journeys"]
+            CASE --> GEO["p5.geo.locate, geocode, route<br/>signboards in video key frames, GPS tracks"]
+            CASE --> VL["p5.geo.videoloc<br/>camera motion, particle filter on the road graph,<br/>challenge and decoy searches, signboards"]
+        end
     end
     GEO -->|"geocoding"| PH["Photon (OpenStreetMap)"]
     RT -->|"routes, map matching"| OS["OSRM"]
@@ -42,7 +50,9 @@ flowchart LR
 | `p5.catalogue` | Runs every catalogue's classifier on the same crops. Each catalogue has its own temperature, thresholds and OOD gate. The more specific answer wins, then the more confident one | `Catalogue.load`, `primary` |
 | `p5.video` | Detection every 1/8 s, two-stage IoU tracking, per-track best crops, make and model, colour, direction and wrong-way check | `VideoAnalyser.run(path, VideoOptions)` |
 | `p5.investigate` | Cases with a target photo and camera feeds, hunt scoring, note parsing, route hypotheses, and journeys observed between sightings or along dashcam tracks | `CaseStore`, `hunt.rank`, `hints.parse_places`, `routes.infer`, `routes.osrm_routes`, `routes.isochrone`, `journeys.from_sightings`, `journeys.from_track` |
-| `p5.geo` | EXIF GPS, OCR plus geocoding, GPS track parsing and map matching, and drive times by hour of day with a learned local correction | `locate`, `parse_track`, `map_match`, `mp4_location`, `TrafficModel.predict`, `TrafficModel.prob_within` |
+| `p5.geo` | EXIF GPS, OCR plus geocoding for video key frames, GPS track parsing and map matching, and drive times by hour of day with a learned local correction | `parse_track`, `map_match`, `mp4_location`, `TrafficModel.predict`, `TrafficModel.prob_within` |
+| `p5.geo.where` | Where a photo was taken, from evidence only: the GPS position the camera recorded, otherwise signboard text matched by exact name against the OpenStreetMap places of Bengaluru, grouped into distinct places and spread into a heat map. With neither it says the location is not known | `where_taken`, `places_named`, `heat`; returned with `/api/predict` and by `/api/locate` |
+| `deploy/host/`, `.github/workflows/` | Host services: the named Cloudflare tunnel, backups every 6 hours, a watchdog every minute, and a scheduled GitHub job that resumes the VM if JarvisLabs pauses it | `vahana-named-tunnel.service`, `vahana-backup.timer`, `vahana-watchdog.timer`, `keep-server-running.yml` |
 | `p5.geo.videoloc` | Locates moving-camera footage without GPS. `motion.py` measures turns, stops and road-surface speed with tracked features and the essential matrix. `filter.py` is a particle filter over the directed OpenStreetMap road graph (`graph.py`). `search.py` runs independent searches, a challenge search outside the best start and decoy searches in random areas. `signs.py` checks OCR text against named places. `metadata.py` reads GPS tracks embedded in the video file with ExifTool | `locate_video`, `search`, `decoys`, `embedded_gps`, `match_signs`, `conflicting_signs`; API `/api/cases/{id}/cameras/{cam}/geolocate` and `/geolocation/accept` |
 
 Every tunable value is in `configs/` or in the calibrated files under `models/`. See `docs/PARAMETERS.md`.
@@ -99,7 +109,7 @@ flowchart TD
     M3B --> M8
     M8 -.->|"only if fusion accepted in E12"| M9["M9 p5.hybrid.fusion.fuse<br/>z_deep + beta * log p_cls"]
     M9 -.-> M10
-    M8 --> R["p5.render.panels<br/>JPEG panels at most 512 px"]
+    M8 --> R["p5.render<br/>JPEG panels at most 512 px"]
     M5 --> R
     CAM --> R
     Y1 --> M11["M11 app/app.py (Gradio)<br/>banners, panels, comparison tab, queue"]
@@ -137,7 +147,7 @@ flowchart LR
     end
     subgraph DET["Detection: E03, E06, member B"]
         ZS["YOLO26s COCO zero-shot<br/>car, truck, bus"]
-        PL["p5.detection.pseudo_label<br/>background cars + COCO negatives"]
+        PL["p5.detection.train<br/>pseudo-labels: background cars + COCO negatives"]
         DTR["p5.detection.train<br/>1 class, 20 epochs, Kaggle T4"]
         ZS --> PL
         PL --> DTR
@@ -148,7 +158,7 @@ flowchart LR
         TR --> EXP
     end
     subgraph CLA["Classical: E07, E08, member A"]
-        FEAT["p5.classical.features<br/>p5.classical.fisher"]
+        FEAT["p5.classical.features<br/>p5.classical.colour"]
         SVM["global LinearSVC (live)<br/>FV LinearSVC (offline)"]
         FEAT --> SVM
     end
@@ -161,7 +171,7 @@ flowchart LR
         CACHE[("cache: boxes, masks,<br/>scores, logits per split")]
         CAL["p5.confidence: temperature, thresholds<br/>val + web-dev only"]
         ET["scripts/eval_test.py<br/>test once, logged"]
-        TAB["p5.eval.tables<br/>eval_P5_TeamID.md"]
+        TAB["scripts/make_tables.py<br/>eval_P5_TeamID.md"]
         CACHE --> CAL
         CAL --> ET
         ET --> TAB
