@@ -45,6 +45,20 @@ Computer Vision Hackathon 2026 · Team T55<br>
 
 The system detects a vehicle in an uploaded image, identifies its make, model and year among the 196 Stanford Cars classes, and gives a calibrated confidence with every answer. Classical computer vision (quality analysis, quality-gated enhancement, GrabCut ROI refinement, Canny edges and contours, colour/texture/geometry features) works alongside deep learning (a fine-tuned YOLO26s detector and a fine-tuned TResNet-L classifier). A decision policy answers at the model, family or make level, flags cars outside the catalogue, and reports "no vehicle" when there is none.
 
+## Demo accounts for evaluators
+
+> [!TIP]
+> Open **https://www.vahanadrishti.in**, allow the browser to share its location (sign-in works from inside Karnataka) and sign in with any account below.
+
+| Account | Username | Password | What it shows |
+| :--- | :--- | :--- | :--- |
+| Demo division administrator 1 | `demo-admin-1` | `My2W-Eayp-LH5L` | Every division: all stations, records, cases, accounts, charts and the audit log. Read only, so nothing can be changed or deleted |
+| Demo division administrator 2 | `demo-admin-2` | `QRHy-M5sh-Nsyg` | The same all-division view as administrator 1 |
+| Demo police station 1 | `demo-station-1` | `W6jG-VLNb-3Wry` | A station near MG Road, Central division: identify photos, analyse video, open cases and investigate |
+| Demo police station 2 | `demo-station-2` | `bnKG-rt3k-M6VR` | A station in Koramangala, South division, with the same features |
+
+Demo passwords cannot be changed, and the two demo stations are not real police stations. Everything uploaded with a demo account can be seen by the other demo users, so please upload car photos only.
+
 ## Deliverables
 
 | Deliverable | Where |
@@ -56,9 +70,6 @@ The system detects a vehicle in an uploaded image, identifies its make, model an
 | Comparative evaluation results and solution report | [eval_P5_T55.md](eval_P5_T55.md) and [eval_P5_T55.pdf](eval_P5_T55.pdf) |
 | Ablation study | [eval_P5_T55.md §3.3](eval_P5_T55.md#33-ablation-study) |
 | Failure-case analysis | [eval_P5_T55.md §4](eval_P5_T55.md#4-failure-modes--limitations) |
-
-> [!TIP]
-> To try the live console, open **https://vahanadrishti.in**, let the browser share its location (sign-in works from inside Karnataka) and sign in with a station or division ID and the password shared by the team.
 
 ## System architecture
 
@@ -109,6 +120,7 @@ Every tunable value is in a config file, and [docs/PARAMETERS.md](docs/PARAMETER
 * **One account per police station**, created from the station register in `assets/bengaluru/police_stations.json`. Stations sit in five divisions: Central, North, South, East and West.
 * **One administrator per division.** An administrator sees every record, case and account of the stations in the division. The admin can correct or delete records, open, close, reassign and delete cases, reset station passwords, disable or unlock accounts, read the security audit log, and see charts of everything the system predicted. A station sees only its own records and cases.
 * **A Bengaluru console with a regional sign-in.** Sign-in requires the device to report a location inside the sign-in area, currently Karnataka (the OpenStreetMap state boundary built by `scripts/build_signin_area.py`, with a 2 km margin). The gateway refuses requests that Cloudflare marks as coming from outside India. The console itself covers Bengaluru: camera locations must fall inside the city, and the map cannot leave it.
+* **Demo accounts for evaluators.** Two demo stations and two demo administrators who see every division, listed in `assets/bengaluru/demo_accounts.json` and created on the server with `vahana-gateway demo-accounts`, which reads the passwords from stdin. Their passwords cannot be changed or reset from the console, failed sign-ins cannot lock them for everyone, and the demo administrators can look at everything but change nothing.
 * **Nothing is visible before sign-in.** The gateway serves only the sign-in page and its assets to anonymous visitors. The console's HTML and scripts, and every API call, require a valid session.
 
 ### Security

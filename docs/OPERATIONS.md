@@ -36,6 +36,16 @@ The upload limits stay under the 100 MB request limit of Cloudflare's free plan,
 
 `provision` creates the five divisions, one account per police station (its ID is the station ID, for example `ps-cubbon-park` for the law-and-order station or `tps-cubbon-park` for the traffic station) and one administrator per division (`admin-central`, `admin-north`, `admin-south`, `admin-east`, `admin-west`). It writes every one-time password to a new file readable only by its owner and refuses to overwrite an existing file. Copy that file to a safe place, hand each station its own line through a trusted channel, and delete the copy on the server.
 
+### Demo accounts
+
+`assets/bengaluru/demo_accounts.json` describes two demo stations (Demo Police Station 1 near MG Road, Central division, and Demo Police Station 2 in Koramangala, South division) and two demo administrators who see every division. Create them, or set new passwords, with one `username password` pair per line on stdin, so the passwords never appear in the shell history or the process list:
+
+```bash
+docker exec -i vahana vahana-gateway demo-accounts --file /app/assets/bengaluru/demo_accounts.json < demo_passwords.txt
+```
+
+Demo accounts cannot change their own password, administrators cannot reset or disable them from the console, and failed sign-ins pause only the network they come from, never the whole account. The demo administrators can read every division, including the audit log without IP addresses, and can identify photos, but every other change is refused. The published passwords are listed in the README.
+
 An account signs in with its one-time password and can change it under Account. To make every account choose its own password at the first sign-in, set `P5_REQUIRE_PASSWORD_CHANGE=true`.
 
 ## Accounts

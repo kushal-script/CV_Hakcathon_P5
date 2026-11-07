@@ -8,7 +8,7 @@
 | **Problem Title** | Intelligent Fine-Grained Vehicle Recognition and Analysis System |
 | **Team Name** | ATLAS (Team ID T55) |
 | **Team Members** | Kushal S (1RUA24CSE0216)<br>M Dhanya (1RUA24CSE0228)<br>M M Havish (1RUA24CSE0229)<br>Manusmita Mishra (1RUA24CSE0244)<br>Navtej Chakravarty (1RUA24CSE0275) |
-| **GitHub Repository** | https://github.com/kushal-script/CV_Hakcathon_P5<br>Commit evaluated: `e5b4b6b29b3c9467078f462c8e8f99381e55317a` (later commits change only documentation) |
+| **GitHub Repository** | https://github.com/kushal-script/CV_Hakcathon_P5<br>Commit evaluated: `8832b782e0e6fee9cfb6ea9620d1b09bf8909866` (later commits change only documentation) |
 | **Live Demo / Deployment** | https://www.vahanadrishti.in |
 
 ---
@@ -222,7 +222,7 @@ Starting from the Stanford Cars weights was right on 170 photos where the ImageN
 
 ### 3.2 Visual Outputs & Intermediate Representations
 
-All screenshots were taken from the console running locally on the evaluated commit, which is the code running on the live site. The Stanford Cars photos are test images that were never used for training or tuning, and the Indian photos come from the held-out test split of the Indian catalogue.
+All screenshots were taken from the console running locally at commit `e5b4b6b`, which has the same recognition code as the evaluated commit. The only later code change adds the demo accounts of Section 5. The Stanford Cars photos are test images that were never used for training or tuning, and the Indian photos come from the held-out test split of the Indian catalogue.
 
 ![The console after identifying a test photo](docs/report/console-identify.jpg)
 
@@ -325,7 +325,7 @@ Each row changes one thing and keeps the rest fixed. Validation rows were settle
 * The Indian catalogue was trained and tested on enthusiasts' photos, mostly in daylight. Its accuracy on night-time traffic camera crops has not been measured and is likely to be lower.
 * The out-of-catalogue threshold was set on in-catalogue validation data only, which is the root of the failures above.
 * The system names vehicle models. It does not read number plates and does not identify people. Its answers are leads for an officer to check, not evidence: Figure 7 shows how a confident answer can still be wrong.
-* The live console is limited to police station and division accounts, with sign-in from Karnataka. Every sign-in and prediction is recorded, and a station sees only its own records.
+* The live console is limited to police station and division accounts, with sign-in from Karnataka. Every sign-in and prediction is recorded, and a station sees only its own records. The four shared demo accounts of Section 5 cannot change their passwords, and the demo administrators cannot change any data.
 
 ---
 
@@ -334,7 +334,16 @@ Each row changes one thing and keeps the rest fixed. Validation rows were settle
 * **Live deployment:** https://www.vahanadrishti.in (also https://vahanadrishti.in)
 * **Source code:** https://github.com/kushal-script/CV_Hakcathon_P5
 
-To try the live console, open the link, let the browser share its location (sign-in works from inside Karnataka) and sign in with a station or division ID and the password shared by the team. Identify is the first tab: choose a photo, and the answer, the boxes and the panels of Section 3.2 appear within a few seconds.
+To try the live console, open the link, let the browser share its location (sign-in works from inside Karnataka) and sign in with one of the demo accounts below. Identify is the first tab: choose a photo, and the answer, the boxes and the panels of Section 3.2 appear within a few seconds.
+
+| Account | Username | Password | What it shows |
+| :--- | :--- | :--- | :--- |
+| Demo division administrator 1 | `demo-admin-1` | `My2W-Eayp-LH5L` | Every division: all stations, records, cases, accounts, charts and the audit log. Read only, so nothing can be changed or deleted |
+| Demo division administrator 2 | `demo-admin-2` | `QRHy-M5sh-Nsyg` | The same all-division view as administrator 1 |
+| Demo police station 1 | `demo-station-1` | `W6jG-VLNb-3Wry` | A station near MG Road, Central division: identify photos, analyse video, open cases and investigate |
+| Demo police station 2 | `demo-station-2` | `bnKG-rt3k-M6VR` | A station in Koramangala, South division, with the same features |
+
+The demo passwords cannot be changed, and failed sign-ins cannot lock these accounts for everyone. The two demo stations are not real police stations, and the demo administrators can look at every division but cannot change anything.
 
 ![The console on a phone](docs/report/phone.jpg)
 
