@@ -53,9 +53,9 @@ The system detects a vehicle in an uploaded image, identifies its make, model an
 | Complete source code | This repository. See [Repository layout](#repository-layout) |
 | System architecture diagram | [docs/architecture.md](docs/architecture.md) |
 | Design document | [docs/DESIGN.md](docs/DESIGN.md) |
-| Comparative evaluation results | [eval_P5_T55.md](eval_P5_T55.md) |
-| Ablation study | [eval_P5_T55.md §8](eval_P5_T55.md#8-ablation-study) |
-| Failure-case analysis | [eval_P5_T55.md §9](eval_P5_T55.md#9-failure-case-analysis) |
+| Comparative evaluation results and solution report | [eval_P5_T55.md](eval_P5_T55.md) and [eval_P5_T55.pdf](eval_P5_T55.pdf) |
+| Ablation study | [eval_P5_T55.md §3.3](eval_P5_T55.md#33-ablation-study) |
+| Failure-case analysis | [eval_P5_T55.md §4](eval_P5_T55.md#4-failure-modes--limitations) |
 
 > [!TIP]
 > To try the live console, open **https://vahanadrishti.in**, let the browser share its location (sign-in works from inside Karnataka) and sign in with a station or division ID and the password shared by the team.
@@ -138,7 +138,7 @@ The full diagram with every module, timer and outside service is in [docs/archit
 
 | Document | Contents |
 |---|---|
-| [eval_P5_T55.md](eval_P5_T55.md) | Comparative evaluation in the required metric order, ablation and failure-case analysis |
+| [eval_P5_T55.md](eval_P5_T55.md), [PDF](eval_P5_T55.pdf) | Solution report: approach, comparative evaluation in the required metric order, screenshots, ablation and failure cases |
 | [docs/DESIGN.md](docs/DESIGN.md) | Design document of the system as built: requirements, recognition, console, security, deployment, trade-offs |
 | [docs/IMPLEMENTATION_NOTES.md](docs/IMPLEMENTATION_NOTES.md) | What was built and every deviation from the plan |
 | [docs/PARAMETERS.md](docs/PARAMETERS.md) | Every configurable value and where it comes from |
@@ -194,14 +194,13 @@ python3 scripts/build_assets.py        # validates the dataset, writes taxonomy 
 python3 scripts/build_cache.py         # GT crops and downscaled full images
 ```
 
-Run the API locally once `models/` is populated (see Reproduction):
+Run the recognition pipeline on a folder of `.jpg` photos once `models/` is populated (see Reproduction). It writes one JSON line per photo:
 
 ```bash
-PYTHONPATH=src .venv/bin/uvicorn app.server:app --port 8000
-curl -F "file=@car.jpg" http://localhost:8000/api/predict
+.venv/bin/python scripts/run_pipeline.py --images ./samples --out ./results/predictions.jsonl
 ```
 
-Docker (gateway and API in one image):
+The API answers only requests signed by the gateway, so the console itself runs from the Docker image, which holds the gateway and the API together:
 
 ```bash
 docker build -t vahana-drishti .
