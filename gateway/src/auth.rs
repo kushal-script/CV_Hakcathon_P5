@@ -283,7 +283,7 @@ pub async fn login(State(state): State<Shared>, ConnectInfo(addr): ConnectInfo<S
     let ua = user_agent(&headers);
     let expires = t + state.absolute_ttl;
     let (ip2, cc2) = (ip.clone(), cc.clone());
-    let (id, name, div, restricted) = (acc.id, acc.username.clone(), acc.division_id.clone(), acc.must_change);
+    let (id, name, div, restricted) = (acc.id, acc.username.clone(), acc.division_id.clone(), acc.must_change && state.require_password_change);
     let user = state
         .db
         .run(move |c| {

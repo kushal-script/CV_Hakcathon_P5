@@ -37,6 +37,7 @@ pub struct AppState {
     pub login_limit: Limiter,
     pub geofence: Option<geo::Geofence>,
     pub device_required: bool,
+    pub require_password_change: bool,
     pub geofence_margin_m: f64,
     pub allowed_countries: Vec<String>,
     pub lockout_after: i64,
@@ -173,6 +174,7 @@ async fn main() {
         api_limit: Limiter::new(env_or("P5_API_PER_MINUTE", "240").parse().unwrap_or(240.0), 60.0),
         login_limit: Limiter::new(env_or("P5_LOGIN_PER_MINUTE", "6").parse().unwrap_or(6.0), 6.0),
         device_required: env_or("P5_DEVICE_GEOFENCE", "required") == "required",
+        require_password_change: env_or("P5_REQUIRE_PASSWORD_CHANGE", "false") == "true",
         geofence,
         geofence_margin_m: env_or("P5_GEOFENCE_MARGIN_M", "2000").parse().unwrap_or(2000.0),
         allowed_countries: env_or("P5_ALLOWED_COUNTRIES", "IN").split(',').map(|c| c.trim().to_ascii_uppercase()).filter(|c| !c.is_empty()).collect(),
@@ -205,7 +207,7 @@ async fn main() {
         .with_state(state.clone());
     let addr: SocketAddr = env_or("P5_LISTEN", "0.0.0.0:8080").parse().expect("P5_LISTEN");
     info!(%addr, upstream = %state.upstream, accounts = users, device_geofence = state.device_required && state.geofence.is_some(),
-          countries = ?state.allowed_countries, "gateway listening");
+          countries = ?state.allowed_countries, require_password_change = state.require_password_change, "gateway listening");
     let listener = tokio::net::TcpListener::bind(addr).await.expect("bind");
     axum::serve(listener, app.into_make_service_with_connect_info::<SocketAddr>())
         .with_graceful_shutdown(async {

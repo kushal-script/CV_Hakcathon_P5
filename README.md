@@ -50,7 +50,7 @@ Every tunable value is in a config file, and [docs/PARAMETERS.md](docs/PARAMETER
 ### Security
 
 * A Rust gateway (`gateway/`, axum) is the only public entry point. The Python service listens on loopback only and accepts a request only with an identity that the gateway signed with HMAC-SHA256 seconds earlier.
-* Accounts, sessions and the audit log live in SQLite (the C library is compiled into the gateway, WAL mode). Passwords are Argon2id hashes. Every account starts with a one-time password that must be changed at the first sign-in.
+* Accounts, sessions and the audit log live in SQLite (the C library is compiled into the gateway, WAL mode). Passwords are Argon2id hashes. Every account starts with a one-time password. With `P5_REQUIRE_PASSWORD_CHANGE=true` it must be changed at the first sign-in. That is off by default and on the live console for now, so the one-time password signs in directly.
 * Sessions are random 256-bit tokens stored only as SHA-256 hashes, so they can be revoked server side. They expire after 60 idle minutes or 12 hours. Changing a password or a reset by an administrator signs out every other session.
 * An account locks for 15 minutes after 5 failed attempts. Sign-in is also rate limited per IP. Unknown IDs take as long to reject as wrong passwords.
 * Every state-changing request needs a same-origin marker header and is refused when the browser reports a cross-site origin. Cookies are HttpOnly, Secure and SameSite=Strict.

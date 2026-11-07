@@ -35,7 +35,7 @@ The upload limits stay under the 100 MB request limit of Cloudflare's free plan,
 
 `provision` creates the five divisions, one account per police station (its ID is the station ID, for example `ps-cubbon-park` for the law-and-order station or `tps-cubbon-park` for the traffic station) and one administrator per division (`admin-central`, `admin-north`, `admin-south`, `admin-east`, `admin-west`). It writes every one-time password to a new file readable only by its owner and refuses to overwrite an existing file. Copy that file to a safe place, hand each station its own line through a trusted channel, and delete the copy on the server.
 
-Every account must choose its own password at the first sign-in.
+An account signs in with its one-time password and can change it under Account. To make every account choose its own password at the first sign-in, set `P5_REQUIRE_PASSWORD_CHANGE=true`.
 
 ## Accounts
 
@@ -57,6 +57,7 @@ The audit log (Division, then Audit log) shows every sign-in, failure, password 
 | `P5_ALLOWED_COUNTRIES` | `IN` | Countries allowed by Cloudflare's country header when `P5_TRUST_PROXY=true`. Empty turns it off |
 | `P5_TRUST_PROXY` | `false` | Set `true` behind the tunnel so the real client address and country are used |
 | `P5_COOKIE_SECURE` | `true` | Keep `true` whenever the site is served over HTTPS |
+| `P5_REQUIRE_PASSWORD_CHANGE` | `false` | `true`: an account still on its one-time password must choose a new password before it can use the console. `false`: the one-time password signs in directly |
 | `P5_IDLE_MINUTES`, `P5_SESSION_HOURS` | 60, 12 | Session idle and absolute lifetimes |
 | `P5_LOCKOUT_AFTER`, `P5_LOCKOUT_MINUTES` | 5, 15 | Account lockout |
 | `P5_LOGIN_PER_MINUTE`, `P5_API_PER_MINUTE` | 6, 240 | Per-address rate limits |
