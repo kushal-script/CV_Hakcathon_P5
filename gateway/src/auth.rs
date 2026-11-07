@@ -13,12 +13,43 @@ use tracing::warn;
 
 use crate::{
     db::audit,
-    util::{client_ip, cookie_value, country, error, now, random_token, same_origin_request, sha256_hex, user_agent},
+    util::{client_ip, cookie_value, country, error, now, random_token, same_origin_request, sha256_hex, source_key, user_agent},
     AppState, Shared,
 };
 
 pub const COOKIE: &str = "vd_session";
-const FAILED: &str = "Sign-in failed. Check your ID and password. After 5 failed attempts an account is locked for 15 minutes.";
+const FAILED: &str = "Sign-in failed. Check your ID and password. After 5 failed attempts from one network, sign-in for that ID is paused there for 15 minutes.";
+
+fn reserve_attempt(state: &AppState, key: &(String, std::net::IpAddr), t: i64) -> bool {
+    let mut map = state.login_failures.lock().unwrap_or_else(|e| e.into_inner());
+    if map.len() > 50_000 {
+        map.retain(|_, (_, until)| *until > t);
+    }
+    let entry = map.entry(key.clone()).or_insert((0, 0));
+    if entry.1 > t {
+        return false;
+    }
+    if entry.1 != 0 {
+        *entry = (0, 0);
+    }
+    if entry.0 >= state.lockout_after {
+        *entry = (0, t + state.lockout_secs);
+        return false;
+    }
+    entry.0 += 1;
+    true
+}
+
+fn settle_attempt(state: &AppState, key: &(String, std::net::IpAddr), ok: bool, t: i64) {
+    let mut map = state.login_failures.lock().unwrap_or_else(|e| e.into_inner());
+    if ok {
+        map.remove(key);
+    } else if let Some(entry) = map.get_mut(key) {
+        if entry.0 >= state.lockout_after {
+            *entry = (0, t + state.lockout_secs);
+        }
+    }
+}
 
 #[derive(Clone, Serialize)]
 pub struct StationView {
@@ -173,7 +204,6 @@ struct Account {
     id: i64,
     hash: String,
     disabled: bool,
-    failed: i64,
     locked_until: i64,
     must_change: bool,
     division_id: String,
@@ -194,6 +224,13 @@ pub async fn login(State(state): State<Shared>, ConnectInfo(addr): ConnectInfo<S
     if username.is_empty() || username.len() > 64 || body.password.is_empty() || body.password.len() > 256 {
         return error(StatusCode::UNAUTHORIZED, FAILED);
     }
+    let source = (username.to_ascii_lowercase(), source_key(client_ip(state.trust_proxy, addr, &headers)));
+    if !reserve_attempt(&state, &source, now()) {
+        warn!(%ip, user = %username, "sign-in paused for this ID from this network");
+        let (ip2, cc2, name) = (ip.clone(), cc.clone(), username.clone());
+        let _ = state.db.run(move |c| audit(c, None, Some(&name), None, "login", None, &ip2, cc2.as_deref(), "locked_source", None)).await;
+        return error(StatusCode::UNAUTHORIZED, FAILED);
+    }
     let lookup = username.clone();
     let account = state
         .db
@@ -206,7 +243,6 @@ pub async fn login(State(state): State<Shared>, ConnectInfo(addr): ConnectInfo<S
                         id: r.get(0)?,
                         hash: r.get(1)?,
                         disabled: r.get::<_, i64>(2)? != 0,
-                        failed: r.get(3)?,
                         locked_until: r.get(4)?,
                         must_change: r.get::<_, i64>(5)? != 0,
                         division_id: r.get(6)?,
@@ -223,6 +259,7 @@ pub async fn login(State(state): State<Shared>, ConnectInfo(addr): ConnectInfo<S
     let password = body.password.clone();
     let ok = tokio::task::spawn_blocking(move || verify_password(&password, &hash)).await.unwrap_or(false);
     let t = now();
+    settle_attempt(&state, &source, ok, t);
     let Some(acc) = account else {
         let (ip2, cc2, name) = (ip.clone(), cc.clone(), username.clone());
         let _ = state.db.run(move |c| audit(c, None, Some(&name), None, "login", None, &ip2, cc2.as_deref(), "unknown_user", None)).await;
@@ -235,15 +272,18 @@ pub async fn login(State(state): State<Shared>, ConnectInfo(addr): ConnectInfo<S
         return error(StatusCode::UNAUTHORIZED, FAILED);
     }
     if !ok {
-        let failed = acc.failed + 1;
-        let lock = if failed >= state.lockout_after { t + state.lockout_secs } else { 0 };
         let (ip2, cc2) = (ip.clone(), cc.clone());
         let (id, name, div) = (acc.id, acc.username.clone(), acc.division_id.clone());
+        let (limit, lock_for) = (state.lockout_account_after, state.lockout_secs);
         let _ = state
             .db
             .run(move |c| {
-                c.execute("UPDATE users SET failed = ?1, locked_until = ?2 WHERE id = ?3", params![if lock > 0 { 0 } else { failed }, lock, id])?;
-                audit(c, Some(id), Some(&name), Some(&div), "login", None, &ip2, cc2.as_deref(), if lock > 0 { "locked_now" } else { "bad_password" }, None)
+                let failed: i64 = c.query_row("UPDATE users SET failed = failed + 1 WHERE id = ?1 RETURNING failed", [id], |r| r.get(0))?;
+                let locked = failed >= limit;
+                if locked {
+                    c.execute("UPDATE users SET failed = 0, locked_until = ?1 WHERE id = ?2", params![t + lock_for, id])?;
+                }
+                audit(c, Some(id), Some(&name), Some(&div), "login", None, &ip2, cc2.as_deref(), if locked { "locked_now" } else { "bad_password" }, None)
             })
             .await;
         return error(StatusCode::UNAUTHORIZED, FAILED);
@@ -252,7 +292,7 @@ pub async fn login(State(state): State<Shared>, ConnectInfo(addr): ConnectInfo<S
         let (ip2, cc2) = (ip.clone(), cc.clone());
         let (id, name, div) = (acc.id, acc.username.clone(), acc.division_id.clone());
         let _ = state.db.run(move |c| audit(c, Some(id), Some(&name), Some(&div), "login", None, &ip2, cc2.as_deref(), "disabled", None)).await;
-        return error(StatusCode::FORBIDDEN, "This account is disabled. Contact your division administrator.");
+        return error(StatusCode::UNAUTHORIZED, FAILED);
     }
     let mut where_detail = None;
     if state.device_required {

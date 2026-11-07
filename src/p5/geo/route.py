@@ -25,12 +25,20 @@ def _iso(t: str | None) -> float | None:
 
 
 def parse_gpx(data: bytes) -> list[dict]:
-    root = ET.fromstring(data)
+    if b"<!DOCTYPE" in data or b"<!ENTITY" in data:
+        raise ValueError("GPS tracks that declare a DOCTYPE or entities are not accepted. Export the track as plain GPX.")
+    try:
+        root = ET.fromstring(data)
+    except ET.ParseError as e:
+        raise ValueError("This GPS track is not valid GPX.") from e
     pts = []
     for el in root.iter():
         if el.tag.endswith("trkpt") or el.tag.endswith("rtept") or el.tag.endswith("wpt"):
             t = next((c.text for c in el if c.tag.endswith("time")), None)
-            pts.append({"lat": float(el.get("lat")), "lon": float(el.get("lon")), "epoch": _iso(t)})
+            try:
+                pts.append({"lat": float(el.get("lat")), "lon": float(el.get("lon")), "epoch": _iso(t)})
+            except (TypeError, ValueError) as e:
+                raise ValueError("A point in this GPS track has no valid latitude and longitude.") from e
     return pts
 
 

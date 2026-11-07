@@ -42,6 +42,8 @@ pub struct AppState {
     pub allowed_countries: Vec<String>,
     pub lockout_after: i64,
     pub lockout_secs: i64,
+    pub lockout_account_after: i64,
+    pub login_failures: std::sync::Mutex<std::collections::HashMap<(String, std::net::IpAddr), (i64, i64)>>,
     pub web_public: PathBuf,
     pub web_app: PathBuf,
 }
@@ -51,7 +53,7 @@ pub type Shared = Arc<AppState>;
 async fn security_headers(State(state): State<Shared>, req: Request, next: Next) -> Response {
     let mut res = next.run(req).await;
     let h = res.headers_mut();
-    let csp = "default-src 'self'; script-src 'self' https://unpkg.com; style-src 'self' https://unpkg.com; \
+    let csp = "default-src 'self'; script-src 'self' https://unpkg.com/maplibre-gl@4.7.1/; style-src 'self' https://unpkg.com/maplibre-gl@4.7.1/; \
                img-src 'self' data: blob: https://tiles.openfreemap.org https://tiles.maps.eox.at; \
                connect-src 'self' https://tiles.openfreemap.org https://tiles.maps.eox.at; worker-src blob:; child-src blob:; \
                media-src 'self' blob:; font-src 'self' https://tiles.openfreemap.org; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'";
@@ -189,6 +191,8 @@ async fn main() {
         allowed_countries: env_or("P5_ALLOWED_COUNTRIES", "IN").split(',').map(|c| c.trim().to_ascii_uppercase()).filter(|c| !c.is_empty()).collect(),
         lockout_after: env_or("P5_LOCKOUT_AFTER", "5").parse().unwrap_or(5),
         lockout_secs: env_or("P5_LOCKOUT_MINUTES", "15").parse::<i64>().unwrap_or(15) * 60,
+        lockout_account_after: env_or("P5_LOCKOUT_ACCOUNT_AFTER", "50").parse().unwrap_or(50),
+        login_failures: std::sync::Mutex::new(std::collections::HashMap::new()),
         web_public: web_root.join("public"),
         web_app: web_root.join("app"),
     });

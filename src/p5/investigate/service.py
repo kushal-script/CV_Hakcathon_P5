@@ -208,6 +208,7 @@ class CaseStore:
         case = self._owned(cid, ident)
         if lat is not None and lon is not None and inside(lat, lon) is False:
             raise ValueError("The camera location must be inside Bengaluru.")
+        track_pts = parse_track(*track) if track else None
         cam_id = uuid.uuid4().hex[:8]
         cam_dir = self._path(cid) / "cameras"
         cam_dir.mkdir(exist_ok=True)
@@ -223,7 +224,7 @@ class CaseStore:
         if cam["lat"] is None and meta_loc and inside(meta_loc["lat"], meta_loc["lon"]) is not False:
             cam["lat"], cam["lon"], cam["location_source"] = meta_loc["lat"], meta_loc["lon"], "video metadata"
         if track:
-            pts = parse_track(*track)
+            pts = track_pts
             cam["gps"] = pts
             if pts and cam["lat"] is None:
                 cam["lat"], cam["lon"], cam["location_source"] = pts[0]["lat"], pts[0]["lon"], "GPS track"

@@ -38,7 +38,7 @@ def sign(payload: dict, key: bytes) -> tuple[str, str]:
     return encoded, hmac.new(key, encoded.encode(), hashlib.sha256).hexdigest()
 
 
-def verify(encoded: str | None, signature: str | None, key: bytes | None, max_skew_s: int = 120) -> Identity | None:
+def verify(encoded: str | None, signature: str | None, key: bytes | None, max_skew_s: int = 1800) -> Identity | None:
     if not key or not encoded or not signature or len(encoded) > 4096:
         return None
     expected = hmac.new(key, encoded.encode(), hashlib.sha256).hexdigest()

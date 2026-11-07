@@ -65,7 +65,7 @@ The match score is a logistic model, P(same vehicle), over three features: appea
 | A name matches only when a run of up to 6 words in a line equals an OpenStreetMap name exactly after lower-casing, and is not a generic word such as "road" | Operational | Exact matches only, so nothing is invented from a near miss |
 | Entries with the same name within 218 m of each other form one place | Fitted on the map data | 99th percentile of the distance from each named road piece to the nearest piece with the same name, over 87,759 pieces in the Bengaluru index (median 11 m). One road is stored as many pieces, so "Brigade Road" has 78 entries but is one place |
 | A name shared by more than 3 distinct places is reported with its count only | Operational | The same limit as the video signboard check |
-| Year shown as unknown for the Indian catalogue | Data | Its photos are not labelled by model year. Wikidata records a production start for only 17 of the 282 models, too few to show |
+| Year for the Indian catalogue: the years the model was made, shown as a range | Data | Its photos are not labelled by model year, so the year cannot be read from a photo. `scripts/build_production_years.py` reads the production field of each model's English Wikipedia infobox (252 of 282 models), else the start and end years on Wikidata (2 models). The other 28 show the year as unknown. Stored in `assets/india/production_years.json` and the deployed catalogue |
 
 ## Geolocation (`investigation.yaml: geocoding`)
 
@@ -153,7 +153,7 @@ A dashcam or a phone in a vehicle is located by matching its turns, stops and sp
 | Value | Kind | Source |
 |---|---|---|
 | `P5_IDLE_MINUTES = 60`, `P5_SESSION_HOURS = 12` | Operational | A shift-length session that ends after an hour without use |
-| `P5_LOCKOUT_AFTER = 5`, `P5_LOCKOUT_MINUTES = 15` | Operational | Common account-lockout practice. Sign-in is also limited to 6 attempts per minute per IP (`P5_LOGIN_PER_MINUTE`) |
+| `P5_LOCKOUT_AFTER = 5`, `P5_LOCKOUT_MINUTES = 15`, `P5_LOCKOUT_ACCOUNT_AFTER = 50` | Operational | 5 failures pause sign-in for that ID from that network (IPv4 address or IPv6 /64) only, so lockouts cannot be used to shut officers out. 50 failures from all networks together lock the account, which stops guessing spread over many networks. Common lockout practice, adjusted after a security review found that a single shared counter let anyone lock every account |
 | `P5_API_PER_MINUTE = 240` | Operational | Per-IP limit on API calls, above the rate a person can click |
 | Password rule | Operational | At least 12 characters, three character classes or 16 or more characters, not containing the user ID. One-time passwords are 3 groups of 4 characters from a 55-symbol alphabet (about 69 bits) |
 | `P5_DEVICE_GEOFENCE = required`, `P5_GEOFENCE_MARGIN_M = 2000` | Operational | Sign-in only from a device location inside the sign-in area, with 2 km of slack for location error. The live server's area is Karnataka and Maharashtra (`assets/bengaluru/signin_area.geojson`, OpenStreetMap relations 2019939 and 1950884, simplified by 0.005°, about 0.5 km, well inside the slack). Without `P5_BOUNDARY` it is the Bengaluru boundary |

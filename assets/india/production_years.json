@@ -1,0 +1,1522 @@
+{
+ "retrieved": "2026-11-07",
+ "source": "English Wikipedia infobox 'production' field, else Wikidata P571 and P2669",
+ "models": {
+  "Audi A4": {
+   "from": 1994,
+   "to": 2025,
+   "source": "https://en.wikipedia.org/wiki/Audi_A4",
+   "field": "1994–2025"
+  },
+  "Audi A5": {
+   "from": 2007,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Audi_A5",
+   "field": "2007–present"
+  },
+  "Audi A6": {
+   "from": 1994,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Audi_A6",
+   "field": "1994–present<br />2000–present (China)"
+  },
+  "Audi Q3": {
+   "from": 2011,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Audi_Q3",
+   "field": "2011–present"
+  },
+  "Audi Q5": {
+   "from": 2008,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Audi_Q5",
+   "field": "2008–present"
+  },
+  "Audi Q7": {
+   "from": 2005,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Audi_Q7",
+   "field": "November 2005–present"
+  },
+  "Audi Q8": {
+   "from": 2018,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Audi_Q8",
+   "field": "June 2018 – present"
+  },
+  "Audi e-tron GT": {
+   "from": 2020,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Audi_e-tron_GT",
+   "field": "December 2020–present"
+  },
+  "BMW 3 Series": {
+   "from": 1975,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/BMW_3_Series",
+   "field": "1975–present"
+  },
+  "BMW 4 Series": {
+   "from": 2014,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/BMW_4_Series",
+   "field": "2014–present"
+  },
+  "BMW 5 Series": {
+   "from": 1972,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/BMW_5_Series",
+   "field": "1972–present"
+  },
+  "BMW 7 Series": {
+   "from": 1977,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/BMW_7_Series",
+   "field": "1977–present"
+  },
+  "BMW 8 Series": {
+   "from": 1990,
+   "to": 2026,
+   "source": "https://en.wikipedia.org/wiki/BMW_8_Series",
+   "field": "{{unbulleted list | 1990–1999 | 2018–2026}}"
+  },
+  "BMW X1": {
+   "from": 2009,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/BMW_X1",
+   "field": "2009–present"
+  },
+  "BMW X1 (U11)": {
+   "from": 2022,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/BMW_X1_%28U11%29",
+   "field": "October 2022 – present"
+  },
+  "BMW X3": {
+   "from": 2003,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/BMW_X3",
+   "field": "2003–present"
+  },
+  "BMW X4": {
+   "from": 2014,
+   "to": 2025,
+   "source": "https://en.wikipedia.org/wiki/BMW_X4",
+   "field": "2014–2025"
+  },
+  "BMW X5": {
+   "from": 1999,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/BMW_X5",
+   "field": "1999–present"
+  },
+  "BMW X6": {
+   "from": 2007,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/BMW_X6",
+   "field": "December 2007 – present"
+  },
+  "BMW X7": {
+   "from": 2018,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/BMW_X7",
+   "field": "December 2018 – present"
+  },
+  "BMW XM": {
+   "from": 2022,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/BMW_XM",
+   "field": "December 2022 – present"
+  },
+  "BMW Z Models": {
+   "from": 1989,
+   "to": 2026,
+   "source": "https://en.wikipedia.org/wiki/BMW_Z",
+   "field": "{{nobr|1989–1992}}<br />{{nobr|1995–2016}}<br />{{nobr|2018–2026 }}"
+  },
+  "BMW iX": {
+   "from": 2021,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/BMW_iX",
+   "field": "July 2021–present"
+  },
+  "BYD Atto 3": {
+   "from": 2022,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/BYD_Atto_3",
+   "field": "January 2022 – present"
+  },
+  "Bentley Bentayga": {
+   "from": 2015,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Bentley_Bentayga",
+   "field": "December 2015 – present"
+  },
+  "Chevrolet Aveo": {
+   "from": 2002,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Chevrolet_Aveo",
+   "field": "2002–present"
+  },
+  "Chevrolet Captiva": {
+   "from": 2006,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Chevrolet_Captiva",
+   "field": "2006–present"
+  },
+  "Chevrolet Sail": {
+   "from": 2000,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Chevrolet_Sail",
+   "field": "2000–present"
+  },
+  "Chevrolet Spark": {
+   "from": 1998,
+   "to": 2022,
+   "source": "https://en.wikipedia.org/wiki/Chevrolet_Spark",
+   "field": "1998–2022"
+  },
+  "Citroën C3": {
+   "from": 2002,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Citro%C3%ABn_C3",
+   "field": "April 2002 – present"
+  },
+  "Citroën C3 (CC21)": {
+   "from": 2002,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Citro%C3%ABn_C3_%28CC21%29",
+   "field": "April 2002 – present"
+  },
+  "Citroën C3 Aircross": {
+   "from": 2010,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Citro%C3%ABn_C3_Aircross",
+   "field": "2010–2020 (Latin America)<br>2017–present (Europe)"
+  },
+  "Citroën C5 Aircross": {
+   "from": 2017,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Citro%C3%ABn_C5_Aircross",
+   "field": "2017–present"
+  },
+  "Dacia Lodgy": {
+   "from": 2012,
+   "to": 2024,
+   "source": "https://en.wikipedia.org/wiki/Dacia_Lodgy",
+   "field": "2012–2024 (Morocco)<br />2015–2020 (India)"
+  },
+  "Dacia Logan": {
+   "from": 2004,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Dacia_Logan",
+   "field": "2004–present"
+  },
+  "Daewoo Lacetti": {
+   "from": 2002,
+   "to": 2024,
+   "source": "https://en.wikipedia.org/wiki/Daewoo_Lacetti",
+   "field": "2002–2011 (South Korea)<br />2003–2024 ([[GM Uzbekistan]])"
+  },
+  "Daihatsu Terios": {
+   "from": 1997,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Daihatsu_Terios",
+   "field": "April 1997 – present"
+  },
+  "Datsun 510": {
+   "from": 1967,
+   "to": 1973,
+   "source": "https://en.wikipedia.org/wiki/Datsun_510",
+   "field": "August 1967–1973"
+  },
+  "Datsun Sports": {
+   "from": 1959,
+   "to": 1970,
+   "source": "https://en.wikipedia.org/wiki/Datsun_Sports",
+   "field": "1959–April 1970<br>circa 40,000 produced"
+  },
+  "Datsun mi-DO": {
+   "from": 2015,
+   "to": 2020,
+   "source": "https://en.wikipedia.org/wiki/Datsun_mi-Do",
+   "field": "February 2015 – December 2020"
+  },
+  "Datsun on-Do": {
+   "from": 2014,
+   "to": 2020,
+   "source": "https://en.wikipedia.org/wiki/Datsun_on-Do",
+   "field": "July 2014 – December 2020"
+  },
+  "Dodge Kingsway": {
+   "from": 1959,
+   "to": 1959,
+   "source": "https://en.wikipedia.org/wiki/Dodge_Kingsway",
+   "field": "1940–1959"
+  },
+  "Fiat 1100": {
+   "from": 1953,
+   "to": 2000,
+   "source": "https://en.wikipedia.org/wiki/Fiat_1100",
+   "field": "1953–1969 (Europe)<br/>until 2000 (India)"
+  },
+  "Fiat 124": {
+   "from": 1966,
+   "to": 1974,
+   "source": "https://en.wikipedia.org/wiki/Fiat_124",
+   "field": "1966–1974"
+  },
+  "Fiat 500": {
+   "from": 2007,
+   "to": 2025,
+   "source": "https://en.wikipedia.org/wiki/Fiat_500_%282007%29",
+   "field": "2007–2024 (Poland)<br />2011–2019 (Mexico)<br />2023–2025 (Algeria)"
+  },
+  "Fiat 500 Topolino": {
+   "from": 1955,
+   "to": 1955,
+   "source": "https://en.wikipedia.org/wiki/Fiat_500_%22Topolino%22",
+   "field": "1936–1955<br />520,000 made"
+  },
+  "Fiat Bravo": {
+   "from": 2007,
+   "to": 2016,
+   "source": "https://en.wikipedia.org/wiki/Fiat_Bravo_%282007%29",
+   "field": "April 2007 – July 2014 (Italy)<br />October 2010 – June 2016 (Brazil)"
+  },
+  "Fiat Linea": {
+   "from": 2006,
+   "to": 2018,
+   "source": "https://en.wikipedia.org/wiki/Fiat_Linea",
+   "field": "November 2006–2018"
+  },
+  "Fiat Palio": {
+   "from": 1996,
+   "to": 2020,
+   "source": "https://en.wikipedia.org/wiki/Fiat_Palio",
+   "field": "1996–2018 (hatchback)<br />1997–2020 (wagon)"
+  },
+  "Fiat Siena": {
+   "from": 1996,
+   "to": 2021,
+   "source": "https://en.wikipedia.org/wiki/Fiat_Siena",
+   "field": "1996–2021"
+  },
+  "Fiat Uno": {
+   "from": 1983,
+   "to": 2021,
+   "source": "https://en.wikipedia.org/wiki/Fiat_Uno",
+   "field": "1983–2021"
+  },
+  "Ford EcoSport": {
+   "from": 2003,
+   "to": 2022,
+   "source": "https://en.wikipedia.org/wiki/Ford_EcoSport",
+   "field": "2003–2022"
+  },
+  "Ford Escort": {
+   "from": 1968,
+   "to": 2004,
+   "source": "https://en.wikipedia.org/wiki/Ford_Escort_%28Europe%29",
+   "field": "January 1968–2004"
+  },
+  "Ford Everest": {
+   "from": 2003,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Ford_Everest",
+   "field": "2003–present"
+  },
+  "Ford Fiesta": {
+   "from": 1976,
+   "to": 2023,
+   "source": "https://en.wikipedia.org/wiki/Ford_Fiesta",
+   "field": "June 1976 – July 2023"
+  },
+  "Ford Figo": {
+   "from": 2010,
+   "to": 2021,
+   "source": "https://en.wikipedia.org/wiki/Ford_Figo",
+   "field": "March 2010 – 2021"
+  },
+  "Ford Fusion Europe": {
+   "from": 2002,
+   "to": 2012,
+   "source": "https://en.wikipedia.org/wiki/Ford_Fusion_%28Europe%29",
+   "field": "2002–2012"
+  },
+  "Ford Ikon": {
+   "from": 1999,
+   "to": 2015,
+   "source": "https://en.wikipedia.org/wiki/Ford_Ikon",
+   "field": "1999–2015"
+  },
+  "Ford Mondeo 2nd generation": {
+   "from": 2000,
+   "to": 2007,
+   "source": "https://en.wikipedia.org/wiki/Ford_Mondeo_%28second_generation%29",
+   "field": "1 November 2000 – 1 August 2007"
+  },
+  "Ford Ranger T6": {
+   "from": 2011,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Ford_Ranger_%28T6%29",
+   "field": "2011–present"
+  },
+  "Hindustan Ambassador": {
+   "from": 1957,
+   "to": 2014,
+   "source": "https://en.wikipedia.org/wiki/Hindustan_Ambassador",
+   "field": "1957–2014"
+  },
+  "Honda Accord": {
+   "from": 1976,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Honda_Accord",
+   "field": "1976–present"
+  },
+  "Honda Amaze": {
+   "from": 2013,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Honda_Amaze",
+   "field": "2013–present"
+  },
+  "Honda BR-V": {
+   "from": 2016,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Honda_BR-V",
+   "field": "2016–present"
+  },
+  "Honda Brio": {
+   "from": 2011,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Honda_Brio",
+   "field": "March 2011 – present"
+  },
+  "Honda CR-V": {
+   "from": 1995,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Honda_CR-V",
+   "field": "1995–present"
+  },
+  "Honda City": {
+   "from": 1981,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Honda_City",
+   "field": "1981–1995<br />1996–present"
+  },
+  "Honda Civic": {
+   "from": 1972,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Honda_Civic",
+   "field": "1972–present"
+  },
+  "Honda Fit": {
+   "from": 2001,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Honda_Fit",
+   "field": "June 2001 – present"
+  },
+  "Honda WR-V": {
+   "from": 2017,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Honda_WR-V",
+   "field": "2017–present"
+  },
+  "Honda ZR-V": {
+   "from": 2022,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Honda_ZR-V",
+   "field": "June 2022 – present"
+  },
+  "Hyundai Accent": {
+   "from": 1994,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Hyundai_Accent",
+   "field": "1994–present"
+  },
+  "Hyundai Avante (Elantra)": {
+   "from": 1990,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Hyundai_Elantra",
+   "field": "1990–present"
+  },
+  "Hyundai Bayon": {
+   "from": 2021,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Hyundai_Bayon",
+   "field": "2021–present"
+  },
+  "Hyundai Creta": {
+   "from": 2014,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Hyundai_Creta",
+   "field": "2014–present"
+  },
+  "Hyundai Eon": {
+   "from": 2011,
+   "to": 2019,
+   "source": "https://en.wikipedia.org/wiki/Hyundai_Eon",
+   "field": "April 2011 – May 2019"
+  },
+  "Hyundai Ioniq 5": {
+   "from": 2021,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Hyundai_Ioniq_5",
+   "field": "March 2021 – present"
+  },
+  "Hyundai Kona": {
+   "from": 2017,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Hyundai_Kona",
+   "field": "2017–present"
+  },
+  "Hyundai Santa Fe": {
+   "from": 2000,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Hyundai_Santa_Fe",
+   "field": "June 2000 – present"
+  },
+  "Hyundai Sonata": {
+   "from": 1985,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Hyundai_Sonata",
+   "field": "1985–present"
+  },
+  "Hyundai Terracan": {
+   "from": 2001,
+   "to": 2011,
+   "source": "https://en.wikipedia.org/wiki/Hyundai_Terracan",
+   "field": "2001–2007 (South Korea)<br />2003–2011 (China)<br />2003–2007 (India)"
+  },
+  "Hyundai Tucson": {
+   "from": 2004,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Hyundai_Tucson",
+   "field": "2004–present"
+  },
+  "Hyundai Venue": {
+   "from": 2019,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Hyundai_Venue",
+   "field": "2019–present"
+  },
+  "Hyundai i10": {
+   "from": 2007,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Hyundai_i10",
+   "field": "2007–present"
+  },
+  "Hyundai i20": {
+   "from": 2008,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Hyundai_i20",
+   "field": "2008–present"
+  },
+  "Isuzu D-Max": {
+   "from": 2002,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Isuzu_D-Max",
+   "field": "2002–present"
+  },
+  "Isuzu MU-X": {
+   "from": 2013,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Isuzu_MU-X",
+   "field": "2013–present"
+  },
+  "Isuzu Panther": {
+   "from": 1991,
+   "to": 2020,
+   "source": "https://en.wikipedia.org/wiki/Isuzu_Panther",
+   "field": "1991–2020<br />433,117 sold (Indonesia)"
+  },
+  "Jaguar XE": {
+   "from": 2015,
+   "to": 2024,
+   "source": "https://en.wikipedia.org/wiki/Jaguar_XE",
+   "field": "April 2015–2024"
+  },
+  "Jaguar XJ (X351)": {
+   "from": 2009,
+   "to": 2019,
+   "source": "https://en.wikipedia.org/wiki/Jaguar_XJ_%28X351%29",
+   "field": "September 2009 – July 2019"
+  },
+  "Jeep CJ": {
+   "from": 1986,
+   "to": 1986,
+   "source": "https://en.wikipedia.org/wiki/Jeep_CJ",
+   "field": "1944–1986<br/>More than 1.5 million"
+  },
+  "Jeep Commander": {
+   "from": 2021,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Jeep_Commander_%282022%29",
+   "field": "2021–present"
+  },
+  "Jeep Compass": {
+   "from": 2006,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Jeep_Compass",
+   "field": "2006–present"
+  },
+  "Jeep Grand Cherokee": {
+   "from": 2010,
+   "to": 2022,
+   "source": "https://en.wikipedia.org/wiki/Jeep_Grand_Cherokee_%28WK2%29",
+   "field": "May 2010–2022"
+  },
+  "Jeep Wrangler": {
+   "from": 1986,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Jeep_Wrangler",
+   "field": "1986–present"
+  },
+  "Jeep Wrangler (JK)": {
+   "from": 2006,
+   "to": 2018,
+   "source": "https://en.wikipedia.org/wiki/Jeep_Wrangler_%28JK%29",
+   "field": "August 2006 – April 2018"
+  },
+  "Jeep Wrangler (JL)": {
+   "from": 2017,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Jeep_Wrangler_%28JL%29",
+   "field": "November 2017–present"
+  },
+  "Kia Carens": {
+   "from": 1999,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Kia_Carens",
+   "field": "1999–2019<br/>2021–present"
+  },
+  "Kia Carnival": {
+   "from": 1998,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Kia_Carnival",
+   "field": "1998–present"
+  },
+  "Kia EV6": {
+   "from": 2021,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Kia_EV6",
+   "field": "2021–present"
+  },
+  "Kia EV9": {
+   "from": 2023,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Kia_EV9",
+   "field": "2023–present"
+  },
+  "Kia Seltos": {
+   "from": 2019,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Kia_Seltos",
+   "field": "2019−present"
+  },
+  "Kia Sonet": {
+   "from": 2020,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Kia_Sonet",
+   "field": "2020–present"
+  },
+  "Kia Sorento": {
+   "from": 2002,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Kia_Sorento",
+   "field": "2002–present"
+  },
+  "LADA Granta": {
+   "from": 2011,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Lada_Granta",
+   "field": "December 2011–present"
+  },
+  "Lamborghini Temerario": {
+   "from": 2025,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Lamborghini_Temerario",
+   "field": "2025–present"
+  },
+  "Lamborghini Urus": {
+   "from": 2017,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Lamborghini_Urus",
+   "field": "2017–present"
+  },
+  "Land Rover Discovery series": {
+   "from": 1989,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Land_Rover_Discovery",
+   "field": "1989–present"
+  },
+  "Lexus ES": {
+   "from": 1989,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Lexus_ES",
+   "field": "June 1989 – present"
+  },
+  "Lexus LC": {
+   "from": 2017,
+   "to": 2026,
+   "source": "https://en.wikipedia.org/wiki/Lexus_LC",
+   "field": "March 2017 – August 2026"
+  },
+  "Lexus LM": {
+   "from": 2020,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Lexus_LM",
+   "field": "2020–present"
+  },
+  "Lexus LS": {
+   "from": 1989,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Lexus_LS",
+   "field": "May 1989 – present"
+  },
+  "Lexus LX": {
+   "from": 1995,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Lexus_LX",
+   "field": "November 1995 – present"
+  },
+  "Lexus NX": {
+   "from": 2014,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Lexus_NX",
+   "field": "August 2014 – present"
+  },
+  "Lexus RX": {
+   "from": 1997,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Lexus_RX",
+   "field": "December 1997 – present"
+  },
+  "MG ZS": {
+   "from": 2017,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/MG_ZS_%28crossover%29",
+   "field": "2017–present"
+  },
+  "Mahindra Scorpio": {
+   "from": 2002,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Mahindra_Scorpio",
+   "field": "June 2002 – present"
+  },
+  "Mahindra Thar": {
+   "from": 2010,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Mahindra_Thar",
+   "field": "2010–present"
+  },
+  "Mahindra XUV500": {
+   "from": 2011,
+   "to": 2021,
+   "source": "https://en.wikipedia.org/wiki/Mahindra_XUV500",
+   "field": "2011–2021"
+  },
+  "Maruti 800": {
+   "from": 1983,
+   "to": 2014,
+   "source": "https://en.wikipedia.org/wiki/Maruti_800",
+   "field": "1983–2014"
+  },
+  "Maruti Gypsy": {
+   "from": 1985,
+   "to": 2018,
+   "source": "https://en.wikipedia.org/wiki/Maruti_Suzuki_Gypsy",
+   "field": "1985 – 2018"
+  },
+  "Maruti Suzuki Alto": {
+   "from": 2000,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Maruti_Suzuki_Alto",
+   "field": "2000–present (Alto K10) <br>"
+  },
+  "Maruti Suzuki Wagon R": {
+   "from": 1999,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Maruti_Suzuki_Wagon_R",
+   "field": "1999–present"
+  },
+  "Maruti Zen": {
+   "from": 1993,
+   "to": 2006,
+   "source": "https://en.wikipedia.org/wiki/Maruti_Suzuki_Zen",
+   "field": "1993&ndash;2006"
+  },
+  "Maserati Ghibli III": {
+   "from": 2013,
+   "to": 2023,
+   "source": "https://en.wikipedia.org/wiki/Maserati_Ghibli_%28M157%29",
+   "field": "2013 – December 2023"
+  },
+  "Maserati GranTurismo": {
+   "from": 2007,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Maserati_GranTurismo",
+   "field": "{{ubl|2007 – December 2019 (40,520 produced)|April 2023 – present}}"
+  },
+  "Maserati Grecale": {
+   "from": 2022,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Maserati_Grecale",
+   "field": "March 2022 – present"
+  },
+  "Maserati Levante": {
+   "from": 2016,
+   "to": 2024,
+   "source": "https://en.wikipedia.org/wiki/Maserati_Levante",
+   "field": "March 2016–March 2024"
+  },
+  "Maserati MC20": {
+   "from": 2020,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Maserati_MC20",
+   "field": "2020&ndash;present"
+  },
+  "Maserati Quattroporte": {
+   "from": 1963,
+   "to": 2023,
+   "source": "https://en.wikipedia.org/wiki/Maserati_Quattroporte",
+   "field": "{{unbulleted list |1963–1969|1971|1974–1990|1994–2001|2003–2012|2013–2023}}"
+  },
+  "Maxus D90": {
+   "from": 2017,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Maxus_D90",
+   "field": "2017–present"
+  },
+  "Maxus G90": {
+   "from": 2022,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Maxus_G90",
+   "field": "2022–present"
+  },
+  "Mercedes-Benz C-Class": {
+   "from": 1992,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Mercedes-Benz_C-Class",
+   "field": "1992–present"
+  },
+  "Mercedes-Benz E-Class": {
+   "from": 1953,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Mercedes-Benz_E-Class",
+   "field": "1953-Present (E-Class nomenclature adopted in July 1993)"
+  },
+  "Mercedes-Benz EQS": {
+   "from": 2021,
+   "to": null,
+   "source": "https://www.wikidata.org/wiki/Q97120016"
+  },
+  "Mercedes-Benz G-Class": {
+   "from": 1979,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Mercedes-Benz_G-Class",
+   "field": "1979–present"
+  },
+  "Mercedes-Benz GL-Class": {
+   "from": 2006,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Mercedes-Benz_GLS",
+   "field": "2006–2015 (GL-Class)<br />2015–present (GLS)"
+  },
+  "Mercedes-Benz GLA": {
+   "from": 2013,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Mercedes-Benz_GLA",
+   "field": "2013–present"
+  },
+  "Mercedes-Benz GLC": {
+   "from": 2015,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Mercedes-Benz_GLC",
+   "field": "2015–present"
+  },
+  "Mercedes-Benz GLE-Class": {
+   "from": 1997,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Mercedes-Benz_GLE",
+   "field": "1997–2015 (M-Class)<br>2015–present (GLE)"
+  },
+  "Mercedes-Benz S-Class": {
+   "from": 1954,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Mercedes-Benz_S-Class",
+   "field": "1954–present (S-Class nomenclature adopted since 1972)"
+  },
+  "Mercedes-Benz Vito": {
+   "from": 1995,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Mercedes-Benz_Vito",
+   "field": "1995–present"
+  },
+  "Mercedes-Benz W210": {
+   "from": 1995,
+   "to": null,
+   "source": "https://www.wikidata.org/wiki/Q977429"
+  },
+  "Mini": {
+   "from": 1959,
+   "to": 2000,
+   "source": "https://en.wikipedia.org/wiki/Mini",
+   "field": "1959–2000 (5.38 million)"
+  },
+  "Mini Countryman": {
+   "from": 2010,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Mini_Countryman",
+   "field": "2010–present"
+  },
+  "Mitsubishi Delica": {
+   "from": 1968,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Mitsubishi_Delica",
+   "field": "1968–present"
+  },
+  "Morris Minor": {
+   "from": 1971,
+   "to": 1971,
+   "source": "https://en.wikipedia.org/wiki/Morris_Minor",
+   "field": "1948–1971<br/>1,619,958 produced"
+  },
+  "Morris Oxford series II": {
+   "from": 1971,
+   "to": 1971,
+   "source": "https://en.wikipedia.org/wiki/Morris_Oxford_Series_II",
+   "field": "1913–1914 <br> 1919–1935 <br> 1948–1971"
+  },
+  "Morris Oxford series III": {
+   "from": 1971,
+   "to": 1971,
+   "source": "https://en.wikipedia.org/wiki/Morris_Oxford_Series_III",
+   "field": "1913–1914 <br /> 1919–1935 <br /> 1948–1971"
+  },
+  "Nissan 370Z": {
+   "from": 2008,
+   "to": 2022,
+   "source": "https://en.wikipedia.org/wiki/Nissan_370Z",
+   "field": "December 2008 – 2020<!-- The 370Z is still sold in the Australia, Philippines, Japan (as Fairlady Z) and probably others"
+  },
+  "Nissan Cherry": {
+   "from": 1970,
+   "to": 1986,
+   "source": "https://en.wikipedia.org/wiki/Nissan_Cherry",
+   "field": "1970–1986"
+  },
+  "Nissan GT-R": {
+   "from": 2007,
+   "to": 2025,
+   "source": "https://en.wikipedia.org/wiki/Nissan_GT-R",
+   "field": "December 2007 – August 2025"
+  },
+  "Nissan Kicks": {
+   "from": 2016,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Nissan_Kicks",
+   "field": "2016–present"
+  },
+  "Nissan Magnite": {
+   "from": 2020,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Nissan_Magnite",
+   "field": "2020–present"
+  },
+  "Nissan Maxima": {
+   "from": 1980,
+   "to": 2023,
+   "source": "https://en.wikipedia.org/wiki/Nissan_Maxima",
+   "field": "1980–2023"
+  },
+  "Nissan Micra": {
+   "from": 1982,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Nissan_Micra",
+   "field": "1982–present"
+  },
+  "Nissan NV200": {
+   "from": 2009,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Nissan_NV200",
+   "field": "2009–present"
+  },
+  "Nissan Patrol": {
+   "from": 1951,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Nissan_Patrol",
+   "field": "1951–present"
+  },
+  "Nissan S30": {
+   "from": 1969,
+   "to": 1978,
+   "source": "https://en.wikipedia.org/wiki/Nissan_Fairlady_Z_%28S30%29",
+   "field": "1969–1978"
+  },
+  "Nissan Sentra": {
+   "from": 1982,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Nissan_Sentra",
+   "field": "1982–present"
+  },
+  "Nissan Skyline": {
+   "from": 1957,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Nissan_Skyline",
+   "field": "1957–present"
+  },
+  "Nissan Sunny": {
+   "from": 1966,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Nissan_Sunny",
+   "field": "1966–present"
+  },
+  "Nissan Violet": {
+   "from": 1973,
+   "to": 1992,
+   "source": "https://en.wikipedia.org/wiki/Nissan_Violet",
+   "field": "1973–1992"
+  },
+  "Nissan X-Trail": {
+   "from": 2000,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Nissan_X-Trail",
+   "field": "2000–present"
+  },
+  "Nissan Z-car": {
+   "from": 1969,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Nissan_Z-car",
+   "field": "October 1969–present"
+  },
+  "Opel Astra": {
+   "from": 1991,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Opel_Astra",
+   "field": "1991–present"
+  },
+  "Peugeot 309": {
+   "from": 1985,
+   "to": 1997,
+   "source": "https://en.wikipedia.org/wiki/Peugeot_309",
+   "field": "1985–1994<br />1995–1997 (India)"
+  },
+  "Plymouth Belvedere": {
+   "from": 1954,
+   "to": 1970,
+   "source": "https://en.wikipedia.org/wiki/Plymouth_Belvedere",
+   "field": "1954–1970"
+  },
+  "Plymouth Savoy": {
+   "from": 1954,
+   "to": 1965,
+   "source": "https://en.wikipedia.org/wiki/Plymouth_Savoy",
+   "field": "1954–1964 (1965 in Canada)"
+  },
+  "Porsche 911": {
+   "from": 1964,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Porsche_911",
+   "field": "September 1964 – present"
+  },
+  "Porsche Cayenne": {
+   "from": 2002,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Porsche_Cayenne",
+   "field": "August 2002 – present"
+  },
+  "Porsche Macan": {
+   "from": 2014,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Porsche_Macan",
+   "field": "February 2014 – present"
+  },
+  "Porsche Panamera": {
+   "from": 2009,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Porsche_Panamera",
+   "field": "2009–present"
+  },
+  "Porsche Taycan": {
+   "from": 2019,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Porsche_Taycan",
+   "field": "2019–present"
+  },
+  "Premier Padmini": {
+   "from": 1964,
+   "to": 2001,
+   "source": "https://en.wikipedia.org/wiki/Premier_Padmini",
+   "field": "1964–2001"
+  },
+  "Range Rover Sport": {
+   "from": 2005,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Range_Rover_Sport",
+   "field": "2005–present"
+  },
+  "Range Rover Velar": {
+   "from": 2017,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Range_Rover_Velar",
+   "field": "2017–present"
+  },
+  "Reliant Kitten": {
+   "from": 1975,
+   "to": 1982,
+   "source": "https://en.wikipedia.org/wiki/Reliant_Kitten",
+   "field": "1975–1982<br>4,074 made"
+  },
+  "Renault 16": {
+   "from": 1965,
+   "to": 1980,
+   "source": "https://en.wikipedia.org/wiki/Renault_16",
+   "field": "1965–1980<br>1,845,959 built"
+  },
+  "Renault Captur": {
+   "from": 2013,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Renault_Captur",
+   "field": "2013–present"
+  },
+  "Renault Duster/Dacia Duster": {
+   "from": 2010,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Dacia_Duster",
+   "field": "2010–present"
+  },
+  "Renault Fluence": {
+   "from": 2009,
+   "to": 2020,
+   "source": "https://en.wikipedia.org/wiki/Renault_Fluence",
+   "field": "2009–2015 (Europe)<br />2009–2020<br />2010–2019 (Argentina)<br/>2011–2017 (India)"
+  },
+  "Renault Koleos": {
+   "from": 2007,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Renault_Koleos",
+   "field": "2007–present"
+  },
+  "Renault Kwid": {
+   "from": 2015,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Renault_Kwid",
+   "field": "2015–present"
+  },
+  "SEAT 124": {
+   "from": 1968,
+   "to": 1980,
+   "source": "https://en.wikipedia.org/wiki/SEAT_124",
+   "field": "1968–1980<br />896,136 built"
+  },
+  "SsangYong Rexton": {
+   "from": 2001,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/SsangYong_Rexton",
+   "field": "2001–present"
+  },
+  "Standard Atlas": {
+   "from": 1958,
+   "to": 1980,
+   "source": "https://en.wikipedia.org/wiki/Standard_Atlas",
+   "field": "1958–1980"
+  },
+  "Standard Eight": {
+   "from": 1959,
+   "to": 1959,
+   "source": "https://en.wikipedia.org/wiki/Standard_Eight",
+   "field": "1938–1959"
+  },
+  "Standard Vanguard": {
+   "from": 1963,
+   "to": 1963,
+   "source": "https://en.wikipedia.org/wiki/Standard_Vanguard",
+   "field": "1948–1963"
+  },
+  "Subaru Forester": {
+   "from": 1997,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Subaru_Forester",
+   "field": "1997–present"
+  },
+  "Suzuki Alto": {
+   "from": 1979,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Suzuki_Alto",
+   "field": "1979–present"
+  },
+  "Suzuki Baleno": {
+   "from": 2015,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Suzuki_Baleno_%282015%29",
+   "field": "September 2015 – present"
+  },
+  "Suzuki Brezza": {
+   "from": 2016,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Suzuki_Brezza",
+   "field": "January 2016 – present"
+  },
+  "Suzuki Celerio": {
+   "from": 2008,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Suzuki_Celerio",
+   "field": "2008–present"
+  },
+  "Suzuki Ciaz": {
+   "from": 2014,
+   "to": 2025,
+   "source": "https://en.wikipedia.org/wiki/Suzuki_Ciaz",
+   "field": "August 2014 – April 2025 (Suzuki)<br/>2021–2025 (Toyota)<br/>2014–2018, 2022–2023 (China)"
+  },
+  "Suzuki Cultus": {
+   "from": 1983,
+   "to": 2016,
+   "source": "https://en.wikipedia.org/wiki/Suzuki_Cultus",
+   "field": "1983–2016"
+  },
+  "Suzuki Cultus Crescent": {
+   "from": 1995,
+   "to": 2007,
+   "source": "https://en.wikipedia.org/wiki/Suzuki_Cultus_Crescent",
+   "field": "{{unbulleted list | 1995–2002 (Japan) | 1995–2004 (Colombia) | 1996–2002 (Indonesia) | 1998–2005 (Pakistan) | 1998–2007 "
+  },
+  "Suzuki Ertiga": {
+   "from": 2012,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Suzuki_Ertiga",
+   "field": "January 2012 – present"
+  },
+  "Suzuki Fronx": {
+   "from": 2023,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Suzuki_Fronx",
+   "field": "2023–present"
+  },
+  "Suzuki Grand Vitara": {
+   "from": 2022,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Suzuki_Grand_Vitara_%282022%29",
+   "field": "August 2022 – present"
+  },
+  "Suzuki Ignis": {
+   "from": 2000,
+   "to": 2026,
+   "source": "https://en.wikipedia.org/wiki/Suzuki_Ignis",
+   "field": "2000–2008<br />2016–2026"
+  },
+  "Suzuki Jimny": {
+   "from": 1970,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Suzuki_Jimny",
+   "field": "April 1970 – present (2.85 million units sold as of September 2018)"
+  },
+  "Suzuki Kizashi": {
+   "from": 2009,
+   "to": 2015,
+   "source": "https://en.wikipedia.org/wiki/Suzuki_Kizashi",
+   "field": "October 2009–December 2015"
+  },
+  "Suzuki MR Wagon": {
+   "from": 2001,
+   "to": 2016,
+   "source": "https://en.wikipedia.org/wiki/Suzuki_MR_Wagon",
+   "field": "2001–2016"
+  },
+  "Suzuki S-Presso": {
+   "from": 2019,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Suzuki_S-Presso",
+   "field": "September 2019 – present"
+  },
+  "Suzuki SX4": {
+   "from": 2006,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Suzuki_SX4",
+   "field": "2006–present"
+  },
+  "Suzuki Splash": {
+   "from": 2008,
+   "to": 2018,
+   "source": "https://en.wikipedia.org/wiki/Suzuki_Splash",
+   "field": "{{ubl| 2008–2014 (Hungary) | 2009–2016 (India) | 2010–2018 (China)}}"
+  },
+  "Suzuki Swift": {
+   "from": 1984,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Suzuki_Swift",
+   "field": "September 2004 – present<br>Nameplate first used in 1984"
+  },
+  "Suzuki Vitara": {
+   "from": 1988,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Suzuki_Vitara",
+   "field": "1988–present"
+  },
+  "Suzuki Wagon R": {
+   "from": 1993,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Suzuki_Wagon_R",
+   "field": "1993–present"
+  },
+  "Suzuki XL-7": {
+   "from": 1998,
+   "to": 2009,
+   "source": "https://en.wikipedia.org/wiki/Suzuki_XL-7",
+   "field": "1998–2009"
+  },
+  "Suzuki e Vitara": {
+   "from": 2025,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Suzuki_e_Vitara",
+   "field": "August 2025 – present"
+  },
+  "Tata 407": {
+   "from": 1986,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Tata_407",
+   "field": "1986–present"
+  },
+  "Tata Altroz": {
+   "from": 2020,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Tata_Altroz",
+   "field": "January 2020–present"
+  },
+  "Tata Indica": {
+   "from": 1998,
+   "to": 2018,
+   "source": "https://en.wikipedia.org/wiki/Tata_Indica",
+   "field": "1998–2018"
+  },
+  "Tata Indigo": {
+   "from": 2002,
+   "to": 2018,
+   "source": "https://en.wikipedia.org/wiki/Tata_Indigo",
+   "field": "2002–2018 (first generation)<br/>2009-2016 (second generation)"
+  },
+  "Tata Nano": {
+   "from": 2008,
+   "to": 2018,
+   "source": "https://en.wikipedia.org/wiki/Tata_Nano",
+   "field": "2008–2018<br>"
+  },
+  "Tata Nexon": {
+   "from": 2017,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Tata_Nexon",
+   "field": "2017–present"
+  },
+  "Tata Safari": {
+   "from": 1998,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Tata_Safari",
+   "field": "1998–present"
+  },
+  "Tata Sumo": {
+   "from": 1994,
+   "to": 2019,
+   "source": "https://en.wikipedia.org/wiki/Tata_Sumo",
+   "field": "1994&ndash;2019"
+  },
+  "Tata TL": {
+   "from": 1988,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Tata_Telcoline",
+   "field": "1988–present"
+  },
+  "Tata Xenon": {
+   "from": 1988,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Tata_Xenon",
+   "field": "1988–present"
+  },
+  "Toyota Alphard": {
+   "from": 2002,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Toyota_Alphard",
+   "field": "2002–present"
+  },
+  "Toyota Camry": {
+   "from": 1982,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Toyota_Camry",
+   "field": "March 1982 – present"
+  },
+  "Toyota Corolla": {
+   "from": 1966,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Toyota_Corolla",
+   "field": "November 1966 – present"
+  },
+  "Toyota Fortuner": {
+   "from": 2004,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Toyota_Fortuner",
+   "field": "November 2004 – present"
+  },
+  "Toyota Hilux": {
+   "from": 1968,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Toyota_Hilux",
+   "field": "March 1968 – present"
+  },
+  "Toyota Innova": {
+   "from": 2004,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Toyota_Innova",
+   "field": "September 2004 – present"
+  },
+  "Toyota Kijang": {
+   "from": 1976,
+   "to": 2007,
+   "source": "https://en.wikipedia.org/wiki/Toyota_Kijang",
+   "field": "1976–2007"
+  },
+  "Toyota Land Cruiser": {
+   "from": 1951,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Toyota_Land_Cruiser",
+   "field": "1951–present"
+  },
+  "Toyota Land Cruiser Prado": {
+   "from": 1984,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Toyota_Land_Cruiser_Prado",
+   "field": "1984–present"
+  },
+  "Toyota Prius": {
+   "from": 1997,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Toyota_Prius",
+   "field": "December 1997 – present"
+  },
+  "Triumph Herald": {
+   "from": 1959,
+   "to": 1971,
+   "source": "https://en.wikipedia.org/wiki/Triumph_Herald",
+   "field": "1959–1971"
+  },
+  "VinFast VF 7": {
+   "from": 2024,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/VinFast_VF_7",
+   "field": "2024-present"
+  },
+  "Volkswagen Beetle": {
+   "from": 2011,
+   "to": 2019,
+   "source": "https://en.wikipedia.org/wiki/Volkswagen_Beetle_%28A5%29",
+   "field": "July 2011 – July 2019"
+  },
+  "Volkswagen Jetta": {
+   "from": 1979,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Volkswagen_Jetta",
+   "field": "1979–present"
+  },
+  "Volkswagen Passat": {
+   "from": 1973,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Volkswagen_Passat",
+   "field": "1973–present"
+  },
+  "Volkswagen Phaeton": {
+   "from": 2001,
+   "to": 2016,
+   "source": "https://en.wikipedia.org/wiki/Volkswagen_Phaeton",
+   "field": "November 2001 – March 2016"
+  },
+  "Volkswagen Polo": {
+   "from": 1975,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Volkswagen_Polo",
+   "field": "1975–present"
+  },
+  "Volkswagen T-Roc": {
+   "from": 2017,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Volkswagen_T-Roc",
+   "field": "2017–present"
+  },
+  "Volkswagen Tiguan": {
+   "from": 2007,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Volkswagen_Tiguan",
+   "field": "2007–present"
+  },
+  "Volkswagen Touareg": {
+   "from": 2002,
+   "to": 2026,
+   "source": "https://en.wikipedia.org/wiki/Volkswagen_Touareg",
+   "field": "August 2002 – March 2026"
+  },
+  "Volkswagen Vento (A05)": {
+   "from": 2010,
+   "to": 2022,
+   "source": "https://en.wikipedia.org/wiki/Volkswagen_Polo_Sedan_%28A05%29",
+   "field": "2010–2022"
+  },
+  "Volvo S90": {
+   "from": 2016,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Volvo_S90",
+   "field": "2016–2017 (Sweden)<br/>2016–present (China)"
+  },
+  "Volvo XC90": {
+   "from": 2002,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Volvo_XC90",
+   "field": "2002–present <!-- Do not say \"2002–2023\" bc the production will end later -->"
+  },
+  "Wuling Air EV": {
+   "from": 2022,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Wuling_Air_EV",
+   "field": "2022–present"
+  },
+  "Wuling Hongguang": {
+   "from": 2010,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/Wuling_Hongguang",
+   "field": "2010–present"
+  },
+  "Zotye 2008": {
+   "from": 2005,
+   "to": 2016,
+   "source": "https://en.wikipedia.org/wiki/Zotye_2008",
+   "field": "2005–2016"
+  },
+  "Škoda Fabia": {
+   "from": 1999,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/%C5%A0koda_Fabia",
+   "field": "1999–present"
+  },
+  "Škoda Kodiaq": {
+   "from": 2016,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/%C5%A0koda_Kodiaq",
+   "field": "2016–present"
+  },
+  "Škoda Octavia": {
+   "from": 1996,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/%C5%A0koda_Octavia",
+   "field": "1996–present"
+  },
+  "Škoda Superb": {
+   "from": 2001,
+   "to": null,
+   "source": "https://en.wikipedia.org/wiki/%C5%A0koda_Superb",
+   "field": "2001–present"
+  },
+  "Škoda Yeti": {
+   "from": 2009,
+   "to": 2017,
+   "source": "https://en.wikipedia.org/wiki/%C5%A0koda_Yeti",
+   "field": "2009–2017"
+  }
+ }
+}

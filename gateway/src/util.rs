@@ -72,7 +72,7 @@ impl Limiter {
         if map.len() > 50_000 {
             map.retain(|_, (_, t)| now.duration_since(*t) < Duration::from_secs(600));
         }
-        let (tokens, last) = map.entry(ip).or_insert((self.burst, now));
+        let (tokens, last) = map.entry(source_key(ip)).or_insert((self.burst, now));
         *tokens = (*tokens + now.duration_since(*last).as_secs_f64() * self.rate).min(self.burst);
         *last = now;
         if *tokens >= 1.0 {
@@ -81,6 +81,19 @@ impl Limiter {
         } else {
             false
         }
+    }
+}
+
+pub fn source_key(ip: IpAddr) -> IpAddr {
+    match ip {
+        IpAddr::V6(v6) => match v6.to_ipv4_mapped() {
+            Some(v4) => IpAddr::V4(v4),
+            None => {
+                let s = v6.segments();
+                IpAddr::V6(std::net::Ipv6Addr::new(s[0], s[1], s[2], s[3], 0, 0, 0, 0))
+            }
+        },
+        v4 => v4,
     }
 }
 

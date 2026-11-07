@@ -45,7 +45,7 @@ An account signs in with its one-time password and can change it under Account. 
 | A station forgot its password | Its division administrator opens Division, then Stations and accounts, then Reset password. The one-time password is shown once |
 | An administrator forgot their password | On the host: `docker exec vahana vahana-gateway reset-password admin-central` prints a new one-time password |
 | A station's account must be stopped | Division administrator: Disable. All of its sessions end at once |
-| An account is locked after 5 wrong passwords | It unlocks by itself after 15 minutes, or the division administrator can Unlock it |
+| Sign-in is refused after 5 wrong passwords | It is paused only from that network and resumes by itself after 15 minutes. After 50 failures from all networks together the account locks, and the division administrator can Unlock it |
 | New stations were added to the register | Rebuild `assets/bengaluru/police_stations.json`, rebuild the image, then run `provision` again with a new credentials file name. Existing accounts are kept and only new stations get accounts |
 
 The audit log (Division, then Audit log) shows every sign-in, failure, password change and account action for the division, with the network address, country and the device location given at sign-in.
@@ -61,7 +61,7 @@ The audit log (Division, then Audit log) shows every sign-in, failure, password 
 | `P5_COOKIE_SECURE` | `true` | Keep `true` whenever the site is served over HTTPS |
 | `P5_REQUIRE_PASSWORD_CHANGE` | `false` | `true`: an account still on its one-time password must choose a new password before it can use the console. `false`: the one-time password signs in directly |
 | `P5_IDLE_MINUTES`, `P5_SESSION_HOURS` | 60, 12 | Session idle and absolute lifetimes |
-| `P5_LOCKOUT_AFTER`, `P5_LOCKOUT_MINUTES` | 5, 15 | Account lockout |
+| `P5_LOCKOUT_AFTER`, `P5_LOCKOUT_MINUTES`, `P5_LOCKOUT_ACCOUNT_AFTER` | 5, 15, 50 | Failures before sign-in for an ID is paused from one network, the pause length, and failures from all networks before the account locks |
 | `P5_LOGIN_PER_MINUTE`, `P5_API_PER_MINUTE` | 6, 240 | Per-address rate limits. A burst of up to the sign-in limit, or a quarter of the API limit (at least 60), is allowed at once. The live server uses 30 and 1200 because evaluators in one room share one public address |
 | `P5_MAX_UPLOAD_MB` | 15 | Largest photo |
 | `P5_MAX_VIDEO_MB`, `P5_MAX_BODY_MB` | 300, 300 | Largest video, and largest request the gateway accepts. Use 90 and 95 behind Cloudflare's free plan |
@@ -142,6 +142,17 @@ sudo docker start vahana
 ## Watchdog
 
 `vahana-watchdog.timer` runs `deploy/host/vahana-watchdog.sh` every minute. After 3 failed health checks in a row on `127.0.0.1:8080` it restarts the container. It also requests `/api/health` on every public address and records the current quick tunnel address in `/home/ubuntu/deploy/public_url`. Read its findings with `journalctl -u vahana-watchdog`.
+
+## Known limits
+
+Found in the end-to-end and security tests of 7 November 2026 and left as they are for now:
+
+* **Sign-in location:** the browser reports the device location, so it can be faked. It is a convenience check. The controls that matter are the accounts, sessions, lockouts and the audit log.
+* **One-time passwords:** `P5_REQUIRE_PASSWORD_CHANGE` is off for the evaluation, so a one-time password stays valid until it is changed under Account.
+* **Public services:** GPS tracks go to the OSRM demo router, signboard text from video key frames and investigator notes go to Photon, and travel-time areas go to Valhalla. For real casework, host these yourself and point `P5_OSRM_URL`, `P5_PHOTON_URL` and `P5_VALHALLA_URL` at them.
+* **Load:** video analysis runs inside the request, and uploads are held in the container's 1 GB in-memory `/tmp`, so several large uploads at once slow everyone down. A job queue and per-user limits are the next step.
+* **Small vehicles:** make and model are named only for vehicles that cover at least 0.4% of the frame. Distant or rooftop footage is counted and tracked without names, and the console says so.
+* **Locating moving footage:** it needs the camera's field of view and declines when the motion fits several places. On a real phone recording of a drive along Nandidurga Road (Wikimedia Commons, CC0) it declined.
 
 ## The public address
 

@@ -2,8 +2,12 @@ const $ = (s) => document.querySelector(s);
 const art = document.querySelector(".skyline");
 const params = new URLSearchParams(location.search);
 const next = (() => {
-  const n = params.get("next") || "/";
-  return n.startsWith("/") && !n.startsWith("//") && !n.startsWith("/login") ? n : "/";
+  try {
+    const u = new URL(params.get("next") || "/", location.origin);
+    return u.origin === location.origin && !u.pathname.startsWith("/login") ? u.pathname + u.search + u.hash : "/";
+  } catch {
+    return "/";
+  }
 })();
 let policy = { device_location_required: false };
 let account = null;

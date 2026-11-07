@@ -267,7 +267,7 @@ async def analyse_video(file: UploadFile = File(...), allowed_direction: str | N
     finally:
         tmp.unlink(missing_ok=True)
     res.pop("_keyframes", None)
-    store().record(ident, "video", f"{file.filename or 'Video'}: {video_summary(res)}",
+    store().record(ident, "video", f"{Path(file.filename or 'Video').name[:120]}: {video_summary(res)}",
                    {"counts": res["counts"], "alerts": res["alerts"], "meta": res["meta"]}, detections=_detections(res["tracks"]))
     for tr in res["tracks"]:
         tr.pop("embedding", None)
@@ -500,6 +500,10 @@ def admin_stations(days: int = 30, ident: Identity = Depends(admin)) -> dict:
     return {"division": registry()["divisions"].get(ident.division_id), "stations": store().overview(ident, since, until)["by_station"]}
 
 
+def plain_cell(v):
+    return "'" + v if isinstance(v, str) and v[:1] in ("=", "+", "-", "@", "\t", "\r") else v
+
+
 @app.get("/api/admin/export.csv")
 def admin_export(days: int = 30, start: str | None = None, end: str | None = None, ident: Identity = Depends(admin)) -> Response:
     since, until = window(days, start, end)
@@ -510,8 +514,8 @@ def admin_export(days: int = 30, start: str | None = None, end: str | None = Non
     while True:
         page = store().events(ident, since=since, until=until, limit=200, offset=offset)
         for e in page["events"]:
-            w.writerow([e["id"], datetime.fromtimestamp(e["ts"], IST).strftime("%Y-%m-%d %H:%M:%S"), e["kind"], e["station_name"], e["username"],
-                        e["summary"], e["lat"], e["lon"], e["case_id"], e["reviewed"], e["note"]])
+            w.writerow([plain_cell(v) for v in (e["id"], datetime.fromtimestamp(e["ts"], IST).strftime("%Y-%m-%d %H:%M:%S"), e["kind"], e["station_name"],
+                        e["username"], e["summary"], e["lat"], e["lon"], e["case_id"], e["reviewed"], e["note"])])
         offset += 200
         if offset >= page["total"] or not page["events"]:
             break

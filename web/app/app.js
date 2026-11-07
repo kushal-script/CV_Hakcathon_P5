@@ -274,9 +274,11 @@ function vehicleFacts(d) {
   if (d.model == null) return null;
   const sure = d.level === "class" || d.level === "family";
   const outside = d.level === "ood_make";
+  const made = d.production ? `${d.production.from}–${d.production.to || "present"}` : null;
   const year = outside ? ["Unknown"] : d.years && d.years.length ? [d.years.join(" or ")]
     : d.year ? [sure ? String(d.year) : `${d.year} (closest match, not confirmed)`]
-    : ["Unknown", "Photos in this catalogue are not labelled by model year, so the year cannot be read from the photo."];
+    : made ? [sure ? made : `${made} (closest match, not confirmed)`, `Years this model was made, from ${d.production.source.includes("wikipedia") ? "Wikipedia" : "Wikidata"}. The exact year cannot be told from the photo.`]
+    : ["Unknown", "Photos in this catalogue are not labelled by model year, and no production years are recorded for this model."];
   const model = sure ? d.model : outside ? "Not one of the known models" : `${d.model} (closest match, not confirmed)`;
   const conf = sure ? pct(d.confidence) : d.level === "make" ? `${pct(d.confidence)} for the make, ${pct(d.candidate_confidence)} for this model`
     : outside ? `${pct(d.confidence)} for the make` : `${pct(d.candidate_confidence)} for this model`;
@@ -753,7 +755,7 @@ function vehicleTable(analysis, video) {
     h("thead", {}, h("tr", {}, h("th", { text: "#" }), h("th", { text: "Vehicle" }), h("th", { text: "Moving" }), h("th", { class: "num", text: "Seen" }))),
     h("tbody", {}, analysis.tracks.map((tr) => h("tr", { class: "clickable", onclick: () => { video.currentTime = tr.first_t; video.play(); } },
       h("td", { class: "mono", text: tr.id }),
-      h("td", {}, h("div", { text: tr.label }), tr.decision ? h("div", { class: "muted", style: { fontSize: "12px" }, text: `${(LEVEL[tr.decision.level] || [""])[0]} · ${pct(tr.decision.confidence, 0)}` }) : h("div", { class: "muted", style: { fontSize: "12px" }, text: tr.class })),
+      h("td", {}, h("div", { text: tr.label }), tr.decision ? h("div", { class: "muted", style: { fontSize: "12px" }, text: `${(LEVEL[tr.decision.level] || [""])[0]} · ${pct(tr.decision.confidence, 0)}` }) : h("div", { class: "muted", style: { fontSize: "12px" }, text: `${tr.class} · too small in the frame to name the make or model` })),
       h("td", {}, tr.wrong_way ? h("span", { class: "tag alert", text: "Wrong way" }) : h("span", { text: tr.direction.compass })),
       h("td", { class: "num", text: `${clock(tr.first_t)}–${clock(tr.last_t)}` })))));
 }
@@ -813,7 +815,7 @@ const consoleState = { mod: null };
 async function showConsole(on) {
   $("#layout").hidden = on; $("#console").hidden = !on;
   if (!on) { map.m && map.m.resize(); return; }
-  if (!consoleState.mod) consoleState.mod = await import("./admin.js?v=8");
+  if (!consoleState.mod) consoleState.mod = await import("./admin.js?v=10");
   consoleState.mod.mount($("#console"), { api, h, busy, problem, notice, session, AuthError, KIND, LEVEL, pct, jpg, when });
 }
 
