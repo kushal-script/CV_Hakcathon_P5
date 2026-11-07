@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 440" width="1280" height="440" role="img" aria-labelledby="title desc">
+<title id="title">Vahana Drishti</title>
+<desc id="desc">Vehicle intelligence for police stations across Bengaluru, drawn like the console's sign-in page: Vidhana Soudha, a rain tree, a traffic signal, a Namma Metro train and an auto-rickshaw.</desc>
+<style>
+.bg { fill: #eadcbc; }
+.over { font: 700 16px 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif; letter-spacing: .14em; fill: #5c4a2c; }
+.over .kn { letter-spacing: 0; font-weight: 600; }
+.title { font: 600 68px 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif; letter-spacing: -.02em; fill: #241c13; }
+.kn { font-family: 'Noto Sans Kannada', 'Kannada Sangam MN', 'Kannada MN', Tunga, 'Nirmala UI', sans-serif; }
+.ktitle { font: 600 28px 'Noto Sans Kannada', 'Kannada Sangam MN', 'Kannada MN', Tunga, 'Nirmala UI', sans-serif; fill: #5c4a2c; }
+.lede { font: 400 18.5px 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif; fill: #4d4234; }
+.div { font: 650 15px 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif; fill: #241c13; }
+.divk { font: 500 14px 'Noto Sans Kannada', 'Kannada Sangam MN', 'Kannada MN', Tunga, 'Nirmala UI', sans-serif; fill: #5c4a2c; }
+.rule { stroke: rgba(92,74,44,0.3); stroke-width: 1; }
+.meta { font: 700 13px 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif; letter-spacing: .12em; fill: #877a66; }
+.sep { stroke: rgba(92,74,44,0.25); stroke-width: 1; }
+.draw { fill: none; stroke: #5c4a2c; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.thin { stroke-width: 1.25; }
+.sun { fill: rgba(212,149,42,0.22); }
+.lamp { fill: #3a3127; stroke: #5c4a2c; stroke-width: 1.5; }
+#lamp-r { animation: lamp-red 1.5s 2; }
+#lamp-a { animation: lamp-amber 1.5s 2; }
+#lamp-g { fill: #5fbf6a; animation: lamp-green 1.5s 2; }
+.lane { fill: none; stroke: #5c4a2c; stroke-width: 3; stroke-dasharray: 26 22; opacity: .55; animation: lane .7s linear 4; }
+@keyframes lane { from { stroke-dashoffset: 48; } to { stroke-dashoffset: 0; } }
+@keyframes lamp-red { 0%, 32% { fill: #e0503a; } 33%, 100% { fill: #3a3127; } }
+@keyframes lamp-amber { 0%, 32% { fill: #3a3127; } 33%, 65% { fill: #f0b03a; } 66%, 100% { fill: #3a3127; } }
+@keyframes lamp-green { 0%, 65% { fill: #3a3127; } 66%, 100% { fill: #5fbf6a; } }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+</style>
+<defs><clipPath id="card"><rect width="1280" height="440" rx="18"/></clipPath></defs>
+<g clip-path="url(#card)">
+<rect class="bg" width="1280" height="440"/>
+<rect width="640.0" height="6" fill="#e2ad2e"/><rect x="640.0" width="640.0" height="6" fill="#b3392b"/>
+<text class="over" x="64" y="78">BENGALURU<tspan class="kn" dx="10">ಬೆಂಗಳೂರು</tspan></text>
+<text class="meta" x="1216" y="78" text-anchor="end">COMPUTER VISION HACKATHON 2026 · P5 · TEAM T55</text>
+<text class="title" x="61" y="152">Vahana Drishti</text>
+<text class="ktitle" x="64" y="196">ವಾಹನ ದೃಷ್ಟಿ</text>
+<text class="lede" x="64" y="238">Vehicle intelligence for police stations across</text><text class="lede" x="64" y="265">the city. Identify a vehicle from a photo, find it</text><text class="lede" x="64" y="292">across camera feeds and reconstruct where it went.</text>
+<path class="rule" d="M64 314H526"/><text class="div" x="64" y="339">Central</text><text class="divk" x="64" y="359">ಕೇಂದ್ರ</text><path class="sep" d="M142 322V364"/><text class="div" x="160" y="339">North</text><text class="divk" x="160" y="359">ಉತ್ತರ</text><path class="sep" d="M238 322V364"/><text class="div" x="256" y="339">South</text><text class="divk" x="256" y="359">ದಕ್ಷಿಣ</text><path class="sep" d="M334 322V364"/><text class="div" x="352" y="339">East</text><text class="divk" x="352" y="359">ಪೂರ್ವ</text><path class="sep" d="M430 322V364"/><text class="div" x="448" y="339">West</text><text class="divk" x="448" y="359">ಪಶ್ಚಿಮ</text>
+<svg x="536.0" y="156.8" width="744.0" height="260.4" viewBox="0 0 1200 420" overflow="visible"><circle class="sun" cx="520" cy="170" r="128"/><path class="draw" d="M250 360V300H790V360"/><path class="draw thin" d="M476 308H564 M470 316H570 M464 324H576 M458 332H582 M452 340H588 M446 348H594 M440 356H600"/><path class="draw" d="M276 210h488v90h-488Z"/><path class="draw thin" d="M276 220H764M276 290H764"/><path class="draw" d="M430 196h180v104h-180Z"/><path class="draw thin" d="M430 208H610"/><path class="draw thin" d="M442.0 214V300 M456.2 214V300 M470.4 214V300 M484.5 214V300 M498.7 214V300 M512.9 214V300 M527.1 214V300 M541.3 214V300 M555.5 214V300 M569.6 214V300 M583.8 214V300 M598.0 214V300"/><path class="draw thin" d="M292 254V234a4.0 4.0 0 0 1 8 0V254 M310 254V234a4.0 4.0 0 0 1 8 0V254 M328 254V234a4.0 4.0 0 0 1 8 0V254 M346 254V234a4.0 4.0 0 0 1 8 0V254 M364 254V234a4.0 4.0 0 0 1 8 0V254 M382 254V234a4.0 4.0 0 0 1 8 0V254 M400 254V234a4.0 4.0 0 0 1 8 0V254 M292 286V268a4.0 4.0 0 0 1 8 0V286 M310 286V268a4.0 4.0 0 0 1 8 0V286 M328 286V268a4.0 4.0 0 0 1 8 0V286 M346 286V268a4.0 4.0 0 0 1 8 0V286 M364 286V268a4.0 4.0 0 0 1 8 0V286 M382 286V268a4.0 4.0 0 0 1 8 0V286 M400 286V268a4.0 4.0 0 0 1 8 0V286"/><path class="draw thin" d="M624 254V234a4.0 4.0 0 0 1 8 0V254 M642 254V234a4.0 4.0 0 0 1 8 0V254 M660 254V234a4.0 4.0 0 0 1 8 0V254 M678 254V234a4.0 4.0 0 0 1 8 0V254 M696 254V234a4.0 4.0 0 0 1 8 0V254 M714 254V234a4.0 4.0 0 0 1 8 0V254 M732 254V234a4.0 4.0 0 0 1 8 0V254 M624 286V268a4.0 4.0 0 0 1 8 0V286 M642 286V268a4.0 4.0 0 0 1 8 0V286 M660 286V268a4.0 4.0 0 0 1 8 0V286 M678 286V268a4.0 4.0 0 0 1 8 0V286 M696 286V268a4.0 4.0 0 0 1 8 0V286 M714 286V268a4.0 4.0 0 0 1 8 0V286 M732 286V268a4.0 4.0 0 0 1 8 0V286"/><path class="draw" d="M474 150h92v46h-92Z"/><path class="draw thin" d="M486 156V196 M500 156V196 M514 156V196 M526 156V196 M540 156V196 M554 156V196"/><path class="draw" d="M468 150C468 112 496 94 520 84C544 94 572 112 572 150Z"/><path class="draw thin" d="M520 84V64"/><circle class="draw thin" cx="520" cy="60" r="4"/><path class="draw" d="M290 172h52v38h-52Z"/><path class="draw" d="M286 172C286 150 302 140 316 135C330 140 346 150 346 172Z"/><path class="draw thin" d="M316 135V122"/><circle class="draw thin" cx="316" cy="119" r="3"/><path class="draw thin" d="M300 178V210 M310 178V210 M322 178V210 M332 178V210"/><path class="draw" d="M698 172h52v38h-52Z"/><path class="draw" d="M694 172C694 150 710 140 724 135C738 140 754 150 754 172Z"/><path class="draw thin" d="M724 135V122"/><circle class="draw thin" cx="724" cy="119" r="3"/><path class="draw thin" d="M708 178V210 M718 178V210 M730 178V210 M740 178V210"/><path class="draw" d="M96 252C88 222 120 200 146 208C156 182 200 176 216 198C244 186 280 204 274 232C296 246 284 276 258 272C240 288 202 286 186 274C160 288 112 284 96 252Z"/><path class="draw" d="M188 274L184 360M186 300L166 282M187 292L208 274"/><path class="draw" d="M60 360V214"/><path class="draw" d="M44 128h32a6 6 0 0 1 6 6v74a6 6 0 0 1 -6 6h-32a6 6 0 0 1 -6 -6v-74a6 6 0 0 1 6 -6Z"/><circle class="lamp" id="lamp-r" cx="60" cy="148" r="8"/><circle class="lamp" id="lamp-a" cx="60" cy="171" r="8"/><circle class="lamp" id="lamp-g" cx="60" cy="194" r="8"/><path class="draw" d="M818 246H1200M818 258H1200"/><path class="draw" d="M854 258H906L892 270H868Z"/><path class="draw" d="M872 270V360M888 270V360"/><path class="draw" d="M964 258H1016L1002 270H978Z"/><path class="draw" d="M982 270V360M998 270V360"/><path class="draw" d="M1074 258H1126L1112 270H1088Z"/><path class="draw" d="M1092 270V360M1108 270V360"/><path class="draw" d="M846 244V226C846 220 852 216 860 216H948a6 6 0 0 1 6 6V244Z"/><path class="draw" d="M958 244V222a6 6 0 0 1 6 -6H1056a6 6 0 0 1 6 6V244Z"/><path class="draw" d="M1066 244V222a6 6 0 0 1 6 -6H1164a6 6 0 0 1 6 6V244Z"/><path class="draw thin" d="M862 223h14v10h-14Z M882 223h14v10h-14Z M902 223h14v10h-14Z M922 223h14v10h-14Z M964 223h14v10h-14Z M984 223h14v10h-14Z M1004 223h14v10h-14Z M1024 223h14v10h-14Z M1044 223h14v10h-14Z M1072 223h14v10h-14Z M1092 223h14v10h-14Z M1112 223h14v10h-14Z M1132 223h14v10h-14Z M1152 223h14v10h-14Z"/><path class="draw" d="M640 388V360C640 344 650 334 664 332H722C730 332 736 338 736 346V388"/><path class="draw" d="M636 336C648 322 690 318 740 324"/><path class="draw thin" d="M664 340V372H698V340"/><circle class="draw" cx="654" cy="390" r="9"/><circle class="draw" cx="722" cy="390" r="9"/><path class="draw" d="M-870 360H1200"/><path class="draw thin" d="M-870 404H1200"/><path class="lane" d="M-870 382H1200"/></svg>
+</g>
+</svg>

@@ -67,7 +67,7 @@ The service is one Docker image with the models baked in. It runs on a JarvisLab
 
 ## 8. Data
 
-Stanford Cars (8,144 training and 8,041 test images) for the main catalogue. Wikimedia Commons photos selected through Wikidata and Wikipedia for the Indian catalogue, split so that no photographer appears in two splits. OpenStreetMap through Geofabrik for the Bengaluru road graph and place names. Uber Movement's 2019 Bengaluru travel times for the traffic prior. KITTI raw for the footage location evaluation. Sources and licences are listed in the README and in `assets/bengaluru/SOURCES.md`.
+Stanford Cars (8,144 training and 8,041 test images) for the main catalogue. Wikimedia Commons photos selected through Wikidata and Wikipedia for the Indian catalogue, split so that no photographer appears in two splits. OpenStreetMap through Geofabrik for the Bengaluru road graph and place names. Uber Movement's 2019 Bengaluru travel times for the traffic prior. KITTI raw for the footage location evaluation. Sources and licences are listed in `NOTICE.md`, the README and `assets/bengaluru/SOURCES.md`.
 
 ## 9. Key decisions and trade-offs
 

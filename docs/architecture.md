@@ -1,6 +1,6 @@
 # P5 System Architecture
 
-*The architecture-diagram deliverable for P5 (fine-grained vehicle recognition on Stanford Cars). The diagrams, module names and interfaces here are the contract the code implements. `tests/test_architecture.py` checks that every `p5.*` path named in the diagrams exists in `src/`, so a renamed module fails `make test` until this file is updated. The rationale for each choice is in `docs/FINAL_APPROACH.md`.*
+*The architecture-diagram deliverable for P5 (fine-grained vehicle recognition on Stanford Cars). The diagrams, module names and interfaces here are the contract the code implements. `tests/test_architecture.py` checks that every `p5.*` path named in the diagrams exists in `src/`, so a renamed module fails the test suite until this file is updated. The rationale for each choice is in `docs/FINAL_APPROACH.md`.*
 
 ---
 

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 132" width="760" height="132" role="img" aria-labelledby="title">
+<title id="title">Live demo: www.vahanadrishti.in</title>
+<style>
+.label { font: 700 15px 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif; letter-spacing: .18em; fill: #d4952a; }
+.url { font: 600 42px 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif; letter-spacing: -.01em; fill: #f3ead8; }
+.ring { fill: none; stroke: #b9a988; stroke-width: 2; }
+.arrow { fill: none; stroke: #f3ead8; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.glow { fill: #5fbf6a; opacity: .35; animation: glow 2.4s ease-in-out infinite; transform-origin: 51px 88px; }
+@keyframes glow { 50% { opacity: .08; transform: scale(1.5); } }
+@media (prefers-reduced-motion: reduce) { .glow { animation: none; } }
+</style>
+<defs><clipPath id="c"><rect width="760" height="132" rx="18"/></clipPath></defs>
+<g clip-path="url(#c)">
+<rect width="760" height="132" fill="#2b2318"/>
+<rect y="127" width="380.0" height="5" fill="#e2ad2e"/><rect x="380.0" y="127" width="380.0" height="5" fill="#b3392b"/>
+</g>
+<rect x="34" y="24" width="34" height="84" rx="9" fill="#0f0c08"/>
+<circle cx="51" cy="44" r="8" fill="#3a3127"/><circle cx="51" cy="66" r="8" fill="#3a3127"/>
+<circle class="glow" cx="51" cy="88" r="11"/><circle cx="51" cy="88" r="8" fill="#5fbf6a"/>
+<text class="label" x="98" y="52">LIVE DEMO</text>
+<text class="url" x="96" y="98">www.vahanadrishti.in</text>
+<circle class="ring" cx="694" cy="64" r="28"/>
+<path class="arrow" d="M682 64H706M696 54L706 64L696 74"/>
+</svg>

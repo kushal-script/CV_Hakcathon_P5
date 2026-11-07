@@ -45,3 +45,8 @@ experiments/*/artifacts/*
 
 /gateway/target/
 /web/_dev/
+
+# Local container state: accounts, sessions, one-time passwords, case files
+/state/
+/cases/
+credentials*.csv
