@@ -70,6 +70,20 @@ async fn security_headers(State(state): State<Shared>, req: Request, next: Next)
     res
 }
 
+async fn https_only(State(state): State<Shared>, req: Request, next: Next) -> Response {
+    if state.trust_proxy && state.secure_cookie {
+        let proto = req.headers().get("x-forwarded-proto").and_then(|v| v.to_str().ok()).unwrap_or("");
+        let host = req.headers().get(header::HOST).and_then(|v| v.to_str().ok()).unwrap_or("");
+        if proto.eq_ignore_ascii_case("http") && !host.is_empty() && host.chars().all(|c| c.is_ascii_alphanumeric() || matches!(c, '.' | '-' | ':')) {
+            let path = req.uri().path_and_query().map(|p| p.as_str()).unwrap_or("/");
+            if let Ok(location) = HeaderValue::from_str(&format!("https://{host}{path}")) {
+                return (StatusCode::PERMANENT_REDIRECT, [(header::LOCATION, location)]).into_response();
+            }
+        }
+    }
+    next.run(req).await
+}
+
 async fn country_gate(State(state): State<Shared>, req: Request, next: Next) -> Response {
     if state.trust_proxy && !state.allowed_countries.is_empty() {
         if let Some(cc) = country(req.headers()) {
@@ -186,6 +200,7 @@ async fn main() {
         .route_service("/favicon.svg", ServeFile::new(state.web_public.join("favicon.svg")))
         .fallback(web::app_files)
         .layer(middleware::from_fn_with_state(state.clone(), country_gate))
+        .layer(middleware::from_fn_with_state(state.clone(), https_only))
         .layer(middleware::from_fn_with_state(state.clone(), security_headers))
         .with_state(state.clone());
     let addr: SocketAddr = env_or("P5_LISTEN", "0.0.0.0:8080").parse().expect("P5_LISTEN");
