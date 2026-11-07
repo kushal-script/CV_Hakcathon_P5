@@ -60,6 +60,12 @@ The system detects a vehicle in an uploaded image, identifies its make, model an
 > [!TIP]
 > To try the live console, open **https://vahanadrishti.in**, let the browser share its location (sign-in works from inside Karnataka) and sign in with a station or division ID and the password shared by the team.
 
+## System architecture
+
+<p align="center"><img src="docs/report/architecture.png" alt="Vahana Drishti system architecture: access and service, recognition pipeline, investigation modules and offline training" width="100%"></p>
+
+The four layers of the deployed system. Module responsibilities, interfaces and the full deployment diagram are in [docs/architecture.md](docs/architecture.md), and the design choices behind them in [docs/DESIGN.md](docs/DESIGN.md).
+
 ## Results (Stanford Cars test, n = 8,041)
 
 | Metric | Value |
@@ -97,24 +103,6 @@ The recognition system is the core of **Vahana Drishti**, a web console designed
 | **Map**<br><sub>`web/`</sub> | MapLibre with OpenFreeMap streets, Sentinel-2 cloudless satellite imagery and extruded 3D buildings from OpenStreetMap |
 
 Every tunable value is in a config file, and [docs/PARAMETERS.md](docs/PARAMETERS.md) states whether it was fitted on validation data, is an operational constant, or is a documented assumption.
-
-### How it is served
-
-```mermaid
-%%{init: {"theme": "base", "themeVariables": {"primaryColor": "#fbf7ef", "primaryTextColor": "#241c13", "primaryBorderColor": "#5c4a2c", "lineColor": "#877a66", "secondaryColor": "#eadcbc", "tertiaryColor": "#f3ecdf", "clusterBkg": "#f3ecdf", "clusterBorder": "#b8995f", "edgeLabelBackground": "#f3ecdf", "fontFamily": "Georgia, serif"}}}%%
-flowchart TB
-    U["Officer's browser"] -->|"HTTPS"| CF["Cloudflare<br/>TLS, named tunnel"]
-    CF -->|"outbound tunnel,<br/>no open web ports"| GW
-    subgraph VM["JarvisLabs CPU VM · Docker container"]
-        GW["Rust gateway<br/>accounts, sessions, limits, CSP"] -->|"HMAC-signed identity"| API["FastAPI service<br/>loopback only"]
-        GW --- GDB[("gateway.db<br/>accounts, audit")]
-        API --- VDB[("vahana.db<br/>records, cases")]
-        API --> REC["Recognition<br/>detector, two catalogues,<br/>classical CV, OCR"]
-        API --> INV["Investigation<br/>photo location, video,<br/>cases, routes"]
-    end
-```
-
-The full diagram with every module, timer and outside service is in [docs/architecture.md](docs/architecture.md).
 
 ### Access model
 
