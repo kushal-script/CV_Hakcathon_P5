@@ -118,3 +118,26 @@ def test_generic_words_alone_never_match():
     where = places_with([("Brigade Road", 1), ("Road", 1), ("Main Road", 1)])["where"]
     assert names_in("BRIGADE ROAD", where) == ["brigade road"]
     assert names_in("MAIN ROAD", where) == []
+
+
+def test_heat_spreads_one_name_over_its_place():
+    out = where_taken(plain_jpeg(), lambda: None, ocr_of([("Brigade Road", 0.95)]), places_with([("Brigade Road", 10)], spacing_deg=0.0005), inside_city)
+    assert len(out["heat"]) == 10
+    assert sum(w for _, _, w in out["heat"]) == pytest.approx(1.0)
+
+
+def test_heat_splits_a_shared_name_between_its_places():
+    out = where_taken(plain_jpeg(), lambda: None, ocr_of([("Church Street", 0.95)]), places_with([("Church Street", 3)]), inside_city)
+    assert out["clues"][0]["places_in_city"] == 3
+    assert [round(w, 4) for _, _, w in out["heat"]] == [0.3333] * 3
+
+
+def test_two_clues_add_their_heat():
+    ocr = lambda rgb: Boxed([("BRIGADE ROAD", 0.95), ("CUBBON PARK", 0.95)], [box(40, 600), box(40, 600, 400, 460)])
+    out = where_taken(plain_jpeg(), lambda: None, ocr, places_with([("Brigade Road", 1), ("Cubbon Park", 1)]), inside_city)
+    assert sum(w for _, _, w in out["heat"]) == pytest.approx(2.0)
+
+
+def test_no_clue_means_no_heat():
+    out = where_taken(plain_jpeg(), lambda: None, ocr_of([("Fresh Juice Centre", 0.9)]), places_with([("Brigade Road", 1)]), inside_city)
+    assert out["status"] == "unknown" and "heat" not in out

@@ -198,7 +198,7 @@ async function initMap() {
   map.ready = new Promise((res) => map.m.on("load", res));
   await map.ready;
   const add = (id, type, paint, filter, layout) => map.m.addLayer({ id, type, source: id.split(":")[0], paint, ...(filter ? { filter } : {}), ...(layout ? { layout } : {}) });
-  for (const s of ["boundary", "stations", "iso", "routes", "gps", "areas", "points"]) map.m.addSource(s, { type: "geojson", data: fc() });
+  for (const s of ["boundary", "stations", "iso", "routes", "gps", "areas", "heat", "points"]) map.m.addSource(s, { type: "geojson", data: fc() });
   add("boundary", "line", { "line-color": "#a8382a", "line-width": 1.6, "line-opacity": 0.55, "line-dasharray": [3, 2] });
   add("iso", "fill", { "fill-color": ["get", "colour"], "fill-opacity": ["get", "opacity"] });
   add("iso:line", "line", { "line-color": ["get", "colour"], "line-width": 1, "line-opacity": 0.6 });
@@ -207,6 +207,9 @@ async function initMap() {
   add("routes:dash", "line", { "line-color": ["get", "colour"], "line-width": ["get", "width"], "line-opacity": ["get", "opacity"], "line-dasharray": [2, 1.5] }, ["get", "dashed"], { "line-cap": "round" });
   add("areas", "fill", { "fill-color": ["get", "colour"], "fill-opacity": 0.12 });
   add("areas:line", "line", { "line-color": ["get", "colour"], "line-width": 1.2 });
+  add("heat", "heatmap", { "heatmap-weight": ["get", "w"], "heatmap-intensity": ["interpolate", ["linear"], ["zoom"], 10, 1, 16, 3],
+    "heatmap-radius": ["interpolate", ["linear"], ["zoom"], 10, 14, 13, 24, 16, 42], "heatmap-opacity": 0.85,
+    "heatmap-color": ["interpolate", ["linear"], ["heatmap-density"], 0, "rgba(232,190,110,0)", 0.2, "rgba(232,190,110,0.6)", 0.45, "#d4952a", 0.75, "#c0612b", 1, "#a8382a"] });
   add("stations", "circle", { "circle-radius": ["case", ["get", "own"], 7, 4.5], "circle-color": ["case", ["get", "own"], "#a8382a", "#5c4a2c"],
     "circle-stroke-color": "#fbf7ef", "circle-stroke-width": 1.5, "circle-opacity": 0.9 });
   map.m.addLayer({ id: "stations:label", type: "symbol", source: "stations", minzoom: 12.5, layout: { ...labelFont, "text-field": ["get", "short"], "text-size": 11, "text-offset": [0, 1.1], "text-anchor": "top", "text-optional": true },
@@ -291,7 +294,7 @@ function facts(rows, style) {
 }
 
 function whereTaken(loc) {
-  if (!loc) return { node: null, pins: [] };
+  if (!loc) return { node: null, pins: [], heat: [] };
   const pins = [];
   const kids = [];
   const when = loc.taken_at ? [["Taken", loc.taken_at.replace("T", " "), loc.time_zone_recorded ? "Camera clock" : "Camera clock, time zone not recorded"]] : [];
@@ -303,24 +306,24 @@ function whereTaken(loc) {
     if (g.accuracy_m != null) rows.push(["GPS accuracy", `${Math.round(g.accuracy_m)} m`, "As recorded by the camera"]);
     kids.push(facts([...rows, ...when, ...cam]),
       h("p", { class: "note", text: "Read from the photo's own metadata, not estimated. Metadata can be removed or edited after a photo is taken." }));
-    pins.push({ lat: g.lat, lon: g.lon, label: "Photo GPS", detail: "GPS recorded in the photo", best: true });
+    pins.push({ lat: g.lat, lon: g.lon, extent: g.accuracy_m || 0, label: "Photo GPS", detail: "GPS recorded in the photo", best: true });
   } else if (loc.status === "clues") {
     kids.push(h("p", {}, h("strong", { text: "Not recorded in the photo. " }), "It has no GPS data. Text in it matches these named places in Bengaluru:"));
     kids.push(h("ul", { class: "rows" }, loc.clues.filter((c) => c.places).map((c) => h("li", { style: { gridTemplateColumns: "1fr" } },
       h("div", {}, h("div", { class: "title", text: `“${c.text}” matches ${c.name}` }),
         h("div", { class: "sub", text: `${c.places_in_city} place${c.places_in_city === 1 ? "" : "s"} in Bengaluru with this name: ` +
           c.places.map((p) => `${p.kinds.join(", ")} at ${p.lat.toFixed(5)}, ${p.lon.toFixed(5)}${p.extent_m >= 50 ? `, spanning about ${p.extent_m} m` : ""}`).join("; ") }))))));
-    loc.clues.filter((c) => c.places).forEach((c) => c.places.forEach((p) => pins.push({ lat: p.lat, lon: p.lon, extent: p.extent_m, label: c.name, detail: `Named in the photo: “${c.text}”` })));
+    loc.clues.filter((c) => c.places).forEach((c) => c.places.forEach((p) => pins.push({ lat: p.lat, lon: p.lon, label: c.name, detail: `Named in the photo: “${c.text}”` })));
     const common = loc.clues.filter((c) => !c.places);
     if (common.length) kids.push(h("p", { class: "note", text: `Also read, but shared by many places in the city: ${common.map((c) => `“${c.text}” (${c.places_in_city})`).join(", ")}.` }));
     if (when.length || cam.length) kids.push(facts([...when, ...cam], { marginTop: "10px" }));
-    kids.push(h("p", { class: "note", text: "These are clues, not a confirmed location: the match is on the name alone, and a sign can name a place some distance away." }));
+    kids.push(h("p", { class: "note", text: "The heat on the map shows where these clues point. Each name read carries the same weight, shared equally by the places with that name, and clues pointing to the same area add up. They are clues, not a confirmed location or a measured probability: the match is on the name alone, and a sign can name a place some distance away." }));
   } else {
     kids.push(h("p", {}, h("strong", { text: "Not known. " }), loc.reason || ""));
     if (loc.texts && loc.texts.length) kids.push(h("p", { class: "note", text: `Text read in the photo: ${loc.texts.slice(0, 8).join(" · ")}` }));
     if (when.length || cam.length) kids.push(facts([...when, ...cam], { marginTop: "10px" }));
   }
-  return { node: section("Where the photo was taken", ...kids), pins };
+  return { node: section("Where the photo was taken", ...kids), pins, heat: loc.heat || [] };
 }
 
 function verdictBlock(d, colour) {
@@ -344,7 +347,7 @@ async function runIdentify(file) {
   identify.file = file;
   const out = $("#identify-out");
   out.replaceChildren(busy("Analysing the photo"));
-  clearLayers("areas", "points");
+  clearLayers("areas", "points", "heat");
   const fd = new FormData(); fd.append("file", file); fd.append("classify_anyway", $("#classify-anyway").checked ? "true" : "false");
   try {
     const r = await api("/api/predict", { method: "POST", form: fd });
@@ -391,17 +394,20 @@ function renderIdentify(r) {
   if (where.node) kids.push(where.node);
   kids.push(h("p", { class: "disclaimer", text: `Processed in ${(r.timings_ms.total / 1000).toFixed(2)} s.` }));
   out.replaceChildren(...kids);
-  showPins(where.pins);
+  showPins(where.pins, where.heat);
 }
-function showPins(pins) {
-  clearLayers("areas", "points");
-  if (!pins.length) return;
-  setLayer("areas", fc(pins.filter((p) => p.extent >= 50).map((p) => ({ type: "Feature", properties: { colour: PIN.other },
+function showPins(pins, heat = []) {
+  clearLayers("areas", "points", "heat");
+  if (!pins.length && !heat.length) return;
+  setLayer("areas", fc(pins.filter((p) => p.extent > 0).map((p) => ({ type: "Feature", properties: { colour: p.best ? PIN.best : PIN.other },
     geometry: { type: "Polygon", coordinates: [circle(p.lat, p.lon, p.extent)] } }))));
-  setLayer("points", fc(pins.map((p) => ({ type: "Feature", properties: { colour: p.best ? PIN.best : PIN.other, r: p.best ? 7 : 5, label: p.label, title: p.label, detail: p.detail },
+  const top = heat.reduce((m, x) => Math.max(m, x[2]), 0) || 1;
+  setLayer("heat", fc(heat.map(([lat, lon, w]) => ({ type: "Feature", properties: { w: w / top }, geometry: { type: "Point", coordinates: [lon, lat] } }))));
+  setLayer("points", fc(pins.map((p) => ({ type: "Feature", properties: { colour: p.best ? PIN.best : PIN.other, r: p.best ? 7 : 4, label: p.label, title: p.label, detail: p.detail },
     geometry: { type: "Point", coordinates: [p.lon, p.lat] } }))));
-  fit(pins.map((p) => [p.lon, p.lat]), 16);
-  setKey(pins.some((p) => p.best) ? [["dot", PIN.best, "GPS recorded in the photo"]] : [["dot", PIN.other, "Place named in the photo"]]);
+  fit([...pins.map((p) => [p.lon, p.lat]), ...heat.map(([lat, lon]) => [lon, lat])], 16);
+  setKey(pins.some((p) => p.best) ? [["dot", PIN.best, "GPS recorded in the photo"]]
+    : [["dot", "linear-gradient(90deg, #e8be6e, #a8382a)", "Where signboard clues point"], ["dot", PIN.other, "Place named in the photo"]]);
 }
 
 const inv = { id: null, data: null, poll: null };
@@ -437,7 +443,7 @@ async function openCase(id) {
 }
 function renderCase(c) {
   const out = $("#case-out");
-  if (!c) { out.replaceChildren(h("p", { class: "note", style: { marginTop: "16px" }, text: "Create a case to start. Add a photo of the vehicle you are looking for, then add camera footage." })); clearLayers("points", "routes", "iso", "areas", "gps"); setKey([]); return; }
+  if (!c) { out.replaceChildren(h("p", { class: "note", style: { marginTop: "16px" }, text: "Create a case to start. Add a photo of the vehicle you are looking for, then add camera footage." })); clearLayers("points", "routes", "iso", "areas", "gps", "heat"); setKey([]); return; }
   const target = c.target;
   const tgt = section("Vehicle of interest",
     target ? h("ul", { class: "rows" }, h("li", {}, h("img", { src: jpg(target.thumbnail), alt: "" }), h("div", {}, h("div", { class: "title", text: target.label }), h("div", { class: "sub", text: `${(LEVEL[target.decision.level] || [""])[0]} · ${pct(target.decision.confidence)}` })), h("span"))) : null,
@@ -815,7 +821,7 @@ const consoleState = { mod: null };
 async function showConsole(on) {
   $("#layout").hidden = on; $("#console").hidden = !on;
   if (!on) { map.m && map.m.resize(); return; }
-  if (!consoleState.mod) consoleState.mod = await import("./admin.js?v=10");
+  if (!consoleState.mod) consoleState.mod = await import("./admin.js?v=11");
   consoleState.mod.mount($("#console"), { api, h, busy, problem, notice, session, AuthError, KIND, LEVEL, pct, jpg, when });
 }
 
@@ -825,7 +831,7 @@ document.querySelectorAll(".tabs button").forEach((b) => b.addEventListener("cli
   showConsole(view === "division").catch((e) => notice(e.message, 4000, true));
   if (view === "division") return;
   document.querySelectorAll(".view").forEach((v) => (v.hidden = v.id !== `view-${view}`));
-  clearLayers("points", "routes", "iso", "areas", "gps"); setKey([]);
+  clearLayers("points", "routes", "iso", "areas", "gps", "heat"); setKey([]);
   if (view === "investigate") loadCases(inv.id).catch((e) => !(e instanceof AuthError) && notice(e.message));
   if (view === "activity") loadActivity();
 }));

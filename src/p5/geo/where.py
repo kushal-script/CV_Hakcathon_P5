@@ -47,8 +47,19 @@ def places_named(idx: list[int], rows: list[dict]) -> list[dict]:
         dist = np.hypot(x[m] - x[m].mean(), y[m] - y[m].mean())
         r = rows[idx[int(m[np.argmin(dist)])]]
         out.append({"label": r["label"], "lat": r["y"], "lon": r["x"], "extent_m": int(round(float(dist.max()))),
-                    "kinds": sorted({kind(rows[idx[j]].get("c")) for j in members})})
+                    "kinds": sorted({kind(rows[idx[j]].get("c")) for j in members}),
+                    "points": [[rows[idx[j]]["y"], rows[idx[j]]["x"]] for j in members]})
     return sorted(out, key=lambda p: (p["lat"], p["lon"]))
+
+
+def heat(clues: list[dict]) -> list[list[float]]:
+    out = []
+    for c in clues:
+        places = c.get("places") or []
+        for p in places:
+            w = 1.0 / len(places) / len(p["points"])
+            out.extend([lat, lon, round(w, 6)] for lat, lon in p["points"])
+    return out
 
 
 def read_text(rgb, ocr) -> list[tuple[str, float]]:
@@ -125,7 +136,7 @@ def where_taken(data: bytes, image: Callable, ocr, places: dict | None, inside: 
                 clue["places"] = found
             out["clues"].append(clue)
     if any("places" in c for c in out["clues"]):
-        return {**out, "status": "clues"}
+        return {**out, "status": "clues", "heat": heat(out["clues"])}
     if out["clues"]:
         why = "The names read in it are each shared by more than {} places in Bengaluru, so they do not say where it was taken.".format(MAX_PLACES)
     elif out["texts"]:
