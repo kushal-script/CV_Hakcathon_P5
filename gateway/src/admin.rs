@@ -39,6 +39,7 @@ struct Account {
     station_kind: Option<String>,
     disabled: bool,
     must_change: bool,
+    demo: bool,
     locked: bool,
     failed: i64,
     last_login_at: Option<i64>,
@@ -52,6 +53,7 @@ pub async fn accounts(State(state): State<Shared>, headers: HeaderMap) -> Respon
         Err(r) => return r,
     };
     let div = admin.user.division.id.clone();
+    let all = admin.user.all_divisions;
     let t = now();
     let rows = state
         .db
@@ -59,12 +61,12 @@ pub async fn accounts(State(state): State<Shared>, headers: HeaderMap) -> Respon
             let mut stmt = c.prepare(
                 "SELECT u.id, u.username, u.display_name, u.role, u.station_id, st.name, st.kind, u.disabled, u.must_change, u.locked_until, u.failed,
                         u.last_login_at, u.password_changed_at,
-                        (SELECT COUNT(*) FROM sessions s WHERE s.user_id = u.id AND s.expires_at > ?2)
+                        (SELECT COUNT(*) FROM sessions s WHERE s.user_id = u.id AND s.expires_at > ?2), u.demo
                  FROM users u LEFT JOIN stations st ON st.id = u.station_id
-                 WHERE u.division_id = ?1 ORDER BY u.role DESC, st.kind, st.name",
+                 WHERE (?3 OR u.division_id = ?1) ORDER BY u.role DESC, st.kind, st.name",
             )?;
             let rows = stmt
-                .query_map(params![div, t], |r| {
+                .query_map(params![div, t, all], |r| {
                     Ok(Account {
                         id: r.get(0)?,
                         username: r.get(1)?,
@@ -75,6 +77,7 @@ pub async fn accounts(State(state): State<Shared>, headers: HeaderMap) -> Respon
                         station_kind: r.get(6)?,
                         disabled: r.get::<_, i64>(7)? != 0,
                         must_change: r.get::<_, i64>(8)? != 0,
+                        demo: r.get::<_, i64>(14)? != 0,
                         locked: r.get::<_, i64>(9)? > t,
                         failed: r.get(10)?,
                         last_login_at: r.get(11)?,
@@ -105,18 +108,27 @@ pub async fn account_action(
     if !["reset", "disable", "enable", "unlock", "signout"].contains(&action.as_str()) {
         return error(StatusCode::NOT_FOUND, "Unknown action.");
     }
+    if admin.user.demo {
+        return error(StatusCode::FORBIDDEN, crate::proxy::READ_ONLY);
+    }
     let div = admin.user.division.id.clone();
-    let target: Option<(String, String)> = state
+    let target: Option<(String, String, bool)> = state
         .db
         .run(move |c| {
-            c.query_row("SELECT username, role FROM users WHERE id = ?1 AND division_id = ?2", params![id, div], |r| Ok((r.get(0)?, r.get(1)?))).optional()
+            c.query_row("SELECT username, role, demo FROM users WHERE id = ?1 AND division_id = ?2", params![id, div], |r| {
+                Ok((r.get(0)?, r.get(1)?, r.get::<_, i64>(2)? != 0))
+            })
+            .optional()
         })
         .await
         .ok()
         .flatten();
-    let Some((username, role)) = target else { return error(StatusCode::NOT_FOUND, "Account not found in your division.") };
+    let Some((username, role, demo)) = target else { return error(StatusCode::NOT_FOUND, "Account not found in your division.") };
     if role != "station" {
         return error(StatusCode::FORBIDDEN, "Only station accounts can be managed here.");
+    }
+    if demo {
+        return error(StatusCode::FORBIDDEN, "Demo accounts are managed from the server console so that their published passwords keep working.");
     }
     let temp = if action == "reset" { Some(temp_password()) } else { None };
     let new_hash = match &temp {
@@ -187,21 +199,22 @@ pub async fn audit_log(State(state): State<Shared>, headers: HeaderMap, Query(q)
     let limit: i64 = q.get("limit").and_then(|v| v.parse().ok()).unwrap_or(100).clamp(1, 500);
     let before: i64 = q.get("before").and_then(|v| v.parse().ok()).unwrap_or(i64::MAX);
     let div = admin.user.division.id.clone();
+    let (all, hide_ip) = (admin.user.all_divisions, admin.user.demo);
     let rows = state
         .db
         .run(move |c| {
             let mut stmt = c.prepare(
-                "SELECT id, ts, actor, action, target, ip, country, outcome, detail FROM audit WHERE division_id = ?1 AND id < ?2 ORDER BY id DESC LIMIT ?3",
+                "SELECT id, ts, actor, action, target, ip, country, outcome, detail FROM audit WHERE (?4 OR division_id = ?1) AND id < ?2 ORDER BY id DESC LIMIT ?3",
             )?;
             let rows = stmt
-                .query_map(params![div, before, limit], |r| {
+                .query_map(params![div, before, limit, all], |r| {
                     Ok(AuditRow {
                         id: r.get(0)?,
                         ts: r.get(1)?,
                         actor: r.get(2)?,
                         action: r.get(3)?,
                         target: r.get(4)?,
-                        ip: r.get(5)?,
+                        ip: if hide_ip { None } else { r.get(5)? },
                         country: r.get(6)?,
                         outcome: r.get(7)?,
                         detail: r.get(8)?,

@@ -63,8 +63,10 @@ def registry() -> dict:
     if not path.exists():
         return {"divisions": {}, "stations": {}}
     data = json.loads(path.read_text())
+    demo = ASSETS / "demo_accounts.json"
+    extra = json.loads(demo.read_text()).get("stations", []) if demo.exists() else []
     return {"divisions": {d["id"]: d for d in data.get("divisions", [])},
-            "stations": {s["id"]: s for s in data.get("stations", [])}}
+            "stations": {s["id"]: s for s in [*data.get("stations", []), *extra]}}
 
 
 def inside(lat: float | None, lon: float | None) -> bool | None:
@@ -77,6 +79,3 @@ def inside(lat: float | None, lon: float | None) -> bool | None:
 def station(sid: str | None) -> dict | None:
     return registry()["stations"].get(sid) if sid else None
 
-
-def division_stations(division_id: str) -> list[dict]:
-    return [s for s in registry()["stations"].values() if s.get("division") == division_id]

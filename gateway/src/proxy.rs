@@ -18,6 +18,8 @@ use crate::{
     AppState, Shared,
 };
 
+pub const READ_ONLY: &str = "Demo division accounts can see every division but cannot change anything.";
+
 const HOP: [&str; 8] = ["connection", "keep-alive", "proxy-authenticate", "proxy-authorization", "te", "trailer", "transfer-encoding", "upgrade"];
 
 pub fn identity_headers(state: &AppState, s: &Session) -> (String, String) {
@@ -28,6 +30,8 @@ pub fn identity_headers(state: &AppState, s: &Session) -> (String, String) {
         "s": s.user.station.as_ref().map(|st| st.id.clone()),
         "d": s.user.division.id,
         "n": s.user.display_name,
+        "a": s.user.all_divisions,
+        "ro": s.user.demo && s.user.role == "division_admin",
         "ts": now(),
     });
     let encoded = B64.encode(serde_json::to_vec(&payload).expect("identity json"));
@@ -59,6 +63,12 @@ pub async fn proxy(State(state): State<Shared>, ConnectInfo(addr): ConnectInfo<S
         }
         if !matches!(method, Method::GET | Method::HEAD) && !same_origin_request(req.headers()) {
             return error(StatusCode::FORBIDDEN, "Request blocked.");
+        }
+        if let Some(s) = &session {
+            let analysis = matches!(path.as_str(), "/api/predict" | "/api/locate" | "/api/video");
+            if s.user.demo && s.user.role == "division_admin" && !matches!(method, Method::GET | Method::HEAD) && !analysis {
+                return error(StatusCode::FORBIDDEN, READ_ONLY);
+            }
         }
     }
     let request_id = uuid::Uuid::new_v4().to_string();

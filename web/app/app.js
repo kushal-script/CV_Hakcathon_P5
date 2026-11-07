@@ -824,7 +824,7 @@ const consoleState = { mod: null };
 async function showConsole(on) {
   $("#layout").hidden = on; $("#console").hidden = !on;
   if (!on) { map.m && map.m.resize(); return; }
-  if (!consoleState.mod) consoleState.mod = await import("./admin.js?v=12");
+  if (!consoleState.mod) consoleState.mod = await import("./admin.js?v=13");
   consoleState.mod.mount($("#console"), { api, h, busy, problem, notice, session, AuthError, KIND, LEVEL, pct, jpg, when });
 }
 
@@ -860,13 +860,17 @@ async function boot() {
   const u = session.user;
   const isAdmin = u.role === "division_admin";
   $("#station-name").textContent = u.station ? u.station.name : u.display_name;
-  $("#station-meta").replaceChildren(document.createTextNode(`${u.division.name} Division`), h("span", { class: "kn", text: ({ central: "ಕೇಂದ್ರ", north: "ಉತ್ತರ", south: "ದಕ್ಷಿಣ", east: "ಪೂರ್ವ", west: "ಪಶ್ಚಿಮ" })[u.division.id] || "" }),
-    ...(isAdmin ? [h("span", { class: "role", text: "Division admin" })] : []));
+  const divLabel = u.all_divisions ? "All divisions" : `${u.division.name} Division`;
+  const divKn = u.all_divisions ? "ಎಲ್ಲಾ ವಿಭಾಗಗಳು" : ({ central: "ಕೇಂದ್ರ", north: "ಉತ್ತರ", south: "ದಕ್ಷಿಣ", east: "ಪೂರ್ವ", west: "ಪಶ್ಚಿಮ" })[u.division.id] || "";
+  const badge = isAdmin ? (u.demo ? "Demo admin · read only" : "Division admin") : u.demo ? "Demo station" : null;
+  $("#station-meta").replaceChildren(document.createTextNode(divLabel), h("span", { class: "kn", text: divKn }),
+    ...(badge ? [h("span", { class: "role", text: badge })] : []));
+  $("#change-pw").hidden = !!u.demo;
   $("#who-name").textContent = u.station ? u.station.name : u.display_name;
-  $("#who-id").textContent = `${u.username} · ${u.division.name} Division`;
+  $("#who-id").textContent = `${u.username} · ${divLabel}`;
   $("#tab-division").hidden = !isAdmin;
   $("#entry-name").textContent = u.station ? u.station.name : u.display_name;
-  $("#entry-sub").textContent = `${u.division.name} Division` + (isAdmin ? " · Division administrator" : "");
+  $("#entry-sub").textContent = divLabel + (isAdmin ? (u.demo ? " · Demo administrator, read only" : " · Division administrator") : "");
   try { session.region = await api("/api/region"); } catch (e) { if (e instanceof AuthError) return; }
   health(); setInterval(health, 30000);
   drawRegion();

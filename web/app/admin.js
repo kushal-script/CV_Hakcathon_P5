@@ -403,7 +403,7 @@ async function accounts() {
     const activity = Object.fromEntries(stat.stations.map((x) => [x.station_id, x]));
     const rows = acc.accounts.filter((a) => a.role === "station");
     const act = (a, action, label, cls = "") => C.h("button", { class: `button small ${cls}`, type: "button", text: label, onclick: () => accountAction(a, action) });
-    body.replaceChildren(C.h("p", { class: "note", style: { margin: "0 0 14px" }, text: `${rows.length} station accounts in the ${C.session.user.division.name} Division. Resetting a password signs the station out and issues a one-time password that must be changed at the next sign-in.` }),
+    body.replaceChildren(C.h("p", { class: "note", style: { margin: "0 0 14px" }, text: `${rows.length} station accounts in ${C.session.user.all_divisions ? "all divisions" : `the ${C.session.user.division.name} Division`}. Resetting a password signs the station out and issues a one-time password that must be changed at the next sign-in.` }),
       C.h("div", { class: "tablewrap" }, C.h("table", { class: "dtable" },
         C.h("thead", {}, C.h("tr", {}, ["Station", "Type", "Account", "Status", "Last sign-in", "Records (30 days)", ""].map((x, i) => C.h("th", { class: i === 5 ? "num" : "", text: x })))),
         C.h("tbody", {}, rows.map((a) => {
@@ -576,11 +576,12 @@ export function mount(root, ctx) {
   C = ctx;
   st.root = root;
   if (!root.dataset.ready) {
-    const div = C.session.user.division;
+    const u = C.session.user;
+    const div = u.all_divisions ? { id: "all", name: "All divisions" } : u.division;
     st.body = C.h("div", {});
     root.replaceChildren(C.h("div", { class: "cx" },
-      C.h("div", { class: "cx-head" }, C.h("div", {}, C.h("h1", {}, `${div.name} Division`, C.h("span", { class: "kn", text: KN_DIV[div.id] || "" })),
-        C.h("p", { text: "Every record, case and account of the stations in your division." }))),
+      C.h("div", { class: "cx-head" }, C.h("div", {}, C.h("h1", {}, div.id === "all" ? div.name : `${div.name} Division`, C.h("span", { class: "kn", text: div.id === "all" ? "ಎಲ್ಲಾ ವಿಭಾಗಗಳು" : KN_DIV[div.id] || "" })),
+        C.h("p", { text: u.demo ? "Every record, case and account of every station. This demo account can look at everything but cannot change anything." : "Every record, case and account of the stations in your division." }))),
       C.h("nav", { class: "subtabs", role: "tablist" }, TABS.map(([k, label]) => C.h("button", { type: "button", role: "tab", "data-tab": k, "aria-selected": "false", text: label, onclick: () => show(k) }))),
       st.body));
     root.dataset.ready = "1";

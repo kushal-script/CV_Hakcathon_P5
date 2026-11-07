@@ -124,7 +124,7 @@ fn internal_secret() -> Vec<u8> {
 }
 
 fn usage() -> ! {
-    eprintln!("usage:\n  vahana-gateway                      run the gateway\n  vahana-gateway provision --stations <json> --credentials <new csv> [--db <path>]\n  vahana-gateway reset-password <username> [--db <path>]");
+    eprintln!("usage:\n  vahana-gateway                      run the gateway\n  vahana-gateway provision --stations <json> --credentials <new csv> [--db <path>]\n  vahana-gateway reset-password <username> [--db <path>]\n  vahana-gateway demo-accounts --file <json> [--db <path>]   (one \"username password\" pair per line on stdin)");
     std::process::exit(2)
 }
 
@@ -142,6 +142,13 @@ async fn main() {
         Some("reset-password") => {
             if let Err(e) = cli::reset_password(&args) {
                 eprintln!("reset failed: {e}");
+                std::process::exit(1);
+            }
+            return;
+        }
+        Some("demo-accounts") => {
+            if let Err(e) = cli::demo_accounts(&args) {
+                eprintln!("demo accounts failed: {e}");
                 std::process::exit(1);
             }
             return;

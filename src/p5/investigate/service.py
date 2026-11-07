@@ -110,7 +110,7 @@ class CaseStore:
         if case.get("deleted_at") or "division_id" not in case:
             return False
         if ident.is_admin:
-            return case["division_id"] == ident.division_id
+            return ident.covers(case["division_id"])
         return case.get("station_id") == ident.station_id
 
     def _owned(self, cid: str, ident: Identity) -> dict:
@@ -120,16 +120,18 @@ class CaseStore:
         return case
 
     def create(self, ident: Identity, name: str | None = None, station_id: str | None = None) -> dict:
+        division = ident.division_id
         if ident.is_admin:
             st = station(station_id)
-            if not st or st.get("division") != ident.division_id:
+            if not st or not ident.covers(st.get("division")):
                 raise ValueError("Choose a police station in your division for this case.")
+            division = st["division"]
         else:
             station_id = ident.station_id
         cid = uuid.uuid4().hex[:10]
         case = {"id": cid, "name": (name or f"Case {cid[:4].upper()}").strip()[:120], "created": time.time(), "target": None,
                 "cameras": [], "notes": [], "sightings": [], "routes": None, "station_id": station_id,
-                "division_id": ident.division_id, "created_by": ident.username, "status": "open"}
+                "division_id": division, "created_by": ident.username, "status": "open"}
         with self.lock:
             self._save(case)
         self.store.record(ident, "case_created", f"Opened {case['name']}", {"name": case["name"]}, case_id=cid, station_id=station_id)
@@ -170,7 +172,7 @@ class CaseStore:
                 if not ident.is_admin:
                     raise PermissionError("Only a division administrator can reassign a case.")
                 st = station(station_id)
-                if not st or st.get("division") != ident.division_id:
+                if not st or not ident.covers(st.get("division")):
                     raise ValueError("Choose a police station in your division.")
                 case["station_id"] = changes["station_id"] = station_id
             self._save(case)
@@ -251,7 +253,7 @@ class CaseStore:
 
     def job(self, job_id: str, ident: Identity) -> dict:
         j = self.jobs.get(job_id)
-        if not j or (ident.is_admin and j["division_id"] != ident.division_id) or (not ident.is_admin and j["station_id"] != ident.station_id):
+        if not j or (ident.is_admin and not ident.covers(j["division_id"])) or (not ident.is_admin and j["station_id"] != ident.station_id):
             raise KeyError(job_id)
         return {k: v for k, v in j.items() if k not in ("station_id", "division_id")}
 

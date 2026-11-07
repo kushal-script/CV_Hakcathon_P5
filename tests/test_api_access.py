@@ -52,3 +52,16 @@ def test_cases_are_private_to_their_station(client):
     assert client.get(f"/api/cases/{cid}", headers=headers(role="division_admin", division="central")).status_code == 200
     assert client.get(f"/api/cases/{cid}", headers=headers(role="division_admin", division="north")).status_code == 404
     assert client.patch(f"/api/cases/{cid}", json={"station_id": "ps-b"}, headers=headers(station="ps-a")).status_code == 403
+
+
+def test_demo_admin_reads_everything_but_changes_nothing(client):
+    from p5.identity import sign
+    enc, sig = sign({"uid": 7, "u": "demo-admin-1", "r": "division_admin", "s": None, "d": "central", "n": "Demo", "a": True, "ro": True,
+                     "ts": time.time()}, KEY.encode())
+    h = {"x-p5-identity": enc, "x-p5-identity-sig": sig}
+    r = client.get("/api/admin/overview", headers=h)
+    assert r.status_code == 200 and r.json()["division"] == {"id": "all", "name": "All divisions"}
+    assert client.post("/api/admin/cases", json={"name": "x", "station_id": "demo-station-1"}, headers=h).status_code == 403
+    assert client.delete("/api/admin/events/1", headers=h).status_code == 403
+    region = client.get("/api/region", headers=h).json()
+    assert {"demo-station-1", "demo-station-2"} <= {s["id"] for s in region["stations"]}

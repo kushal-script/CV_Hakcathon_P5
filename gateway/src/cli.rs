@@ -1,13 +1,14 @@
 use std::{
+    collections::HashMap,
     fs::OpenOptions,
-    io::Write,
+    io::{Read, Write},
     path::{Path, PathBuf},
 };
 
 use rusqlite::{params, OptionalExtension};
 use serde::Deserialize;
 
-use crate::{auth::hash_password, db::Db, util::{now, temp_password}};
+use crate::{auth::{hash_password, password_problem}, db::Db, util::{now, temp_password}};
 
 #[derive(Deserialize)]
 struct StationsFile {
@@ -170,5 +171,90 @@ pub fn reset_password(args: &[String]) -> Result<(), String> {
         return Err(format!("no account named {username}"));
     }
     println!("{pw}");
+    Ok(())
+}
+
+#[derive(Deserialize)]
+struct DemoFile {
+    stations: Vec<StationIn>,
+    accounts: Vec<DemoAccount>,
+}
+
+#[derive(Deserialize)]
+struct DemoAccount {
+    username: String,
+    role: String,
+    division: String,
+    name: String,
+    #[serde(default)]
+    station: Option<String>,
+    #[serde(default)]
+    all_divisions: bool,
+}
+
+pub fn demo_accounts(args: &[String]) -> Result<(), String> {
+    let db_path = PathBuf::from(arg(args, "--db").unwrap_or_else(|| crate::util::env_or("P5_DB", "/app/state/gateway.db")));
+    let file = arg(args, "--file").ok_or("--file <demo_accounts.json> is required")?;
+    let text = std::fs::read_to_string(&file).map_err(|e| format!("{file}: {e}"))?;
+    let data: DemoFile = serde_json::from_str(&text).map_err(|e| format!("{file}: {e}"))?;
+    let mut input = String::new();
+    std::io::stdin().read_to_string(&mut input).map_err(|e| e.to_string())?;
+    let passwords: HashMap<String, String> = input
+        .lines()
+        .filter_map(|l| {
+            let mut it = l.split_whitespace();
+            Some((it.next()?.to_ascii_lowercase(), it.next()?.to_string()))
+        })
+        .collect();
+    let station_ids: Vec<&str> = data.stations.iter().map(|s| s.id.as_str()).collect();
+    for s in &data.stations {
+        if !valid_id(&s.id) {
+            return Err(format!("station id {:?} is not a lowercase slug", s.id));
+        }
+    }
+    for a in &data.accounts {
+        if !valid_id(&a.username) {
+            return Err(format!("username {:?} is not a lowercase slug", a.username));
+        }
+        let pw = passwords.get(&a.username).ok_or(format!("no password given on stdin for {}", a.username))?;
+        if let Some(problem) = password_problem(pw, &a.username) {
+            return Err(format!("password for {}: {problem}", a.username));
+        }
+        match (a.role.as_str(), a.station.as_deref()) {
+            ("station", Some(st)) if station_ids.contains(&st) => {}
+            ("division_admin", None) => {}
+            _ => return Err(format!("account {} needs role station with a demo station, or role division_admin without one", a.username)),
+        }
+    }
+    let db = Db::open(&db_path, 1).map_err(|e| e.to_string())?;
+    let t = now();
+    db.with(|c| {
+        let tx = c.unchecked_transaction()?;
+        for s in &data.stations {
+            tx.execute(
+                "INSERT INTO stations (id, name, kind, division_id, official_division, lat, lon) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)
+                 ON CONFLICT(id) DO UPDATE SET name = excluded.name, kind = excluded.kind, division_id = excluded.division_id,
+                   official_division = excluded.official_division, lat = excluded.lat, lon = excluded.lon",
+                params![s.id, s.name, s.kind, s.division, s.official_division, s.lat, s.lon],
+            )?;
+        }
+        for a in &data.accounts {
+            let hash = hash_password(&passwords[&a.username]);
+            let all = a.role == "division_admin" && a.all_divisions;
+            tx.execute(
+                "INSERT INTO users (username, password_hash, role, station_id, division_id, display_name, must_change, created_at, demo, all_divisions)
+                 VALUES (?1, ?2, ?3, ?4, ?5, ?6, 0, ?7, 1, ?8)
+                 ON CONFLICT(username) DO UPDATE SET password_hash = excluded.password_hash, role = excluded.role, station_id = excluded.station_id,
+                   division_id = excluded.division_id, display_name = excluded.display_name, must_change = 0, demo = 1,
+                   all_divisions = excluded.all_divisions, disabled = 0, failed = 0, locked_until = 0, password_changed_at = ?7",
+                params![a.username, hash, a.role, a.station, a.division, a.name, t, all],
+            )?;
+            tx.execute("DELETE FROM sessions WHERE user_id = (SELECT id FROM users WHERE username = ?1)", [&a.username])?;
+            crate::db::audit(&tx, None, Some("operator"), Some(&a.division), "demo_account", Some(&a.username), "local", None, "ok", None)?;
+        }
+        tx.commit()
+    })
+    .map_err(|e| e.to_string())?;
+    println!("demo stations: {}, demo accounts: {}", data.stations.len(), data.accounts.len());
     Ok(())
 }

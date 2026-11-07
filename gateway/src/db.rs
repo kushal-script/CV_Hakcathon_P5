@@ -119,6 +119,15 @@ fn migrate(c: &Connection) -> rusqlite::Result<()> {
         tx.execute_batch("PRAGMA user_version = 1")?;
         tx.commit()?;
     }
+    if version < 2 {
+        let tx = c.unchecked_transaction()?;
+        tx.execute_batch(
+            "ALTER TABLE users ADD COLUMN demo INTEGER NOT NULL DEFAULT 0;
+             ALTER TABLE users ADD COLUMN all_divisions INTEGER NOT NULL DEFAULT 0;
+             PRAGMA user_version = 2",
+        )?;
+        tx.commit()?;
+    }
     Ok(())
 }
 

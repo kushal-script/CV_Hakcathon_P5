@@ -72,3 +72,24 @@ def test_boundary_membership():
     assert b.contains(12.5, 77.5)
     assert not b.contains(13.5, 77.5)
     assert not b.contains(float("nan"), 77.5)
+
+
+def test_all_division_identity_is_admin_only():
+    t = time.time()
+    enc, sig = sign({"uid": 5, "u": "demo-admin-1", "r": "division_admin", "s": None, "d": "central", "n": "D", "a": True, "ro": True, "ts": t}, KEY)
+    demo = verify(enc, sig, KEY)
+    assert demo.all_divisions and demo.read_only and demo.covers("north") and demo.division_match == "*"
+    enc, sig = sign({"uid": 6, "u": "ps-a", "r": "station", "s": "ps-a", "d": "central", "n": "A", "a": True, "ts": t}, KEY)
+    station = verify(enc, sig, KEY)
+    assert not station.all_divisions and not station.covers("north")
+
+
+def test_all_division_admin_sees_every_division(tmp_path):
+    s = Store(tmp_path / "v.db")
+    s.record(ident(station="ps-a", uid=1), "identify", "car a")
+    s.record(ident(station="ps-z", division="north", uid=3), "identify", "car z")
+    every = Identity(9, "demo-admin-1", "division_admin", None, "central", "Demo", all_divisions=True, read_only=True)
+    assert sorted(e["summary"] for e in s.events(every)["events"]) == ["car a", "car z"]
+    assert s.overview(every, time.time() - 3600, time.time() + 60)["kpis"]["events"] == 2
+    one = ident(role="division_admin", division="north", uid=10)
+    assert [e["summary"] for e in s.events(one)["events"]] == ["car z"]

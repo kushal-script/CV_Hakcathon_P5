@@ -1,0 +1,13 @@
+{
+  "note": "Demo accounts for evaluators. The two stations are not real police stations. Passwords are not stored here: the server console sets them with vahana-gateway demo-accounts.",
+  "stations": [
+    {"id": "demo-station-1", "name": "Demo Police Station 1", "kind": "law_and_order", "division": "central", "lat": 12.9757, "lon": 77.6011},
+    {"id": "demo-station-2", "name": "Demo Police Station 2", "kind": "law_and_order", "division": "south", "lat": 12.9352, "lon": 77.6245}
+  ],
+  "accounts": [
+    {"username": "demo-admin-1", "role": "division_admin", "division": "central", "all_divisions": true, "name": "Demo Administrator 1"},
+    {"username": "demo-admin-2", "role": "division_admin", "division": "south", "all_divisions": true, "name": "Demo Administrator 2"},
+    {"username": "demo-station-1", "role": "station", "station": "demo-station-1", "division": "central", "name": "Demo Police Station 1"},
+    {"username": "demo-station-2", "role": "station", "station": "demo-station-2", "division": "south", "name": "Demo Police Station 2"}
+  ]
+}

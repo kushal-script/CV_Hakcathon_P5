@@ -75,6 +75,8 @@ pub struct UserView {
     pub station: Option<StationView>,
     pub division: DivisionView,
     pub must_change: bool,
+    pub demo: bool,
+    pub all_divisions: bool,
 }
 
 #[derive(Clone)]
@@ -86,7 +88,7 @@ pub struct Session {
 }
 
 const USER_SQL: &str = "SELECT u.id, u.username, u.role, u.display_name, u.must_change, u.division_id, d.name,
-       st.id, st.name, st.kind, st.lat, st.lon
+       st.id, st.name, st.kind, st.lat, st.lon, u.demo, u.all_divisions
 FROM users u JOIN divisions d ON d.id = u.division_id LEFT JOIN stations st ON st.id = u.station_id";
 
 fn user_from_row(r: &rusqlite::Row, offset: usize) -> rusqlite::Result<UserView> {
@@ -103,6 +105,8 @@ fn user_from_row(r: &rusqlite::Row, offset: usize) -> rusqlite::Result<UserView>
         must_change: r.get::<_, i64>(offset + 4)? != 0,
         division: DivisionView { id: r.get(offset + 5)?, name: r.get(offset + 6)? },
         station,
+        demo: r.get::<_, i64>(offset + 12)? != 0,
+        all_divisions: r.get::<_, i64>(offset + 13)? != 0,
     })
 }
 
@@ -208,6 +212,7 @@ struct Account {
     must_change: bool,
     division_id: String,
     username: String,
+    demo: bool,
 }
 
 pub async fn login(State(state): State<Shared>, ConnectInfo(addr): ConnectInfo<SocketAddr>, headers: HeaderMap, Json(body): Json<LoginBody>) -> Response {
@@ -236,7 +241,7 @@ pub async fn login(State(state): State<Shared>, ConnectInfo(addr): ConnectInfo<S
         .db
         .run(move |c| {
             c.query_row(
-                "SELECT id, password_hash, disabled, failed, locked_until, must_change, division_id, username FROM users WHERE username = ?1",
+                "SELECT id, password_hash, disabled, failed, locked_until, must_change, division_id, username, demo FROM users WHERE username = ?1",
                 [&lookup],
                 |r| {
                     Ok(Account {
@@ -247,6 +252,7 @@ pub async fn login(State(state): State<Shared>, ConnectInfo(addr): ConnectInfo<S
                         must_change: r.get::<_, i64>(5)? != 0,
                         division_id: r.get(6)?,
                         username: r.get(7)?,
+                        demo: r.get::<_, i64>(8)? != 0,
                     })
                 },
             )
@@ -274,12 +280,12 @@ pub async fn login(State(state): State<Shared>, ConnectInfo(addr): ConnectInfo<S
     if !ok {
         let (ip2, cc2) = (ip.clone(), cc.clone());
         let (id, name, div) = (acc.id, acc.username.clone(), acc.division_id.clone());
-        let (limit, lock_for) = (state.lockout_account_after, state.lockout_secs);
+        let (limit, lock_for, demo) = (state.lockout_account_after, state.lockout_secs, acc.demo);
         let _ = state
             .db
             .run(move |c| {
                 let failed: i64 = c.query_row("UPDATE users SET failed = failed + 1 WHERE id = ?1 RETURNING failed", [id], |r| r.get(0))?;
-                let locked = failed >= limit;
+                let locked = !demo && failed >= limit;
                 if locked {
                     c.execute("UPDATE users SET failed = 0, locked_until = ?1 WHERE id = ?2", params![t + lock_for, id])?;
                 }
@@ -354,6 +360,9 @@ pub async fn change_password(State(state): State<Shared>, ConnectInfo(addr): Con
         return error(StatusCode::FORBIDDEN, "Request blocked.");
     }
     let Some(session) = current(&state, &headers).await else { return error(StatusCode::UNAUTHORIZED, "Sign in to continue.") };
+    if session.user.demo {
+        return error(StatusCode::FORBIDDEN, "Demo accounts keep their published password, so it cannot be changed.");
+    }
     if !state.login_limit.allow(client_ip(state.trust_proxy, addr, &headers)) {
         return error(StatusCode::TOO_MANY_REQUESTS, "Too many attempts. Wait a minute and try again.");
     }

@@ -125,7 +125,7 @@ class Store:
     def scope(ident: Identity, alias: str = "") -> tuple[str, list]:
         p = f"{alias}." if alias else ""
         if ident.is_admin:
-            return f"{p}division_id = ?", [ident.division_id]
+            return f"{p}division_id GLOB ?", [ident.division_match]
         return f"{p}station_id = ?", [ident.station_id]
 
     def record(self, ident: Identity, kind: str, summary: str, data: dict | None = None, case_id: str | None = None,
@@ -249,11 +249,11 @@ class Store:
 
     def overview(self, ident: Identity, since: float, until: float) -> dict:
         c = self.conn()
-        div = ident.division_id
-        base = "division_id = ? AND ts >= ? AND ts < ?"
+        div = ident.division_match
+        base = "division_id GLOB ? AND ts >= ? AND ts < ?"
         args = [div, since, until]
         ev = f"{base} AND deleted_at IS NULL"
-        det = f"d.division_id = ? AND d.ts >= ? AND d.ts < ? AND e.deleted_at IS NULL"
+        det = f"d.division_id GLOB ? AND d.ts >= ? AND d.ts < ? AND e.deleted_at IS NULL"
         join = "detections d JOIN events e ON e.id = d.event_id"
 
         def rows(sql, a=None):
@@ -273,7 +273,7 @@ class Store:
             if k in days:
                 grp = KIND_GROUP.get(r["kind"])
                 days[k]["identify" if grp == "identify" else "video" if grp == "video" else "cases" if r["kind"].startswith(("case", "hunt", "camera", "route")) else "other"] += 1
-        stations = {s["id"]: s for s in registry()["stations"].values() if s.get("division") == div}
+        stations = {s["id"]: s for s in registry()["stations"].values() if ident.covers(s.get("division"))}
         by_station = {sid: {"station_id": sid, "name": s["name"], "kind": s.get("kind"), "lat": s.get("lat"), "lon": s.get("lon"),
                             "events": 0, "identifications": 0, "vehicles": 0, "last": None} for sid, s in stations.items()}
         for r in rows(f"SELECT station_id, COUNT(*) AS n, SUM(kind = 'identify') AS ident, MAX(ts) AS last FROM events WHERE {ev} GROUP BY station_id"):
@@ -286,9 +286,9 @@ class Store:
         for r in rows(f"SELECT d.station_id, COUNT(*) AS n FROM {join} WHERE {det} GROUP BY d.station_id"):
             if r["station_id"] in by_station:
                 by_station[r["station_id"]]["vehicles"] = r["n"]
-        cases_open = c.execute("SELECT COUNT(*) FROM cases WHERE division_id = ? AND deleted_at IS NULL AND status = 'open'", (div,)).fetchone()[0]
-        cases_total = c.execute("SELECT COUNT(*) FROM cases WHERE division_id = ? AND deleted_at IS NULL", (div,)).fetchone()[0]
-        sightings = c.execute("SELECT COALESCE(SUM(sightings), 0) FROM cases WHERE division_id = ? AND deleted_at IS NULL", (div,)).fetchone()[0]
+        cases_open = c.execute("SELECT COUNT(*) FROM cases WHERE division_id GLOB ? AND deleted_at IS NULL AND status = 'open'", (div,)).fetchone()[0]
+        cases_total = c.execute("SELECT COUNT(*) FROM cases WHERE division_id GLOB ? AND deleted_at IS NULL", (div,)).fetchone()[0]
+        sightings = c.execute("SELECT COALESCE(SUM(sightings), 0) FROM cases WHERE division_id GLOB ? AND deleted_at IS NULL", (div,)).fetchone()[0]
         n_det = c.execute(f"SELECT COUNT(*) FROM {join} WHERE {det}", args).fetchone()[0]
         wrong = c.execute(f"SELECT COUNT(*) FROM {join} WHERE {det} AND d.wrong_way = 1", args).fetchone()[0]
         hist = [0] * 10
@@ -353,13 +353,13 @@ class Store:
 
     def journeys(self, ident: Identity, limit: int = 100, offset: int = 0) -> dict:
         c = self.conn()
-        total = c.execute("SELECT COUNT(*) FROM journeys WHERE division_id = ? AND deleted_at IS NULL", (ident.division_id,)).fetchone()[0]
-        rows = c.execute("SELECT * FROM journeys WHERE division_id = ? AND deleted_at IS NULL ORDER BY depart_ts DESC LIMIT ? OFFSET ?",
-                         (ident.division_id, max(1, min(limit, 500)), max(0, offset))).fetchall()
+        total = c.execute("SELECT COUNT(*) FROM journeys WHERE division_id GLOB ? AND deleted_at IS NULL", (ident.division_match,)).fetchone()[0]
+        rows = c.execute("SELECT * FROM journeys WHERE division_id GLOB ? AND deleted_at IS NULL ORDER BY depart_ts DESC LIMIT ? OFFSET ?",
+                         (ident.division_match, max(1, min(limit, 500)), max(0, offset))).fetchall()
         return {"total": total, "journeys": [dict(r) for r in rows]}
 
     def delete_journey(self, ident: Identity, jid: int) -> bool:
         with self.write_lock:
-            cur = self.conn().execute("UPDATE journeys SET deleted_at = ? WHERE id = ? AND division_id = ? AND deleted_at IS NULL",
-                                      (time.time(), jid, ident.division_id))
+            cur = self.conn().execute("UPDATE journeys SET deleted_at = ? WHERE id = ? AND division_id GLOB ? AND deleted_at IS NULL",
+                                      (time.time(), jid, ident.division_match))
         return cur.rowcount > 0

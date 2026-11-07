@@ -19,10 +19,19 @@ class Identity:
     station_id: str | None
     division_id: str
     display_name: str
+    all_divisions: bool = False
+    read_only: bool = False
 
     @property
     def is_admin(self) -> bool:
         return self.role == "division_admin"
+
+    def covers(self, division_id: str | None) -> bool:
+        return self.all_divisions or division_id == self.division_id
+
+    @property
+    def division_match(self) -> str:
+        return "*" if self.all_divisions else self.division_id
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -53,4 +62,5 @@ def verify(encoded: str | None, signature: str | None, key: bytes | None, max_sk
     role, station, division = data.get("r"), data.get("s"), data.get("d")
     if role not in ROLES or not division or (role == "station") != bool(station):
         return None
-    return Identity(int(data["uid"]), str(data["u"]), role, station, str(division), str(data.get("n") or data["u"]))
+    return Identity(int(data["uid"]), str(data["u"]), role, station, str(division), str(data.get("n") or data["u"]),
+                    role == "division_admin" and data.get("a") is True, data.get("ro") is True)

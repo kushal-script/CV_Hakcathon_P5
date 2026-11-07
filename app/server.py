@@ -31,7 +31,7 @@ from p5.investigate.journeys import fastest, parse_import
 from p5.investigate.service import CaseStore, _detections, video_summary
 from p5.io import InputError, load_image
 from p5.pipeline import Pipeline
-from p5.region import boundary, division_stations, inside, registry, station
+from p5.region import boundary, inside, registry, station
 from p5.store import IST, Store
 from p5.video.analyse import VideoAnalyser, VideoOptions
 
@@ -85,6 +85,9 @@ def videoloc_validation() -> dict | None:
     return json.loads(f.read_text()) if f.exists() else None
 
 
+ANALYSIS_PATHS = ("/api/predict", "/api/locate", "/api/video")
+
+
 def refit_traffic() -> None:
     state["traffic"] = TrafficModel.load(TRAFFIC_PRIOR, state["store"].all_journeys())
 
@@ -93,7 +96,13 @@ def identity(request: Request) -> Identity:
     ident = verify(request.headers.get("x-p5-identity"), request.headers.get("x-p5-identity-sig"), state.get("secret"))
     if ident is None:
         raise HTTPException(401, "Sign in to continue.")
+    if ident.read_only and request.method not in ("GET", "HEAD") and request.url.path not in ANALYSIS_PATHS:
+        raise HTTPException(403, "Demo division accounts can see every division but cannot change anything.")
     return ident
+
+
+def division_info(ident: Identity) -> dict | None:
+    return {"id": "all", "name": "All divisions"} if ident.all_divisions else registry()["divisions"].get(ident.division_id)
 
 
 def admin(ident: Identity = Depends(identity)) -> Identity:
@@ -207,10 +216,10 @@ def meta(ident: Identity = Depends(identity)) -> dict:
 @app.get("/api/region")
 def region(ident: Identity = Depends(identity)) -> dict:
     b = boundary()
-    stations = division_stations(ident.division_id) if ident.is_admin else [s for s in [station(ident.station_id)] if s]
+    stations = [s for s in registry()["stations"].values() if ident.covers(s.get("division"))] if ident.is_admin else [s for s in [station(ident.station_id)] if s]
     path = Path(os.environ.get("P5_REGION_DIR", ROOT / "assets" / "bengaluru")) / "boundary.geojson"
     return {"bbox": b.bbox if b else None, "boundary": json.loads(path.read_text()) if path.exists() else None,
-            "division": registry()["divisions"].get(ident.division_id),
+            "division": division_info(ident),
             "stations": [{k: s.get(k) for k in ("id", "name", "kind", "lat", "lon", "official_division")} for s in stations]}
 
 
@@ -427,7 +436,7 @@ def window(days: int | None, start: str | None, end: str | None) -> tuple[float,
 def admin_overview(days: int = 30, start: str | None = None, end: str | None = None, ident: Identity = Depends(admin)) -> dict:
     since, until = window(days, start, end)
     out = store().overview(ident, since, until)
-    out["division"] = registry()["divisions"].get(ident.division_id)
+    out["division"] = division_info(ident)
     return out
 
 
@@ -497,7 +506,7 @@ def admin_case_delete(cid: str, ident: Identity = Depends(admin)) -> dict:
 @app.get("/api/admin/stations")
 def admin_stations(days: int = 30, ident: Identity = Depends(admin)) -> dict:
     since, until = window(days, None, None)
-    return {"division": registry()["divisions"].get(ident.division_id), "stations": store().overview(ident, since, until)["by_station"]}
+    return {"division": division_info(ident), "stations": store().overview(ident, since, until)["by_station"]}
 
 
 def plain_cell(v):
@@ -519,7 +528,7 @@ def admin_export(days: int = 30, start: str | None = None, end: str | None = Non
         offset += 200
         if offset >= page["total"] or not page["events"]:
             break
-    name = f"vahana-{ident.division_id}-{datetime.now(IST).strftime('%Y%m%d-%H%M')}.csv"
+    name = f"vahana-{'all' if ident.all_divisions else ident.division_id}-{datetime.now(IST).strftime('%Y%m%d-%H%M')}.csv"
     return Response(buf.getvalue(), media_type="text/csv", headers={"Content-Disposition": f'attachment; filename="{name}"'})
 
 
