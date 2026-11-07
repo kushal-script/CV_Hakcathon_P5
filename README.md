@@ -67,9 +67,10 @@ Demo passwords cannot be changed, and the two demo stations are not real police 
 | Complete source code | This repository. See [Repository layout](#repository-layout) |
 | System architecture diagram | [docs/architecture.md](docs/architecture.md) |
 | Design document | [docs/DESIGN.md](docs/DESIGN.md) |
-| Comparative evaluation results and solution report | [eval_P5_T55.md](eval_P5_T55.md) and [eval_P5_T55.pdf](eval_P5_T55.pdf) |
-| Ablation study | [eval_P5_T55.md §3.3](eval_P5_T55.md#33-ablation-study) |
-| Failure-case analysis | [eval_P5_T55.md §4](eval_P5_T55.md#4-failure-modes--limitations) |
+| Comparative evaluation results | [eval_P5_T55.md](eval_P5_T55.md) |
+| Solution report | [report_P5_T55.pdf](report_P5_T55.pdf) (Markdown source: [report_P5_T55.md](report_P5_T55.md)) |
+| Ablation study | [eval_P5_T55.md §8](eval_P5_T55.md#8-ablation-study) |
+| Failure-case analysis | [eval_P5_T55.md §9](eval_P5_T55.md#9-failure-case-analysis) |
 
 ## System architecture
 
@@ -138,7 +139,8 @@ Every tunable value is in a config file, and [docs/PARAMETERS.md](docs/PARAMETER
 
 | Document | Contents |
 |---|---|
-| [eval_P5_T55.md](eval_P5_T55.md), [PDF](eval_P5_T55.pdf) | Solution report: approach, comparative evaluation in the required metric order, screenshots, ablation and failure cases |
+| [eval_P5_T55.md](eval_P5_T55.md) | Comparative evaluation in the required metric order, ablation and failure-case analysis |
+| [report_P5_T55.pdf](report_P5_T55.pdf), [Markdown](report_P5_T55.md) | Solution report: approach, evaluation, screenshots, ablation, failure cases, deployment and demo accounts |
 | [docs/DESIGN.md](docs/DESIGN.md) | Design document of the system as built: requirements, recognition, console, security, deployment, trade-offs |
 | [docs/IMPLEMENTATION_NOTES.md](docs/IMPLEMENTATION_NOTES.md) | What was built and every deviation from the plan |
 | [docs/PARAMETERS.md](docs/PARAMETERS.md) | Every configurable value and where it comes from |
@@ -237,7 +239,7 @@ GPU jobs are plain scripts launched on a JarvisLabs A100 (`scripts/remote/*.sh`)
 | Travel-time profile (E20) | `python3 scripts/build_traffic_prior.py` |
 | Road graph and place names (E21) | `python3 scripts/build_road_graph.py` and `python3 scripts/build_place_index.py` (Geofabrik southern India extract, needs `pip install osmium shapely`) |
 | Footage location evaluation (E21) | `scripts/videoloc/kitti_fetch.py`, `kitti_motion.py`, `evaluate_clips.py`, `simulate_bengaluru.py`, `summarize.py`, run as described in the E21 record |
-| Evaluation tables | `python3 scripts/make_tables.py --team T55 --usns 1RUA24CSE0216,1RUA24CSE0228,1RUA24CSE0229,1RUA24CSE0275,1RUA24CSE0244` writes the tables of `eval_P5_T55.md` §3.1 to `runs/eval_tables_P5_T55.md` |
+| Evaluation file | `python3 scripts/make_tables.py --team T55 --usns 1RUA24CSE0216,1RUA24CSE0228,1RUA24CSE0229,1RUA24CSE0275,1RUA24CSE0244` |
 
 </details>
 

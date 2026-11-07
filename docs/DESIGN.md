@@ -20,13 +20,13 @@ Three principles shape every part of it:
 
 | P5 requirement | Design | Measured in `eval_P5_T55.md` |
 |---|---|---|
-| Detect the vehicle | Fine-tuned YOLO26s detector for photos, and a COCO detector for video | §3.1 IoU: mean 0.949, 99.03% at IoU ≥ 0.5. mAP@0.5 0.976, mAP@0.5:0.95 0.926 |
-| Identify make, model and year | Fine-tuned TResNet-L classifier, INT8, on the detector crop | §3.1 Top-1 94.69%, Top-5 98.94%, make 98.37% |
-| Calibrated confidence | Temperature scaling, a decision policy with model, family, make, not-sure and outside-catalogue levels, thresholds fitted on validation | §3.1 ECE 10.4% to 1.1% |
-| Classical computer vision | Quality analysis, quality-gated enhancement, GrabCut region refinement, Canny edges and contours, colour, texture and geometry features with an SVM, compared with the deep model. Score fusion was tested (E12) and left off | §2.1, §2.3 and §3.1 |
-| Robustness | Quality problems corrected, keeping the original photo unless the correction makes the detection more confident | §3.1 noise, speckle and contrast corruptions |
-| Efficiency | ONNX INT8 classifier of 52.9 MB, CPU inference | §3.1 p50 0.59 s, p95 1.10 s end to end on 2 threads of an Apple M3 |
-| Ablation and failure analysis | One change at a time with significance tests, and the 430 wrong test images grouped by cause | §3.3 and §4 |
+| Detect the vehicle | Fine-tuned YOLO26s detector for photos, and a COCO detector for video | §2 IoU: mean 0.949, 99.03% at IoU ≥ 0.5. §3 mAP@0.5 0.976, mAP@0.5:0.95 0.926 |
+| Identify make, model and year | Fine-tuned TResNet-L classifier, INT8, on the detector crop | §1 Top-1 94.69%, Top-5 98.94%, make 98.37% |
+| Calibrated confidence | Temperature scaling, a decision policy with model, family, make, not-sure and outside-catalogue levels, thresholds fitted on validation | §6 ECE 10.4% to 1.1% |
+| Classical computer vision | Quality analysis, quality-gated enhancement, GrabCut region refinement, Canny edges and contours, colour, texture and geometry features with an SVM, compared with the deep model. Score fusion was tested (E12) and left off | §5 and §7 |
+| Robustness | Quality problems corrected, keeping the original photo unless the correction makes the detection more confident | §5 noise, speckle and contrast corruptions |
+| Efficiency | ONNX INT8 classifier of 52.9 MB, CPU inference | §4 p50 0.59 s, p95 1.10 s end to end on 2 threads of an Apple M3 |
+| Ablation and failure analysis | One change at a time with significance tests, and the 430 wrong test images grouped by cause | §8 and §9 |
 
 ## 3. System overview
 
@@ -83,4 +83,4 @@ Stanford Cars (8,144 training and 8,041 test images) for the main catalogue. Wik
 
 ## 10. Limitations
 
-The failure analysis is in `eval_P5_T55.md` §4. Operational limits are in `docs/OPERATIONS.md` under Known limits: the sign-in location is reported by the browser, some case data goes to public routing and geocoding services, video analysis runs inside the request, small or distant vehicles are not named, and footage location needs the camera's field of view and declines when the motion fits several places.
+The failure analysis is in `eval_P5_T55.md` §9, and the full solution report is `report_P5_T55.pdf`. Operational limits are in `docs/OPERATIONS.md` under Known limits: the sign-in location is reported by the browser, some case data goes to public routing and geocoding services, video analysis runs inside the request, small or distant vehicles are not named, and footage location needs the camera's field of view and declines when the motion fits several places.
