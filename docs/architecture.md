@@ -19,7 +19,7 @@ flowchart LR
         BK["vahana-backup.timer<br/>every 6 h, SQLite online backup,<br/>integrity check, 7 days kept"]
         WD["vahana-watchdog.timer<br/>every minute, restarts the container<br/>after 3 failed health checks"]
         subgraph C["Docker container (non-root, read-only filesystem)"]
-            GW["gateway (Rust, axum)<br/>station and division accounts, Argon2id,<br/>server-side sessions, lockout per network,<br/>sign-in area Karnataka and Maharashtra,<br/>CSRF checks, rate limits, CSP, HTTPS redirect"]
+            GW["gateway (Rust, axum)<br/>station and division accounts, Argon2id,<br/>server-side sessions, lockout per network,<br/>sign-in area Karnataka,<br/>CSRF checks, rate limits, CSP, HTTPS redirect"]
             GW --- GDB[("gateway.db (SQLite)<br/>divisions, stations, users,<br/>sessions, audit")]
             GW -->|"/api on 127.0.0.1:8001<br/>+ HMAC-signed identity"| API["app/server.py (FastAPI)"]
             API --- VDB[("vahana.db (SQLite)<br/>events, detections, case index")]

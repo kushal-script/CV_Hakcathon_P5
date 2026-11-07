@@ -55,7 +55,7 @@ The audit log (Division, then Audit log) shows every sign-in, failure, password 
 | Variable | Default | Effect |
 |---|---|---|
 | `P5_DEVICE_GEOFENCE` | `required` | `required`: sign-in needs a device location inside the sign-in area (with `P5_GEOFENCE_MARGIN_M`, default 2000). `off`: no location check |
-| `P5_BOUNDARY` | `assets/bengaluru/boundary.geojson` | The sign-in area. The live server uses `assets/bengaluru/signin_area.geojson`, Karnataka and Maharashtra from OpenStreetMap, rebuilt with `python3 scripts/build_signin_area.py Karnataka Maharashtra`. The console's map, stations and camera checks always use the Bengaluru boundary in `P5_REGION_DIR` |
+| `P5_BOUNDARY` | `assets/bengaluru/boundary.geojson` | The sign-in area. The live server uses `assets/bengaluru/signin_area.geojson`, Karnataka from OpenStreetMap, rebuilt with `python3 scripts/build_signin_area.py Karnataka`. The console's map, stations and camera checks always use the Bengaluru boundary in `P5_REGION_DIR` |
 | `P5_ALLOWED_COUNTRIES` | `IN` | Countries allowed by Cloudflare's country header when `P5_TRUST_PROXY=true`. Empty turns it off |
 | `P5_TRUST_PROXY` | `false` | Set `true` behind the tunnel so the real client address and country are used |
 | `P5_COOKIE_SECURE` | `true` | Keep `true` whenever the site is served over HTTPS |

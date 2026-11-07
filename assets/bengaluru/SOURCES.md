@@ -84,4 +84,4 @@ The first feature of `boundary.geojson` is the Bengaluru Urban district polygon,
 
 ## Sign-in area
 
-`signin_area.geojson` is the area a device must be in to sign in. It holds the Karnataka (relation 2019939) and Maharashtra (relation 1950884) state boundaries from OpenStreetMap contributors (ODbL), retrieved through Nominatim on 7 November 2026 and simplified by 0.005° (about 0.5 km), well inside the gateway's 2 km margin. Rebuild with `python3 scripts/build_signin_area.py Karnataka Maharashtra`. The console's own map, stations and camera checks still use `boundary.geojson`.
+`signin_area.geojson` is the area a device must be in to sign in. It holds the Karnataka state boundary (relation 2019939) from OpenStreetMap contributors (ODbL), retrieved through Nominatim on 7 November 2026 and simplified by 0.005° (about 0.5 km), well inside the gateway's 2 km margin. Rebuild with `python3 scripts/build_signin_area.py Karnataka`. The console's own map, stations and camera checks still use `boundary.geojson`.
