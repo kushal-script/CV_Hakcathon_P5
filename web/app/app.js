@@ -6,6 +6,7 @@ const LEVEL = {
   class: ["Model identified", "good"], family: ["Model family, year uncertain", "caution"], make: ["Make only", "caution"],
   abstain: ["Not certain", "caution"], ood_make: ["Make only, model outside the catalogue", "alert"],
   ood: ["Outside the known catalogues", "alert"], no_vehicle: ["No vehicle found", "alert"],
+  vehicle_type: ["Vehicle type only, not a car", "caution"],
 };
 
 function h(tag, props = {}, ...kids) {
@@ -388,7 +389,9 @@ function renderIdentify(r) {
       kids.push(section("Classical, deep and hybrid on this photo",
         h("table", { class: "table" }, h("thead", {}, h("tr", {}, h("th", { text: "Approach" }), h("th", { text: "Answer" }), h("th", { class: "num", text: "Conf." }))),
           h("tbody", {}, rows.map(([n, x]) => h("tr", {}, h("td", { text: n }), h("td", { text: x.label }), h("td", { class: "num", text: pct(x.confidence) }))))),
-        h("p", { class: "note", text: r.comparison.final_catalogue
+        h("p", { class: "note", text: r.comparison.hybrid && r.comparison.hybrid.level === "vehicle_type"
+          ? "The auto-rickshaw check found a three-wheeler. The car catalogues have no three-wheelers, so their car names in this table are wrong for this photo and are shown only for comparison."
+          : r.comparison.final_catalogue
           ? `All four rows use the Stanford Cars catalogue (196 models). The answer at the top comes from the ${r.comparison.final_catalogue} catalogue, which gave the more specific and more confident answer for this photo.`
           : "All four rows use the Stanford Cars catalogue (196 models)." })));
     }
@@ -764,7 +767,7 @@ function vehicleTable(analysis, video) {
     h("thead", {}, h("tr", {}, h("th", { text: "#" }), h("th", { text: "Vehicle" }), h("th", { text: "Moving" }), h("th", { class: "num", text: "Seen" }))),
     h("tbody", {}, analysis.tracks.map((tr) => h("tr", { class: "clickable", onclick: () => { video.currentTime = tr.first_t; video.play(); } },
       h("td", { class: "mono", text: tr.id }),
-      h("td", {}, h("div", { text: tr.label }), tr.decision ? h("div", { class: "muted", style: { fontSize: "12px" }, text: `${(LEVEL[tr.decision.level] || [""])[0]} · ${pct(tr.decision.confidence, 0)}` }) : h("div", { class: "muted", style: { fontSize: "12px" }, text: `${tr.class} · too small in the frame to name the make or model` })),
+      h("td", {}, h("div", { text: tr.label }), tr.decision ? h("div", { class: "muted", style: { fontSize: "12px" }, text: `${(LEVEL[tr.decision.level] || [""])[0]} · ${pct(tr.decision.confidence, 0)}` }) : h("div", { class: "muted", style: { fontSize: "12px" }, text: `${tr.class} · ${tr.unnamed || "too small in the frame to name the make or model"}` })),
       h("td", {}, tr.wrong_way ? h("span", { class: "tag alert", text: "Wrong way" }) : h("span", { text: tr.direction.compass })),
       h("td", { class: "num", text: `${clock(tr.first_t)}–${clock(tr.last_t)}` })))));
 }
@@ -789,16 +792,61 @@ function openCamera(c, camId, t) {
 $("#sheet-close").addEventListener("click", () => { $("#sheet").close(); $("#sheet-body").replaceChildren(); });
 $("#sheet").addEventListener("close", () => $("#sheet-body").replaceChildren());
 
+const videoState = { trace: null };
+const TRACE_STATUS = { traced: "Route traced from GPS", partly_traced: "Route traced through places in the video", one_point: "One place known, route not traced",
+  not_traced: "Route not traced" };
+function traceView(t) {
+  if (!t) return null;
+  const rows = (t.points || []).map((p) => [p.kind === "start" ? `Start · ${clock(p.t)}` : clock(p.t), p.source, p.detail]);
+  return section("Where it went",
+    h("p", { class: "lede", style: { margin: "0 0 8px" }, text: TRACE_STATUS[t.status] || t.status }),
+    h("p", { class: "note", text: t.summary }),
+    rows.length ? facts(rows, { margin: "10px 0" }) : null,
+    t.roads && t.roads.length ? h("p", { class: "muted", style: { fontSize: "12.5px" }, text: `Roads on the line: ${t.roads.slice(0, 12).join(" → ")}` }) : null,
+    t.texts && t.texts.length ? h("p", { class: "muted", style: { fontSize: "12px" }, text: `Text read in the video: ${t.texts.join(", ")}` }) : null,
+    t.status !== "traced" ? h("p", { class: "muted", style: { fontSize: "12px" }, text: "A GPS track gives the exact route. Dashcams usually record one inside the file, and a GPX, CSV or NMEA track can be added with the footage in a case." }) : null);
+}
+function drawTrace(t) {
+  videoState.trace = t;
+  const pts = ((t && t.points) || []).map((p, i) => ({ type: "Feature", properties: { colour: i === 0 ? PIN.cam : PIN.seen, r: 7, label: clock(p.t), title: p.source, detail: p.detail || "" },
+    geometry: { type: "Point", coordinates: [p.lon, p.lat] } }));
+  const line = t && t.route ? [{ type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: t.route } }] : [];
+  setLayer("points", fc(pts));
+  setLayer("gps", fc(line));
+  const coords = [...pts.map((f) => f.geometry.coordinates), ...(t && t.route ? t.route : [])];
+  if (coords.length) fit(coords, 16);
+  setKey(coords.length ? [["dot", PIN.cam, "Where the video starts"], ...(pts.length > 1 ? [["dot", PIN.seen, "Place read in the video"]] : []),
+    ...(line.length ? [["sw", "#5c4a2c", t.status === "traced" ? "Route from GPS" : "Likely road route between the places"]] : [])] : []);
+}
 async function runVideo(file) {
   const out = $("#video-out");
   const url = URL.createObjectURL(file);
-  out.replaceChildren(busy("Analysing the video. Longer clips take a few minutes."));
+  const run = (videoState.run = (videoState.run || 0) + 1);
+  const current = () => run === videoState.run;
+  const wait = (text, p) => current() && out.replaceChildren(busy(text, "Longer clips take a few minutes. You can keep this page open while it works."),
+    h("div", { class: "progress" }, h("i", { style: { width: `${Math.max(4, p * 100)}%` } })));
+  wait("Uploading the video", 0);
   const fd = new FormData(); fd.append("file", file);
   const dir = $("#video-direction").value; if (dir) fd.append("allowed_direction", dir);
   try {
-    const r = await api("/api/video", { method: "POST", form: fd });
-    out.replaceChildren(h("div", { class: "section" }, analysisView(r, url)));
-  } catch (e) { out.replaceChildren(problem(e.message)); }
+    const { job_id: jobId } = await api("/api/video", { method: "POST", form: fd });
+    const res = await new Promise((resolve, reject) => {
+      const tick = async () => {
+        if (!current()) { resolve(null); return; }
+        try {
+          const j = await api(`/api/jobs/${jobId}`);
+          if (j.status === "done") { resolve(j.result); return; }
+          if (j.status === "error") { reject(new Error(j.error || "The video could not be analysed.")); return; }
+          wait(`${j.stage || "Analysing"} · ${Math.round(j.progress * 100)}%`, j.progress);
+        } catch (e) { reject(e); return; }
+        setTimeout(tick, 1500);
+      };
+      tick();
+    });
+    if (!res || !current()) return;
+    out.replaceChildren(h("div", { class: "section" }, analysisView(res, url)), traceView(res.trace));
+    drawTrace(res.trace);
+  } catch (e) { if (current() && !(e instanceof AuthError)) out.replaceChildren(problem(e.message)); }
 }
 
 const KIND = { identify: "Identification", locate: "Photo located", video: "Video analysed", case_created: "Case opened", case_updated: "Case updated",
@@ -838,6 +886,7 @@ document.querySelectorAll(".tabs button").forEach((b) => b.addEventListener("cli
   clearLayers("points", "routes", "iso", "areas", "gps", "heat"); setKey([]);
   if (view === "investigate") loadCases(inv.id).catch((e) => !(e instanceof AuthError) && notice(e.message));
   if (view === "activity") loadActivity();
+  if (view === "video" && videoState.trace) drawTrace(videoState.trace);
 }));
 
 function drawRegion() {

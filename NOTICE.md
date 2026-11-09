@@ -34,11 +34,12 @@ These files keep their own licences. The licence above does not change them.
 | `assets/bengaluru/police_stations.json`: names, divisions and phone numbers | Bengaluru City Police, Bengaluru Traffic Police and Karnataka State Police websites, listed in [SOURCES.md](assets/bengaluru/SOURCES.md) | Facts published on official pages, credited to them |
 | `assets/bengaluru/traffic_prior.json` | Uber Movement, Bangalore wards, 2019 Q3, © 2019 Uber Technologies, Inc. | Creative Commons Attribution Non-Commercial, under the Uber Movement data terms |
 | `assets/india/`: model list, production years, photo credits in `split.csv` | Wikidata, English Wikipedia and Wikimedia Commons | Wikidata CC0, Wikipedia CC BY-SA 4.0. The licence and author of every photo are listed in `split.csv` |
+| `assets/autorickshaw/sources.csv`: credits for the auto-rickshaw photos | Wikimedia Commons | Each photo keeps its own free licence (CC BY, CC BY-SA, CC0, public domain, GFDL or Free Art Licence), listed with its author and page |
 | `assets/taxonomy/`, `assets/splits/` | Stanford Cars class names and image IDs, COCO image IDs | Names and IDs only. No images |
 
 ## Not in this repository
 
-* **Images.** Stanford Cars (Krause et al., 2013) is downloaded separately, the Indian catalogue photos are fetched again from Wikimedia Commons by `scripts/build_india_dataset.py`, and KITTI raw recordings, which are licensed CC BY-NC-SA 3.0, are fetched for evaluation only by `scripts/videoloc/kitti_fetch.py`. Each keeps the terms of its provider.
+* **Images.** Stanford Cars (Krause et al., 2013) is downloaded separately, the Indian catalogue photos are fetched again from Wikimedia Commons by `scripts/build_india_dataset.py`, the auto-rickshaw photos by `scripts/build_autorickshaw_set.py`, and KITTI raw recordings, which are licensed CC BY-NC-SA 3.0, are fetched for evaluation only by `scripts/videoloc/kitti_fetch.py`. Each keeps the terms of its provider.
 * **Model weights.** `models/` is not committed. The weights are fine-tuned from pretrained models and trained on the datasets above, so anyone who shares them must follow those terms as well.
 
 ## Services used while the console runs

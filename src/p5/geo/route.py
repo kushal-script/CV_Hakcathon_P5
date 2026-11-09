@@ -5,6 +5,7 @@ import io
 import json
 import os
 import re
+import struct
 import urllib.request
 import xml.etree.ElementTree as ET
 from datetime import datetime
@@ -100,11 +101,20 @@ def mp4_location(path: str) -> dict | None:
         fh.seek(max(0, os.path.getsize(path) - 4 * 2**20))
         tail = fh.read()
     for blob in (head, tail):
-        k = blob.find(b"\xa9xyz")
-        if k >= 0:
-            m = re.search(rb"([+-]\d+\.\d+)([+-]\d+\.\d+)", blob[k:k + 64])
-            if m:
-                return {"lat": float(m.group(1)), "lon": float(m.group(2)), "source": "video metadata"}
+        for marker, span in ((b"\xa9xyz", 64), (b"LOCATION", 64), (b"location.ISO6709", 4096)):
+            k = blob.find(marker)
+            if k >= 0:
+                m = re.search(rb"([+-]\d+\.\d+)([+-]\d+\.\d+)", blob[k:k + span])
+                if m:
+                    return {"lat": float(m.group(1)), "lon": float(m.group(2)), "source": "video metadata"}
+        k = blob.find(b"loci")
+        if k >= 4:
+            body = blob[k + 8:k + 200]
+            end = body.find(b"\x00", 2)
+            if end >= 0 and len(body) >= end + 14:
+                lon, lat = (v / 65536 for v in struct.unpack(">ii", body[end + 2:end + 10]))
+                if -90 <= lat <= 90 and -180 <= lon <= 180 and (lat or lon):
+                    return {"lat": round(lat, 6), "lon": round(lon, 6), "source": "video metadata"}
     return None
 
 

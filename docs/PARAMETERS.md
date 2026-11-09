@@ -48,7 +48,11 @@ The match score is a logistic model, P(same vehicle), over three features: appea
 | `nested_box_fraction: 0.7`, `min_track_detections: 4`, `min_crop_area_fraction: 0.004` | Assumption | Set while debugging duplicate and flickering tracks on test clips. Not tuned on labelled tracks |
 | `crop_padding: 0.10` | Fitted | Same padding the classifier was trained with |
 | `best_crops: 3` | Operational | Classifier calls per track |
+| `name_min_side: 112` | Measured (E14, E22) | A vehicle is named only when its best crop is at least 112 px across. In the robustness suite the deployed system kept 92.1% top-1 with the car reduced to 112 px and fell to 53.3% at 56 px |
+| `name_min_luma: 0.08` | Measured (E22) | Median pixel brightness of the best crop, so headlights and street lamps do not lift it. Over 300 validation crops it is 0.140 at low light severity 1 (92.1% top-1 in E14) and 0.027 at severity 3 (58.4%). 0.08 sits between them, just above the severity 2 value (0.066) |
+| `name_min_sharpness: 20` | Measured (E22) | Laplacian variance of the best crop at 224 px. On 200 validation crops Gaussian and defocus blur at severity 3 (33% top-1 in E14) have medians of 12 to 13, and defocus blur at severity 1 (86%) has its 10th percentile at 21 |
 | `wrong_way_cos: -0.3`, `min_travel_fraction: 0.08` | Assumption | "Moving against the allowed direction by more than about 107°, after travelling at least 8% of the frame diagonal" |
+| `vehicle_type.json` threshold | Fitted (E22) | Auto-rickshaw check on the classifier embedding. The threshold is the lowest one that calls at most 0.5% of validation cars an auto-rickshaw. Test results are in the E22 record |
 
 ## Tracker (`investigation.yaml: tracker`)
 

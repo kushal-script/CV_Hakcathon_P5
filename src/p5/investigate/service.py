@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import base64
 import json
+import logging
 import shutil
 import threading
 import time
@@ -22,6 +23,8 @@ from p5.geo.route import map_match, mp4_location, parse_track, position_at
 from p5.geo.videoloc import file_sha256, locate_video
 from p5.geo.videoloc import graph as road_graph
 from p5.geo.videoloc.metadata import embedded_gps
+from p5.geo.videoloc.signs import distinctive, norm
+from p5.geo.videoloc.trace import CHAIN, place_tracks, trace_video
 from p5.investigate.hints import parse as parse_hints
 from p5.investigate.hunt import rank, target_profile
 from p5.investigate.journeys import from_sightings, from_track
@@ -44,7 +47,11 @@ def environment(frames: list[np.ndarray], ocr) -> dict:
     ev = [e for f in frames for e in ocr_evidence(f, ocr)]
     points = []
     for q, src in queries(ev, 8):
+        if not distinctive(norm(q)):
+            continue
         for hit in photon(q):
+            if str(hit.get("kind", "")).startswith(CHAIN):
+                continue
             sim = similarity(q, hit["name"])
             if sim >= section("geocoding")["min_similarity"]:
                 points.append({**hit, "score": float(np.mean([e.ocr_conf for e in src])) * sim / (1 + 0.5 * hit["rank"]),
@@ -261,7 +268,47 @@ class CaseStore:
         j = self.jobs.get(job_id)
         if not j or (ident.is_admin and not ident.covers(j["division_id"])) or (not ident.is_admin and j["station_id"] != ident.station_id):
             raise KeyError(job_id)
-        return {k: v for k, v in j.items() if k not in ("station_id", "division_id")}
+        if j.get("owner") is not None and j["owner"] != ident.user_id:
+            raise KeyError(job_id)
+        return {k: v for k, v in j.items() if k not in ("station_id", "division_id", "owner")}
+
+    def analyse_video(self, path: Path, filename: str, allowed, ident: Identity) -> dict:
+        cutoff = time.time() - 3 * 3600
+        for k in [k for k, j in self.jobs.items() if j.get("kind") == "video" and j.get("created", 0) < cutoff]:
+            self.jobs.pop(k, None)
+        job = uuid.uuid4().hex[:10]
+        self.jobs[job] = {"id": job, "kind": "video", "status": "queued", "stage": "Waiting for the video queue", "progress": 0.0, "error": None,
+                          "created": time.time(), "owner": ident.user_id, "station_id": ident.station_id, "division_id": ident.division_id}
+        self.pool.submit(self._run_video, job, path, filename, allowed, ident)
+        return {"job_id": job}
+
+    def _run_video(self, job: str, path: Path, filename: str, allowed, ident: Identity) -> None:
+        state = self.jobs[job]
+        state.update(status="running", stage="Tracking and identifying vehicles")
+        try:
+            res = self.analyser.run(str(path), VideoOptions(allowed_direction=tuple(allowed) if allowed else None),
+                                    progress=lambda p: state.__setitem__("progress", round(p * 0.75, 3)))
+            res.pop("_keyframes", None)
+            state["stage"] = "Reading the background to trace the route"
+            tr = trace_video(str(path), self.ocr, self.places_path, progress=lambda p: state.__setitem__("progress", round(0.75 + 0.24 * p, 3)))
+            place_tracks(res["tracks"], tr)
+            tr.pop("gps", None)
+            res["trace"] = tr
+            start = tr["points"][0] if tr.get("points") else None
+            self.store.record(ident, "video", f"{filename}: {video_summary(res)}",
+                              {"counts": res["counts"], "alerts": res["alerts"], "meta": res["meta"], "trace": tr["status"]},
+                              lat=start["lat"] if start else None, lon=start["lon"] if start else None, detections=_detections(res["tracks"]))
+            for t in res["tracks"]:
+                t.pop("embedding", None)
+                t.pop("probs", None)
+            state.update(status="done", stage="Done", progress=1.0, result=res)
+        except ValueError as e:
+            state.update(status="error", error=str(e))
+        except Exception:
+            logging.getLogger("p5").exception("video job %s failed", job)
+            state.update(status="error", error="The video could not be analysed.")
+        finally:
+            Path(path).unlink(missing_ok=True)
 
     def _run_camera(self, job: str, cid: str, cam_id: str, path: Path, allowed, ident: Identity) -> None:
         state = self.jobs[job]

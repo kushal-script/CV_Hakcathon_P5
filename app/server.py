@@ -28,12 +28,12 @@ from p5.geo.where import where_taken
 from p5.geo.traffic import TrafficModel
 from p5.identity import Identity, secret, verify
 from p5.investigate.journeys import fastest, parse_import
-from p5.investigate.service import CaseStore, _detections, video_summary
+from p5.investigate.service import CaseStore
 from p5.io import InputError, load_image
 from p5.pipeline import Pipeline
 from p5.region import boundary, inside, registry, station
 from p5.store import IST, Store
-from p5.video.analyse import VideoAnalyser, VideoOptions
+from p5.video.analyse import VideoAnalyser
 
 ROOT = Path(__file__).resolve().parent.parent
 CONFIG = Path(os.environ.get("P5_CONFIG", ROOT / "configs" / "app.yaml"))
@@ -56,7 +56,7 @@ def load() -> None:
     analyser = VideoAnalyser(Detector(coco if coco.exists() else models / "detector.onnx", threads=pipe.cfg.threads,
                                       iou=section("video")["nms_iou"]),
                              Classifier(models / "classifier.onnx", models / "classifier_meta.json", pipe.cfg.threads),
-                             pipe.tax, pipe.th, pipe.extra, pipe.cfg.prefer, pipe.base.title)
+                             pipe.tax, pipe.th, pipe.extra, pipe.cfg.prefer, pipe.base.title, pipe.vehicle_type)
     try:
         from rapidocr import RapidOCR
         ocr = RapidOCR()
@@ -268,20 +268,9 @@ async def locate_photo(file: UploadFile = File(...), ident: Identity = Depends(i
 
 @app.post("/api/video")
 async def analyse_video(file: UploadFile = File(...), allowed_direction: str | None = Form(None), ident: Identity = Depends(identity)) -> dict:
+    direction = parse_direction(allowed_direction)
     tmp = await save_video(file, MAX_VIDEO)
-    try:
-        res = await run_in_threadpool(state["analyser"].run, str(tmp), VideoOptions(allowed_direction=parse_direction(allowed_direction)))
-    except ValueError as e:
-        raise HTTPException(422, str(e))
-    finally:
-        tmp.unlink(missing_ok=True)
-    res.pop("_keyframes", None)
-    store().record(ident, "video", f"{Path(file.filename or 'Video').name[:120]}: {video_summary(res)}",
-                   {"counts": res["counts"], "alerts": res["alerts"], "meta": res["meta"]}, detections=_detections(res["tracks"]))
-    for tr in res["tracks"]:
-        tr.pop("embedding", None)
-        tr.pop("probs", None)
-    return res
+    return cases().analyse_video(tmp, Path(file.filename or "Video").name[:120], direction, ident)
 
 
 @app.get("/api/activity")

@@ -1,0 +1,27 @@
+{
+ "threshold": 0.8835310339927673,
+ "val": {
+  "autos_found": 0.7741935483870968,
+  "indian_cars_called_auto": 0.006666666666666667,
+  "us_cars_called_auto": 0.0,
+  "n": {
+   "auto": 124,
+   "india": 600,
+   "stanford": 300
+  }
+ },
+ "test": {
+  "autos_found": 0.7678571428571429,
+  "indian_cars_called_auto": 0.01,
+  "us_cars_called_auto": 0.0,
+  "n": {
+   "auto": 224,
+   "india": 600,
+   "stanford": 300
+  }
+ },
+ "autos_kept": 555,
+ "autos_listed": 836,
+ "photographers": 290,
+ "note": "two crop styles per image (photo and video)"
+}

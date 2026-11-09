@@ -19,12 +19,14 @@ from p5.classical.saliency import classical_roi
 from p5.classical.svm import ClassicalModel
 from p5.classification.cam import class_activation_map, overlay
 from p5.classification.classifier import Classifier
+from p5.classification.vehicle_type import AUTO_NOTE, load as load_vehicle_type
 from p5.confidence.policy import Decision, Thresholds, decide
 from p5.detection.detector import Detector
 from p5.detection.select import select_boxes
 from p5.hybrid.fusion import fuse
 from p5.io import InputError, load_image
 from p5.taxonomy import Taxonomy
+from p5.video.analyse import embedding
 
 
 @dataclass
@@ -104,6 +106,7 @@ class Pipeline:
         self.base = Catalogue("us", US_TITLE.format(n=len(self.tax.names)), self.tax, self.th, self.classifier, self.fc_weight)
         self.extra = [Catalogue.load("india", INDIA_TITLE, m / "india", cfg.threads, cfg.serve_size)] \
             if cfg.india and (m / "india" / "classifier.onnx").exists() else []
+        self.vehicle_type = load_vehicle_type(m)
 
     @property
     def catalogues(self) -> list[Catalogue]:
@@ -178,6 +181,7 @@ class Pipeline:
 
         crops = [self.classifier.prepare(work_img, b) for b in boxes]
         logits, feats = self.classifier.run(crops, self.cfg.flip_tta)
+        p_auto = [self.vehicle_type.autorickshaw(embedding(f)) for f in feats] if self.vehicle_type is not None else [0.0] * len(boxes)
         tick("classify")
 
         per_market = self.market_decisions(crops, logits, work_img, boxes) if self.extra else None
@@ -188,6 +192,10 @@ class Pipeline:
         cls_out = None
         cam_source = None
         for k, (box, score) in enumerate(zip(boxes, scores)):
+            if self.vehicle_type is not None and p_auto[k] >= self.vehicle_type.threshold:
+                auto = {**asdict(Decision("vehicle_type", "Auto-rickshaw", p_auto[k], None, note=AUTO_NOTE)), "catalogue": None, "catalogue_title": None}
+                vehicles.append(VehicleResult([round(v, 1) for v in box], round(score, 4), auto, None, None, None))
+                continue
             z_fused = None
             classical, geo_d = None, None
             if k == 0 and self.classical is not None and (self.cfg.comparison or self.cfg.panels or self.cfg.fusion):

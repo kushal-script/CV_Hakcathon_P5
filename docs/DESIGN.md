@@ -47,7 +47,7 @@ A browser talks only to Cloudflare, which carries the traffic through an outboun
 | Area | What it does |
 |---|---|
 | Identify | Photo to vehicle, make, model, year and confidence, with the explanation panels and where the photo was taken. The GPS position the camera recorded is shown as a point with its accuracy circle. Without GPS, signboard text is matched by exact name against 144,027 OpenStreetMap places in Bengaluru and drawn as a heat map, where each name's weight is shared by the places that carry it. With neither, it says the location is not known |
-| Video | Every vehicle tracked with its colour, direction and a wrong-way check. Make and model are named for vehicles that cover at least 0.4% of the frame |
+| Video | Every vehicle tracked and counted with its colour, direction and a wrong-way check. Make and model are named only from crops at least 112 px across that are bright and sharp enough, auto-rickshaws are reported as such, and the camera's route is traced from GPS, the stored location and unique place names on signboards |
 | Investigate | Cases with a target photo and camera footage. Sightings are scored with a calibrated match model (E19). Routes between sightings use hourly Bengaluru drive times corrected by observed journeys (E20). Moving footage without GPS is matched to the road network by its turns and speed (E21) and shown as a candidate route that the investigator confirms |
 | Division | For each division administrator: activity overview, every record and case of its stations, station accounts, the security audit log, observed journeys and a spreadsheet export |
 

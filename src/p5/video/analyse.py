@@ -14,6 +14,7 @@ from p5 import render
 from p5.classical.colour import vehicle_colour
 from p5.catalogue import primary
 from p5.classification.classifier import Classifier
+from p5.classification.vehicle_type import AUTO_NOTE, VehicleType, crop_quality, unnamed_reason
 from p5.confidence.policy import Thresholds, decide
 from p5.confidence.temperature import softmax_t
 from p5.config import section
@@ -63,9 +64,10 @@ def jpeg_b64(rgb: np.ndarray, side: int = 160) -> str:
 
 class VideoAnalyser:
     def __init__(self, coco_detector: Detector, classifier: Classifier, tax: Taxonomy, th: Thresholds,
-                 extra: list | None = None, prefer: str = "india", base_title: str = "US market"):
+                 extra: list | None = None, prefer: str = "india", base_title: str = "US market", vehicle_type: VehicleType | None = None):
         self.det, self.clf, self.tax, self.th = coco_detector, classifier, tax, th
         self.extra, self.prefer, self.base_title = list(extra or []), prefer, base_title
+        self.vehicle_type = vehicle_type
 
     def run(self, path: str, opts: VideoOptions | None = None, progress: Callable[[float], None] | None = None) -> dict:
         opts = opts or VideoOptions()
@@ -184,6 +186,22 @@ class VideoAnalyser:
             e = np.mean(embs, axis=0)
             out["embedding"] = (e / (np.linalg.norm(e) + 1e-9)).astype(np.float32).tolist()
             out["probs"] = softmax_t(mean_logits, self.th.t_d).astype(np.float32).tolist()
+            colour = out["colour"]["name"]
+            vcfg = section("video")
+            q = out["crop_quality"] = crop_quality(best, vcfg["crop_padding"])
+            reason = unnamed_reason(q, vcfg)
+            if reason:
+                out["unnamed"] = reason
+                out["label"] = f"{colour} {out['class']}"
+                return out
+            if self.vehicle_type is not None:
+                p_auto = self.vehicle_type.autorickshaw(np.asarray(out["embedding"], dtype=np.float32))
+                if p_auto >= self.vehicle_type.threshold:
+                    out["class"] = "auto-rickshaw"
+                    out["decision"] = {"level": "vehicle_type", "label": "Auto-rickshaw", "confidence": p_auto, "make": None, "top5": [],
+                                       "note": AUTO_NOTE, "catalogue": None, "catalogue_title": None}
+                    out["label"] = f"{colour} auto-rickshaw"
+                    return out
             brief = lambda d, key, title: {"level": d.level, "label": d.label, "confidence": d.confidence, "make": d.make,
                                            "top5": d.top5[:3], "note": d.note, "catalogue": key, "catalogue_title": title}
             ds = [decide(mean_logits, self.tax, self.th)]
@@ -194,9 +212,14 @@ class VideoAnalyser:
                 titles.append(cat.title)
             pick = primary(ds, keys.index(self.prefer) if self.prefer in keys else 0)
             d = ds[pick]
-            out["decision"] = brief(d, keys[pick], titles[pick])
             if self.extra:
                 out["markets"] = {k: brief(x, k, t) for k, x, t in zip(keys, ds, titles)}
-            colour = out["colour"]["name"]
+            local = [x for k, x in zip(keys, ds) if k == self.prefer]
+            if local and keys[pick] != self.prefer and d.level in ("class", "family", "make") and \
+                    (local[0].make or "").lower() != (d.make or "").lower():
+                out["unnamed"] = "only the US catalogue names it, and the Indian catalogue does not agree on the make, so no name is given"
+                out["label"] = f"{colour} {out['class']}"
+                return out
+            out["decision"] = brief(d, keys[pick], titles[pick])
             out["label"] = f"{colour} {d.label}" if d.level in ("class", "family", "make") else f"{colour} {out['class']}"
         return out

@@ -1,0 +1,12 @@
+experiment: E22
+autorickshaw:
+  source: "Wikimedia Commons, Category:Auto-rickshaws in India, depth 3"
+  min_box_fraction: 0.05
+  negatives: {india: 2000, stanford: 1000}
+  split: "70/15/15 by photographer"
+  model: "logistic regression, C 1.0, balanced classes, on the classifier embedding"
+  max_val_false_positive_rate: 0.005
+video_naming:
+  name_min_side: 112
+  name_min_luma: 0.08
+  name_min_sharpness: 20.0

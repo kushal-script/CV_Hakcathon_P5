@@ -1,7 +1,7 @@
 const NS = "http://www.w3.org/2000/svg";
 const KN_DIV = { central: "ಕೇಂದ್ರ ವಿಭಾಗ", north: "ಉತ್ತರ ವಿಭಾಗ", south: "ದಕ್ಷಿಣ ವಿಭಾಗ", east: "ಪೂರ್ವ ವಿಭಾಗ", west: "ಪಶ್ಚಿಮ ವಿಭಾಗ" };
 const KINDS = { law_and_order: "Law and order", traffic: "Traffic", cen: "CEN", women: "Women", other: "Other" };
-const LEVEL_NAMES = { class: "Model identified", family: "Model family", make: "Make only", abstain: "Not certain", ood_make: "Make, model outside catalogues", ood: "Outside catalogues" };
+const LEVEL_NAMES = { class: "Model identified", family: "Model family", make: "Make only", abstain: "Not certain", ood_make: "Make, model outside catalogues", ood: "Outside catalogues", vehicle_type: "Vehicle type only" };
 const SERIES = [
   { key: "identify", label: "Identifications", cls: "s1", colour: "var(--s1)" },
   { key: "video", label: "Footage analysed", cls: "s2", colour: "var(--s2)" },

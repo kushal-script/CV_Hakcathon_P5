@@ -9,6 +9,9 @@ video:
   min_crop_area_fraction: 0.004
   crop_padding: 0.10
   best_crops: 3
+  name_min_side: 112
+  name_min_luma: 0.08
+  name_min_sharpness: 20.0
   wrong_way_cos: -0.3
   min_travel_fraction: 0.08
 
