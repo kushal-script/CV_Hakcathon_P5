@@ -194,14 +194,6 @@ class VideoAnalyser:
                 out["unnamed"] = reason
                 out["label"] = f"{colour} {out['class']}"
                 return out
-            if self.vehicle_type is not None:
-                p_auto = self.vehicle_type.autorickshaw(np.asarray(out["embedding"], dtype=np.float32))
-                if p_auto >= self.vehicle_type.threshold:
-                    out["class"] = "auto-rickshaw"
-                    out["decision"] = {"level": "vehicle_type", "label": "Auto-rickshaw", "confidence": p_auto, "make": None, "top5": [],
-                                       "note": AUTO_NOTE, "catalogue": None, "catalogue_title": None}
-                    out["label"] = f"{colour} auto-rickshaw"
-                    return out
             brief = lambda d, key, title: {"level": d.level, "label": d.label, "confidence": d.confidence, "make": d.make,
                                            "top5": d.top5[:3], "note": d.note, "catalogue": key, "catalogue_title": title}
             ds = [decide(mean_logits, self.tax, self.th)]
@@ -210,11 +202,19 @@ class VideoAnalyser:
                 ds.append(decide(np.mean(extra_logits[k], axis=0), cat.tax, cat.th))
                 keys.append(cat.key)
                 titles.append(cat.title)
+            local = [x for k, x in zip(keys, ds) if k == self.prefer]
+            if self.vehicle_type is not None and not (local and local[0].level == "class"):
+                p_auto = self.vehicle_type.autorickshaw(np.asarray(out["embedding"], dtype=np.float32))
+                if p_auto >= self.vehicle_type.threshold:
+                    out["class"] = "auto-rickshaw"
+                    out["decision"] = {"level": "vehicle_type", "label": "Auto-rickshaw", "confidence": p_auto, "make": None, "top5": [],
+                                       "note": AUTO_NOTE, "catalogue": None, "catalogue_title": None}
+                    out["label"] = f"{colour} auto-rickshaw"
+                    return out
             pick = primary(ds, keys.index(self.prefer) if self.prefer in keys else 0)
             d = ds[pick]
             if self.extra:
                 out["markets"] = {k: brief(x, k, t) for k, x, t in zip(keys, ds, titles)}
-            local = [x for k, x in zip(keys, ds) if k == self.prefer]
             if local and keys[pick] != self.prefer and d.level in ("class", "family", "make") and \
                     (local[0].make or "").lower() != (d.make or "").lower():
                 out["unnamed"] = "only the US catalogue names it, and the Indian catalogue does not agree on the make, so no name is given"

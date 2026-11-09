@@ -191,8 +191,10 @@ class Pipeline:
         vehicles = []
         cls_out = None
         cam_source = None
+        named_locally = [any(c.key == self.cfg.prefer and decide(z, c.tax, c.th, detected=True).level == "class" for c, z, _ in per_market[k][1:])
+                         if per_market else False for k in range(len(boxes))]
         for k, (box, score) in enumerate(zip(boxes, scores)):
-            if self.vehicle_type is not None and p_auto[k] >= self.vehicle_type.threshold:
+            if self.vehicle_type is not None and p_auto[k] >= self.vehicle_type.threshold and not named_locally[k]:
                 auto = {**asdict(Decision("vehicle_type", "Auto-rickshaw", p_auto[k], None, note=AUTO_NOTE)), "catalogue": None, "catalogue_title": None}
                 vehicles.append(VehicleResult([round(v, 1) for v in box], round(score, 4), auto, None, None, None))
                 continue
