@@ -24,7 +24,7 @@ docker run -d --name vahana --restart unless-stopped -p 127.0.0.1:8080:8080 \
   -e P5_MAX_VIDEO_MB=90 -e P5_MAX_BODY_MB=95 -e P5_BOUNDARY=/app/assets/bengaluru/signin_area.geojson \
   -e P5_LOGIN_PER_MINUTE=30 -e P5_API_PER_MINUTE=1200 \
   -v "$PWD/state:/app/state" -v "$PWD/data:/app/data" \
-  --read-only --tmpfs /tmp:rw,size=1g --cap-drop ALL --security-opt no-new-privileges:true --memory 24g --pids-limit 512 \
+  --read-only --tmpfs /tmp:rw,size=1g --cap-drop ALL --security-opt no-new-privileges:true --memory 12g --pids-limit 512 \
   --log-opt max-size=20m --log-opt max-file=5 vahana-drishti
 docker exec vahana vahana-gateway provision --stations /app/assets/bengaluru/police_stations.json --credentials /app/state/credentials.csv
 sudo install -m 644 deploy/host/*.service deploy/host/*.timer /etc/systemd/system/
@@ -104,7 +104,7 @@ To rebuild the 2019 profile from the source data, run `python3 scripts/build_tra
 
 ExifTool is installed in the image, so GPS tracks recorded inside dashcam or phone videos are read when the footage is uploaded. For footage without GPS, an investigator can open a camera in a case and choose Find where this was filmed. They set a search area of up to 3 km and the camera's horizontal field of view.
 
-* **Server load:** the job uses up to `P5_GEOLOC_WORKERS` processes, by default the number of CPU cores minus one, capped at 6. One job runs at a time. These times were measured inside the production container on the 8 vCPU server, with the 122 s KITTI test video at 640 × 192 px:
+* **Server load:** the job uses up to `P5_GEOLOC_WORKERS` processes, by default the number of CPU cores minus one, capped at 6, which is 3 on the current 4 vCPU server. One job runs at a time. On that server a 127 s Bengaluru dashcam clip at 640 × 360 px, searched over 1.5 km around Nandidurga Road with an assumed 120° field of view, took 90 s and ended ambiguous, and the container peaked at 2.5 GB of memory. These earlier times were measured inside the production container when the server had 8 vCPUs and used 6 processes, with the 122 s KITTI test video at 640 × 192 px:
   * **Searching central Bengaluru** (1.5 km area) took 29 s, including 3 s to read the camera motion. The footage was filmed in Karlsruhe, so the search declined it.
   * **Extra steps for a candidate route:** the four decoy areas took 31 s and reading signboards from 62 frames took 11 s. A two-minute clip that gives a candidate route in Bengaluru therefore takes about 70 s.
   * **Karlsruhe, where the footage was filmed** (2 km area): the whole job took 47 s and gave a candidate route 31 m from the true position.

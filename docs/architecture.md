@@ -13,7 +13,7 @@ flowchart LR
     B["Browser: web console<br/>web/app, web/public"] -->|"HTTPS vahanadrishti.in"| CF["Cloudflare<br/>DNS, TLS certificate,<br/>named tunnel vahana-drishti"]
     B -->|"map tiles"| T["OpenFreeMap vector tiles<br/>EOX Sentinel-2 cloudless"]
     GH["GitHub Actions: keep-server-running<br/>every 10 minutes"] -.->|"resumes the VM through<br/>the JarvisLabs API if paused"| CD
-    subgraph VM["JarvisLabs CPU VM, 8 vCPU, 32 GB, Chennai"]
+    subgraph VM["JarvisLabs CPU VM, 4 vCPU, 16 GB, Chennai"]
         CF -->|"outbound tunnel,<br/>no open web ports"| CD["cloudflared<br/>vahana-named-tunnel.service"]
         CD -->|"127.0.0.1:8080"| GW
         BK["vahana-backup.timer<br/>every 6 h, SQLite online backup,<br/>integrity check, 7 days kept"]

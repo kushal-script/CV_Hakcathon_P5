@@ -63,7 +63,7 @@ A browser talks only to Cloudflare, which carries the traffic through an outboun
 
 ## 7. Deployment and operations
 
-The service is one Docker image with the models baked in. It runs on a JarvisLabs CPU machine with 8 cores and 32 GB of memory. A Cloudflare named tunnel serves `vahanadrishti.in` without opening any port on the machine. Systemd starts everything on boot. A timer backs up both databases and the case files every 6 hours, with integrity checks and 7 days kept. A watchdog restarts the container when its health check keeps failing. A scheduled GitHub job resumes the machine if the provider pauses it. Uploads are capped below Cloudflare's 100 MB request limit, so an oversized file gets the console's own message.
+The service is one Docker image with the models baked in. It runs on a JarvisLabs CPU machine with 4 cores and 16 GB of memory. A Cloudflare named tunnel serves `vahanadrishti.in` without opening any port on the machine. Systemd starts everything on boot. A timer backs up both databases and the case files every 6 hours, with integrity checks and 7 days kept. A watchdog restarts the container when its health check keeps failing. A scheduled GitHub job resumes the machine if the provider pauses it. Uploads are capped below Cloudflare's 100 MB request limit, so an oversized file gets the console's own message.
 
 ## 8. Data
 

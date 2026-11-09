@@ -43,7 +43,7 @@ The match score is a logistic model, P(same vehicle), over three features: appea
 
 | Value | Kind | Source |
 |---|---|---|
-| `target_fps: 8`, `max_side: 1280`, `max_seconds: 180` | Operational | CPU budget: one 3-minute clip analyses in a few minutes on 8 vCPUs |
+| `target_fps: 8`, `max_side: 1280`, `max_seconds: 180` | Operational | CPU budget: one 3-minute clip analyses in a few minutes. On the 4 vCPU server a 15 s dashcam clip at 640 × 360 px took 14 s, about the same as on 8 vCPUs |
 | `detection_conf: 0.15`, `nms_iou: 0.5` | Assumption | Low confidence so the tracker's second association stage can recover weak boxes (ByteTrack design) |
 | `nested_box_fraction: 0.7`, `min_track_detections: 4`, `min_crop_area_fraction: 0.004` | Assumption | Set while debugging duplicate and flickering tracks on test clips. Not tuned on labelled tracks |
 | `crop_padding: 0.10` | Fitted | Same padding the classifier was trained with |
