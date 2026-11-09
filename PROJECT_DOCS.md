@@ -78,7 +78,7 @@ The VM accepts no web traffic from the internet. `cloudflared` opens the tunnel 
 | GitHub Actions | JarvisLabs API | HTTPS 443 | Resumes the VM if the provider pauses it | The API key is a repository secret |
 | Maintainer | VM | SSH 22 | Deployment and recovery | SSH key |
 
-**Inside the container:** the root filesystem is read-only, temporary files go to a 1 GB in-memory `/tmp`, every Linux capability is dropped, privilege escalation is blocked, memory is capped at 24 GB and processes at 512. Only `state/` and `data/` are writable, as mounted folders.
+**Inside the container:** the root filesystem is read-only, temporary files go to a 1 GB in-memory `/tmp`, every Linux capability is dropped, privilege escalation is blocked, memory is capped at 12 GB and processes at 512. Only `state/` and `data/` are writable, as mounted folders.
 
 ---
 
@@ -398,6 +398,7 @@ We worked in short iterations, each ending with a commit that left the system wo
 | 5. Production | 7 Nov, 09:06 to 11:12 | 10 | Live deployment with backups and a watchdog, our own domain through a Cloudflare tunnel, HTTPS redirect, the identification facts, cache and script safety, automatic resume |
 | 6. Hardening | 7 Nov, 11:15 to 12:13 | 5 | Photo location from evidence with a heat map, fixes from end-to-end and security testing, production years, the design document, the Karnataka sign-in area |
 | 7. Release | 7 Nov, 12:44 to 14:00 | 7 | Licence, contributor guide and README, app fixes found while writing the report, the solution report, demo accounts, and this document |
+| 8. Field testing | 9 Nov | 5 | Server moved to 4 vCPU and 16 GB, case list fix, video analysis as a background job, route tracing from footage, auto-rickshaw check (E22) and naming limits for video, found by running Bengaluru road clips through the live site |
 
 ### 4.5 Definition of done
 
@@ -426,7 +427,7 @@ A change is done when:
 | Shared demo accounts are misused | Medium | Medium | Read-only demo administrators, fixed passwords, no account lock, hidden IP addresses | Mitigated |
 | The device location is faked at sign-in | Medium | Low | Treated as a convenience check, with accounts, sessions and the audit log as the real controls | Accepted |
 | Public routing and geocoding services see case data | Medium | Medium | Self-hosting is documented through `P5_OSRM_URL`, `P5_PHOTON_URL` and `P5_VALHALLA_URL` | Open |
-| Several large videos at once slow everyone down | Medium | Medium | Upload limits under Cloudflare's 100 MB cap, a job queue planned | Open |
+| Several large videos at once slow everyone down | Medium | Medium | Upload limits under Cloudflare's 100 MB cap, and videos now run one at a time in a background job | Mitigated |
 
 ### 4.7 Release notes: version 1.0, 7 November 2026
 
@@ -458,5 +459,5 @@ A change is done when:
 
 * Fit the out-of-catalogue check with real outside cars, starting with the held-out Indian photos.
 * Add the 59 Indian models that had too few free photos.
-* Move video analysis into a job queue with per-user limits.
+* Add per-user limits to the video queue, which now runs one job at a time.
 * Host OSRM, Photon and Valhalla ourselves before any real casework.

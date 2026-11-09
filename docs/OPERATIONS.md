@@ -108,7 +108,7 @@ ExifTool is installed in the image, so GPS tracks recorded inside dashcam or pho
   * **Searching central Bengaluru** (1.5 km area) took 29 s, including 3 s to read the camera motion. The footage was filmed in Karlsruhe, so the search declined it.
   * **Extra steps for a candidate route:** the four decoy areas took 31 s and reading signboards from 62 frames took 11 s. A two-minute clip that gives a candidate route in Bengaluru therefore takes about 70 s.
   * **Karlsruhe, where the footage was filmed** (2 km area): the whole job took 47 s and gave a candidate route 31 m from the true position.
-  * **Memory:** the container peaked at 3.1 GB, against its 24 GB limit.
+  * **Memory:** the container peaked at 3.1 GB on the 8 vCPU server and at 2.5 GB on the 4 vCPU server, against its limit of 24 GB then and 12 GB now.
   * **Not measured:** higher-resolution video takes longer to decode.
 * **Data files:** the road graph (`assets/bengaluru/road_graph.npz`) and the place names (`assets/bengaluru/places.json.gz`) are built from the Geofabrik southern India extract. Rebuild them with `python3 scripts/build_road_graph.py` and `python3 scripts/build_place_index.py` (both need `pip install osmium shapely`), then rebuild the image. The graph records the date of its OpenStreetMap data, and every result shows it.
 * **Records:** each result stores the video's SHA-256 hash, the search settings and who requested it. It is written to the case and the activity log. Using a candidate route for a camera is a separate, logged action by the investigator.
