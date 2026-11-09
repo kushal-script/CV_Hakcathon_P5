@@ -83,8 +83,10 @@ h2 { font-size: 11px; letter-spacing: .09em; text-transform: uppercase; color: v
 .field textarea { min-height: 96px; resize: vertical; line-height: 1.45; }
 .field .hint { display: block; font-weight: 400; color: var(--muted); margin-top: 4px; }
 .split { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
-.case-bar { display: flex; gap: 10px; align-items: stretch; }
-.case-bar select { flex: 1; margin: 0; padding: 8px 10px; border: 1px solid var(--hair-strong); border-radius: var(--radius); background: var(--surface); }
+select { max-width: 100%; min-width: 0; text-overflow: ellipsis; }
+.case-bar { display: flex; gap: 10px; align-items: stretch; min-width: 0; max-width: 100%; }
+.case-bar select { flex: 1 1 0; width: 0; min-width: 0; margin: 0; padding: 8px 10px; border: 1px solid var(--hair-strong); border-radius: var(--radius); background: var(--surface); overflow: hidden; white-space: nowrap; }
+.case-bar .button { flex: none; }
 .actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 
 .progress { height: 3px; background: var(--hair); margin-top: 8px; border-radius: 2px; overflow: hidden; }

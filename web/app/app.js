@@ -774,7 +774,8 @@ function analysisView(analysis, src, startAt = 0) {
   video.addEventListener("loadedmetadata", () => { if (startAt) video.currentTime = startAt; });
   overlay(video, canvas, analysis);
   const c = analysis.counts;
-  const stats = h("div", { class: "stats" }, Object.entries(c.by_class).map(([k, n]) => h("div", { class: "stat" }, h("div", { class: "n", text: n }), h("div", { class: "l", text: `${k}${n === 1 ? "" : "s"}` }))),
+  const plural = (n, w) => (n === 1 ? w : `${w}${/(s|x|z|ch|sh)$/.test(w) ? "es" : "s"}`);
+  const stats = h("div", { class: "stats" }, Object.entries(c.by_class).map(([k, n]) => h("div", { class: "stat" }, h("div", { class: "n", text: n }), h("div", { class: "l", text: plural(n, k) }))),
     h("div", { class: "stat" }, h("div", { class: "n", text: analysis.alerts.length }), h("div", { class: "l", text: "wrong-way alerts" })));
   return h("div", {}, h("div", { class: "player" }, video, canvas), section("Summary", stats), section("Vehicles", vehicleTable(analysis, video)));
 }

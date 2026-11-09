@@ -67,11 +67,17 @@ def _detections(tracks: list[dict], source: str = "video") -> list[dict]:
     return out
 
 
+def plural(n: int, word: str) -> str:
+    if n == 1:
+        return f"{n} {word}"
+    return f"{n} {word}{'es' if word.endswith(('s', 'x', 'z', 'ch', 'sh')) else 's'}"
+
+
 def video_summary(res: dict) -> str:
     counts = res["counts"]["by_class"]
-    parts = ", ".join(f"{n} {k}{'s' if n != 1 else ''}" for k, n in sorted(counts.items(), key=lambda kv: -kv[1]))
+    parts = ", ".join(plural(n, k) for k, n in sorted(counts.items(), key=lambda kv: -kv[1]))
     alerts = len(res.get("alerts", []))
-    return f"{res['counts']['total']} vehicles tracked" + (f" ({parts})" if parts else "") + (f", {alerts} wrong-way" if alerts else "")
+    return f"{plural(res['counts']['total'], 'vehicle')} tracked" + (f" ({parts})" if parts else "") + (f", {alerts} wrong-way" if alerts else "")
 
 
 class CaseStore:

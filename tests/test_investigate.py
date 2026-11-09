@@ -59,3 +59,11 @@ def test_track_parsing_and_interpolation():
     lat, lon = position_at(pts, 10)
     assert abs(lat - 12.9741) < 1e-4
     assert dist_to_line_m((12.9741, 77.60705), [[77.6072, 12.9752], [77.6069, 12.9730]]) < 5
+
+
+def test_video_summary_plurals():
+    from p5.investigate.service import video_summary
+    res = {"counts": {"total": 13, "by_class": {"bus": 11, "car": 1, "motorcycle": 1}}, "alerts": []}
+    assert video_summary(res) == "13 vehicles tracked (11 buses, 1 car, 1 motorcycle)"
+    one = {"counts": {"total": 1, "by_class": {"truck": 1}}, "alerts": []}
+    assert video_summary(one) == "1 vehicle tracked (1 truck)"
